@@ -1,0 +1,36 @@
+name: gold-alerts
+on:
+  schedule:
+    - cron: '*/5 0-21 * * 1-5'     # every 5 minutes, Mon-Fri (UTC). Covers 4am-1am Dubai.
+  workflow_dispatch:
+    inputs:
+      test:
+        description: 'Run a test now'
+        default: 'yes'
+permissions:
+  contents: write
+concurrency: gold-alerts
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+      - name: Check for signals
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_API_PASSWORD: ${{ secrets.CAPITAL_API_PASSWORD }}
+          CAPITAL_DEMO: '1'
+          ALERT_SIZE_OZ: '0.1'
+        run: python run.py ${{ github.event_name == 'workflow_dispatch' && '--test' || '' }}
+      - name: Save sent-alerts list
+        run: |
+          git config user.name gold-bot; git config user.email gold-bot@users.noreply.github.com
+          git add sent.json docs/data.json 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "alerts state" && git push)
