@@ -1,5 +1,5 @@
 {
- "updated": "Wed 30 Sep \u00b7 9:50 am",
+ "updated": "Wed 30 Sep \u00b7 10:00 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -7,11 +7,11 @@
    "name": "Gold",
    "symbol": "XAU/USD",
    "live": true,
-   "state": "waiting",
-   "message": "Waiting for the first signal (window closes about 4 pm Dubai)",
+   "state": "blocked",
+   "message": "No trade today \u2014 the day filter blocked the first signal",
    "grade": "-",
-   "price": 4175.99,
-   "change": -7.42,
+   "price": 4177.79,
+   "change": -5.62,
    "open_now": 0,
    "size": 0.1,
    "yields": -1,
@@ -394,13 +394,21 @@
     [
      "9:45 am",
      4175.99
+    ],
+    [
+     "9:50 am",
+     4175.54
+    ],
+    [
+     "9:55 am",
+     4177.79
     ]
    ],
    "history": [
     {
      "date": "2026-09-30",
      "label": "Wed 30 Sep",
-     "state": "waiting",
+     "state": "blocked",
      "entries": 0,
      "stopped": 0,
      "targets": 0
