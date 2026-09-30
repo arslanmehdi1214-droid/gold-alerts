@@ -33,7 +33,7 @@ class Capital:
             elif r.status_code not in (400, 404):   # 400/404 = no prices in that window (weekend)
                 r.raise_for_status()
             t0 = t1; time.sleep(0.15)
-        if not out: return pd.DataFrame(columns=list('ohlc'))
+        if not out: return pd.DataFrame(columns=list('ohlc'), index=pd.DatetimeIndex([]), dtype=float)
         d = pd.DataFrame(out, columns=['t', 'o', 'h', 'l', 'c']).drop_duplicates('t')
         d.index = utc_to_broker(pd.to_datetime(d.t)); return d[['o', 'h', 'l', 'c']].astype(float).sort_index()
     def h1(self, days=200):
