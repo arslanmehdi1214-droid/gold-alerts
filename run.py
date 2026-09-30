@@ -70,7 +70,7 @@ def write_portal(now, day, ev, src, yd, sd, m1):
     hist = [h for h in oldg.get('history', []) if h['date'] != str(day.date())]
     if wd < 5:
         hist.append(dict(date=str(day.date()), label=pd.Timestamp(day).strftime('%a %d %b'), state=state, entries=len(ents),
-                         stopped=sum(x['status'] == 'stopped' for x in ents), targets=sum(x['status'] == 'target' for x in ents)))
+                         stopped=sum(x['status'] == 'stopped' for x in ents), targets=sum(x['status'] == 'target' for x in ents), scratch=sum(x['status'] == 'scratch' for x in ents), eod=sum(x['status'] == 'close_now' for x in ents), running=sum(x['status'] in ('open', 'breakeven') for x in ents)))
     hist = sorted(hist, key=lambda h: h['date'])[-15:]
     spark = []
     if m1 is not None and len(m1):
