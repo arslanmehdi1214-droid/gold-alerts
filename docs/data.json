@@ -1,5 +1,5 @@
 {
- "updated": "Thu 01 Oct \u00b7 5:56 am",
+ "updated": "Thu 01 Oct \u00b7 6:09 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -7,17 +7,30 @@
    "name": "Gold",
    "symbol": "XAU/USD",
    "live": true,
-   "state": "waiting",
-   "message": "Waiting for the first signal (window closes about 4 pm Dubai)",
-   "grade": "-",
-   "price": 4161.19,
-   "change": 1.28,
-   "open_now": 0,
+   "state": "sell",
+   "message": "Only SELL today \u2014 new entries come while the first trade is in profit (until about 4 pm Dubai). Close everything at the end-of-day signal.",
+   "grade": "A",
+   "price": 4153.69,
+   "change": -6.22,
+   "open_now": 1,
    "size": 0.1,
    "yields": -1,
    "spx": 1,
    "datr": 89.65,
-   "entries": [],
+   "entries": [
+    {
+     "n": 1,
+     "time": "5:00 am",
+     "side": "SELL",
+     "price": 4145.06,
+     "stop": 4212.3,
+     "target": 3929.9,
+     "be_at": 4131.61,
+     "be_to": 4143.27,
+     "status": "open",
+     "be_time": null
+    }
+   ],
    "spark": [
     [
      "2:00 am",
@@ -209,20 +222,28 @@
     ],
     [
      "5:55 am",
-     4161.19
+     4156.58
+    ],
+    [
+     "6:00 am",
+     4155.61
+    ],
+    [
+     "6:05 am",
+     4153.69
     ]
    ],
    "history": [
     {
      "date": "2026-10-01",
      "label": "Thu 01 Oct",
-     "state": "waiting",
-     "entries": 0,
+     "state": "sell",
+     "entries": 1,
      "stopped": 0,
      "targets": 0,
      "scratch": 0,
      "eod": 0,
-     "running": 0
+     "running": 1
     },
     {
      "date": "2026-09-30",
