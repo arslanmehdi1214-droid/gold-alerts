@@ -20,12 +20,13 @@ class Capital:
                           json={'identifier': self.ident, 'password': self.pw, 'encryptedPassword': False}, timeout=20)
         r.raise_for_status()
         self.h = {'X-SECURITY-TOKEN': r.headers['X-SECURITY-TOKEN'], 'CST': r.headers['CST']}
-    def bars(self, resolution, start_utc, end_utc, step):
+    def bars(self, resolution, start_utc, end_utc, step, epic=None):
         if self.h is None: self.login()
+        epic = epic or self.epic
         out = []; t0 = start_utc
         while t0 < end_utc:
             t1 = min(end_utc, t0 + step)
-            r = requests.get(f'{self.base}/api/v1/prices/{self.epic}', headers=self.h, timeout=20,
+            r = requests.get(f'{self.base}/api/v1/prices/{epic}', headers=self.h, timeout=20,
                              params={'resolution': resolution, 'max': 1000, 'from': t0.strftime('%Y-%m-%dT%H:%M:%S'), 'to': t1.strftime('%Y-%m-%dT%H:%M:%S')})
             if r.status_code == 200:
                 for p in r.json().get('prices', []):
@@ -36,8 +37,8 @@ class Capital:
         if not out: return pd.DataFrame(columns=list('ohlc'), index=pd.DatetimeIndex([]), dtype=float)
         d = pd.DataFrame(out, columns=['t', 'o', 'h', 'l', 'c']).drop_duplicates('t')
         d.index = utc_to_broker(pd.to_datetime(d.t)); return d[['o', 'h', 'l', 'c']].astype(float).sort_index()
-    def h1(self, days=200):
-        end = pd.Timestamp.utcnow().tz_localize(None); return self.bars('HOUR', end - pd.Timedelta(days=days), end, pd.Timedelta(hours=900))
+    def h1(self, days=200, epic=None):
+        end = pd.Timestamp.utcnow().tz_localize(None); return self.bars('HOUR', end - pd.Timedelta(days=days), end, pd.Timedelta(hours=900), epic)
     def m1_today(self, day_broker):
         start = (day_broker - pd.Timedelta(hours=7)).tz_localize(NY).tz_convert('UTC').tz_localize(None)
         end = pd.Timestamp.utcnow().tz_localize(None)
