@@ -68,7 +68,7 @@ header{display:flex;align-items:center;justify-content:space-between;gap:12px;pa
 .eside small{display:block;color:var(--mute);font-weight:500;font-size:12px}
 .st{font:600 11px Inter;letter-spacing:.8px;text-transform:uppercase;padding:5px 10px;border-radius:99px}
 .st-open{background:var(--amberdim);color:var(--amber)}.st-breakeven{background:var(--golddim);color:var(--gold2)}.st-target{background:var(--buydim);color:var(--buy)}
-.st-stopped{background:var(--selldim);color:var(--sell)}.st-scratch{background:var(--greydim);color:var(--ink)}.st-close_now{background:var(--sell);color:#0b0b0d}
+.st-stopped{background:var(--selldim);color:var(--sell)}.st-eod{background:var(--greydim);color:var(--ink)}.st-scratch{background:var(--greydim);color:var(--ink)}.st-close_now{background:var(--sell);color:#0b0b0d}
 .lv{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .lv div{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:9px 10px}
 .lv span{display:block;color:var(--faint);font-size:10.5px;letter-spacing:.5px;text-transform:uppercase}.lv b{font:600 14px Inter}
@@ -92,6 +92,11 @@ button.on{background:var(--gold);color:#0b0b0d}
 .hr:first-child{border-top:0}.hr small{color:var(--mute)}.tag{font-weight:600}.tag.buy{color:var(--buy)}.tag.sell{color:var(--sell)}.tag.no{color:var(--faint)}
 @media(max-width:620px){.hr{grid-template-columns:80px 1fr}.hr .res{grid-column:1/-1}}
 @media(max-width:620px){.kpis,.bt{grid-template-columns:repeat(2,1fr)}.lv{grid-template-columns:repeat(2,1fr)}.mname,.px .v{font-size:26px}}
+.jt{width:100%;border-collapse:collapse;font-size:13.5px}.jt th{color:var(--faint);font:600 10.5px Inter;letter-spacing:.6px;text-transform:uppercase;text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+.jt td{padding:9px 6px;border-top:1px solid var(--line);vertical-align:top}.jt tr:first-child td{border-top:0}.pos{color:var(--buy)}.neg{color:var(--sell)}
+.jd{cursor:pointer}.jd:hover td{background:rgba(255,255,255,.02)}.jsub td{background:var(--bg2);font-size:12.5px;color:var(--mute)}
+.note{color:var(--faint);font-size:12px;margin-top:10px;line-height:1.45}
+@media(max-width:620px){.jt .hide-m{display:none}}
 </style></head>
 <body><div class="wrap">
 <header><div class="brand"><div class="mark"></div><div><h1>Signal Desk</h1><small>Day-trade signals</small></div></div>
@@ -102,68 +107,76 @@ button.on{background:var(--gold);color:#0b0b0d}
 </div>
 <script>
 const host=location.hostname,repo=location.pathname.split('/').filter(Boolean)[0]||'gold-alerts';
-const DATA=host.endsWith('github.io')?`https://raw.githubusercontent.com/${host.split('.')[0]}/${repo}/main/docs/data.json`:'data.json';
-let D=null,sel='GOLD',seen=null,sound=false,ctx=null;
+const RAW=host.endsWith('github.io')?`https://raw.githubusercontent.com/${host.split('.')[0]}/${repo}/main/docs/`:'';
+const DATA=RAW+'data.json',JOUR=RAW+'journal.json';
+let D=null,J=null,sel='GOLD',seen=null,sound=false,ctx=null,openDay=null;
 try{sel=localStorage.getItem('mk')||'GOLD'}catch(e){}
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const f2=v=>v==null?'—':Number(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-const STATE={buy:'Buy day',sell:'Sell day',waiting:'Waiting',blocked:'No trade today',none:'No trade today',closed:'Market closed'};
-const STL={open:'Open',breakeven:'Stop at break-even',target:'Target hit',stopped:'Stopped out',scratch:'Closed break-even',close_now:'Close now'};
-const mdir=v=>v===1?'Falling ↓':v===-1?'Rising ↑':v===0?'Flat':'—';
+const usd=v=>v==null?'—':(v>=0?'+$':'−$')+Math.abs(v).toFixed(2);
+const STATE={buy:'Buy day',sell:'Sell day',waiting:'Waiting',blocked:'First signal skipped',none:'No trade today',closed:'Market closed'};
+const STL={open:'Open',stopped:'Stopped out',eod:'Closed at midnight',close_now:'Close now'};
+const mv=w=>w==='rose'?'Rose ↑':w==='fell'?'Fell ↓':w==='flat'?'Flat':'—';
 $('snd').onclick=()=>{try{ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();sound=!sound;$('snd').textContent='Sound alerts: '+(sound?'on':'off');$('snd').classList.toggle('on',sound);if(sound)beep()}catch(e){}};
 function beep(){if(!sound||!ctx)return;[0,.28,.56].forEach((t,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=[784,988,1319][i];o.connect(g);g.connect(ctx.destination);g.gain.setValueAtTime(.0001,ctx.currentTime+t);g.gain.exponentialRampToValueAtTime(.25,ctx.currentTime+t+.02);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+t+.25);o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+.26)});if(navigator.vibrate)navigator.vibrate([250,120,250])}
 function spark(m){const s=m.spark||[];if(s.length<2)return'';const W=900,H=120,v=s.map(x=>x[1]),lo=Math.min(...v),hi=Math.max(...v),r=(hi-lo)||1;
  const X=i=>i/(s.length-1)*W,Y=p=>H-8-(p-lo)/r*(H-16);const pts=s.map((x,i)=>`${X(i).toFixed(1)},${Y(x[1]).toFixed(1)}`);
  const col=(m.change??0)>=0?'var(--buy)':'var(--sell)';
- const marks=(m.entries||[]).map(e=>{let i=s.findIndex(x=>x[0]===e.time);if(i<0){i=s.length-1}return`<circle cx="${X(i)}" cy="${Y(e.price).toFixed(1)}" r="5" fill="${e.side==='BUY'?'var(--buy)':'var(--sell)'}" stroke="#0b0b0d" stroke-width="2"/>`}).join('');
  return`<div class="spark"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".28"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>
- <path d="M${pts.join(' L')} L${W},${H} L0,${H}Z" fill="url(#g)"/><polyline points="${pts.join(' ')}" fill="none" stroke="${col}" stroke-width="2.2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>${marks}</svg></div>
+ <path d="M${pts.join(' L')} L${W},${H} L0,${H}Z" fill="url(#g)"/><polyline points="${pts.join(' ')}" fill="none" stroke="${col}" stroke-width="2.2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg></div>
  <div class="sparkax"><span>${esc(s[0][0])}</span><span>Today · Dubai time</span><span>${esc(s[s.length-1][0])}</span></div>`}
 function chips(){$('chips').innerHTML=Object.values(D.markets).map(m=>`<button class="chip ${m.code===sel?'on':''}" data-c="${m.code}"><b>${esc(m.name)}</b><i class="${m.live?'lv':''}">${m.live?'Live':esc(m.status)}</i></button>`).join('');
  document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{sel=b.dataset.c;try{localStorage.setItem('mk',sel)}catch(e){}render()})}
 function todo(m){const E=m.entries||[],L=[];
  if(m.state==='closed')L.push('Market closed. Nothing to do.');
- else if(m.state==='waiting')L.push('Nothing to do yet. Wait for the first signal (window closes about 4 pm Dubai).');
- else if(m.state==='blocked'||m.state==='none')L.push('No trade today. Do nothing.');
+ else if(m.state==='waiting')L.push('Nothing to do yet. Wait for the first signal.');
+ else if(m.state==='blocked')L.push('Nothing to do. The first signal was skipped on purpose (dollar filter). Wait for the next one.');
+ else if(m.state==='none')L.push('No trade today. Do nothing.');
  else{const side=E.length?E[0].side:'';
   const cn=E.filter(e=>e.status==='close_now');if(cn.length)L.push(`<b>Close all ${cn.length} open ${side} trade${cn.length>1?'s':''} now</b> (end of day).`);
-  const op=E.filter(e=>e.status==='open'),be=E.filter(e=>e.status==='breakeven');
-  if(op.length)L.push(`${op.length} ${side} trade${op.length>1?'s':''} open — keep stop and target as shown below.`);
-  be.forEach(e=>L.push(`#${e.n}: stop should be at <b>${f2(e.be_to)}</b> (break-even move done).`));
-  if(!cn.length&&(op.length||be.length))L.push('Close everything at 12:00 am (midnight) Dubai if still open.');
-  if(!cn.length&&!op.length&&!be.length)L.push(`All of today's ${side} trades are closed. Nothing to do.`);
-  L.push(`Only ${side} today — never the other direction.`)}
+  const op=E.filter(e=>e.status==='open');
+  if(op.length)L.push(`${op.length} ${side} trade${op.length>1?'s':''} open — keep each stop as shown below. No target.`);
+  if(!cn.length&&op.length)L.push('Close everything at 12:00 am (midnight) Dubai if still open.');
+  if(!cn.length&&!op.length)L.push(`All of today's ${side} trades are closed. Nothing to do.`);
+  L.push(`Only ${side} today — later signals in the other direction are skipped.`);
+  L.push('Enter at market when the signal comes. Up to 10 minutes late is fine; do not chase a price far from the signal.')}
  return`<div class="todo"><h3>What to do now</h3><ul>${L.map(x=>`<li>${x}</li>`).join('')}</ul></div>`}
-function why(m){return`<div class="why">US 10-year yields (5 days): <b>${mdir(m.yields)}</b> · S&amp;P 500 (5 days): <b>${mdir(m.spx)}</b> · Day grade: <b>${esc(m.grade)}</b></div>`}
-function hres(h){if(!h.entries)return'<small>No trades</small>';const p=[];
- if(h.targets)p.push(h.targets+' target');if(h.stopped)p.push(h.stopped+' stopped');if(h.scratch)p.push(h.scratch+' break-even');if(h.eod)p.push(h.eod+' closed at midnight');if(h.running)p.push(h.running+' still open');
- if(h.scratch==null&&h.eod==null)p.push('(break-even and midnight closes not recorded for this day)');
- return`<small>${p.join(' · ')||'—'}</small>`}
+function why(m){const i=m.inputs||{};const dd=i.dollar_driven==null?'— (known from 1:00 am broker)':i.dollar_driven?'Yes':'No';
+ return`<div class="why">Dollar 1 day: <b>${mv(i.dollar_1d)}</b> · 5 days: <b>${mv(i.dollar_5d)}</b> · VIX 5 days: <b>${mv(i.vix_5d)}</b> · US 10-year 5 days: <b>${mv(i.tnx_5d)}</b> · Gold moving with the dollar: <b>${dd}</b> · Quiet news day: <b>${i.low_attention?'Yes':'No'}</b>${(i.notes||[]).length?`<br><span style="color:var(--amber)">${esc(i.notes.join(' · '))}</span>`:''}</div>`}
+function row(e,n){const res=e.pnl==null?'':`<div class="cx"><span>Result /oz</span><b class="${e.pnl>=0?'pos':'neg'}">${usd(e.pnl)}</b></div>`;
+ return`<div class="row2 ${e.side} num"><em>#${n}</em><div class="c1"><b>${e.side} ${f2(e.price)}</b><small>${esc(e.time)} · ${esc(e.tag)}</small></div>
+ <div class="cx"><span>Stop</span><b>${f2(e.stop)}</b></div><div class="cx"><span>Size</span><b>${f2(e.size)} oz</b></div>${res||'<div class="cx hide-m"><span>Target</span><b>None</b></div>'}
+ <span class="st st-${e.status}">${esc(STL[e.status]||e.status)}</span></div>`}
+function journal(){if(!J||!J.summary)return'';const s=J.summary,bt=(D.markets.GOLD||{}).stats||{};
+ const days=(J.days||[]).slice().reverse().slice(0,30);
+ const rows=days.map(d=>{const t=d.trades||[],dec=t.filter(x=>x.rwf!=null),ok=dec.filter(x=>x.rwf===1).length,p=t.filter(x=>x.pnl!=null).reduce((a,x)=>a+x.pnl,0),hasP=t.some(x=>x.pnl!=null);
+  const head=`<tr class="jd num" onclick="openDay=openDay==='${d.date}'?null:'${d.date}';render()"><td><b>${esc(d.label)}</b></td><td>${t.length?`<span class="tag ${d.side==='BUY'?'buy':'sell'}">${esc(d.side)}</span> × ${t.length}`:'<span class="tag no">No trade</span>'}${d.skipped?` <small>(${d.skipped} skipped)</small>`:''}</td><td>${dec.length?ok+' of '+dec.length:'—'}</td><td class="${p>=0?'pos':'neg'}">${hasP?usd(p):'—'}</td></tr>`;
+  const sub=openDay===d.date?t.map(x=>`<tr class="jsub num"><td>${esc(x.time)}</td><td>${esc(x.side)} ${f2(x.price)} · ${esc(x.tag)} · stop ${f2(x.stop)} · ${f2(x.size)} oz</td><td>${x.rwf==null?'—':x.rwf===1?'right way':'wrong way'}</td><td class="${(x.pnl??0)>=0?'pos':'neg'}">${esc(STL[x.status]||x.status)} ${x.pnl==null?'':usd(x.pnl)}</td></tr>`).join(''):'';
+  return head+sub}).join('');
+ return`<div class="sec"><h2>Live journal</h2><span>since ${esc(s.since)} · every signal the system gave</span></div>
+ <div class="bt num"><div><b>${s.direction==null?'—':s.direction+'%'}</b><span>Right way first (${s.decided} decided) · backtest ${esc(bt.direction)}</span></div>
+ <div><b>${esc(s.days)}%</b><span>Days with trades · backtest ${esc(bt.days)}</span></div>
+ <div><b>${esc(s.perday)}</b><span>Trades per weekday · backtest ${esc(bt.perday)}</span></div>
+ <div><b>${s.avg_pnl==null?'—':usd(s.avg_pnl)}</b><span>Average per trade, per ounce (${s.closed} closed)</span></div></div>
+ <section class="card" style="margin-top:10px;padding:10px 14px"><table class="jt"><tr><th>Day</th><th>Trades</th><th>Right way first</th><th>Result /oz</th></tr>${rows||'<tr><td colspan="4" class="empty">The journal starts with the first live day.</td></tr>'}</table>
+ <div class="note">Tap a day to see each trade. "Right way first" = price moved 0.3 of the day's average range in the trade's favour before 0.3 against. Results are per ounce at the signal price after a $0.50 spread; your own fills may differ.</div></section>`}
 function render(){if(!D)return;chips();const m=D.markets[sel]||D.markets.GOLD;
  if(!m.live){$('main').innerHTML=`<section class="card hero info"><div class="mname">${esc(m.name)}</div><div class="pill s-blocked">${esc(m.status)}</div><p>${esc(m.note)}</p><p>Signals will appear here once this market is finished and checked at Capital.com cost.</p></section>`;return}
- const ch=m.change,chc=ch==null?'':ch>=0?'up':'dn';
- const all=(m.entries||[]).slice().reverse(),live=all.filter(e=>['open','breakeven','close_now'].includes(e.status)),done=all.filter(e=>!live.includes(e));
- const row=e=>{const stop=(e.status==='breakeven')?`${f2(e.be_to)} <small style="color:var(--gold2)">moved</small>`:f2(e.stop);
-  return`<div class="row2 ${e.side} num"><em>#${e.n}</em><div class="c1"><b>${e.side} ${f2(e.price)}</b><small>${esc(e.time)}</small></div>
-  <div class="cx hide-m"><span>Stop</span><b>${stop}</b></div><div class="cx hide-m"><span>Target</span><b>${f2(e.target)}</b></div><div class="cx hide-m"><span>Break-even at</span><b>${f2(e.be_at)}</b></div>
-  <span class="st st-${e.status}">${esc(STL[e.status]||e.status)}</span></div>`};
- const openAll=window._openAll||false;
- const ents=(live.map(row).join('')||'')+(done.length?(openAll?done.map(row).join(''):'')+`<button class="more" onclick="window._openAll=!window._openAll;render()">${openAll?'Hide':'Show'} ${done.length} closed</button>`:'');
- const hist=(m.history||[]).slice().sort((a,b)=>a.date<b.date?1:-1).map(h=>`<div class="hr num"><b>${esc(h.label||h.date)}</b><span class="tag ${h.state==='buy'?'buy':h.state==='sell'?'sell':'no'}">${h.state==='buy'?'BUY':h.state==='sell'?'SELL':'No trade'}${h.entries?' × '+h.entries:''}</span><span class="res">${hres(h)}</span></div>`).join('');
+ const ch=m.change,chc=ch==null?'':ch>=0?'up':'dn',E=m.entries||[];
+ const ents=E.map((e,i)=>row(e,i+1)).reverse().join('');
  const st=m.stats||{};
- $('main').innerHTML=`<section class="card hero"><div class="htop"><div><div class="mname">${esc(m.name)}</div><div class="msym">${esc(m.symbol)} · size ${m.size} oz per entry</div></div>
+ $('main').innerHTML=`<section class="card hero"><div class="htop"><div><div class="mname">${esc(m.name)}</div><div class="msym">${esc(m.symbol)} · ${esc(m.version||'')} · base size ${m.size} oz</div></div>
   <div class="px num"><div class="v">${f2(m.price)}</div><div class="c ${chc}">${ch==null?'':(ch>=0?'+':'')+f2(ch)+' today'}</div></div></div>
-  <div class="pill s-${m.state}">${esc(STATE[m.state]||m.state)}</div><div class="msg">${esc(m.message)}</div>${todo(m)}${why(m)}</section>
- 
-  <div class="sec"><h2>Today's entries</h2><span>${(m.entries||[]).length} signal${(m.entries||[]).length===1?'':'s'}</span></div>
-  <div class="ents">${ents||'<div class="empty">No entries yet today.</div>'}</div>
-  <div class="sec"><h2>Last 15 trading days</h2><span>× = number of entries (each one more 0.1 oz, same direction)</span></div>
-  <section class="card"><div class="hl">${hist}</div></section>
+  <div class="pill s-${m.state}">${esc(STATE[m.state]||m.state)}</div><div class="msg">${esc(m.message)}</div>${todo(m)}${why(m)}${spark(m)}</section>
+  <div class="sec"><h2>Today's trades</h2><span>${E.length} trade${E.length===1?'':'s'} · stop = half the day's range (¾ for level breaks) · daily range ${f2(m.datr)}</span></div>
+  <div class="ents">${ents||'<div class="empty">No trades yet today.</div>'}</div>
+  ${journal()}
   <div class="sec"><h2>Backtest</h2><span>${esc(st.source||'')}</span></div>
-  <div class="bt num"><div><b>${esc(st.winrate)}</b><span>Win rate</span></div><div><b>${esc(st.accuracy)}</b><span>Right way first</span></div><div><b>${esc(st.perday)}</b><span>Trades per weekday</span></div><div><b>${esc(st.days)}</b><span>Days with trades</span></div></div>`;
+  <div class="bt num"><div><b>${esc(st.direction)}</b><span>Right way first</span></div><div><b>${esc(st.days)}</b><span>Days with trades</span></div><div><b>${esc(st.perday)}</b><span>Trades per weekday</span></div><div><b>${esc(st.pnl)}</b><span>Average per trade, per ounce (2026)</span></div></div>`;
 }
 async function load(){try{const r=await fetch(DATA+'?t='+Date.now(),{cache:'no-store'});D=await r.json();
- $('upd').innerHTML=`Updated <b style="color:var(--ink)">${esc(D.updated)}</b> Dubai`;$('src').textContent='Prices: '+D.source+' · refreshes every minute · signals only, you place the trades';
+ try{const q=await fetch(JOUR+'?t='+Date.now(),{cache:'no-store'});J=await q.json()}catch(e){J=null}
+ $('upd').innerHTML=`Updated <b style="color:var(--ink)">${esc(D.updated)}</b> Dubai`;$('src').textContent='Prices: '+D.source+' · checks every 5 minutes · signals only, you place the trades';
  const g=D.markets.GOLD,key=g?(g.state+'|'+(g.entries||[]).map(e=>e.status).join(',')):'';if(seen!==null&&key!==seen)beep();seen=key;render()}
  catch(e){$('upd').textContent='Waiting for data…'}}
 load();setInterval(load,60000);
