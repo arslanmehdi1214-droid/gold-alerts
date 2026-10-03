@@ -51,22 +51,23 @@ header{display:flex;align-items:center;justify-content:space-between;gap:12px;pa
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
 .kpi{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px}
 .kpi span{display:block;color:var(--mute);font-size:11px;letter-spacing:.6px;text-transform:uppercase}.kpi b{display:block;font:600 18px Inter;margin-top:4px}
-.sec{display:flex;align-items:baseline;justify-content:space-between;margin:28px 2px 12px}
-.sec h2{font:600 20px "Playfair Display",serif}.sec span{color:var(--mute);font-size:12px}
+.sec{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 16px;margin:30px 2px 12px}
+.sec h2{font:600 20px/1.2 "Playfair Display",serif}.sec span{color:var(--mute);font-size:12px;line-height:1.45}
+@media(max-width:620px){.sec{flex-direction:column;align-items:flex-start}}
 .ents{display:grid;gap:8px}
-.row2{display:grid;grid-template-columns:44px 1.3fr 1fr 1fr 1fr auto;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px}
+.row2{display:grid;grid-template-columns:44px 1.3fr 1fr 1fr 1fr 124px;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px}
 .row2 em{font-style:normal;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font:700 12px Inter}
 .row2.BUY em{background:var(--buydim);color:var(--buy)}.row2.SELL em{background:var(--selldim);color:var(--sell)}
 .row2 .c1 b{display:block;font-weight:700}.row2 .c1 small,.row2 .cx span{color:var(--mute);font-size:11px}
 .row2 .cx span{display:block;letter-spacing:.4px;text-transform:uppercase;font-size:10px;color:var(--faint)}.row2 .cx b{font:600 13.5px Inter}
-.more{justify-self:center;margin-top:4px}
+.more{justify-self:center;margin-top:4px}.row2>.st{justify-self:end}
 @media(max-width:620px){.row2{grid-template-columns:1fr 1fr 1fr;row-gap:10px}.row2 em{display:none}.row2 .c1{grid-column:1/3}.row2 .st{grid-column:3;grid-row:1;justify-self:end}.row2 .cx{grid-row:2}}
 .ent{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:12px}
 .erow{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .eside{display:flex;align-items:center;gap:10px;font-weight:700}.eside em{font-style:normal;width:30px;height:30px;border-radius:10px;display:grid;place-items:center;font-size:12px}
 .BUY em{background:var(--buydim);color:var(--buy)}.SELL em{background:var(--selldim);color:var(--sell)}
 .eside small{display:block;color:var(--mute);font-weight:500;font-size:12px}
-.st{font:600 11px Inter;letter-spacing:.8px;text-transform:uppercase;padding:5px 10px;border-radius:99px}
+.st{font:600 11px Inter;letter-spacing:.8px;text-transform:uppercase;padding:5px 10px;border-radius:99px;white-space:nowrap}
 .st-open{background:var(--amberdim);color:var(--amber)}.st-breakeven{background:var(--golddim);color:var(--gold2)}.st-target{background:var(--buydim);color:var(--buy)}
 .st-stopped{background:var(--selldim);color:var(--sell)}.st-eod{background:var(--greydim);color:var(--ink)}.st-scratch{background:var(--greydim);color:var(--ink)}.st-close_now{background:var(--sell);color:#0b0b0d}
 .lv{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
@@ -79,7 +80,7 @@ header{display:flex;align-items:center;justify-content:space-between;gap:12px;pa
 .b-buy{background:var(--buydim);color:var(--buy);border-color:rgba(53,196,127,.3)}.b-sell{background:var(--selldim);color:var(--sell);border-color:rgba(255,100,100,.3)}
 .b-none,.b-blocked,.b-waiting,.b-closed{background:var(--bg2);color:var(--faint)}
 .bt{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.bt div{padding:14px;border-radius:16px;background:var(--card);border:1px solid var(--line)}.bt b{display:block;font:600 22px "Playfair Display",serif;color:var(--gold2)}.bt span{color:var(--mute);font-size:12px}
+.bt div{padding:14px;border-radius:16px;background:var(--card);border:1px solid var(--line)}.bt b{display:block;font:600 22px/1.2 "Playfair Display",serif;color:var(--gold2);margin-bottom:4px}.bt span{display:block;color:var(--mute);font-size:12px;line-height:1.4}
 .info{padding:26px 20px}.info .pill{margin-top:14px}.info p{color:var(--mute);margin-top:12px;max-width:560px}
 .foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:28px;color:var(--faint);font-size:12px}
 button{font:600 13px Inter;padding:10px 16px;border-radius:999px;border:1px solid rgba(212,179,106,.45);background:var(--golddim);color:var(--gold2);cursor:pointer}
@@ -87,12 +88,13 @@ button.on{background:var(--gold);color:#0b0b0d}
 .todo{margin-top:18px;background:var(--card2);border:1px solid var(--line);border-left:4px solid var(--gold2);border-radius:14px;padding:14px 16px}
 .todo h3{margin:0 0 8px;font:600 12px Inter;letter-spacing:.8px;text-transform:uppercase;color:var(--gold2)}
 .todo ul{margin:0;padding-left:18px}.todo li{margin:6px 0;font-size:15px;line-height:1.4}
-.why{margin-top:12px;color:var(--mute);font-size:13px}.why b{color:var(--ink);font-weight:600}
+.why{margin-top:14px;display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--mute);font-size:13px}.why span{white-space:nowrap}.why b{color:var(--ink);font-weight:600}.why .wn{flex-basis:100%;white-space:normal;color:var(--amber)}
 .hl{display:flex;flex-direction:column}.hr{display:grid;grid-template-columns:92px 90px 1fr;gap:10px;padding:10px 2px;border-top:1px solid var(--line);font-size:14px;align-items:center}
 .hr:first-child{border-top:0}.hr small{color:var(--mute)}.tag{font-weight:600}.tag.buy{color:var(--buy)}.tag.sell{color:var(--sell)}.tag.no{color:var(--faint)}
 @media(max-width:620px){.hr{grid-template-columns:80px 1fr}.hr .res{grid-column:1/-1}}
-@media(max-width:620px){.kpis,.bt{grid-template-columns:repeat(2,1fr)}.lv{grid-template-columns:repeat(2,1fr)}.mname,.px .v{font-size:26px}}
-.jt{width:100%;border-collapse:collapse;font-size:13.5px}.jt th{color:var(--faint);font:600 10.5px Inter;letter-spacing:.6px;text-transform:uppercase;text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+@media(max-width:620px){.kpis,.bt{grid-template-columns:repeat(2,1fr)}.lv{grid-template-columns:repeat(2,1fr)}.mname,.px .v{font-size:26px}.px{text-align:left;width:100%}}
+.jt{width:100%;border-collapse:collapse;font-size:13.5px;table-layout:fixed}.jt col.c1{width:24%}.jt col.c2{width:30%}.jt col.c3{width:24%}.jt col.c4{width:22%}.jt th{white-space:nowrap}.jt th:last-child,.jt td:last-child{text-align:right}.jt td:first-child{white-space:nowrap}.jt small{display:block;color:var(--faint);font-size:11px}
+@media(max-width:620px){.jt{font-size:13px}.jt col.c1{width:27%}.jt col.c2{width:31%}.jt col.c3{width:20%}.jt col.c4{width:22%}}.jt td.jempty{text-align:center;color:var(--mute);padding:22px 6px}.jt th{color:var(--faint);font:600 10.5px Inter;letter-spacing:.6px;text-transform:uppercase;text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
 .jt td{padding:9px 6px;border-top:1px solid var(--line);vertical-align:top}.jt tr:first-child td{border-top:0}.pos{color:var(--buy)}.neg{color:var(--sell)}
 .jd{cursor:pointer}.jd:hover td{background:rgba(255,255,255,.02)}.jsub td{background:var(--bg2);font-size:12.5px;color:var(--mute)}
 .note{color:var(--faint);font-size:12px;margin-top:10px;line-height:1.45}
@@ -142,37 +144,34 @@ function todo(m){const E=m.entries||[],L=[];
   L.push('Enter at market when the signal comes. Up to 10 minutes late is fine; do not chase a price far from the signal.')}
  return`<div class="todo"><h3>What to do now</h3><ul>${L.map(x=>`<li>${x}</li>`).join('')}</ul></div>`}
 function why(m){const i=m.inputs||{};const dd=i.dollar_driven==null?'— (known from 1:00 am broker)':i.dollar_driven?'Yes':'No';
- return`<div class="why">Dollar 1 day: <b>${mv(i.dollar_1d)}</b> · 5 days: <b>${mv(i.dollar_5d)}</b> · VIX 5 days: <b>${mv(i.vix_5d)}</b> · US 10-year 5 days: <b>${mv(i.tnx_5d)}</b> · Gold moving with the dollar: <b>${dd}</b> · Quiet news day: <b>${i.low_attention?'Yes':'No'}</b>${(i.notes||[]).length?`<br><span style="color:var(--amber)">${esc(i.notes.join(' · '))}</span>`:''}</div>`}
+ return`<div class="why"><span>Dollar 1 day: <b>${mv(i.dollar_1d)}</b></span><span>Dollar 5 days: <b>${mv(i.dollar_5d)}</b></span><span>VIX 5 days: <b>${mv(i.vix_5d)}</b></span><span>US 10-year 5 days: <b>${mv(i.tnx_5d)}</b></span><span>Gold moving with the dollar: <b>${dd}</b></span><span>Quiet news day: <b>${i.low_attention?'Yes':'No'}</b></span>${(i.notes||[]).length?`<span class="wn">${esc(i.notes.join(' · '))}</span>`:''}</div>`}
 function row(e,n){const res=e.pnl==null?'':`<div class="cx"><span>Result /oz</span><b class="${e.pnl>=0?'pos':'neg'}">${usd(e.pnl)}</b></div>`;
  return`<div class="row2 ${e.side} num"><em>#${n}</em><div class="c1"><b>${e.side} ${f2(e.price)}</b><small>${esc(e.time)} · ${esc(e.tag)}</small></div>
  <div class="cx"><span>Stop</span><b>${f2(e.stop)}</b></div><div class="cx"><span>Size</span><b>${f2(e.size)} oz</b></div>${res||'<div class="cx hide-m"><span>Target</span><b>None</b></div>'}
  <span class="st st-${e.status}">${esc(STL[e.status]||e.status)}</span></div>`}
-function journal(){if(!J||!J.summary)return'';const s=J.summary,bt=(D.markets.GOLD||{}).stats||{};
+function journal(){if(!J||!J.summary)return'';const s=J.summary;
  const days=(J.days||[]).slice().reverse().slice(0,30);
  const rows=days.map(d=>{const t=d.trades||[],dec=t.filter(x=>x.rwf!=null),ok=dec.filter(x=>x.rwf===1).length,p=t.filter(x=>x.pnl!=null).reduce((a,x)=>a+x.pnl,0),hasP=t.some(x=>x.pnl!=null);
-  const head=`<tr class="jd num" onclick="openDay=openDay==='${d.date}'?null:'${d.date}';render()"><td><b>${esc(d.label)}</b></td><td>${t.length?`<span class="tag ${d.side==='BUY'?'buy':'sell'}">${esc(d.side)}</span> × ${t.length}`:'<span class="tag no">No trade</span>'}${d.skipped?` <small>(${d.skipped} skipped)</small>`:''}</td><td>${dec.length?ok+' of '+dec.length:'—'}</td><td class="${p>=0?'pos':'neg'}">${hasP?usd(p):'—'}</td></tr>`;
+  const head=`<tr class="jd num" onclick="openDay=openDay==='${d.date}'?null:'${d.date}';render()"><td><b>${esc(d.label)}</b></td><td>${t.length?`<span class="tag ${d.side==='BUY'?'buy':'sell'}">${esc(d.side)}</span> × ${t.length}`:'<span class="tag no">No trade</span>'}${d.skipped?`<small>${d.skipped} skipped</small>`:''}</td><td>${dec.length?ok+' of '+dec.length:'—'}</td><td class="${p>=0?'pos':'neg'}">${hasP?usd(p):'—'}</td></tr>`;
   const sub=openDay===d.date?t.map(x=>`<tr class="jsub num"><td>${esc(x.time)}</td><td>${esc(x.side)} ${f2(x.price)} · ${esc(x.tag)} · stop ${f2(x.stop)} · ${f2(x.size)} oz</td><td>${x.rwf==null?'—':x.rwf===1?'right way':'wrong way'}</td><td class="${(x.pnl??0)>=0?'pos':'neg'}">${esc(STL[x.status]||x.status)} ${x.pnl==null?'':usd(x.pnl)}</td></tr>`).join(''):'';
   return head+sub}).join('');
  return`<div class="sec"><h2>Live journal</h2><span>since ${esc(s.since)} · every signal the system gave</span></div>
- <div class="bt num"><div><b>${s.direction==null?'—':s.direction+'%'}</b><span>Right way first (${s.decided} decided) · backtest ${esc(bt.direction)}</span></div>
- <div><b>${esc(s.days)}%</b><span>Days with trades · backtest ${esc(bt.days)}</span></div>
- <div><b>${esc(s.perday)}</b><span>Trades per weekday · backtest ${esc(bt.perday)}</span></div>
+ <div class="bt num"><div><b>${s.direction==null?'—':s.direction+'%'}</b><span>Right way first (${s.decided} decided)</span></div>
+ <div><b>${esc(s.days)}%</b><span>Days with trades</span></div>
+ <div><b>${esc(s.perday)}</b><span>Trades per weekday</span></div>
  <div><b>${s.avg_pnl==null?'—':usd(s.avg_pnl)}</b><span>Average per trade, per ounce (${s.closed} closed)</span></div></div>
- <section class="card" style="margin-top:10px;padding:10px 14px"><table class="jt"><tr><th>Day</th><th>Trades</th><th>Right way first</th><th>Result /oz</th></tr>${rows||'<tr><td colspan="4" class="empty">The journal starts with the first live day.</td></tr>'}</table>
- <div class="note">Tap a day to see each trade. "Right way first" = price moved 0.3 of the day's average range in the trade's favour before 0.3 against. Results are per ounce at the signal price after a $0.50 spread; your own fills may differ.</div></section>`}
+ <section class="card" style="margin-top:12px;padding:12px 16px"><table class="jt"><colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup><tr><th>Day</th><th>Trades</th><th>Right way</th><th>Result</th></tr>${rows||'<tr><td colspan="4" class="jempty">The journal starts with the first live day.</td></tr>'}</table>
+ <div class="note">Tap a day to see each trade. Result is per ounce. "Right way first" = price moved 0.3 of the day's average range in the trade's favour before 0.3 against. Results use the signal price after a $0.50 spread; your own fills may differ.</div></section>`}
 function render(){if(!D)return;chips();const m=D.markets[sel]||D.markets.GOLD;
  if(!m.live){$('main').innerHTML=`<section class="card hero info"><div class="mname">${esc(m.name)}</div><div class="pill s-blocked">${esc(m.status)}</div><p>${esc(m.note)}</p><p>Signals will appear here once this market is finished and checked at Capital.com cost.</p></section>`;return}
  const ch=m.change,chc=ch==null?'':ch>=0?'up':'dn',E=m.entries||[];
  const ents=E.map((e,i)=>row(e,i+1)).reverse().join('');
- const st=m.stats||{};
  $('main').innerHTML=`<section class="card hero"><div class="htop"><div><div class="mname">${esc(m.name)}</div><div class="msym">${esc(m.symbol)} · ${esc(m.version||'')} · base size ${m.size} oz</div></div>
   <div class="px num"><div class="v">${f2(m.price)}</div><div class="c ${chc}">${ch==null?'':(ch>=0?'+':'')+f2(ch)+' today'}</div></div></div>
   <div class="pill s-${m.state}">${esc(STATE[m.state]||m.state)}</div><div class="msg">${esc(m.message)}</div>${todo(m)}${why(m)}${spark(m)}</section>
-  <div class="sec"><h2>Today's trades</h2><span>${E.length} trade${E.length===1?'':'s'} · stop = half the day's range (¾ for level breaks) · daily range ${f2(m.datr)}</span></div>
+  <div class="sec"><h2>Today's trades</h2><span>${E.length} trade${E.length===1?'':'s'} · daily range ${f2(m.datr)} · stop ½ range (¾ for level breaks)</span></div>
   <div class="ents">${ents||'<div class="empty">No trades yet today.</div>'}</div>
-  ${journal()}
-  <div class="sec"><h2>Backtest</h2><span>${esc(st.source||'')}</span></div>
-  <div class="bt num"><div><b>${esc(st.direction)}</b><span>Right way first</span></div><div><b>${esc(st.days)}</b><span>Days with trades</span></div><div><b>${esc(st.perday)}</b><span>Trades per weekday</span></div><div><b>${esc(st.pnl)}</b><span>Average per trade, per ounce (2026)</span></div></div>`;
+  ${journal()}`;
 }
 async function load(){try{const r=await fetch(DATA+'?t='+Date.now(),{cache:'no-store'});D=await r.json();
  try{const q=await fetch(JOUR+'?t='+Date.now(),{cache:'no-store'});J=await q.json()}catch(e){J=null}
