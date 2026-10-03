@@ -1,105 +1,52 @@
 {
- "updated": "Sat 03 Oct \u00b7 1:57 am",
- "source": "-",
+ "updated": "Sat 03 Oct \u00b7 12:43 pm",
+ "source": "Capital.com",
  "markets": {
   "GOLD": {
    "code": "GOLD",
    "name": "Gold",
    "symbol": "XAU/USD",
    "live": true,
+   "version": "v2.06",
+   "feed_error": false,
    "state": "closed",
    "message": "Market closed for the weekend",
-   "grade": "-",
    "price": null,
    "change": null,
-   "open_now": 0,
    "size": 0.1,
-   "yields": 9,
-   "spx": 9,
-   "datr": null,
+   "datr": 86.19,
+   "open_now": 0,
    "entries": [],
    "spark": [],
-   "history": [
-    {
-     "date": "2026-10-02",
-     "label": "Fri 02 Oct",
-     "state": "sell",
-     "entries": 1,
-     "stopped": 1,
-     "targets": 0,
-     "scratch": 0,
-     "eod": 0,
-     "running": 0
-    },
-    {
-     "date": "2026-10-01",
-     "label": "Thu 01 Oct",
-     "state": "sell",
-     "entries": 1,
-     "stopped": 0,
-     "targets": 0,
-     "scratch": 0,
-     "eod": 1,
-     "running": 0
-    },
-    {
-     "date": "2026-09-30",
-     "label": "Wed 30 Sep",
-     "state": "blocked",
-     "entries": 0,
-     "stopped": 0,
-     "targets": 0,
-     "scratch": 0,
-     "eod": 0,
-     "running": 0
-    },
-    {
-     "date": "2026-09-29",
-     "label": "Tue 29 Sep",
-     "state": "blocked",
-     "entries": 0,
-     "stopped": 0,
-     "targets": 0
-    },
-    {
-     "date": "2026-09-25",
-     "label": "Fri 25 Sep",
-     "state": "sell",
-     "entries": 34,
-     "stopped": 0,
-     "targets": 0
-    },
-    {
-     "date": "2026-09-24",
-     "label": "Thu 24 Sep",
-     "state": "blocked",
-     "entries": 0,
-     "stopped": 0,
-     "targets": 0
-    },
-    {
-     "date": "2026-09-23",
-     "label": "Wed 23 Sep",
-     "state": "blocked",
-     "entries": 0,
-     "stopped": 0,
-     "targets": 0
-    },
-    {
-     "date": "2026-09-22",
-     "label": "Tue 22 Sep",
-     "state": "sell",
-     "entries": 12,
-     "stopped": 0,
-     "targets": 0
-    }
-   ],
+   "history": [],
+   "inputs": {
+    "dollar_1d": "fell",
+    "dollar_5d": "rose",
+    "vix_5d": "rose",
+    "tnx_5d": "rose",
+    "dollar_driven": false,
+    "corr": -0.215,
+    "low_attention": false,
+    "notes": []
+   },
    "stats": {
-    "winrate": "79.6%",
-    "perday": "9.6",
-    "days": "59%",
-    "accuracy": "61.5%",
-    "source": "MT4 backtest 2020\u20132026"
+    "direction": "60.3%",
+    "days": "71.6%",
+    "perday": "2.22",
+    "win": "55.0%",
+    "pnl": "$7.47",
+    "source": "MT4 backtest 2020\u20132026 (v2.05 signals = v2.06)"
+   },
+   "journal": {
+    "since": "03 Oct 2026",
+    "trades": 0,
+    "direction": null,
+    "decided": 0,
+    "days": 0.0,
+    "perday": 0.0,
+    "avg_pnl": null,
+    "closed": 0,
+    "total_pnl_01": null
    }
   },
   "SILVER": {
