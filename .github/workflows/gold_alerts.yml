@@ -1,7 +1,7 @@
 name: gold-alerts
 on:
   schedule:
-    - cron: '*/5 0-21 * * 1-5'     # every 5 minutes, Mon-Fri (UTC). Covers 4am-1am Dubai.
+    - cron: '*/5 * * * 0-5'     # every 5 minutes, Sunday-Friday (UTC) - covers the whole gold week; weekend runs exit at once
   workflow_dispatch:
     inputs:
       test:
@@ -13,7 +13,7 @@ concurrency: gold-alerts
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -28,9 +28,11 @@ jobs:
           CAPITAL_API_PASSWORD: ${{ secrets.CAPITAL_API_PASSWORD }}
           CAPITAL_DEMO: '1'
           ALERT_SIZE_OZ: '0.1'
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python run.py ${{ github.event_name == 'workflow_dispatch' && '--test' || '' }}
       - name: Save sent-alerts list
         run: |
           git config user.name gold-bot; git config user.email gold-bot@users.noreply.github.com
-          git add sent.json docs/data.json 2>/dev/null || true
-          git diff --cached --quiet || (git commit -m "alerts state" && git push)
+          git add sent.json docs/*.json 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "alerts state" && (git push || (git pull --rebase && git push)))
