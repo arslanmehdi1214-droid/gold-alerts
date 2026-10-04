@@ -190,6 +190,15 @@ def safe_main():
                 json.dump(old, open(PORTAL, 'w'), indent=1)
         except Exception:
             traceback.print_exc()
+    try:                                    # USDJPY paper page (separate from gold; a yen failure never touches the gold card)
+        import yen_run
+        yen_run.main()
+    except Exception as e:
+        traceback.print_exc()
+        try:
+            import yen_run; yen_run.fail(e)
+        except Exception:
+            traceback.print_exc()
 
 if __name__ == '__main__':
     safe_main()
