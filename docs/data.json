@@ -1,5 +1,5 @@
 {
- "updated": "Sat 03 Oct \u00b7 12:43 pm",
+ "updated": "Mon 05 Oct \u00b7 1:10 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -9,8 +9,8 @@
    "live": true,
    "version": "v2.06",
    "feed_error": false,
-   "state": "closed",
-   "message": "Market closed for the weekend",
+   "state": "waiting",
+   "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
    "price": null,
    "change": null,
    "size": 0.1,
@@ -18,15 +18,28 @@
    "open_now": 0,
    "entries": [],
    "spark": [],
-   "history": [],
+   "history": [
+    {
+     "date": "2026-10-05",
+     "label": "Mon 05 Oct",
+     "state": "none",
+     "entries": 0,
+     "stopped": 0,
+     "eod": 0,
+     "running": 0,
+     "rw": 0,
+     "rd": 0,
+     "pnl": null
+    }
+   ],
    "inputs": {
     "dollar_1d": "fell",
     "dollar_5d": "rose",
     "vix_5d": "rose",
     "tnx_5d": "rose",
-    "dollar_driven": false,
-    "corr": -0.215,
-    "low_attention": false,
+    "dollar_driven": null,
+    "corr": null,
+    "low_attention": true,
     "notes": []
    },
    "stats": {
@@ -58,8 +71,59 @@
   "USDJPY": {
    "code": "USDJPY",
    "name": "USD/JPY",
-   "status": "IN TESTING",
-   "note": "Passed on RoboForex ECN cost. Capital.com cost not checked yet."
+   "symbol": "USD/JPY",
+   "live": false,
+   "paper": true,
+   "status": "Paper",
+   "version": "v1.01",
+   "lots": 0.1,
+   "stats": {
+    "direction": "53.6%",
+    "days": "99.5%",
+    "perday": "1.97",
+    "win": "37.4%",
+    "pf": "1.17",
+    "net": "+$6,879 at 0.10 lots",
+    "source": "MT4 backtest 2020-01-02 to 2026-06-12, 3,321 trades"
+   },
+   "pass_bar": {
+    "direction": 53.0,
+    "pf": 1.1,
+    "months": 3
+   },
+   "state": "waiting",
+   "message": "Waiting for the first signal.",
+   "price": 157.681,
+   "change_pips": null,
+   "atr_pips": 125.4,
+   "entries": [],
+   "spark": [],
+   "journal": {
+    "since": "05 Oct 2026",
+    "weekdays": 1,
+    "trades": 0,
+    "decided": 0,
+    "direction": null,
+    "days": 0.0,
+    "perday": 0.0,
+    "closed": 0,
+    "win": null,
+    "pf": null,
+    "net_pips": null,
+    "net_usd": null
+   },
+   "jdays": [
+    {
+     "date": "2026-10-05",
+     "label": "Mon 05 Oct",
+     "side": null,
+     "trades": [],
+     "atr_pips": 125.4,
+     "final": false
+    }
+   ],
+   "feed_error": false,
+   "history_note": "history to 2026-10-04 (300 days) \u00b7 added 2026-09-28, 2026-09-29, 2026-09-30, 2026-10-01, 2026-10-02"
   },
   "DE40": {
    "code": "DE40",
