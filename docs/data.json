@@ -1,5 +1,5 @@
 {
- "updated": "Mon 05 Oct \u00b7 3:01 pm",
+ "updated": "Mon 05 Oct \u00b7 3:22 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,8 +11,8 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 any later signals today are BUY only. Hold every trade until its stop or the midnight close. No target.",
-   "price": 4160.85,
-   "change": 19.84,
+   "price": 4160.3,
+   "change": 19.29,
    "size": 0.1,
    "datr": 86.19,
    "open_now": 1,
@@ -659,7 +659,23 @@
     ],
     [
      "3:00 pm",
-     4160.85
+     4160.17
+    ],
+    [
+     "3:05 pm",
+     4160.18
+    ],
+    [
+     "3:10 pm",
+     4160.69
+    ],
+    [
+     "3:15 pm",
+     4160.73
+    ],
+    [
+     "3:20 pm",
+     4160.3
     ]
    ],
    "history": [
@@ -737,8 +753,8 @@
    },
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 157.904,
-   "change_pips": 4.5,
+   "price": 158.171,
+   "change_pips": 31.2,
    "atr_pips": 125.4,
    "entries": [
     {
@@ -756,6 +772,23 @@
      "pips": -32.5,
      "usd": -20.57,
      "rwf": 0,
+     "spread": 1.2
+    },
+    {
+     "time": "3:16 pm",
+     "side": "BUY",
+     "sig": "Q5",
+     "name": "Hourly squeeze 3pm",
+     "price": 158.099,
+     "stop": 157.786,
+     "stop_pips": 31.3,
+     "first": false,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "pips": null,
+     "usd": null,
+     "rwf": null,
      "spread": 1.2
     }
    ],
@@ -1382,17 +1415,33 @@
     ],
     [
      "3:00 pm",
-     157.904
+     157.929
+    ],
+    [
+     "3:05 pm",
+     157.937
+    ],
+    [
+     "3:10 pm",
+     157.938
+    ],
+    [
+     "3:15 pm",
+     158.175
+    ],
+    [
+     "3:20 pm",
+     158.171
     ]
    ],
    "journal": {
     "since": "05 Oct 2026",
     "weekdays": 1,
-    "trades": 1,
+    "trades": 2,
     "decided": 1,
     "direction": 0.0,
     "days": 100.0,
-    "perday": 1.0,
+    "perday": 2.0,
     "closed": 1,
     "win": 0.0,
     "pf": 0.0,
@@ -1420,6 +1469,23 @@
        "pips": -32.5,
        "usd": -20.57,
        "rwf": 0,
+       "spread": 1.2
+      },
+      {
+       "time": "3:16 pm",
+       "side": "BUY",
+       "sig": "Q5",
+       "name": "Hourly squeeze 3pm",
+       "price": 158.099,
+       "stop": 157.786,
+       "stop_pips": 31.3,
+       "first": false,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "pips": null,
+       "usd": null,
+       "rwf": null,
        "spread": 1.2
       }
      ],
