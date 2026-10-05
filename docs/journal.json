@@ -4,19 +4,34 @@
   {
    "date": "2026-10-05",
    "label": "Mon 05 Oct",
-   "side": null,
-   "trades": [],
+   "side": "BUY",
+   "trades": [
+    {
+     "time": "10:14 am",
+     "side": "BUY",
+     "tag": "U2 round",
+     "price": 4150.23,
+     "stop": 4085.59,
+     "w": 0.5,
+     "size": 0.1,
+     "status": "open",
+     "first": true,
+     "exit": null,
+     "pnl": null,
+     "rwf": null
+    }
+   ],
    "skipped": 0,
    "final": false
   }
  ],
  "summary": {
   "since": "03 Oct 2026",
-  "trades": 0,
+  "trades": 1,
   "direction": null,
   "decided": 0,
-  "days": 0.0,
-  "perday": 0.0,
+  "days": 100.0,
+  "perday": 1.0,
   "avg_pnl": null,
   "closed": 0,
   "total_pnl_01": null
