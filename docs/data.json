@@ -1,5 +1,5 @@
 {
- "updated": "Wed 07 Oct \u00b7 3:16 am",
+ "updated": "Wed 07 Oct \u00b7 3:34 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,8 +11,8 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4165.34,
-   "change": -1.78,
+   "price": 4168.34,
+   "change": 1.22,
    "size": 0.1,
    "datr": 81.97,
    "open_now": 0,
@@ -80,7 +80,19 @@
     ],
     [
      "3:15 am",
-     4165.34
+     4165.87
+    ],
+    [
+     "3:20 am",
+     4166.34
+    ],
+    [
+     "3:25 am",
+     4168.98
+    ],
+    [
+     "3:30 am",
+     4168.34
     ]
    ],
    "history": [
@@ -180,12 +192,30 @@
     "pf": 1.1,
     "months": 3
    },
-   "state": "waiting",
-   "message": "Waiting for the first signal.",
-   "price": 158.202,
-   "change_pips": 8.4,
+   "state": "buy",
+   "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
+   "price": 158.234,
+   "change_pips": 11.6,
    "atr_pips": 116.3,
-   "entries": [],
+   "entries": [
+    {
+     "time": "3:21 am",
+     "side": "BUY",
+     "sig": "N3",
+     "name": "Inside-day break",
+     "price": 158.242,
+     "stop": 157.951,
+     "stop_pips": 29.1,
+     "first": true,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "pips": null,
+     "usd": null,
+     "rwf": null,
+     "spread": 1.2
+    }
+   ],
    "spark": [
     [
      "2:05 am",
@@ -245,17 +275,29 @@
     ],
     [
      "3:15 am",
-     158.202
+     158.212
+    ],
+    [
+     "3:20 am",
+     158.247
+    ],
+    [
+     "3:25 am",
+     158.218
+    ],
+    [
+     "3:30 am",
+     158.234
     ]
    ],
    "journal": {
     "since": "05 Oct 2026",
     "weekdays": 3,
-    "trades": 3,
+    "trades": 4,
     "decided": 1,
     "direction": 0.0,
-    "days": 66.7,
-    "perday": 1.0,
+    "days": 100.0,
+    "perday": 1.33,
     "closed": 3,
     "win": 33.3,
     "pf": 0.1,
@@ -266,8 +308,26 @@
     {
      "date": "2026-10-07",
      "label": "Wed 07 Oct",
-     "side": null,
-     "trades": [],
+     "side": "BUY",
+     "trades": [
+      {
+       "time": "3:21 am",
+       "side": "BUY",
+       "sig": "N3",
+       "name": "Inside-day break",
+       "price": 158.242,
+       "stop": 157.951,
+       "stop_pips": 29.1,
+       "first": true,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "pips": null,
+       "usd": null,
+       "rwf": null,
+       "spread": 1.2
+      }
+     ],
      "atr_pips": 116.3,
      "final": false
     },
