@@ -47,8 +47,26 @@
   {
    "date": "2026-10-06",
    "label": "Tue 06 Oct",
-   "side": null,
-   "trades": [],
+   "side": "BUY",
+   "trades": [
+    {
+     "time": "7:00 am",
+     "side": "BUY",
+     "sig": "J13",
+     "name": "Heikin-Ashi 7am",
+     "price": 157.999,
+     "stop": 157.689,
+     "stop_pips": 31.0,
+     "first": true,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "pips": null,
+     "usd": null,
+     "rwf": null,
+     "spread": 1.2
+    }
+   ],
    "atr_pips": 124.1,
    "final": false
   }
@@ -56,11 +74,11 @@
  "summary": {
   "since": "05 Oct 2026",
   "weekdays": 2,
-  "trades": 2,
+  "trades": 3,
   "decided": 1,
   "direction": 0.0,
-  "days": 50.0,
-  "perday": 1.0,
+  "days": 100.0,
+  "perday": 1.5,
   "closed": 2,
   "win": 0.0,
   "pf": 0.0,
