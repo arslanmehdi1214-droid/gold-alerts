@@ -27,19 +27,34 @@
   {
    "date": "2026-10-06",
    "label": "Tue 06 Oct",
-   "side": null,
-   "trades": [],
+   "side": "SELL",
+   "trades": [
+    {
+     "time": "6:34 am",
+     "side": "SELL",
+     "tag": "S24 sq24",
+     "price": 4122.6,
+     "stop": 4165.89,
+     "w": 0.5,
+     "size": 0.1,
+     "status": "open",
+     "first": true,
+     "exit": null,
+     "pnl": null,
+     "rwf": null
+    }
+   ],
    "skipped": 0,
    "final": false
   }
  ],
  "summary": {
   "since": "03 Oct 2026",
-  "trades": 1,
+  "trades": 2,
   "direction": 0.0,
   "decided": 1,
-  "days": 50.0,
-  "perday": 0.5,
+  "days": 100.0,
+  "perday": 1.0,
   "avg_pnl": null,
   "closed": 0,
   "total_pnl_01": null

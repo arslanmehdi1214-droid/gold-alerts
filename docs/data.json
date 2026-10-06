@@ -1,5 +1,5 @@
 {
- "updated": "Tue 06 Oct \u00b7 6:20 am",
+ "updated": "Tue 06 Oct \u00b7 6:39 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -9,14 +9,29 @@
    "live": true,
    "version": "v2.06",
    "feed_error": false,
-   "state": "waiting",
-   "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4129.31,
-   "change": -12.49,
+   "state": "sell",
+   "message": "SELL day \u2014 any later signals today are SELL only. Hold every trade until its stop or the midnight close. No target.",
+   "price": 4120.66,
+   "change": -21.14,
    "size": 0.1,
    "datr": 85.58,
-   "open_now": 0,
-   "entries": [],
+   "open_now": 1,
+   "entries": [
+    {
+     "time": "6:34 am",
+     "side": "SELL",
+     "tag": "S24 sq24",
+     "price": 4122.6,
+     "stop": 4165.89,
+     "w": 0.5,
+     "size": 0.1,
+     "status": "open",
+     "first": true,
+     "exit": null,
+     "pnl": null,
+     "rwf": null
+    }
+   ],
    "spark": [
     [
      "2:00 am",
@@ -225,17 +240,33 @@
     [
      "6:15 am",
      4129.31
+    ],
+    [
+     "6:20 am",
+     4128.12
+    ],
+    [
+     "6:25 am",
+     4126.26
+    ],
+    [
+     "6:30 am",
+     4121.8
+    ],
+    [
+     "6:35 am",
+     4120.66
     ]
    ],
    "history": [
     {
      "date": "2026-10-06",
      "label": "Tue 06 Oct",
-     "state": "none",
-     "entries": 0,
+     "state": "sell",
+     "entries": 1,
      "stopped": 0,
      "eod": 0,
-     "running": 0,
+     "running": 1,
      "rw": 0,
      "rd": 0,
      "pnl": null
@@ -273,11 +304,11 @@
    },
    "journal": {
     "since": "03 Oct 2026",
-    "trades": 1,
+    "trades": 2,
     "direction": 0.0,
     "decided": 1,
-    "days": 50.0,
-    "perday": 0.5,
+    "days": 100.0,
+    "perday": 1.0,
     "avg_pnl": null,
     "closed": 0,
     "total_pnl_01": null
@@ -314,8 +345,8 @@
    },
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 157.927,
-   "change_pips": 8.8,
+   "price": 157.916,
+   "change_pips": 7.7,
    "atr_pips": 124.1,
    "entries": [],
    "spark": [
@@ -525,7 +556,19 @@
     ],
     [
      "6:20 am",
-     157.927
+     157.945
+    ],
+    [
+     "6:25 am",
+     157.931
+    ],
+    [
+     "6:30 am",
+     157.922
+    ],
+    [
+     "6:35 am",
+     157.916
     ]
    ],
    "journal": {
