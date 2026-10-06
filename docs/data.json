@@ -1,5 +1,5 @@
 {
- "updated": "Tue 06 Oct \u00b7 10:54 pm",
+ "updated": "Tue 06 Oct \u00b7 11:07 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,11 +11,11 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 any later signals today are SELL only. Hold every trade until its stop or the midnight close. No target.",
-   "price": 4171.87,
-   "change": 30.07,
+   "price": 4176.64,
+   "change": 34.84,
    "size": 0.1,
    "datr": 85.58,
-   "open_now": 1,
+   "open_now": 0,
    "entries": [
     {
      "time": "6:34 am",
@@ -39,10 +39,10 @@
      "stop": 4184.61,
      "w": 0.56,
      "size": 0.1,
-     "status": "open",
+     "status": "stopped",
      "first": false,
-     "exit": null,
-     "pnl": null,
+     "exit": 4184.61,
+     "pnl": -64.68,
      "rwf": 0
     },
     {
@@ -1064,6 +1064,18 @@
     [
      "10:50 pm",
      4171.87
+    ],
+    [
+     "10:55 pm",
+     4175.53
+    ],
+    [
+     "11:00 pm",
+     4177.66
+    ],
+    [
+     "11:05 pm",
+     4176.64
     ]
    ],
    "history": [
@@ -1072,12 +1084,12 @@
      "label": "Tue 06 Oct",
      "state": "sell",
      "entries": 3,
-     "stopped": 2,
+     "stopped": 3,
      "eod": 0,
-     "running": 1,
+     "running": 0,
      "rw": 0,
      "rd": 3,
-     "pnl": -86.58
+     "pnl": -151.26
     },
     {
      "date": "2026-10-05",
@@ -1117,9 +1129,9 @@
     "decided": 4,
     "days": 100.0,
     "perday": 2.0,
-    "avg_pnl": -43.29,
-    "closed": 2,
-    "total_pnl_01": -8.66
+    "avg_pnl": -50.42,
+    "closed": 3,
+    "total_pnl_01": -15.13
    }
   },
   "SILVER": {
@@ -1153,8 +1165,8 @@
    },
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.143,
-   "change_pips": 30.4,
+   "price": 158.13,
+   "change_pips": 29.1,
    "atr_pips": 124.1,
    "entries": [
     {
@@ -2174,7 +2186,19 @@
     ],
     [
      "10:50 pm",
-     158.143
+     158.138
+    ],
+    [
+     "10:55 pm",
+     158.118
+    ],
+    [
+     "11:00 pm",
+     158.127
+    ],
+    [
+     "11:05 pm",
+     158.13
     ]
    ],
    "journal": {
