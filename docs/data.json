@@ -1,5 +1,5 @@
 {
- "updated": "Wed 07 Oct \u00b7 1:54 am",
+ "updated": "Wed 07 Oct \u00b7 2:10 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,13 +11,22 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": null,
-   "change": null,
+   "price": 4166.08,
+   "change": -1.04,
    "size": 0.1,
    "datr": 81.97,
    "open_now": 0,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:00 am",
+     4166.34
+    ],
+    [
+     "2:05 am",
+     4166.08
+    ]
+   ],
    "history": [
     {
      "date": "2026-10-07",
@@ -61,8 +70,8 @@
     "dollar_5d": "rose",
     "vix_5d": "fell",
     "tnx_5d": "rose",
-    "dollar_driven": null,
-    "corr": null,
+    "dollar_driven": false,
+    "corr": -0.27,
     "low_attention": false,
     "notes": []
    },
@@ -117,11 +126,16 @@
    },
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 158.074,
-   "change_pips": null,
+   "price": 158.142,
+   "change_pips": 2.4,
    "atr_pips": 116.3,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     158.142
+    ]
+   ],
    "journal": {
     "since": "05 Oct 2026",
     "weekdays": 3,
