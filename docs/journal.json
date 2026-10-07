@@ -88,10 +88,10 @@
      "stop": 4158.01,
      "w": 0.5,
      "size": 0.1,
-     "status": "open",
+     "status": "eod",
      "first": true,
-     "exit": null,
-     "pnl": null,
+     "exit": 4101.33,
+     "pnl": -5.29,
      "rwf": 1
     },
     {
@@ -102,10 +102,10 @@
      "stop": 4154.09,
      "w": 0.5,
      "size": 0.1,
-     "status": "open",
+     "status": "eod",
      "first": false,
-     "exit": null,
-     "pnl": null,
+     "exit": 4101.33,
+     "pnl": -9.22,
      "rwf": 1
     },
     {
@@ -116,15 +116,15 @@
      "stop": 4131.58,
      "w": 0.5,
      "size": 0.1,
-     "status": "open",
+     "status": "eod",
      "first": false,
-     "exit": null,
-     "pnl": null,
+     "exit": 4101.33,
+     "pnl": -31.72,
      "rwf": 0
     }
    ],
    "skipped": 0,
-   "final": false
+   "final": true
   }
  ],
  "summary": {
@@ -134,8 +134,8 @@
   "decided": 7,
   "days": 100.0,
   "perday": 2.33,
-  "avg_pnl": -50.42,
-  "closed": 3,
-  "total_pnl_01": -15.13
+  "avg_pnl": -32.92,
+  "closed": 6,
+  "total_pnl_01": -19.75
  }
 }
