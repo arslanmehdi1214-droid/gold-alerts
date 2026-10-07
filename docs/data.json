@@ -1,5 +1,5 @@
 {
- "updated": "Wed 07 Oct \u00b7 11:45 am",
+ "updated": "Wed 07 Oct \u00b7 12:01 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,8 +11,8 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4137.21,
-   "change": -29.91,
+   "price": 4132.1,
+   "change": -35.02,
    "size": 0.1,
    "datr": 81.97,
    "open_now": 0,
@@ -485,6 +485,22 @@
     [
      "11:40 am",
      4137.21
+    ],
+    [
+     "11:45 am",
+     4133.53
+    ],
+    [
+     "11:50 am",
+     4133.38
+    ],
+    [
+     "11:55 am",
+     4132.54
+    ],
+    [
+     "12:00 pm",
+     4132.1
     ]
    ],
    "history": [
@@ -586,8 +602,8 @@
    },
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.317,
-   "change_pips": 19.9,
+   "price": 158.077,
+   "change_pips": -4.1,
    "atr_pips": 116.3,
    "entries": [
     {
@@ -633,12 +649,12 @@
      "stop": 158.14,
      "stop_pips": 29.1,
      "first": false,
-     "status": "open",
-     "exit": null,
-     "exit_time": null,
-     "pips": null,
-     "usd": null,
-     "rwf": null,
+     "status": "stopped",
+     "exit": 158.14,
+     "exit_time": "11:55 am",
+     "pips": -30.3,
+     "usd": -19.13,
+     "rwf": 0,
      "spread": 1.2
     },
     {
@@ -650,12 +666,12 @@
      "stop": 158.156,
      "stop_pips": 29.1,
      "first": false,
-     "status": "open",
-     "exit": null,
-     "exit_time": null,
-     "pips": null,
-     "usd": null,
-     "rwf": null,
+     "status": "stopped",
+     "exit": 158.156,
+     "exit_time": "11:55 am",
+     "pips": -30.3,
+     "usd": -19.12,
+     "rwf": 0,
      "spread": 1.2
     }
    ],
@@ -1126,22 +1142,34 @@
     ],
     [
      "11:45 am",
-     158.317
+     158.28
+    ],
+    [
+     "11:50 am",
+     158.169
+    ],
+    [
+     "11:55 am",
+     158.1
+    ],
+    [
+     "12:00 pm",
+     158.077
     ]
    ],
    "journal": {
     "since": "05 Oct 2026",
     "weekdays": 3,
     "trades": 7,
-    "decided": 1,
+    "decided": 3,
     "direction": 0.0,
     "days": 100.0,
     "perday": 2.33,
-    "closed": 3,
-    "win": 33.3,
-    "pf": 0.1,
-    "net_pips": -39.3,
-    "net_usd": -24.87
+    "closed": 5,
+    "win": 20.0,
+    "pf": 0.04,
+    "net_pips": -99.9,
+    "net_usd": -63.12
    },
    "jdays": [
     {
@@ -1192,12 +1220,12 @@
        "stop": 158.14,
        "stop_pips": 29.1,
        "first": false,
-       "status": "open",
-       "exit": null,
-       "exit_time": null,
-       "pips": null,
-       "usd": null,
-       "rwf": null,
+       "status": "stopped",
+       "exit": 158.14,
+       "exit_time": "11:55 am",
+       "pips": -30.3,
+       "usd": -19.13,
+       "rwf": 0,
        "spread": 1.2
       },
       {
@@ -1209,12 +1237,12 @@
        "stop": 158.156,
        "stop_pips": 29.1,
        "first": false,
-       "status": "open",
-       "exit": null,
-       "exit_time": null,
-       "pips": null,
-       "usd": null,
-       "rwf": null,
+       "status": "stopped",
+       "exit": 158.156,
+       "exit_time": "11:55 am",
+       "pips": -30.3,
+       "usd": -19.12,
+       "rwf": 0,
        "spread": 1.2
       }
      ],
