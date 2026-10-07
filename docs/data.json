@@ -1,5 +1,5 @@
 {
- "updated": "Wed 07 Oct \u00b7 6:49 am",
+ "updated": "Wed 07 Oct \u00b7 7:02 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,8 +11,8 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4146.22,
-   "change": -20.9,
+   "price": 4140.97,
+   "change": -26.15,
    "size": 0.1,
    "datr": 81.97,
    "open_now": 0,
@@ -248,7 +248,19 @@
     ],
     [
      "6:45 am",
-     4146.22
+     4146.29
+    ],
+    [
+     "6:50 am",
+     4145.29
+    ],
+    [
+     "6:55 am",
+     4142.48
+    ],
+    [
+     "7:00 am",
+     4140.97
     ]
    ],
    "history": [
@@ -350,8 +362,8 @@
    },
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.435,
-   "change_pips": 31.7,
+   "price": 158.451,
+   "change_pips": 33.3,
    "atr_pips": 116.3,
    "entries": [
     {
@@ -378,6 +390,40 @@
      "name": "Week-so-far break",
      "price": 158.293,
      "stop": 158.002,
+     "stop_pips": 29.1,
+     "first": false,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "pips": null,
+     "usd": null,
+     "rwf": null,
+     "spread": 1.2
+    },
+    {
+     "time": "7:00 am",
+     "side": "BUY",
+     "sig": "J13",
+     "name": "Heikin-Ashi 7am",
+     "price": 158.431,
+     "stop": 158.14,
+     "stop_pips": 29.1,
+     "first": false,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "pips": null,
+     "usd": null,
+     "rwf": null,
+     "spread": 1.2
+    },
+    {
+     "time": "7:01 am",
+     "side": "BUY",
+     "sig": "U5",
+     "name": "Last-week break",
+     "price": 158.447,
+     "stop": 158.156,
      "stop_pips": 29.1,
      "first": false,
      "status": "open",
@@ -617,16 +663,28 @@
     [
      "6:45 am",
      158.435
+    ],
+    [
+     "6:50 am",
+     158.426
+    ],
+    [
+     "6:55 am",
+     158.432
+    ],
+    [
+     "7:00 am",
+     158.451
     ]
    ],
    "journal": {
     "since": "05 Oct 2026",
     "weekdays": 3,
-    "trades": 5,
+    "trades": 7,
     "decided": 1,
     "direction": 0.0,
     "days": 100.0,
-    "perday": 1.67,
+    "perday": 2.33,
     "closed": 3,
     "win": 33.3,
     "pf": 0.1,
@@ -663,6 +721,40 @@
        "name": "Week-so-far break",
        "price": 158.293,
        "stop": 158.002,
+       "stop_pips": 29.1,
+       "first": false,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "pips": null,
+       "usd": null,
+       "rwf": null,
+       "spread": 1.2
+      },
+      {
+       "time": "7:00 am",
+       "side": "BUY",
+       "sig": "J13",
+       "name": "Heikin-Ashi 7am",
+       "price": 158.431,
+       "stop": 158.14,
+       "stop_pips": 29.1,
+       "first": false,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "pips": null,
+       "usd": null,
+       "rwf": null,
+       "spread": 1.2
+      },
+      {
+       "time": "7:01 am",
+       "side": "BUY",
+       "sig": "U5",
+       "name": "Last-week break",
+       "price": 158.447,
+       "stop": 158.156,
        "stop_pips": 29.1,
        "first": false,
        "status": "open",
