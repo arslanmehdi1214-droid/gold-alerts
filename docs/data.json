@@ -1,5 +1,5 @@
 {
- "updated": "Wed 07 Oct \u00b7 4:43 pm",
+ "updated": "Wed 07 Oct \u00b7 5:05 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,11 +11,11 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 any later signals today are SELL only. Hold every trade until its stop or the midnight close. No target.",
-   "price": 4078.85,
-   "change": -88.27,
+   "price": 4089.45,
+   "change": -77.67,
    "size": 0.1,
    "datr": 81.97,
-   "open_now": 2,
+   "open_now": 3,
    "entries": [
     {
      "time": "4:27 pm",
@@ -29,7 +29,7 @@
      "first": true,
      "exit": null,
      "pnl": null,
-     "rwf": null
+     "rwf": 1
     },
     {
      "time": "4:27 pm",
@@ -43,7 +43,21 @@
      "first": false,
      "exit": null,
      "pnl": null,
-     "rwf": null
+     "rwf": 1
+    },
+    {
+     "time": "4:46 pm",
+     "side": "SELL",
+     "tag": "U8 pivot",
+     "price": 4069.61,
+     "stop": 4131.58,
+     "w": 0.5,
+     "size": 0.1,
+     "status": "open",
+     "first": false,
+     "exit": null,
+     "pnl": null,
+     "rwf": 0
     }
    ],
    "spark": [
@@ -753,7 +767,23 @@
     ],
     [
      "4:40 pm",
-     4078.85
+     4071.55
+    ],
+    [
+     "4:45 pm",
+     4074.4
+    ],
+    [
+     "4:50 pm",
+     4080.72
+    ],
+    [
+     "4:55 pm",
+     4087.13
+    ],
+    [
+     "5:00 pm",
+     4089.45
     ]
    ],
    "history": [
@@ -761,12 +791,12 @@
      "date": "2026-10-07",
      "label": "Wed 07 Oct",
      "state": "sell",
-     "entries": 2,
+     "entries": 3,
      "stopped": 0,
      "eod": 0,
-     "running": 2,
-     "rw": 0,
-     "rd": 0,
+     "running": 3,
+     "rw": 2,
+     "rd": 3,
      "pnl": null
     },
     {
@@ -814,11 +844,11 @@
    },
    "journal": {
     "since": "03 Oct 2026",
-    "trades": 6,
-    "direction": 0.0,
-    "decided": 4,
+    "trades": 7,
+    "direction": 28.6,
+    "decided": 7,
     "days": 100.0,
-    "perday": 2.0,
+    "perday": 2.33,
     "avg_pnl": -50.42,
     "closed": 3,
     "total_pnl_01": -15.13
@@ -855,8 +885,8 @@
    },
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.206,
-   "change_pips": 8.8,
+   "price": 158.252,
+   "change_pips": 13.4,
    "atr_pips": 116.3,
    "entries": [
     {
@@ -1631,7 +1661,23 @@
     ],
     [
      "4:40 pm",
-     158.206
+     158.225
+    ],
+    [
+     "4:45 pm",
+     158.18
+    ],
+    [
+     "4:50 pm",
+     158.228
+    ],
+    [
+     "4:55 pm",
+     158.201
+    ],
+    [
+     "5:00 pm",
+     158.252
     ]
    ],
    "journal": {

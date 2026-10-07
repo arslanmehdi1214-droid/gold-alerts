@@ -92,7 +92,7 @@
      "first": true,
      "exit": null,
      "pnl": null,
-     "rwf": null
+     "rwf": 1
     },
     {
      "time": "4:27 pm",
@@ -106,7 +106,21 @@
      "first": false,
      "exit": null,
      "pnl": null,
-     "rwf": null
+     "rwf": 1
+    },
+    {
+     "time": "4:46 pm",
+     "side": "SELL",
+     "tag": "U8 pivot",
+     "price": 4069.61,
+     "stop": 4131.58,
+     "w": 0.5,
+     "size": 0.1,
+     "status": "open",
+     "first": false,
+     "exit": null,
+     "pnl": null,
+     "rwf": 0
     }
    ],
    "skipped": 0,
@@ -115,11 +129,11 @@
  ],
  "summary": {
   "since": "03 Oct 2026",
-  "trades": 6,
-  "direction": 0.0,
-  "decided": 4,
+  "trades": 7,
+  "direction": 28.6,
+  "decided": 7,
   "days": 100.0,
-  "perday": 2.0,
+  "perday": 2.33,
   "avg_pnl": -50.42,
   "closed": 3,
   "total_pnl_01": -15.13
