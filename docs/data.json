@@ -1,5 +1,5 @@
 {
- "updated": "Thu 08 Oct \u00b7 6:52 am",
+ "updated": "Thu 08 Oct \u00b7 7:06 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,8 +11,8 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4135.95,
-   "change": 22.06,
+   "price": 4133.14,
+   "change": 19.25,
    "size": 0.1,
    "datr": 80.5,
    "open_now": 0,
@@ -252,7 +252,19 @@
     ],
     [
      "6:50 am",
-     4135.95
+     4132.75
+    ],
+    [
+     "6:55 am",
+     4133.2
+    ],
+    [
+     "7:00 am",
+     4133.35
+    ],
+    [
+     "7:05 am",
+     4133.14
     ]
    ],
    "history": [
@@ -364,12 +376,30 @@
     "pf": 1.1,
     "months": 3
    },
-   "state": "waiting",
-   "message": "Waiting for the first signal.",
-   "price": 158.139,
-   "change_pips": 13.1,
+   "state": "buy",
+   "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
+   "price": 158.173,
+   "change_pips": 16.5,
    "atr_pips": 113.9,
-   "entries": [],
+   "entries": [
+    {
+     "time": "7:00 am",
+     "side": "BUY",
+     "sig": "J13",
+     "name": "Heikin-Ashi 7am",
+     "price": 158.159,
+     "stop": 157.874,
+     "stop_pips": 28.5,
+     "first": true,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "pips": null,
+     "usd": null,
+     "rwf": null,
+     "spread": 1.2
+    }
+   ],
    "spark": [
     [
      "2:05 am",
@@ -601,17 +631,29 @@
     ],
     [
      "6:50 am",
-     158.139
+     158.176
+    ],
+    [
+     "6:55 am",
+     158.158
+    ],
+    [
+     "7:00 am",
+     158.138
+    ],
+    [
+     "7:05 am",
+     158.173
     ]
    ],
    "journal": {
     "since": "05 Oct 2026",
     "weekdays": 4,
-    "trades": 7,
+    "trades": 8,
     "decided": 5,
     "direction": 0.0,
-    "days": 75.0,
-    "perday": 1.75,
+    "days": 100.0,
+    "perday": 2.0,
     "closed": 7,
     "win": 14.3,
     "pf": 0.03,
@@ -622,8 +664,26 @@
     {
      "date": "2026-10-08",
      "label": "Thu 08 Oct",
-     "side": null,
-     "trades": [],
+     "side": "BUY",
+     "trades": [
+      {
+       "time": "7:00 am",
+       "side": "BUY",
+       "sig": "J13",
+       "name": "Heikin-Ashi 7am",
+       "price": 158.159,
+       "stop": 157.874,
+       "stop_pips": 28.5,
+       "first": true,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "pips": null,
+       "usd": null,
+       "rwf": null,
+       "spread": 1.2
+      }
+     ],
      "atr_pips": 113.9,
      "final": false
     },
