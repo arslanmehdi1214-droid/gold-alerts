@@ -1,5 +1,5 @@
 {
- "updated": "Thu 08 Oct \u00b7 6:42 pm",
+ "updated": "Thu 08 Oct \u00b7 7:00 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,8 +11,8 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4127.97,
-   "change": 14.08,
+   "price": 4124.1,
+   "change": 10.21,
    "size": 0.1,
    "datr": 80.5,
    "open_now": 0,
@@ -820,7 +820,19 @@
     ],
     [
      "6:40 pm",
-     4127.97
+     4126.19
+    ],
+    [
+     "6:45 pm",
+     4125.61
+    ],
+    [
+     "6:50 pm",
+     4125.16
+    ],
+    [
+     "6:55 pm",
+     4124.1
     ]
    ],
    "history": [
@@ -934,8 +946,8 @@
    },
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.107,
-   "change_pips": 9.9,
+   "price": 158.225,
+   "change_pips": 21.7,
    "atr_pips": 113.9,
    "entries": [
     {
@@ -947,11 +959,11 @@
      "stop": 157.874,
      "stop_pips": 28.5,
      "first": true,
-     "status": "open",
-     "exit": null,
-     "exit_time": null,
-     "pips": null,
-     "usd": null,
+     "status": "eod",
+     "exit": 158.202,
+     "exit_time": "7:00 pm",
+     "pips": 3.1,
+     "usd": 1.96,
      "rwf": null,
      "spread": 1.2
     }
@@ -1755,7 +1767,23 @@
     ],
     [
      "6:40 pm",
-     158.107
+     158.138
+    ],
+    [
+     "6:45 pm",
+     158.16
+    ],
+    [
+     "6:50 pm",
+     158.177
+    ],
+    [
+     "6:55 pm",
+     158.201
+    ],
+    [
+     "7:00 pm",
+     158.225
     ]
    ],
    "journal": {
@@ -1766,11 +1794,11 @@
     "direction": 0.0,
     "days": 100.0,
     "perday": 2.0,
-    "closed": 7,
-    "win": 14.3,
-    "pf": 0.03,
-    "net_pips": -160.5,
-    "net_usd": -101.41
+    "closed": 8,
+    "win": 25.0,
+    "pf": 0.05,
+    "net_pips": -157.4,
+    "net_usd": -99.45
    },
    "jdays": [
     {
@@ -1787,17 +1815,17 @@
        "stop": 157.874,
        "stop_pips": 28.5,
        "first": true,
-       "status": "open",
-       "exit": null,
-       "exit_time": null,
-       "pips": null,
-       "usd": null,
+       "status": "eod",
+       "exit": 158.202,
+       "exit_time": "7:00 pm",
+       "pips": 3.1,
+       "usd": 1.96,
        "rwf": null,
        "spread": 1.2
       }
      ],
      "atr_pips": 113.9,
-     "final": false
+     "final": true
     },
     {
      "date": "2026-10-07",
