@@ -1,5 +1,5 @@
 {
- "updated": "Fri 09 Oct \u00b7 11:47 pm",
+ "updated": "Fri 09 Oct \u00b7 11:59 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -11,11 +11,11 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 any later signals today are BUY only. Hold every trade until its stop or the midnight close. No target.",
-   "price": 4195.92,
-   "change": 62.61,
+   "price": 4195.45,
+   "change": 62.14,
    "size": 0.1,
    "datr": 78.88,
-   "open_now": 5,
+   "open_now": 0,
    "entries": [
     {
      "time": "4:00 am",
@@ -25,10 +25,10 @@
      "stop": 4086.68,
      "w": 0.5,
      "size": 0.1,
-     "status": "open",
+     "status": "eod",
      "first": true,
-     "exit": null,
-     "pnl": null,
+     "exit": 4196.33,
+     "pnl": 49.99,
      "rwf": 1
     },
     {
@@ -39,10 +39,10 @@
      "stop": 4106.4,
      "w": 1.68,
      "size": 0.1,
-     "status": "open",
+     "status": "eod",
      "first": false,
-     "exit": null,
-     "pnl": null,
+     "exit": 4196.33,
+     "pnl": 49.99,
      "rwf": 1
     },
     {
@@ -53,10 +53,10 @@
      "stop": 4126.4,
      "w": 1.68,
      "size": 0.1,
-     "status": "open",
+     "status": "eod",
      "first": false,
-     "exit": null,
-     "pnl": null,
+     "exit": 4196.33,
+     "pnl": 10.27,
      "rwf": null
     },
     {
@@ -67,10 +67,10 @@
      "stop": 4133.76,
      "w": 0.84,
      "size": 0.1,
-     "status": "open",
+     "status": "eod",
      "first": false,
-     "exit": null,
-     "pnl": null,
+     "exit": 4196.33,
+     "pnl": 2.91,
      "rwf": 0
     },
     {
@@ -81,10 +81,10 @@
      "stop": 4140.87,
      "w": 1.68,
      "size": 0.1,
-     "status": "open",
+     "status": "eod",
      "first": false,
-     "exit": null,
-     "pnl": null,
+     "exit": 4196.33,
+     "pnl": -4.2,
      "rwf": 0
     }
    ],
@@ -1135,7 +1135,15 @@
     ],
     [
      "11:45 pm",
-     4195.92
+     4196.33
+    ],
+    [
+     "11:50 pm",
+     4196.16
+    ],
+    [
+     "11:55 pm",
+     4195.45
     ]
    ],
    "history": [
@@ -1145,11 +1153,11 @@
      "state": "buy",
      "entries": 5,
      "stopped": 0,
-     "eod": 0,
-     "running": 5,
+     "eod": 5,
+     "running": 0,
      "rw": 2,
      "rd": 4,
-     "pnl": null
+     "pnl": 108.96
     },
     {
      "date": "2026-10-08",
@@ -1225,9 +1233,9 @@
     "decided": 11,
     "days": 80.0,
     "perday": 2.4,
-    "avg_pnl": -32.91,
-    "closed": 6,
-    "total_pnl_01": -19.75
+    "avg_pnl": -8.05,
+    "closed": 11,
+    "total_pnl_01": -8.85
    }
   },
   "SILVER": {
@@ -1261,8 +1269,8 @@
    },
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.265,
-   "change_pips": 42.2,
+   "price": 158.274,
+   "change_pips": 43.1,
    "atr_pips": 104.4,
    "entries": [
     {
@@ -2326,7 +2334,15 @@
     ],
     [
      "11:45 pm",
-     158.265
+     158.278
+    ],
+    [
+     "11:50 pm",
+     158.26
+    ],
+    [
+     "11:55 pm",
+     158.274
     ]
    ],
    "journal": {
