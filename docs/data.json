@@ -1,5 +1,5 @@
 {
- "updated": "Fri 09 Oct \u00b7 4:00 am",
+ "updated": "Fri 09 Oct \u00b7 4:33 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -9,14 +9,43 @@
    "live": true,
    "version": "v2.06",
    "feed_error": false,
-   "state": "waiting",
-   "message": "Waiting for the first signal (signals can come until 8 pm Dubai).",
-   "price": 4144.51,
-   "change": 11.2,
+   "state": "buy",
+   "message": "BUY day \u2014 any later signals today are BUY only. Hold every trade until its stop or the midnight close. No target.",
+   "price": 4145.86,
+   "change": 12.55,
    "size": 0.1,
    "datr": 78.88,
-   "open_now": 0,
-   "entries": [],
+   "open_now": 2,
+   "entries": [
+    {
+     "time": "4:00 am",
+     "side": "BUY",
+     "tag": "N3 inside",
+     "price": 4145.84,
+     "stop": 4086.68,
+     "w": 0.5,
+     "size": 0.1,
+     "status": "open",
+     "first": true,
+     "exit": null,
+     "pnl": null,
+     "rwf": null
+    },
+    {
+     "time": "4:00 am",
+     "side": "BUY",
+     "tag": "S24 sq24",
+     "price": 4145.84,
+     "stop": 4106.4,
+     "w": 1.68,
+     "size": 0.1,
+     "status": "open",
+     "first": false,
+     "exit": null,
+     "pnl": null,
+     "rwf": null
+    }
+   ],
    "spark": [
     [
      "2:00 am",
@@ -113,17 +142,45 @@
     [
      "3:55 am",
      4144.51
+    ],
+    [
+     "4:00 am",
+     4147.96
+    ],
+    [
+     "4:05 am",
+     4143.58
+    ],
+    [
+     "4:10 am",
+     4146.14
+    ],
+    [
+     "4:15 am",
+     4147.97
+    ],
+    [
+     "4:20 am",
+     4142.49
+    ],
+    [
+     "4:25 am",
+     4143.42
+    ],
+    [
+     "4:30 am",
+     4145.86
     ]
    ],
    "history": [
     {
      "date": "2026-10-09",
      "label": "Fri 09 Oct",
-     "state": "none",
-     "entries": 0,
+     "state": "buy",
+     "entries": 2,
      "stopped": 0,
      "eod": 0,
-     "running": 0,
+     "running": 2,
      "rw": 0,
      "rd": 0,
      "pnl": null
@@ -197,11 +254,11 @@
    },
    "journal": {
     "since": "03 Oct 2026",
-    "trades": 7,
+    "trades": 9,
     "direction": 28.6,
     "decided": 7,
-    "days": 60.0,
-    "perday": 1.4,
+    "days": 80.0,
+    "perday": 1.8,
     "avg_pnl": -32.91,
     "closed": 6,
     "total_pnl_01": -19.75
@@ -238,8 +295,8 @@
    },
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 158.051,
-   "change_pips": 20.8,
+   "price": 158.068,
+   "change_pips": 22.5,
    "atr_pips": 104.4,
    "entries": [],
    "spark": [
@@ -334,6 +391,34 @@
     [
      "3:55 am",
      158.051
+    ],
+    [
+     "4:00 am",
+     158.087
+    ],
+    [
+     "4:05 am",
+     158.082
+    ],
+    [
+     "4:10 am",
+     158.046
+    ],
+    [
+     "4:15 am",
+     158.09
+    ],
+    [
+     "4:20 am",
+     158.023
+    ],
+    [
+     "4:25 am",
+     158.069
+    ],
+    [
+     "4:30 am",
+     158.068
     ]
    ],
    "journal": {
