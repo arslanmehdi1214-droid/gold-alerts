@@ -1,5 +1,5 @@
 {
- "updated": "Fri 09 Oct \u00b7 6:40 pm",
+ "updated": "Fri 09 Oct \u00b7 7:21 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -8,11 +8,11 @@
    "symbol": "XAU/USD",
    "live": true,
    "version": "v2.06",
-   "feed_error": true,
+   "feed_error": false,
    "state": "buy",
-   "message": "Price feed problem at 7:00 pm Dubai (ReadTimeout) - the page shows the last good update; it retries every 5 minutes.",
-   "price": 4184.7,
-   "change": 51.39,
+   "message": "BUY day \u2014 any later signals today are BUY only. Hold every trade until its stop or the midnight close. No target.",
+   "price": 4187.98,
+   "change": 54.67,
    "size": 0.1,
    "datr": 78.88,
    "open_now": 5,
@@ -888,6 +888,42 @@
     [
      "6:35 pm",
      4184.7
+    ],
+    [
+     "6:40 pm",
+     4184.2
+    ],
+    [
+     "6:45 pm",
+     4182.1
+    ],
+    [
+     "6:50 pm",
+     4183.4
+    ],
+    [
+     "6:55 pm",
+     4182.35
+    ],
+    [
+     "7:00 pm",
+     4186.49
+    ],
+    [
+     "7:05 pm",
+     4183.38
+    ],
+    [
+     "7:10 pm",
+     4184.81
+    ],
+    [
+     "7:15 pm",
+     4187.97
+    ],
+    [
+     "7:20 pm",
+     4187.98
     ]
    ],
    "history": [
@@ -1013,8 +1049,8 @@
    },
    "state": "buy",
    "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
-   "price": 158.417,
-   "change_pips": 57.4,
+   "price": 158.331,
+   "change_pips": 48.8,
    "atr_pips": 104.4,
    "entries": [
     {
@@ -1027,10 +1063,10 @@
      "stop_pips": 26.1,
      "first": true,
      "status": "eod",
-     "exit": 158.417,
-     "exit_time": "6:59 pm",
-     "pips": 34.0,
-     "usd": 21.51,
+     "exit": 158.416,
+     "exit_time": "7:00 pm",
+     "pips": 33.9,
+     "usd": 21.45,
      "rwf": 1,
      "spread": 1.2
     }
@@ -1847,6 +1883,26 @@
     [
      "6:55 pm",
      158.417
+    ],
+    [
+     "7:00 pm",
+     158.377
+    ],
+    [
+     "7:05 pm",
+     158.372
+    ],
+    [
+     "7:10 pm",
+     158.361
+    ],
+    [
+     "7:15 pm",
+     158.344
+    ],
+    [
+     "7:20 pm",
+     158.331
     ]
    ],
    "journal": {
@@ -1860,8 +1916,8 @@
     "closed": 9,
     "win": 33.3,
     "pf": 0.25,
-    "net_pips": -123.4,
-    "net_usd": -77.94
+    "net_pips": -123.5,
+    "net_usd": -78.0
    },
    "jdays": [
     {
@@ -1879,10 +1935,10 @@
        "stop_pips": 26.1,
        "first": true,
        "status": "eod",
-       "exit": 158.417,
-       "exit_time": "6:59 pm",
-       "pips": 34.0,
-       "usd": 21.51,
+       "exit": 158.416,
+       "exit_time": "7:00 pm",
+       "pips": 33.9,
+       "usd": 21.45,
        "rwf": 1,
        "spread": 1.2
       }
