@@ -9,8 +9,8 @@
    "live": true,
    "version": "v2.06",
    "feed_error": false,
-   "state": "buy",
-   "message": "BUY day \u2014 any later signals today are BUY only. Hold every trade until its stop or the midnight close. No target.",
+   "state": "closed",
+   "message": "Market closed for the weekend",
    "price": 4194.61,
    "change": 61.3,
    "size": 0.1,
@@ -1315,30 +1315,12 @@
     "pf": 1.1,
     "months": 3
    },
-   "state": "buy",
-   "message": "PAPER BUY day \u2014 later signals today are BUY only. Each trade holds until its stop or the 7:00 pm Dubai close. No target.",
+   "state": "closed",
+   "message": "Market closed for the weekend.",
    "price": 158.289,
    "change_pips": 44.6,
    "atr_pips": 104.4,
-   "entries": [
-    {
-     "time": "7:00 am",
-     "side": "BUY",
-     "sig": "J13",
-     "name": "Heikin-Ashi 7am",
-     "price": 158.065,
-     "stop": 157.804,
-     "stop_pips": 26.1,
-     "first": true,
-     "status": "eod",
-     "exit": 158.416,
-     "exit_time": "7:00 pm",
-     "pips": 33.9,
-     "usd": 21.45,
-     "rwf": 1,
-     "spread": 1.2
-    }
-   ],
+   "entries": [],
    "spark": [
     [
      "2:05 am",
