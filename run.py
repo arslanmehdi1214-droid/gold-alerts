@@ -12,6 +12,10 @@ JOURNAL = os.path.join(HERE, 'docs', 'journal.json'); INPUTS = os.path.join(HERE
 BACKTEST = dict(direction='60.3%', days='71.6%', perday='2.22', win='55.0%', pnl='$7.47', source='MT4 backtest 2020–2026 (v2.05 signals = v2.06)')
 
 def dubai(t): return F.broker_to_dubai(pd.Timestamp(t)).strftime('%-I:%M %p').lower()
+def eod_of(day):
+    """Broker day -> its day-end close (broker time). Falls back to the old rule if engine206.py is an older copy."""
+    d = pd.Timestamp(day); f = getattr(E, 'close_minutes', None)
+    return d + pd.Timedelta(minutes=f(d) if f else (22 * 60 + 50 if d.dayofweek == 4 else 23 * 60))
 def send(text):
     tok, chat = os.environ.get('TELEGRAM_BOT_TOKEN'), os.environ.get('TELEGRAM_CHAT_ID')
     if not tok or not chat: print('[no Telegram keys] ' + text.replace('\n', ' | ')); return True
@@ -53,11 +57,11 @@ def fmt(e):
     if e['kind'] == 'ENTRY':
         return (f"GOLD {side} now  ({'first trade' if e['first'] else 'add, same direction'} · {e['tag']})\n"
                 f"Signal price {e['px']:.2f} | stop {e['stop']:.2f} ({abs(e['px'] - e['stop']):.1f} away) | no target\n"
-                f"Size {SIZE:.2f} oz | hold until the stop or the midnight close | {dubai(e['t'])} Dubai")
+                f"Size {SIZE:.2f} oz | hold until the stop or the day-end close at {dubai(eod_of(pd.Timestamp(e['t']).normalize()))} Dubai | {dubai(e['t'])} Dubai")
     if e['kind'] == 'STOP':
         return f"GOLD {side} ({e['tag']}, entered {dubai(e['t0'])}): stop hit at {e['px']:.2f} | {dubai(e['t'])} Dubai"
     if e['kind'] == 'EOD':
-        return f"GOLD END OF DAY: close ALL open gold trades now | {dubai(e['t'])} Dubai"
+        return f"GOLD END OF DAY: close ALL open gold trades now ({e.get('n', '')} from today's signals) | {dubai(e['t'])} Dubai"
     if e['kind'] == 'SKIP':
         return f"GOLD: first {side} signal skipped by the dollar filter ({e['tag']}) - waiting for the next one | {dubai(e['t'])} Dubai"
     return str(e)
@@ -114,7 +118,7 @@ def finish_missed_days(feed, h1, now):
         changed = True
         if was_open or any(r['status'] == 'eod' for r in rows):
             k = f"MISSED_EOD|{d['date']}"; sent = set(state.get(today, []))
-            if k not in sent and send(f"GOLD: the midnight close for {day.strftime('%a %d %b')} was missed (the signal server was down). "
+            if k not in sent and send(f"GOLD: the day-end close for {day.strftime('%a %d %b')} was missed (the signal server was down). "
                                       f"If any gold trade from that day is still open, close it now. | {dubai(now)} Dubai"):
                 sent.add(k); state[today] = sorted(sent)
         print('caught up missed day', d['date'], len(rows), 'trades')
@@ -167,14 +171,15 @@ def main():
     dumpj(cache, INPUTS, indent=1)
     reg = inp.get('regime')
     taken, skipped, D = compute(h1, m1, day, now, inp)
-    friday = now.dayofweek == 4
-    eod = day + (pd.Timedelta(hours=22, minutes=50) if friday else pd.Timedelta(hours=23))
+    eod = eod_of(day)                                   # day-end close (22:50 broker on Fridays and in US winter time)
     # ---- events -> Telegram (each sent once)
     ev = [dict(kind='ENTRY', t=pd.Timestamp(t['t']), **{k: t[k] for k in ('dir', 'tag', 'px', 'stop', 'w', 'first')}) for t in taken]
     ev += [dict(kind='SKIP', t=pd.Timestamp(t['t']), dir=t['dir'], tag=t['tag']) for t in skipped[:1] if not taken or pd.Timestamp(t['t']) < pd.Timestamp(taken[0]['t'])]
     ev += [dict(kind='STOP', t=pd.Timestamp(t['exit_t']), t0=pd.Timestamp(t['t']), dir=t['dir'], tag=t['tag'], px=t['exit']) for t in taken if t.get('status') == 'stop hit']
-    open_n = [t for t in taken if t.get('status') == 'open']
-    if now >= eod and open_n: ev.append(dict(kind='EOD', t=eod, dir=0))
+    # FIX 2026-10-10: manage() already books every trade still open at the close as 'closed at day end', so the old check
+    # (trades still 'open' after the close) never fired and the close alert was never sent. He closes by hand: alert on those.
+    day_end = [t for t in taken if t.get('status') == 'closed at day end']
+    if now >= eod and day_end: ev.append(dict(kind='EOD', t=eod, dir=0, n=len(day_end)))
     state = loadj(STATE, {}); sent = set(state.get(key, []))
     if test:
         last = float(m1.c.iloc[-1]) if len(m1) else float('nan')
@@ -196,6 +201,8 @@ def main():
 def write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, datr):
     rows = [row(t) for t in taken]
     if now >= eod: rows = [dict(r, status='close_now') if r['status'] == 'open' else r for r in rows]
+    # page only: after the close, trades the desk booked at the day-end price are still open in his account until he closes them
+    page_rows = [dict(r, status='close_now') if (now >= eod and r['status'] == 'eod') else r for r in rows]
     # ---- journal (one record per broker day, replaced on every run of that day)
     J = loadj(JOURNAL, dict(start=str(day.date()), days=[]))
     days = [d for d in J['days'] if d['date'] != str(day.date())]
@@ -211,7 +218,7 @@ def write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, datr):
     if now.dayofweek >= 5: state, msg = 'closed', 'Market closed for the weekend'
     elif rows:
         side = rows[0]['side']; state = side.lower()
-        msg = (f"{side} day — any later signals today are {side} only. Hold every trade until its stop or the midnight close. No target.")
+        msg = (f"{side} day — any later signals today are {side} only. Hold every trade until its stop or the day-end close at {dubai(eod)} Dubai. No target.")
     elif skipped and not last_sig: state, msg = 'blocked', 'The first signal was skipped by the dollar filter — watching for the next one.'
     elif last_sig: state, msg = 'none', 'No trade today — no signal (new signals stop at 8 pm Dubai).'
     else: state, msg = 'waiting', 'Waiting for the first signal (signals can come until 8 pm Dubai).'
@@ -227,9 +234,9 @@ def write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, datr):
                          running=sum(t['status'] == 'open' for t in tr), rw=sum(1 for t in tr if t.get('rwf') == 1),
                          rd=sum(1 for t in tr if t.get('rwf') is not None),
                          pnl=(round(sum(t['pnl'] for t in tr if t.get('pnl') is not None), 2) if any(t.get('pnl') is not None for t in tr) else None)))
-    gold = dict(code='GOLD', name='Gold', symbol='XAU/USD', live=True, version='v2.06', feed_error=False, state=state, message=msg, price=last,
+    gold = dict(code='GOLD', name='Gold', symbol='XAU/USD', live=True, version='v2.06', feed_error=False, state=state, message=msg, price=last, close_at=dubai(eod),
                 change=(None if last is None or first is None else round(last - first, 2)), size=SIZE, datr=round(datr, 2),
-                open_now=sum(r['status'] in ('open', 'close_now') for r in rows), entries=rows, spark=spark, history=hist,
+                open_now=sum(r['status'] in ('open', 'close_now') for r in page_rows), entries=page_rows, spark=spark, history=hist,
                 inputs=dict(dollar_1d=inp.get('dollar_1d'), dollar_5d=inp.get('dollar_5d'), vix_5d=inp.get('vix_5d'), tnx_5d=inp.get('tnx_5d'),
                             dollar_driven=(None if reg is None else bool(reg)), corr=inp.get('corr'), low_attention=bool(inp.get('attn', 0)),
                             notes=inp.get('notes', [])),
