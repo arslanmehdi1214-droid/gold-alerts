@@ -55,7 +55,7 @@ def next_job_waiting():
     try:
         r = requests.get(f'https://api.github.com/repos/{REPO}/actions/workflows/gold_alerts.yml/runs', timeout=15,
                          params={'per_page': 10}, headers={'Authorization': f'Bearer {TOKEN}', 'Accept': 'application/vnd.github+json'})
-        return any(str(x['id']) != str(RUN_ID) and x['status'] in ('queued', 'pending', 'waiting', 'requested')
+        return any(str(x['id']) != str(RUN_ID) and x.get('event') == 'schedule' and x['status'] in ('queued', 'pending', 'waiting', 'requested')
                    for x in r.json().get('workflow_runs', []))
     except Exception as e:
         print('run list not read:', type(e).__name__); return False
@@ -63,13 +63,16 @@ def next_job_waiting():
 def feed_error():
     try:
         mk = json.load(open(R.PORTAL)).get('markets', {})
-        return any((mk.get(k) or {}).get('feed_error') for k in ('GOLD', 'USDJPY'))
+        return bool((mk.get('GOLD') or {}).get('feed_error'))              # gold's own feed error only
     except Exception: return True
 
 def main():
     start = time.time(); last_push = time.time(); n = 0
+    try: import yen_run                                                    # yen_run sets its 4-minute budget once, at import:
+    except Exception: yen_run = None                                       # give it a fresh budget every minute
     while True:
         before = open(R.STATE).read() if os.path.exists(R.STATE) else ''
+        if yen_run is not None and hasattr(yen_run, 'DEADLINE'): yen_run.DEADLINE = time.time() + 90
         R.safe_main(); n += 1
         if feed_error(): _SHARED[0] = None; _H1.clear()                   # fresh session + full history next minute
         alerted = (open(R.STATE).read() if os.path.exists(R.STATE) else '') != before
