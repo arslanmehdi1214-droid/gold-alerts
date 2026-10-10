@@ -117,7 +117,7 @@ const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"]/g,c
 const f2=v=>v==null?'—':Number(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const usd=v=>v==null?'—':(v>=0?'+$':'−$')+Math.abs(v).toFixed(2);
 const STATE={buy:'Buy day',sell:'Sell day',waiting:'Waiting',blocked:'First signal skipped',none:'No trade today',closed:'Market closed'};
-const STL={open:'Open',stopped:'Stopped out',eod:'Closed at midnight',close_now:'Close now'};
+const STL={open:'Open',stopped:'Stopped out',eod:'Closed at day end',close_now:'Close now'};
 const mv=w=>w==='rose'?'Rose ↑':w==='fell'?'Fell ↓':w==='flat'?'Flat':'—';
 $('snd').onclick=()=>{try{ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();sound=!sound;$('snd').textContent='Sound alerts: '+(sound?'on':'off');$('snd').classList.toggle('on',sound);if(sound)beep()}catch(e){}};
 function beep(){if(!sound||!ctx)return;[0,.28,.56].forEach((t,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=[784,988,1319][i];o.connect(g);g.connect(ctx.destination);g.gain.setValueAtTime(.0001,ctx.currentTime+t);g.gain.exponentialRampToValueAtTime(.25,ctx.currentTime+t+.02);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+t+.25);o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+.26)});if(navigator.vibrate)navigator.vibrate([250,120,250])}
@@ -138,7 +138,7 @@ function todo(m){const E=m.entries||[],L=[];
   const cn=E.filter(e=>e.status==='close_now');if(cn.length)L.push(`<b>Close all ${cn.length} open ${side} trade${cn.length>1?'s':''} now</b> (end of day).`);
   const op=E.filter(e=>e.status==='open');
   if(op.length)L.push(`${op.length} ${side} trade${op.length>1?'s':''} open — keep each stop as shown below. No target.`);
-  if(!cn.length&&op.length)L.push('Close everything at 12:00 am (midnight) Dubai if still open.');
+  if(!cn.length&&op.length)L.push(`Close everything at ${m.close_at||'the day-end close'} Dubai if still open.`);
   if(!cn.length&&!op.length)L.push(`All of today's ${side} trades are closed. Nothing to do.`);
   L.push(`Only ${side} today — later signals in the other direction are skipped.`);
   L.push('Enter at market when the signal comes. Up to 10 minutes late is fine; do not chase a price far from the signal.')}
