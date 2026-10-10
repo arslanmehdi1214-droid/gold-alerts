@@ -1,4 +1,4 @@
-"""Runs every 5 minutes (GitHub Actions). GOLD_DAYTRADE v2.06 signals: replays today's gold minute bars through the
+"""Runs every minute (GitHub Actions, via loop.py). GOLD_DAYTRADE v2.06 signals: replays today's gold minute bars through the
 EA's rules (engine206.py), sends NEW events (entry / stop hit / close at day end) and updates the page + the live journal.
 It never trades. You place the trades yourself."""
 import os, sys, json, requests, numpy as np, pandas as pd
@@ -61,19 +61,80 @@ def row(tr):
                 stop=round(float(tr['stop']), 2), w=tr['w'], size=SIZE, status=st, first=bool(tr['first']),
                 exit=None if tr.get('exit') is None else round(float(tr['exit']), 2), pnl=tr.get('pnl_oz'), rwf=tr.get('rwf'))
 
+def compute(h1, m1, day, now, inp):
+    """The EA's trades for broker day `day` as of `now` (same steps for today and for a missed day)."""
+    D1 = daily_bars(h1, day)
+    D = E.Daily(D1.index.values.astype('datetime64[D]'), D1.o.values, D1.h.values, D1.l.values, D1.c.values)
+    hh = h1[h1.index <= now]
+    Hh = E.Hourly(hh.index.values.astype('datetime64[m]'), hh.h.values, hh.l.values, hh.c.values)
+    dayst = np.datetime64(day.date(), 'D')
+    one_am = dayst.astype('datetime64[m]') + np.timedelta64(60, 'm')
+    reg = inp.get('regime')
+    einp = dict(d5=inp['d5'], d1=inp['d1'], vix=inp['vix'], tnx=inp['tnx'], attn=inp.get('attn', 0),
+                regime=lambda t: (reg if (reg is not None and t >= one_am) else 0))
+    mm = dict(t=m1.index.values.astype('datetime64[m]'), o=m1.o.values, h=m1.h.values, l=m1.l.values, c=m1.c.values)
+    trades = E.manage(E.run_day(dayst, D, Hh, mm, einp), dayst, mm, now=np.datetime64(now, 'm')) if len(m1) else []
+    return [t for t in trades if not t.get('skipped')], [t for t in trades if t.get('skipped')], D
+
+def missed_days(J, now, cache):
+    """Past broker days (last 9 days, inputs still cached) that never got their day-end run."""
+    today = str(now.normalize().date())
+    return [d for d in J.get('days', []) if not d.get('final') and d['date'] < today and d['date'] in cache
+            and (now.normalize() - pd.Timestamp(d['date'])).days <= 9]
+
+def finish_missed_days(feed, h1, now):
+    """CATCH-UP: a past broker day whose day-end run never happened (e.g. GitHub down at midnight) is replayed to its end and
+    written to the journal as final; if trades were still open at the day-end close, one Telegram tells him to close them."""
+    J = loadj(JOURNAL, None)
+    if not J: return
+    today = str(now.normalize().date()); cache = loadj(INPUTS, {}); state = loadj(STATE, {}); changed = False
+    for d in missed_days(J, now, cache):
+        day = pd.Timestamp(d['date']); inp = cache[d['date']]
+        m1 = feed.m1_today(day); m1 = m1[m1.index < day + pd.Timedelta(days=1)]
+        taken, skipped, _ = compute(h1, m1, day, day + pd.Timedelta(hours=23, minutes=59), inp)
+        rows = [row(t) for t in taken]
+        d.update(side=(rows[0]['side'] if rows else None), trades=rows, skipped=len(skipped), final=True, caught_up=str(now))
+        changed = True
+        if any(r['status'] == 'eod' for r in rows):
+            k = f"MISSED_EOD|{d['date']}"; sent = set(state.get(today, []))
+            if k not in sent and send(f"GOLD: the midnight close for {day.strftime('%a %d %b')} was missed (the signal server was down). "
+                                      f"If any gold trade from that day is still open, close it now. | {dubai(now)} Dubai"):
+                sent.add(k); state[today] = sorted(sent)
+        print('caught up missed day', d['date'], len(rows), 'trades')
+    if changed:
+        json.dump(J, open(JOURNAL, 'w'), indent=1); json.dump(state, open(STATE, 'w'), indent=0)
+
+def summary(J, day):
+    allt = [t for d in J['days'] for t in d['trades']]
+    dec = [t['rwf'] for t in allt if t.get('rwf') is not None]
+    pnl = [t['pnl'] for t in allt if t.get('pnl') is not None]
+    wd = max(1, len(pd.bdate_range(J['start'], str(day.date()))))
+    tdays = sum(1 for d in J['days'] if d['trades'])
+    return dict(since=pd.Timestamp(J['start']).strftime('%d %b %Y'), trades=len(allt),
+                direction=(round(100 * sum(dec) / len(dec), 1) if dec else None), decided=len(dec),
+                days=round(100 * tdays / wd, 1), perday=round(len(allt) / wd, 2),
+                avg_pnl=(round(sum(pnl) / len(pnl), 2) if pnl else None), closed=len(pnl),
+                total_pnl_01=(round(sum(p * 0.1 for p in pnl), 2) if pnl else None))
+
+def write_summary():
+    J = loadj(JOURNAL, None)
+    if J and J.get('days'):
+        J['summary'] = summary(J, pd.Timestamp(J['days'][-1]['date'])); json.dump(J, open(JOURNAL, 'w'), indent=1)
+        old = loadj(PORTAL, {}); g = (old.get('markets') or {}).get('GOLD')
+        if g is not None: g['journal'] = J['summary']; json.dump(old, open(PORTAL, 'w'), indent=1)
+
 def main():
     now = F.broker_now(); day = now.normalize(); test = '--test' in sys.argv
     if now.dayofweek >= 5 and not test:
+        if missed_days(loadj(JOURNAL, {}), now, loadj(INPUTS, {})):
+            feed, src = F.get_feed(); finish_missed_days(feed, feed.h1(days=460), now); write_summary()
         old = loadj(PORTAL, {}); g = (old.get('markets') or {}).get('GOLD')
         if g: g.update(state='closed', message='Market closed for the weekend'); json.dump(old, open(PORTAL, 'w'), indent=1)
         print('weekend'); return
     feed, src = F.get_feed()
     h1 = feed.h1(days=460)
+    finish_missed_days(feed, h1, now)
     m1 = feed.m1_today(day); m1 = m1[m1.index + pd.Timedelta(minutes=1) <= now]          # closed minute bars only
-    D1 = daily_bars(h1, day)
-    D = E.Daily(D1.index.values.astype('datetime64[D]'), D1.o.values, D1.h.values, D1.l.values, D1.c.values)
-    hh = h1[h1.index <= now]
-    Hh = E.Hourly(hh.index.values.astype('datetime64[m]'), hh.h.values, hh.l.values, hh.c.values)
     # daily outside values (cached per broker day; retried every 30 minutes if something was missing)
     cache = loadj(INPUTS, {}); key = str(day.date()); inp = cache.get(key)
     retry = inp is not None and any(inp.get(k) == 9 for k in ('d1', 'd5', 'vix', 'tnx')) and \
@@ -85,14 +146,8 @@ def main():
         if reg is not None: inp.update(regime=reg, corr=corr)
     cache = {k: v for k, v in cache.items() if k >= str((day - pd.Timedelta(days=10)).date())}; cache[key] = inp
     json.dump(cache, open(INPUTS, 'w'), indent=1)
-    dayst = np.datetime64(day.date(), 'D')
-    one_am = dayst.astype('datetime64[m]') + np.timedelta64(60, 'm')
     reg = inp.get('regime')
-    einp = dict(d5=inp['d5'], d1=inp['d1'], vix=inp['vix'], tnx=inp['tnx'], attn=inp.get('attn', 0),
-                regime=lambda t: (reg if (reg is not None and t >= one_am) else 0))
-    mm = dict(t=m1.index.values.astype('datetime64[m]'), o=m1.o.values, h=m1.h.values, l=m1.l.values, c=m1.c.values)
-    trades = E.manage(E.run_day(dayst, D, Hh, mm, einp), dayst, mm, now=np.datetime64(now, 'm')) if len(m1) else []
-    taken = [t for t in trades if not t.get('skipped')]; skipped = [t for t in trades if t.get('skipped')]
+    taken, skipped, D = compute(h1, m1, day, now, inp)
     friday = now.dayofweek == 4
     eod = day + (pd.Timedelta(hours=22, minutes=50) if friday else pd.Timedelta(hours=23))
     # ---- events -> Telegram (each sent once)
@@ -129,16 +184,7 @@ def write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, datr):
         days.append(dict(date=str(day.date()), label=day.strftime('%a %d %b'), side=(rows[0]['side'] if rows else None),
                          trades=rows, skipped=len(skipped), final=bool(now >= eod)))
     J['days'] = sorted(days, key=lambda d: d['date'])
-    allt = [t for d in J['days'] for t in d['trades']]
-    dec = [t['rwf'] for t in allt if t.get('rwf') is not None]
-    pnl = [t['pnl'] for t in allt if t.get('pnl') is not None]
-    wd = max(1, len(pd.bdate_range(J['start'], str(day.date()))))
-    tdays = sum(1 for d in J['days'] if d['trades'])
-    J['summary'] = dict(since=pd.Timestamp(J['start']).strftime('%d %b %Y'), trades=len(allt),
-                        direction=(round(100 * sum(dec) / len(dec), 1) if dec else None), decided=len(dec),
-                        days=round(100 * tdays / wd, 1), perday=round(len(allt) / wd, 2),
-                        avg_pnl=(round(sum(pnl) / len(pnl), 2) if pnl else None), closed=len(pnl),
-                        total_pnl_01=(round(sum(p * 0.1 for p in pnl), 2) if pnl else None))
+    J['summary'] = summary(J, day)
     json.dump(J, open(JOURNAL, 'w'), indent=1)
     # ---- page data
     old = loadj(PORTAL, {}); others = {k: v for k, v in (old.get('markets') or {}).items() if k != 'GOLD'}
@@ -185,7 +231,7 @@ def safe_main():
             if g is not None:
                 now = F.broker_now()
                 g['message'] = (f"Price feed problem at {F.broker_to_dubai(now).strftime('%-I:%M %p').lower()} Dubai "
-                                f"({type(e).__name__}) - the page shows the last good update; it retries every 5 minutes.")
+                                f"({type(e).__name__}) - the page shows the last good update; it retries every minute.")
                 g['feed_error'] = True
                 json.dump(old, open(PORTAL, 'w'), indent=1)
         except Exception:

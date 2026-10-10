@@ -414,6 +414,7 @@ def manage(trades, day, m1, now=None):
     """Stop hit or end-of-day close for each taken trade from today's minute bars. Prices are Bid; buys pay the spread
     at entry, sells at exit. Adds: status, exit (fill), exit_t, pnl_oz, rwf (1 = moved 0.3 daily range our way first)."""
     T = np.asarray(m1['t'], dtype='datetime64[m]'); Hi = np.asarray(m1['h'], float); Lo = np.asarray(m1['l'], float); Cl = np.asarray(m1['c'], float)
+    Op = np.asarray(m1['o'], float)
     friday = int(day.astype('datetime64[D]').astype('int64')) % 7 == 1
     eod = day.astype('datetime64[m]') + np.timedelta64(22 * 60 + 50 if friday else 23 * 60, 'm')
     sp = S['Spread']
@@ -421,7 +422,13 @@ def manage(trades, day, m1, now=None):
         if tr.get('skipped'): continue
         d = tr['dir']; tr.update(status='open', exit=None, exit_t=None, pnl_oz=None, rwf=None)
         a = 0.3 * tr['atr']; j0 = int(np.searchsorted(T, tr['t'], side='right'))
-        for j in range(j0, len(T)):
+        je = j0 - 1          # STOP INSIDE THE ENTRY MINUTE (added 2026-10-10): the part of the entry bar after the fill, on the same
+        if 0 <= je < len(T) and T[je] == np.datetime64(tr['t'], 'm'):   # tick path as the fills (up bar O-L-H-C, down bar O-H-L-C)
+            at_open = abs(tr['px'] - Op[je]) < 1e-9; up_bar = Cl[je] >= Op[je]
+            if d == 1: worst = Lo[je] if (at_open or not up_bar) else Cl[je]; hit = worst <= tr['stop']
+            else: worst = Hi[je] if (at_open or up_bar) else Cl[je]; hit = worst + sp >= tr['stop']
+            if hit: tr.update(status='stop hit', exit=tr['stop'], exit_t=T[je])
+        for j in (range(j0, len(T)) if tr['exit'] is None else ()):
             if T[j] >= eod:
                 bid = Cl[j - 1] if j - 1 >= j0 else Cl[j]
                 tr.update(status='closed at day end', exit=bid if d == 1 else bid + sp, exit_t=T[j]); break
