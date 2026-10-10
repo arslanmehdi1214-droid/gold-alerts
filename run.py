@@ -15,8 +15,16 @@ def dubai(t): return F.broker_to_dubai(pd.Timestamp(t)).strftime('%-I:%M %p').lo
 def send(text):
     tok, chat = os.environ.get('TELEGRAM_BOT_TOKEN'), os.environ.get('TELEGRAM_CHAT_ID')
     if not tok or not chat: print('[no Telegram keys] ' + text.replace('\n', ' | ')); return True
-    r = requests.post(f'https://api.telegram.org/bot{tok}/sendMessage', data={'chat_id': chat, 'text': text}, timeout=20)
+    try:
+        r = requests.post(f'https://api.telegram.org/bot{tok}/sendMessage', data={'chat_id': chat, 'text': text}, timeout=20)
+    except Exception as e:
+        print('telegram not sent:', type(e).__name__); return False        # retried next run (not marked as sent)
     print('telegram', r.status_code, text.splitlines()[0]); return r.status_code == 200
+def dumpj(obj, p, **kw):
+    """Write JSON atomically (temp file + rename), so a cancelled job never leaves a half-written file."""
+    tmp = p + '.tmp'
+    with open(tmp, 'w') as f: json.dump(obj, f, **kw)
+    os.replace(tmp, p)
 def loadj(p, d):
     try: return json.load(open(p))
     except Exception: return d
@@ -89,20 +97,29 @@ def finish_missed_days(feed, h1, now):
     if not J: return
     today = str(now.normalize().date()); cache = loadj(INPUTS, {}); state = loadj(STATE, {}); changed = False
     for d in missed_days(J, now, cache):
-        day = pd.Timestamp(d['date']); inp = cache[d['date']]
-        m1 = feed.m1_today(day); m1 = m1[m1.index < day + pd.Timedelta(days=1)]
-        taken, skipped, _ = compute(h1, m1, day, day + pd.Timedelta(hours=23, minutes=59), inp)
-        rows = [row(t) for t in taken]
+        try:
+            day = pd.Timestamp(d['date']); inp = dict(cache[d['date']])
+            m1 = feed.m1_today(day); m1 = m1[m1.index < day + pd.Timedelta(days=1)]
+            if not len(m1) or m1.index.max() < day + pd.Timedelta(hours=22):          # minutes do not reach the day end: try later
+                print('missed day', d['date'], 'not caught up: minute bars end', (m1.index.max() if len(m1) else None)); continue
+            if inp.get('regime') is None:
+                reg, corr = regime_today(feed, h1, day, day + pd.Timedelta(hours=23))
+                if reg is not None: inp.update(regime=reg, corr=corr)
+            was_open = any(t.get('status') in ('open', 'close_now') for t in d.get('trades', []))
+            taken, skipped, _ = compute(h1, m1, day, day + pd.Timedelta(hours=23, minutes=59), inp)
+            rows = [row(t) for t in taken]
+        except Exception as e:
+            print('missed day', d['date'], 'not caught up:', type(e).__name__, e); continue
         d.update(side=(rows[0]['side'] if rows else None), trades=rows, skipped=len(skipped), final=True, caught_up=str(now))
         changed = True
-        if any(r['status'] == 'eod' for r in rows):
+        if was_open or any(r['status'] == 'eod' for r in rows):
             k = f"MISSED_EOD|{d['date']}"; sent = set(state.get(today, []))
             if k not in sent and send(f"GOLD: the midnight close for {day.strftime('%a %d %b')} was missed (the signal server was down). "
                                       f"If any gold trade from that day is still open, close it now. | {dubai(now)} Dubai"):
                 sent.add(k); state[today] = sorted(sent)
         print('caught up missed day', d['date'], len(rows), 'trades')
     if changed:
-        json.dump(J, open(JOURNAL, 'w'), indent=1); json.dump(state, open(STATE, 'w'), indent=0)
+        dumpj(J, JOURNAL, indent=1); dumpj(state, STATE, indent=0)
 
 def summary(J, day):
     allt = [t for d in J['days'] for t in d['trades']]
@@ -119,21 +136,23 @@ def summary(J, day):
 def write_summary():
     J = loadj(JOURNAL, None)
     if J and J.get('days'):
-        J['summary'] = summary(J, pd.Timestamp(J['days'][-1]['date'])); json.dump(J, open(JOURNAL, 'w'), indent=1)
+        J['summary'] = summary(J, pd.Timestamp(J['days'][-1]['date'])); dumpj(J, JOURNAL, indent=1)
         old = loadj(PORTAL, {}); g = (old.get('markets') or {}).get('GOLD')
-        if g is not None: g['journal'] = J['summary']; json.dump(old, open(PORTAL, 'w'), indent=1)
+        if g is not None: g['journal'] = J['summary']; dumpj(old, PORTAL, indent=1)
 
 def main():
     now = F.broker_now(); day = now.normalize(); test = '--test' in sys.argv
     if now.dayofweek >= 5 and not test:
         if missed_days(loadj(JOURNAL, {}), now, loadj(INPUTS, {})):
-            feed, src = F.get_feed(); finish_missed_days(feed, feed.h1(days=460), now); write_summary()
+            try: feed, src = F.get_feed(); finish_missed_days(feed, feed.h1(days=460), now); write_summary()
+            except Exception as e: print('weekend catch-up skipped:', type(e).__name__, e)
         old = loadj(PORTAL, {}); g = (old.get('markets') or {}).get('GOLD')
-        if g: g.update(state='closed', message='Market closed for the weekend'); json.dump(old, open(PORTAL, 'w'), indent=1)
+        if g: g.update(state='closed', message='Market closed for the weekend'); dumpj(old, PORTAL, indent=1)
         print('weekend'); return
     feed, src = F.get_feed()
     h1 = feed.h1(days=460)
-    finish_missed_days(feed, h1, now)
+    try: finish_missed_days(feed, h1, now)
+    except Exception as e: print('catch-up skipped:', type(e).__name__, e)
     m1 = feed.m1_today(day); m1 = m1[m1.index + pd.Timedelta(minutes=1) <= now]          # closed minute bars only
     # daily outside values (cached per broker day; retried every 30 minutes if something was missing)
     cache = loadj(INPUTS, {}); key = str(day.date()); inp = cache.get(key)
@@ -145,7 +164,7 @@ def main():
         reg, corr = regime_today(feed, h1, day, now)
         if reg is not None: inp.update(regime=reg, corr=corr)
     cache = {k: v for k, v in cache.items() if k >= str((day - pd.Timedelta(days=10)).date())}; cache[key] = inp
-    json.dump(cache, open(INPUTS, 'w'), indent=1)
+    dumpj(cache, INPUTS, indent=1)
     reg = inp.get('regime')
     taken, skipped, D = compute(h1, m1, day, now, inp)
     friday = now.dayofweek == 4
@@ -170,7 +189,7 @@ def main():
         if (now - e['t']) > pd.Timedelta(minutes=45) and e['kind'] != 'EOD': sent.add(k); continue   # too old to act on
         if send(fmt(e)): sent.add(k)
     state = {k2: v for k2, v in state.items() if k2 >= str((day - pd.Timedelta(days=5)).date())}; state[key] = sorted(sent)
-    json.dump(state, open(STATE, 'w'), indent=0)
+    dumpj(state, STATE, indent=0)
     write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, D.atr(0))
     print(f'{now} broker | {src} | trades today {len(taken)} | skipped {len(skipped)} | inputs {inp}')
 
@@ -185,7 +204,7 @@ def write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, datr):
                          trades=rows, skipped=len(skipped), final=bool(now >= eod)))
     J['days'] = sorted(days, key=lambda d: d['date'])
     J['summary'] = summary(J, day)
-    json.dump(J, open(JOURNAL, 'w'), indent=1)
+    dumpj(J, JOURNAL, indent=1)
     # ---- page data
     old = loadj(PORTAL, {}); others = {k: v for k, v in (old.get('markets') or {}).items() if k != 'GOLD'}
     last_sig = now >= day + pd.Timedelta(hours=19)
@@ -217,7 +236,7 @@ def write_pages(now, day, m1, taken, skipped, inp, reg, src, eod, datr):
                 stats=BACKTEST, journal=J['summary'])
     data = dict(updated=F.broker_to_dubai(now).strftime('%a %d %b · %-I:%M %p').replace('AM', 'am').replace('PM', 'pm'),
                 source=src, markets=dict(GOLD=gold, **others))
-    json.dump(data, open(PORTAL, 'w'), indent=1)
+    dumpj(data, PORTAL, indent=1)
 
 def safe_main():
     """Never crash the page: if a price source fails, say so on the page and keep the last good data."""
@@ -233,7 +252,7 @@ def safe_main():
                 g['message'] = (f"Price feed problem at {F.broker_to_dubai(now).strftime('%-I:%M %p').lower()} Dubai "
                                 f"({type(e).__name__}) - the page shows the last good update; it retries every minute.")
                 g['feed_error'] = True
-                json.dump(old, open(PORTAL, 'w'), indent=1)
+                dumpj(old, PORTAL, indent=1)
         except Exception:
             traceback.print_exc()
     try:                                    # USDJPY paper page (separate from gold; a yen failure never touches the gold card)
