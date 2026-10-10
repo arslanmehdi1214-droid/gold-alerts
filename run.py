@@ -271,6 +271,15 @@ def safe_main():
             import yen_run; yen_run.fail(e)
         except Exception:
             traceback.print_exc()
+    try:                                    # WTI paper page (separate; a WTI failure never touches the gold or USDJPY cards)
+        import wti_run
+        wti_run.main()
+    except Exception as e:
+        traceback.print_exc()
+        try:
+            import wti_run; wti_run.fail(e)
+        except Exception:
+            traceback.print_exc()
 
 if __name__ == '__main__':
     safe_main()
