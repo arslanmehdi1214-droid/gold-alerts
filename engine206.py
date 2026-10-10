@@ -9,7 +9,7 @@ It never trades. It returns the trades the EA would take, with stop, size weight
 import math
 import numpy as np
 
-S = dict(Signal_Stop_Target=0.5, Stop_Other=0.75, Signal_Last_Hour=19, Close_Hour=23, Friday_Close_HHMM=2250,
+S = dict(Signal_Stop_Target=0.5, Stop_Other=0.75, Signal_Last_Hour=19, Close_HHMM=2300, Friday_Close_HHMM=2250,
          DailyATR_Days=14, U2_Step=50.0, U2_From=9, U8_From=12,
          N1_Min_Gap=0.05, N1_From=9, N2_Near=0.15, N2_Hour=6, N3_From=0, N4_From=9, N5_From=9,
          N6_End=8, N6_Min_Range=0.6, N11_Calm=0.8, N11_Days=2, N11_From=9, N12_Pct=0.2, N12_Days=3, N12_From=10,
@@ -17,7 +17,29 @@ S = dict(Signal_Stop_Target=0.5, Stop_Other=0.75, Signal_Last_Hour=19, Close_Hou
          A15_ADX=15, A15_Days=2, A15_From=12, T15_KC=1.5, T15_Days=5, T15_From=9, N16_Min=3, N16_Days=5, N16b_Days=3,
          N16_From=12, S24_Hour=3, S24_Max=0.6, S24_Hours=24, G3_Box=1.0156,
          Size_First=0.5, Size_Confirmed=2.5, Size_N4=0.5, Size_N5=0.5, Size_U8=0.5, Dollar_Agree=0.67,
-         Quiet_3_Up=1.5, Quiet_0_2=0.67, Quiet_0_Extra=0.67, Size_Min=0.5, Size_Max=2.0, Spread=0.5)
+         Quiet_3_Up=1.5, Quiet_0_2=0.67, Quiet_0_Extra=0.67, Size_Min=0.5, Size_Max=2.0, Spread=0.5,
+         Winter_Close_HHMM=2250)
+# DAY-END CLOSE (his pick A, 2026-10-10): Mon-Thu Close_HHMM (23:00 broker) in US summer time, Winter_Close_HHMM (22:50) in
+# US winter time (first Sunday of November to second Sunday of March), Friday_Close_HHMM (22:50) every Friday.
+# Why: in winter 23:00 broker = 9:00 pm UTC = Capital.com's overnight funding time (its Gold Spot page), so a trade still
+# open at the close would pay a night of funding. Python 2020-26 on his MT4 data: summer unchanged, winter -$0.12/oz per trade.
+# (22:50 all year failed its pass bar: -$0.18/oz per trade.)
+
+
+def us_winter(day):
+    """True when New York is on standard time (UTC-5) on this broker day (US rule since 2007; a weekday never straddles a change)."""
+    d = np.datetime64(day, 'D'); y = int(str(d)[:4])
+    def sunday(month, n):                               # n-th Sunday of the month
+        first = np.datetime64(f'{y}-{month:02d}-01'); wd = (int(first.astype('int64')) + 3) % 7   # 0 = Monday
+        return first + np.timedelta64((6 - wd) % 7 + 7 * (n - 1), 'D')
+    return bool(d < sunday(3, 2) or d >= sunday(11, 1))
+
+
+def close_minutes(day):
+    """Minutes after the broker day start (00:00 broker) when every open trade is closed and no new signal is taken."""
+    d = np.datetime64(day, 'D'); friday = int(d.astype('int64')) % 7 == 1   # 1970-01-01 was a Thursday
+    c = S['Friday_Close_HHMM'] if friday else (S['Winter_Close_HHMM'] if us_winter(d) else S['Close_HHMM'])
+    return c // 100 * 60 + c % 100
 G_DAYS = [0, 2, 2, 0, 2, 2, 2, 3, 5, 5, 3, 3, 0, 2, 0, 2, 3, 2, 3]
 G_FROM = [0, 12, 6, 3, 9, 6, 12, 10, 0, 10, 12, 12, 0, 12, 12, 10, 10, 12, 12]
 G_TYPE = [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 4, 0, 0, 0, 3]
@@ -173,6 +195,7 @@ def run_day(day, D, Hh, m1, inp):
     atr = D.atr(0)
     if atr <= 0: return []
     friday = int(day.astype('datetime64[D]').astype('int64')) % 7 == 1   # 1970-01-01 was a Thursday, so day % 7 == 1 is a Friday
+    cmin = close_minutes(day)                                            # no new signal from the day-end close on
     # ---- day setup at the first tick
     p0 = O[0]; h0 = int((T[0] - day.astype('datetime64[m]')).astype(int) // 60)
     yH, yL, pc = D.H(1), D.L(1), D.C(1)
@@ -257,7 +280,7 @@ def run_day(day, D, Hh, m1, inp):
         path = (O[i], Lo[i], Hi[i], Cl[i]) if Cl[i] >= O[i] else (O[i], Hi[i], Lo[i], Cl[i])
         for ti, p in enumerate(path):
             def fill(level, p=p, ti=ti): return p if ti == 0 else level   # a break inside the bar fills at the level
-            if h >= S['Close_Hour'] or (friday and hm >= S['Friday_Close_HHMM']): break
+            if mins >= cmin: break
             last = h < S['Signal_Last_Hour']
             # U2 round $50: first touch, entered only if that minute closes beyond it
             if not done['u2'] and h >= S['U2_From'] and last:
@@ -415,8 +438,7 @@ def manage(trades, day, m1, now=None):
     at entry, sells at exit. Adds: status, exit (fill), exit_t, pnl_oz, rwf (1 = moved 0.3 daily range our way first)."""
     T = np.asarray(m1['t'], dtype='datetime64[m]'); Hi = np.asarray(m1['h'], float); Lo = np.asarray(m1['l'], float); Cl = np.asarray(m1['c'], float)
     Op = np.asarray(m1['o'], float)
-    friday = int(day.astype('datetime64[D]').astype('int64')) % 7 == 1
-    eod = day.astype('datetime64[m]') + np.timedelta64(22 * 60 + 50 if friday else 23 * 60, 'm')
+    eod = day.astype('datetime64[m]') + np.timedelta64(close_minutes(day), 'm')
     sp = S['Spread']
     for tr in trades:
         if tr.get('skipped'): continue
