@@ -204,7 +204,7 @@ function render(){if(!D)return;chips();const m=D.markets[sel]||D.markets.GOLD;
 }
 async function load(){try{const r=await fetch(DATA+'?t='+Date.now(),{cache:'no-store'});D=await r.json();
  try{const q=await fetch(JOUR+'?t='+Date.now(),{cache:'no-store'});J=await q.json()}catch(e){J=null}
- $('upd').innerHTML=`Updated <b style="color:var(--ink)">${esc(D.updated)}</b> Dubai`;$('src').textContent='Prices: '+D.source+' · checks every 5 minutes · signals only, you place the trades';
+ $('upd').innerHTML=`Updated <b style="color:var(--ink)">${esc(D.updated)}</b> Dubai`;$('src').textContent='Prices: '+D.source+' · checks every minute · page updates every 10 minutes · signals only, you place the trades';
  const g=D.markets.GOLD,key=g?(g.state+'|'+(g.entries||[]).map(e=>e.status).join(',')):'';if(seen!==null&&key!==seen)beep();seen=key;render()}
  catch(e){$('upd').textContent='Waiting for data…'}}
 load();setInterval(load,60000);
