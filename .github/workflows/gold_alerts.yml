@@ -1,7 +1,7 @@
 name: gold-alerts
 on:
   schedule:
-    - cron: '*/5 * * * 0-5'     # every 5 minutes, Sunday-Friday (UTC) - covers the whole gold week; weekend runs exit at once
+    - cron: '*/30 * * * 0-5'    # starts a checking job (Sunday-Friday UTC); each job checks EVERY MINUTE and hands over to the next
   workflow_dispatch:
     inputs:
       test:
@@ -9,19 +9,22 @@ on:
         default: 'yes'
 permissions:
   contents: write
+  actions: read
 concurrency: gold-alerts
 jobs:
   run:
-    runs-on: ubuntu-latest
-    timeout-minutes: 8
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
       - run: pip install -r requirements.txt
-      - name: Check for signals
+      - name: Check for signals every minute
         env:
           CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
           CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
@@ -30,9 +33,13 @@ jobs:
           ALERT_SIZE_OZ: '0.1'
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python run.py ${{ github.event_name == 'workflow_dispatch' && '--test' || '' }}
-      - name: Save sent-alerts list
+          GITHUB_TOKEN: ${{ github.token }}
+          LOOP_MINUTES: '330'
         run: |
           git config user.name gold-bot; git config user.email gold-bot@users.noreply.github.com
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then python run.py --test; else python loop.py; fi
+      - name: Save sent-alerts list
+        if: always()
+        run: |
           git add sent.json docs/*.json 2>/dev/null || true
-          git diff --cached --quiet || (git commit -m "alerts state" && (git push || (git pull --rebase && git push)))
+          git diff --cached --quiet || (git commit -m "alerts state" && (git push || (git pull --rebase -X theirs && git push)))
