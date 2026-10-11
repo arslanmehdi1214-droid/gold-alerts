@@ -1281,9 +1281,9 @@
     "decided": 11,
     "days": 80.0,
     "perday": 2.4,
-    "avg_pnl": -8.05,
-    "closed": 11,
-    "total_pnl_01": -8.85
+    "avg_pnl": -8.22,
+    "closed": 12,
+    "total_pnl_01": -9.87
    }
   },
   "SILVER": {
@@ -2649,8 +2649,40 @@
   "OIL": {
    "code": "OIL",
    "name": "Oil (WTI)",
-   "status": "NO SYSTEM YET",
-   "note": "Day-trading tests failed so far."
+   "symbol": "WTI \u00b7 Capital.com US Crude",
+   "live": false,
+   "paper": true,
+   "status": "Paper",
+   "version": "v1.02",
+   "unit": "usd",
+   "dp": 2,
+   "stats": {
+    "direction": "53.0%",
+    "days": "95.5%",
+    "perday": "2.55",
+    "win": "37.2% / 36.0%",
+    "pf": "1.20 / 1.08",
+    "net": "+$49,700 / +$22,076 at 0.30 + 0.10 lots",
+    "source": "MT4 v1.02, 2020-01 to 2026-06, 4,300 trades; spread 2 (Prime-like) / spread 6 (Pro-like)"
+   },
+   "pass_bar": {
+    "direction": 53.0,
+    "pf": 1.1,
+    "months": 3
+   },
+   "day_note": "14-day range \u2014 \u00b7 stop \u00bc range \u00b7 no target \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter \u00b7 size: sells from the day's 2nd trade full, the rest \u2153",
+   "what_note": "This page tracks whether live WTI signals do as well as the backtest. Decision after about 3 months.",
+   "cost_note": "Results are $ per barrel (v1.02 sizes: full or \u2153), from the signal price with the backtest's slip, minus Capital.com's spread (at least 2 cents).",
+   "net_label": "Net $ per barrel (v1.02 sizes)",
+   "state": "closed",
+   "message": "Market closed for the weekend.",
+   "entries": [],
+   "journal": {
+    "since": null,
+    "trades": 0
+   },
+   "jdays": [],
+   "feed_error": false
   },
   "US500": {
    "code": "US500",
