@@ -1,15 +1,15 @@
 {
- "balance": 1150.35,
+ "balance": 1148.7,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-02",
-  "pl": 50.34,
+  "pl": 47.04,
   "start_balance": 1149.69,
   "start_equity": 1149.69,
   "stopped": false
  },
- "open_positions": 1,
- "open_risk_aed": 0.0,
+ "open_positions": 0,
+ "open_risk_aed": 0,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-10-29|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -257,16 +257,17 @@
    "part_x": 0.25,
    "px_adj": 0.04,
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-6fff-161c-0495-7fc60004511e",
     "level": 99.585,
-    "open": true,
+    "open": false,
     "size": 2.9,
     "tp": null
    },
    "risk_aed": 29.5,
    "risk_usd": 8.17,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 99.52
   },
   "US100|2026-10-29|3:04 am|BUY|F2 sweep prev-day hi/lo by 0.1ATR from 1am back inside <30min -> reverse": {
