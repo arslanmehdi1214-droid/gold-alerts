@@ -1,5 +1,5 @@
 {
- "updated": "Mon 02 Nov \u00b7 12:35 pm",
+ "updated": "Mon 02 Nov \u00b7 12:36 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -855,6 +855,13 @@
      3895.16,
      3897.29,
      3892.66
+    ],
+    [
+     "12:35 pm",
+     3896.37,
+     3896.39,
+     3896.57,
+     3894.56
     ]
    ],
    "history": [
@@ -1099,8 +1106,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 50.301,
-   "change": 1.223,
+   "price": 50.314,
+   "change": 1.236,
    "entries": [],
    "spark": [
     [
@@ -1907,6 +1914,13 @@
      50.244,
      50.301,
      50.204
+    ],
+    [
+     "12:35 pm",
+     50.314,
+     50.302,
+     50.314,
+     50.268
     ]
    ],
    "journal": {
@@ -2048,8 +2062,8 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 157.649,
-   "change_pips": -1.3,
+   "price": 157.648,
+   "change_pips": -1.4,
    "atr_pips": 83.0,
    "entries": [
     {
@@ -2880,6 +2894,13 @@
      157.659,
      157.665,
      157.628
+    ],
+    [
+     "12:35 pm",
+     157.648,
+     157.648,
+     157.649,
+     157.637
     ]
    ],
    "journal": {
@@ -4092,8 +4113,8 @@
    "net_label": "Net $ per barrel (v1.08)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Close 25% at the part level, then move the stop to entry; everything closes at 10:00 pm Dubai. No new trades after 6:30 pm (one late first trade allowed).",
-   "price": 99.05,
-   "change": -2.31,
+   "price": 99.005,
+   "change": -2.36,
    "entries": [
     {
      "time": "6:31 am",
@@ -4126,6 +4147,28 @@
      "stop0": 102.33,
      "half_px": 99.1,
      "half": true,
+     "part": 0.25,
+     "late": false,
+     "stop_usd": 2.77,
+     "size": "full",
+     "first": false,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "rwf": null,
+     "spread": 0.04
+    },
+    {
+     "time": "12:35 pm",
+     "side": "SELL",
+     "name": "Whole dollar",
+     "price": 98.98,
+     "stop": 101.75,
+     "stop0": 101.75,
+     "half_px": 98.52,
+     "half": false,
      "part": 0.25,
      "late": false,
      "stop_usd": 2.77,
@@ -4945,16 +4988,23 @@
      99.25,
      99.33,
      99.03
+    ],
+    [
+     "12:35 pm",
+     99.0,
+     99.05,
+     99.11,
+     98.98
     ]
    ],
    "journal": {
     "since": "02 Nov 2026",
     "weekdays": 1,
-    "trades": 2,
+    "trades": 3,
     "decided": 0,
     "direction": null,
     "days": 100.0,
-    "perday": 2.0,
+    "perday": 3.0,
     "closed": 1,
     "win": 100.0,
     "pf": null,
@@ -5000,6 +5050,28 @@
        "stop0": 102.33,
        "half_px": 99.1,
        "half": true,
+       "part": 0.25,
+       "late": false,
+       "stop_usd": 2.77,
+       "size": "full",
+       "first": false,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "res_sized": null,
+       "rwf": null,
+       "spread": 0.04
+      },
+      {
+       "time": "12:35 pm",
+       "side": "SELL",
+       "name": "Whole dollar",
+       "price": 98.98,
+       "stop": 101.75,
+       "stop0": 101.75,
+       "half_px": 98.52,
+       "half": false,
        "part": 0.25,
        "late": false,
        "stop_usd": 2.77,
@@ -5807,8 +5879,8 @@
    "net_label": "Net points (v1.07 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": 7612.1,
-   "change": 8.6,
+   "price": 7613.1,
+   "change": 9.6,
    "entries": [],
    "spark": [
     [
@@ -6615,6 +6687,13 @@
      7611.1,
      7612.1,
      7609.4
+    ],
+    [
+     "12:35 pm",
+     7613.1,
+     7611.9,
+     7613.1,
+     7610.9
     ]
    ],
    "journal": {
@@ -6983,8 +7062,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 28613.6,
-   "change": 109.1,
+   "price": 28616.3,
+   "change": 111.8,
    "entries": [],
    "spark": [
     [
@@ -7791,6 +7870,13 @@
      28611.1,
      28619.6,
      28601.2
+    ],
+    [
+     "12:35 pm",
+     28616.3,
+     28613.8,
+     28617.1,
+     28605.3
     ]
    ],
    "journal": {
@@ -8433,8 +8519,8 @@
    "regime": 0.364,
    "gap": -0.434,
    "message": "PAPER BUY at 1.34137 (12:00 pm Dubai). Stop 1.33394, target 1.34880 - close the WHOLE trade at the target; otherwise it closes at 1:45 am Dubai. CALM day: when price reaches 1.34397, move the stop to 1.34187 (entry + 5 pips).",
-   "price": 1.34237,
-   "change": 0.00373,
+   "price": 1.34255,
+   "change": 0.00391,
    "entries": [
     {
      "time": "12:00 pm",
@@ -8460,7 +8546,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": 8.5,
+     "live": 10.3,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.33394 \u00b7 target 1.34880 \u00b7 when price reaches 1.34397, MOVE THE STOP to 1.34187 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 1:45 am Dubai"
     }
@@ -9354,6 +9440,13 @@
      1.34203,
      1.34244,
      1.34198
+    ],
+    [
+     "12:35 pm",
+     1.34255,
+     1.34238,
+     1.34256,
+     1.34236
     ]
    ],
    "journal": {
@@ -9402,7 +9495,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": 8.5,
+       "live": 10.3,
        "spread": 1.5,
        "next": "Hold \u00b7 stop 1.33394 \u00b7 target 1.34880 \u00b7 when price reaches 1.34397, MOVE THE STOP to 1.34187 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 1:45 am Dubai"
       }
