@@ -1,5 +1,5 @@
 {
- "updated": "Tue 03 Nov \u00b7 2:00 am",
+ "updated": "Tue 03 Nov \u00b7 2:11 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -383,7 +383,7 @@
    "epic": "SILVER",
    "close_at": "1:00 am",
    "gold_signals_today": 0,
-   "history_note": "minutes from 2026-09-16 (34 days) \u00b7 325 daily bars from 2025-07-31 \u00b7 added SILVER 2026-11-02, GOLD 2026-11-02"
+   "history_note": "minutes from 2026-09-16 (34 days) \u00b7 325 daily bars from 2025-07-31"
   },
   "USDJPY": {
    "code": "USDJPY",
@@ -414,7 +414,7 @@
    "net_label": "Net R / $ at $100 risk (v1.05 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
+   "price": 157.86,
    "change_pips": null,
    "atr_pips": 80.3,
    "entries": [],
@@ -1628,8 +1628,8 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": null,
-   "history_note": "history to 2026-11-02 (300 days) \u00b7 added 2026-11-02"
+   "live_spread_pips": 9.0,
+   "history_note": "history to 2026-11-02 (300 days)"
   },
   "DE40": {
    "code": "DE40",
@@ -2575,7 +2575,7 @@
    "feed_error": false,
    "epic": "OIL_CRUDE",
    "live_spread": null,
-   "history_note": "history to 2026-11-02 (60 days) \u00b7 added 2026-11-02"
+   "history_note": "history to 2026-11-02 (60 days)"
   },
   "US500": {
    "code": "US500",
@@ -2607,10 +2607,25 @@
    "net_label": "Net points (v1.07 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night).",
-   "price": null,
-   "change": null,
+   "price": 7556.3,
+   "change": -0.6,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     7556.3,
+     7556.9,
+     7558.1,
+     7556.0
+    ],
+    [
+     "2:10 am",
+     7556.3,
+     7556.2,
+     7556.3,
+     7556.1
+    ]
+   ],
    "journal": {
     "since": "02 Nov 2026",
     "weekdays": 2,
@@ -2995,7 +3010,7 @@
    "picks_stale": false,
    "epic": "US500",
    "close_at": "12:30 am",
-   "history_note": "history to 2026-11-02 (28 days) \u00b7 added 2026-11-02"
+   "history_note": "history to 2026-11-02 (28 days)"
   },
   "US100": {
    "code": "US100",
@@ -3027,10 +3042,25 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 28107.6,
+   "change": 17.0,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     28104.0,
+     28090.6,
+     28113.2,
+     28088.7
+    ],
+    [
+     "2:10 am",
+     28107.6,
+     28103.9,
+     28107.6,
+     28102.1
+    ]
+   ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 12,
@@ -3702,7 +3732,7 @@
    "feed_error": false,
    "epic": "US100",
    "close_at": "1:00 am",
-   "history_note": "history to 2026-11-02 (368 days) \u00b7 added 2026-11-02"
+   "history_note": "history to 2026-11-02 (368 days)"
   },
   "GBPUSD": {
    "code": "GBPUSD",
@@ -3736,10 +3766,25 @@
    "regime": 0.392,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": null,
-   "change": null,
+   "price": 1.34028,
+   "change": 4e-05,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     1.34027,
+     1.34024,
+     1.34036,
+     1.34011
+    ],
+    [
+     "2:10 am",
+     1.34028,
+     1.34028,
+     1.34028,
+     1.34028
+    ]
+   ],
    "journal": {
     "since": "26 Oct 2026",
     "weekdays": 7,
