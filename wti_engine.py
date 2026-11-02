@@ -210,3 +210,33 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
                         status=('open' if g['on'] else g['why']), exit=g['exit'], exit_t=(None if g['exit_i'] is None else t[g['exit_i']]),
                         res=res, R=(None if g['on'] else round(g['bank'], 4)), rwf=rwf, rwf_final=decided or has_close or final, A=A, spread=g['sp']))
     return out
+
+# ---- v1.10 (2 Nov 2026): SIDE SELL after a weak close. At the 7:00 broker bar, if yesterday's 21:30 price (settle) sits in the bottom SIDE_MAX_POS of
+# yesterday's range AND the ladder has not traded before that bar, sell once at SIDE_SIZE x full size. Own stop (0.75 x A), half-close at +0.15 risk
+# (part PART), rest's stop to entry, closed at the 20:00 close bar. Independent of the ladder (no day state, no day lock). Same numbers as the EA row 46-49.
+SIDE_MAX_POS, SIDE_SIZE = 0.20, 0.25
+
+def side_sell(P, t, O, H, L, C, ladder_legs, final=False):
+    """Returns [] or one leg dict (same keys as run_day legs, side=True). ladder_legs = run_day's output for the same day."""
+    if P is None or len(t) == 0: return []
+    t = pd.DatetimeIndex(t); O, H, L, C = (np.asarray(x, float) for x in (O, H, L, C)); n = len(t)
+    hm = (t.hour * 60 + t.minute).values
+    s = np.flatnonzero((hm >= 420) & (hm <= 425))
+    if len(s) == 0: return []
+    ms = int(s[0]); yH, yL, st = P['yhi'], P['ylo'], P['settle']
+    if st is None or yH <= yL or st <= 0 or (st - yL) / (yH - yL) > SIDE_MAX_POS: return []
+    if any(g['i'] < ms for g in ladder_legs): return []                 # the ladder traded before 7:00 -> no side sell
+    A = P['A']; sd = SELL_STOP * A; sp = FIX_SP; e = float(O[ms]); stop = e + sd; rk = sd + sp; hp = e - SELL_HALF * rk - sp
+    eod = int(np.searchsorted(hm, close_hm(t[0]))); has_close = eod < n
+    bank = 0.0; q = 1.0; half = False; why = None; xi = None; xb = None
+    for m in range(ms + 1, n):
+        if m == eod: xb, xi, why = O[m], m, 'eod'; break
+        if H[m] >= stop:
+            xb, xi, why = max(stop, O[m]), m, ('be' if half else 'stopped'); break
+        if not half and L[m] <= hp:
+            bank += PART * -1 * ((hp + sp) - e) / sd; q = 1.0 - PART; half = True; stop = e - sp
+    if why is None and final and not has_close: xb, xi, why = C[n - 1], n - 1, 'eod'
+    if why is not None: bank += q * -1 * ((xb + sp) - e) / sd
+    return [dict(i=ms, t=t[ms], dir=-1, px=e, fam='side', name='Side sell (weak close)', stop0=float(e + sd), stop=float(stop), half_px=float(hp), half=half,
+                 part=PART, first=False, late=False, size=SIDE_SIZE, weak=False, side=True, status=('open' if why is None else why), exit=(None if xb is None else float(xb)),
+                 exit_t=(None if xi is None else t[xi]), res=(None if why is None else round(bank * sd, 4)), R=(None if why is None else round(bank, 4)), A=A, spread=sp, rwf=None, rwf_final=True)]
