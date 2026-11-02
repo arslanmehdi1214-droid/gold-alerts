@@ -8,8 +8,8 @@
   "start_equity": 1149.69,
   "stopped": false
  },
- "open_positions": 0,
- "open_risk_aed": 0,
+ "open_positions": 1,
+ "open_risk_aed": 10.17,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-10-29|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -129,6 +129,25 @@
    "market": "OIL",
    "state": "not entered",
    "why": "real risk 14.14 AED after lot rounding > 1.4x target 10.0 AED"
+  },
+  "OIL|2026-11-02|6:31 am|SELL|Open \u00b1 \u00bd range": {
+   "desk_price": 100.07,
+   "market": "OIL",
+   "opened_at": "Mon 2 Nov 6:32 AM",
+   "part_x": 0.25,
+   "px_adj": 0.04,
+   "rest": {
+    "id": "00000000-6ffe-acbe-0495-7fc60004511e",
+    "level": 100.025,
+    "open": true,
+    "size": 1.0,
+    "tp": null
+   },
+   "risk_aed": 10.17,
+   "risk_usd": 2.72,
+   "side": "SELL",
+   "state": "open",
+   "stop": 102.84
   },
   "US100|2026-10-29|3:04 am|BUY|F2 sweep prev-day hi/lo by 0.1ATR from 1am back inside <30min -> reverse": {
    "desk_price": 29541.0,
