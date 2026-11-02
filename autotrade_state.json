@@ -1,15 +1,15 @@
 {
- "balance": 1159.56,
+ "balance": 1142.42,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-02",
-  "pl": 19.24,
+  "pl": 23.11,
   "start_balance": 1149.69,
   "start_equity": 1149.69,
   "stopped": false
  },
- "open_positions": 4,
- "open_risk_aed": 74.21,
+ "open_positions": 1,
+ "open_risk_aed": 0.0,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-10-29|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -131,16 +131,17 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-6fff-04f3-0495-7fc60004511e",
     "level": 3904.28,
-    "open": true,
+    "open": false,
     "size": 0.33,
     "tp": null
    },
    "risk_aed": 44.48,
    "risk_usd": 12.25,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 3938.83
   },
   "OIL|2026-10-29|1:06 pm|SELL|Whole dollar": {
@@ -329,26 +330,34 @@
    "market": "US100",
    "opened_at": "Mon 2 Nov 4:07 PM",
    "part": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-706b-aba7-0495-7fc60004511e",
     "level": 28601.3,
-    "open": true,
+    "open": false,
     "size": 0.008,
     "tp": 28729.2
    },
    "part_x": 0.25,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: be",
     "id": "00000000-706b-abb6-0495-7fc60004511e",
     "level": 28602.0,
-    "open": true,
+    "open": false,
     "size": 0.024,
     "tp": null
    },
    "risk_aed": 29.73,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 28347.0
+  },
+  "US100|2026-11-02|6:38 pm|SELL|US+10 H16 price crosses month open after 7am follow": {
+   "at": "Mon 2 Nov 9:24 PM",
+   "market": "US100",
+   "state": "not entered",
+   "why": "desk trade seen 166 min after entry, status stopped"
   },
   "US500|2026-10-29|5:40 pm|SELL|S&P 9:40 am New York opening move": {
    "desk_price": 7703.2,
@@ -389,6 +398,12 @@
    "side": "SELL",
    "state": "closed",
    "stop": 7693.0
+  },
+  "US500|2026-11-02|6:30 pm|BUY|Turn-of-month long (last/first broker days of the month)": {
+   "at": "Mon 2 Nov 9:24 PM",
+   "market": "US500",
+   "state": "not entered",
+   "why": "desk trade seen 174 min after entry, status open"
   },
   "USDJPY|2026-10-29|4:04 pm|BUY|Squeeze 4pm": {
    "desk_price": 158.045,
@@ -450,6 +465,12 @@
    "state": "not entered",
    "stop": 158.196,
    "why": "rejected by Capital.com"
+  },
+  "USDJPY|2026-11-02|5:37 pm|SELL|Squeeze 4pm": {
+   "at": "Mon 2 Nov 9:24 PM",
+   "market": "USDJPY",
+   "state": "not entered",
+   "why": "desk trade seen 227 min after entry, status be"
   },
   "USDJPY|2026-11-02|8:00 am|BUY|Heikin-Ashi 7am": {
    "desk_price": 157.911,
