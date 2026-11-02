@@ -562,19 +562,19 @@ sty.querySelectorAll('button').forEach(b=>b.onclick=()=>{STY=b.dataset.s;sty.que
    after the spread, from the journal's own result: Gold pnl $/oz x 1 oz · USD/JPY pips on $1,000 · Oil res $/bbl x 10 bbl · Nasdaq res pts x $0.10 */
 const HMK=[
  {c:'GOLD',n:'Gold',file:'journal.json',split:'2026-10-22',oldv:'v2.11',newv:'v2.15',usd:t=>t.pnl,
-  tag:t=>t.tag+(t.size_x&&t.size_x!=1?' · size x'+t.size_x:''),info:t=>`in ${f(t.price,2)} · stop ${f(t.stop0??t.stop,2)}${t.half_px!=null?` · ${t.part!=null?Math.round(t.part*100)+'%':'½'} ${f(t.half_px,2)}${t.half?' ✓':''}`:''}${t.exit!=null?` · out ${f(t.exit,2)}`:''}`},
+  tag:t=>t.tag+(t.size_x&&t.size_x!=1?' · size x'+t.size_x:''),info:t=>`in ${f(t.price,2)} · stop ${f(t.stop0??t.stop,2)}${t.half_px!=null?` · ${t.part!=null?Math.round(t.part*100)+'%':'½'} ${f(t.half_px,2)}${t.half?' ✓':''}`:''}${t.exit!=null?` · out ${f(t.exit,2)}`:''}`},
  {c:'USDJPY',n:'USD/JPY',file:'journal_usdjpy.json',usd:t=>t.pips==null||t.exit==null?null:t.pips*10/t.exit,
-  tag:t=>t.name||t.sig,info:t=>`in ${f(t.price,3)} · stop ${f(t.stop,3)}${t.exit!=null?` · out ${f(t.exit,3)}`:''}${t.pips!=null?` · ${sg(t.pips,1)} pips`:''}`},
+  tag:t=>t.name||t.sig,info:t=>`in ${f(t.price,3)} · stop ${f(t.stop,3)}${t.exit!=null?` · out ${f(t.exit,3)}`:''}${t.pips!=null?` · ${sg(t.pips,1)} pips`:''}`},
  {c:'OIL',n:'Oil',file:'journal_wti.json',usd:t=>{const r=t.res_sized??t.res;return r==null?null:r*10},
-  tag:t=>t.name+(t.size?' · size '+t.size:''),info:t=>`in ${f(t.price,2)} · stop ${f(t.stop,2)}${t.exit!=null?` · out ${f(t.exit,2)}`:''}`},
+  tag:t=>t.name+(t.size?' · size '+t.size:''),info:t=>`in ${f(t.price,2)} · stop ${f(t.stop,2)}${t.exit!=null?` · out ${f(t.exit,2)}`:''}`},
  {c:'US100',n:'Nasdaq',file:'journal_nq.json',usd:t=>t.res==null?null:t.res*0.1,
-  tag:t=>(t.name||'').split(':')[0],info:t=>`in ${f(t.price,1)} · stop ${f(t.stop,1)}${t.exit!=null?` · out ${f(t.exit,1)}`:''}${t.res!=null?` · ${sg(t.res,1)} pts`:''}`},
+  tag:t=>(t.name||'').split(':')[0],info:t=>`in ${f(t.price,1)} · stop ${f(t.stop,1)}${t.exit!=null?` · out ${f(t.exit,1)}`:''}${t.res!=null?` · ${sg(t.res,1)} pts`:''}`},
  {c:'US500',n:'S&P 500',file:'journal_sp.json',usd:t=>t.res==null?null:t.res*0.1,
-  tag:t=>(t.src||'')+(t.leg?' · leg '+t.leg:''),info:t=>`in ${f(t.price,1)} · stop ${f(t.stop,1)}${t.exit!=null?` · out ${f(t.exit,1)}`:''}${t.res!=null?` · ${sg(t.res,1)} pts`:''}`},
+  tag:t=>(t.src||'')+(t.leg?' · leg '+t.leg:''),info:t=>`in ${f(t.price,1)} · stop ${f(t.stop,1)}${t.exit!=null?` · out ${f(t.exit,1)}`:''}${t.res!=null?` · ${sg(t.res,1)} pts`:''}`},
  {c:'SILVER',n:'Silver',file:'journal_sv.json',usd:t=>{const r=t.res_sized??t.res;return r==null?null:r*50},
-  tag:t=>(t.name||'')+(t.size>1?' · size '+t.size:''),info:t=>`in ${f(t.price,3)} · stop ${f(t.stop0??t.stop,3)} · ½ at ${f(t.half_px,3)}${t.half?' ✓':''}${t.exit!=null?` · out ${f(t.exit,3)}`:''}`},
+  tag:t=>(t.name||'')+(t.size>1?' · size '+t.size:''),info:t=>`in ${f(t.price,3)} · stop ${f(t.stop0??t.stop,3)} · ½ at ${f(t.half_px,3)}${t.half?' ✓':''}${t.exit!=null?` · out ${f(t.exit,3)}`:''}`},
  {c:'GBPUSD',n:'GBP/USD',file:'journal_gbp.json',usd:t=>t.pips==null?null:t.pips*0.1,
-  tag:t=>t.name||'',info:t=>`in ${f(t.price,5)} · stop ${f(t.stop,5)} · target ${f(t.half_px,5)}${t.half?' ✓':''}${t.exit!=null?` · out ${f(t.exit,5)}`:''}${t.pips!=null?` · ${sg(t.pips,1)} pips`:''}`}];
+  tag:t=>t.name||'',info:t=>`in ${f(t.price,5)} · stop ${f(t.stop,5)} · target ${f(t.half_px,5)}${t.half?' ✓':''}${t.exit!=null?` · out ${f(t.exit,5)}`:''}${t.pips!=null?` · ${sg(t.pips,1)} pips`:''}`}];
 let HJ={},HC=null,HV='today',HM=null,HALL=false;
 const bkey=()=>{const n=new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}));n.setHours(n.getHours()+7);return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0')};
 const HST={late:'signal came late - not taken',stopped:'stop hit',be:'part banked, rest out at entry',trail:'part banked, rest out on the trailing stop',eod:'closed at day end',close_now:'close now (day end)',reversed:'reversed',target:'target hit (whole trade)',open:'open'};
