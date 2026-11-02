@@ -1,15 +1,15 @@
 {
- "balance": 1150.92,
+ "balance": 1150.88,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-02",
-  "pl": 2.46,
+  "pl": 2.38,
   "start_balance": 1149.69,
   "start_equity": 1149.69,
   "stopped": false
  },
- "open_positions": 1,
- "open_risk_aed": 10.17,
+ "open_positions": 3,
+ "open_risk_aed": 63.34,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-10-29|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -103,6 +103,25 @@
    "market": "GOLD",
    "state": "not entered",
    "why": "desk trade seen 86 min after entry, status stopped"
+  },
+  "GOLD|2026-11-02|8:00 am|SELL|N2 near100": {
+   "desk_price": 3902.13,
+   "market": "GOLD",
+   "opened_at": "Mon 2 Nov 8:01 AM",
+   "part_x": 0.0,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-6fff-04f3-0495-7fc60004511e",
+    "level": 3904.28,
+    "open": true,
+    "size": 0.33,
+    "tp": null
+   },
+   "risk_aed": 44.48,
+   "risk_usd": 12.25,
+   "side": "SELL",
+   "state": "open",
+   "stop": 3938.83
   },
   "OIL|2026-10-29|1:06 pm|SELL|Whole dollar": {
    "desk_price": 99.97,
@@ -305,6 +324,25 @@
    "state": "not entered",
    "stop": 158.196,
    "why": "rejected by Capital.com"
+  },
+  "USDJPY|2026-11-02|8:00 am|BUY|Heikin-Ashi 7am": {
+   "desk_price": 157.911,
+   "market": "USDJPY",
+   "opened_at": "Mon 2 Nov 8:01 AM",
+   "part": {
+    "id": "00000000-6fff-04ff-0495-7fc60004511e",
+    "level": 157.91,
+    "open": true,
+    "size": 600.0,
+    "tp": 157.939
+   },
+   "part_x": 1.0,
+   "px_adj": 0.0,
+   "risk_aed": 8.69,
+   "risk_usd": 2.72,
+   "side": "BUY",
+   "state": "open",
+   "stop": 157.288
   }
  },
  "untracked_seen": {}
