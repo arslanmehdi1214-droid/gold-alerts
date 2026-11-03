@@ -457,7 +457,7 @@ try{renderHist()}catch(e){}
 function render(){
  try{actsLive()}catch(e){}
  try{actsRender()}catch(e){}
- const C=T.map(o=>({o,...calc(o)})),tot=C.reduce((a,c)=>a+c.pl,0),op=C.filter(c=>!done(c.o.e)&&c.R>-1&&!hitFullTarget(c)),cl=C.filter(c=>done(c.o.e));
+ const C=T.map(o=>({o,...calc(o)})),tot=C.filter(c=>c.o.e.status!=='late').reduce((a,c)=>a+c.pl,0),op=C.filter(c=>!done(c.o.e)&&c.R>-1&&!hitFullTarget(c)),cl=C.filter(c=>done(c.o.e)&&c.o.e.status!=='late');
  const tabs=[{c:'ALL',n:'All markets'}].concat(MK);
  mtab.innerHTML=tabs.map(m=>{if(m.c==='ALL')return `<button data-c="ALL" class="${SEL==='ALL'?'on':''}">All<small>${op.length} open</small></button>`;
   const x=M[m.c]||{},d=dirOf(x);return `<button data-c="${m.c}" class="${SEL===m.c?'on':''}">${m.n} <em class="${d==='BUY'?'pos':d==='SELL'?'neg':'dim'}">${d==='NONE'?'WAIT':(d==='BUY'?'▲ ':'▼ ')+d}</em><small>${f(nowPx(m,x),m.dp)} <i class="dot ${liveOf(m)?'on':''}"></i></small></button>`}).join('');
