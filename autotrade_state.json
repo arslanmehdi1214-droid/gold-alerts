@@ -1,9 +1,9 @@
 {
- "balance": 1112.26,
+ "balance": 1111.97,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-03",
-  "pl": -37.75,
+  "pl": -38.33,
   "start_balance": 1148.75,
   "start_equity": 1148.75,
   "stopped": false
@@ -12,26 +12,6 @@
  "open_risk_aed": 56.67,
  "risk_usd": 8.168822328114365,
  "trades": {
-  "GBPUSD|2026-10-30|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
-   "desk_price": 1.33938,
-   "market": "GBPUSD",
-   "opened_at": "Fri 30 Oct 11:01 AM",
-   "part": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6fc2-c179-0495-7fc60004511e",
-    "level": 1.33949,
-    "open": false,
-    "size": 1100.0,
-    "tp": 1.34688
-   },
-   "part_x": 1.0,
-   "px_adj": 0.0,
-   "risk_aed": 29.85,
-   "risk_usd": 8.17,
-   "side": "BUY",
-   "state": "closed",
-   "stop": 1.33988
-  },
   "GBPUSD|2026-11-02|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded": {
    "desk_price": 1.34137,
    "market": "GBPUSD",
@@ -70,26 +50,6 @@
    "side": "BUY",
    "state": "open",
    "stop": 1.33429
-  },
-  "GOLD|2026-10-30|7:00 am|BUY|N2 near100": {
-   "desk_price": 3997.93,
-   "market": "GOLD",
-   "opened_at": "Fri 30 Oct 7:01 AM",
-   "part_x": 0.0,
-   "px_adj": 0.0,
-   "rest": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6f75-52a9-0495-7fc60004511e",
-    "level": 3998.25,
-    "open": false,
-    "size": 0.36,
-    "tp": null
-   },
-   "risk_aed": 44.09,
-   "risk_usd": 12.25,
-   "side": "BUY",
-   "state": "closed",
-   "stop": 3964.58
   },
   "GOLD|2026-10-31|7:00 am|BUY|N2 near100": {
    "at": "Sat 31 Oct 1:00 AM",
@@ -148,12 +108,6 @@
    "side": "SELL",
    "state": "closed",
    "stop": 3937.54
-  },
-  "OIL|2026-10-30|5:43 am|BUY|Open \u00b1 \u00bd range": {
-   "at": "Fri 30 Oct 5:44 AM",
-   "market": "OIL",
-   "state": "not entered",
-   "why": "real risk 14.14 AED after lot rounding > 1.4x target 10.0 AED"
   },
   "OIL|2026-11-02|12:35 pm|SELL|Whole dollar": {
    "desk_price": 98.98,
@@ -273,34 +227,6 @@
    "state": "not entered",
    "why": "real risk 10.98 AED after lot rounding > 1.4x target 7.5 AED"
   },
-  "US100|2026-10-30|7:00 am|SELL|H1 U5 only when 5d trend against": {
-   "desk_price": 28764.1,
-   "market": "US100",
-   "opened_at": "Fri 30 Oct 7:01 AM",
-   "part": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6f75-52b4-0495-7fc60004511e",
-    "level": 28752.3,
-    "open": false,
-    "size": 0.002,
-    "tp": 28688.6
-   },
-   "part_x": 0.15,
-   "px_adj": 0.0,
-   "rest": {
-    "closed_by": "Capital.com stop/target",
-    "id": "00000000-6f75-52c3-0495-7fc60004511e",
-    "level": 28752.8,
-    "open": false,
-    "size": 0.016,
-    "tp": null
-   },
-   "risk_aed": 9.98,
-   "risk_usd": 2.72,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 28361.5
-  },
   "US100|2026-11-02|4:06 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am": {
    "desk_price": 28600.0,
    "market": "US100",
@@ -341,26 +267,6 @@
    "state": "not entered",
    "why": "desk trade seen 152 min after entry, status open"
   },
-  "US500|2026-10-30|5:40 pm|SELL|S&P 9:40 am New York opening move": {
-   "desk_price": 7632.0,
-   "market": "US500",
-   "opened_at": "Fri 30 Oct 5:41 PM",
-   "part_x": 0.0,
-   "px_adj": 0.0,
-   "rest": {
-    "closed_by": "desk: eod",
-    "id": "00000000-6ff1-98ba-0495-7fc60004511e",
-    "level": 7632.7,
-    "open": false,
-    "size": 0.13,
-    "tp": null
-   },
-   "risk_aed": 29.12,
-   "risk_usd": 8.17,
-   "side": "SELL",
-   "state": "closed",
-   "stop": 7693.0
-  },
   "US500|2026-11-02|6:30 pm|BUY|Turn-of-month long (last/first broker days of the month)": {
    "at": "Mon 2 Nov 9:24 PM",
    "market": "US500",
@@ -385,19 +291,6 @@
    "side": "BUY",
    "state": "open",
    "stop": 7489.1
-  },
-  "USDJPY|2026-10-30|7:00 am|SELL|Heikin-Ashi 7am": {
-   "desk_price": 157.577,
-   "market": "USDJPY",
-   "opened_at": "Fri 30 Oct 7:01 AM",
-   "part_x": 1.0,
-   "px_adj": 0.0,
-   "risk_aed": 8.66,
-   "risk_usd": 2.72,
-   "side": "SELL",
-   "state": "not entered",
-   "stop": 158.196,
-   "why": "rejected by Capital.com"
   },
   "USDJPY|2026-11-02|5:37 pm|SELL|Squeeze 4pm": {
    "at": "Mon 2 Nov 9:24 PM",
