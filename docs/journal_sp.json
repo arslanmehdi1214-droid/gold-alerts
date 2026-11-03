@@ -371,8 +371,16 @@
    ],
    "stress": false,
    "v3": false,
+   "v4": false,
+   "v5": false,
+   "v5_detail": {
+    "date": "2026-11-02",
+    "dxy_chg5_pct": 0.35714285714285715,
+    "rs_chg10_pct": 1.0,
+    "rs_chg20_pct": 1.0
+   },
    "date": "2026-11-03",
-   "rules": "v1.08",
+   "rules": "v1.10",
    "label": "Tue 03 Nov",
    "side": "BUY",
    "trades": [
@@ -391,14 +399,14 @@
      "half_px": null,
      "half": false,
      "size": "full",
-     "status": "open",
-     "exit": null,
-     "exit_time": null,
-     "res": null,
-     "res_sized": null,
-     "r": null,
-     "r_sized": null,
-     "live": 1.7,
+     "status": "eod",
+     "exit": 7568.4,
+     "exit_time": "12:30 am",
+     "res": 6.5,
+     "res_sized": 6.5,
+     "r": 0.09,
+     "r_sized": 0.09,
+     "live": null,
      "spread": 0.8
     }
    ],
@@ -411,12 +419,12 @@
   "trades": 1,
   "days": 100.0,
   "perday": 1.0,
-  "closed": 0,
-  "win": null,
+  "closed": 1,
+  "win": 100.0,
   "pf": null,
-  "net": null,
-  "rules": "v1.08",
+  "net": 6.5,
+  "rules": "v1.10",
   "direction": null,
-  "green": 0.0
+  "green": 100.0
  }
 }
