@@ -1,6 +1,9 @@
 """USDJPY PAPER signals for the page (no phone alerts, no real money). Called by run.py after gold, every 5 minutes.
-Replays today's Capital.com USDJPY minutes through the USDJPY_DAYTRADE rules (yen_engine.py; v1.05 from broker day 2026-10-23,
-checked trade by trade against his MT4 v1.05 run 22 Oct; v1.03 before) and keeps a paper journal, judged after ~3 months (pass = green days >= 60% and profit factor >= 1.10).
+Replays today's Capital.com USDJPY minutes through the USDJPY_DAYTRADE rules (yen_engine.py; v1.06 from broker day 2026-11-03
+- adds the 12th "HAM" signal, same Heikin-Ashi 7am scalp fired again at hour 7, MT4-confirmed as EA build v1.09 HAM(hour7),
+real MT4 run 3 Nov 2026, PASSED all 12 pass-bar criteria (win rate +1.39pt FULL/+1.28pt 2023-26, trades/day +23%, every P&L
+guardrail milder than predicted) - see day-trading-usdjpy-2; v1.05 from broker day 2026-10-23, checked trade by trade against
+his MT4 v1.05 run 22 Oct; v1.03 before) and keeps a paper journal, judged after ~3 months (pass = green days >= 60% and profit factor >= 1.10).
 Journal days are tagged with the rules they ran; the record counts only the current rules (v1.01 days 5-16 Oct 2026 stay but are not mixed in).
 Files: docs/usdjpy_hist.json (the EA's finished daily + hourly bars; seeded from his MT4 data to 2026-09-25, then extended with
 Capital.com minutes), docs/journal_usdjpy.json (every paper trade), docs/data.json -> markets.USDJPY (the page)."""
@@ -14,20 +17,24 @@ PORTAL = os.path.join(HERE, 'docs', 'data.json')
 EPIC = os.environ.get('CAPITAL_EPIC_USDJPY', 'USDJPY'); LOTS = 0.10
 PASS = dict(green=60.0, pf=1.10, months=3)
 V104_FROM = '2026-10-23'                 # broker day the new rules start = v1.05 (HA 7am tiny target + breakout flip, max 1 flip a day); earlier days = v1.03
-RULES = 'v1.05'
+V106_FROM = '2026-11-03'                 # broker day v1.06 starts = v1.05 + the 12th "HAM" signal (Heikin-Ashi 7am scalp, fired again at hour 7)
+RULES = 'v1.06'
 BT103 = dict(direction='—', days='68.7% green / 99.5% traded', perday='1.86', win='78.2%', pf='1.38', net='+$13,048 at $100 risk per trade',
              source='MT4 backtest v1.03 2020-01-02 to 2026-06-12, 3,132 trades')
 BT104 = dict(direction='—', days='70.2% green / 99.5% traded', perday='2.18', win='79.0%', pf='1.41', net='+$18,414 at $100 risk per trade',
              source='MT4 backtest v1.04 (his run 22 Oct) 2020-01-02 to 2026-06-12, 3,673 trades')
 BT105 = dict(direction='—', days='70.3% green / 99.5% traded', perday='2.18', win='79.1%', pf='1.42', net='+$18,595 at $100 risk per trade',
              source='MT4 backtest v1.05 (his run 22 Oct) 2020-01-02 to 2026-06-12, 3,668 trades')
-BACKTEST = BT105
+BT106 = dict(direction='—', days='68.9% green / 99.5% traded', perday='3.78', win='86.3%', pf='1.40', net='+$19,269 at $100 risk per trade',
+             source='MT4 backtest v1.09 HAM(hour7) (his run 3 Nov) 2020-01-02 to 2026-10-09, 6,656 trades')
+BACKTEST = BT106
 def set_rules(day):
-    """v1.05 from V104_FROM, v1.03 before (engine switches + card labels)."""
+    """v1.06 from V106_FROM, v1.05 from V104_FROM, v1.03 before (engine switches + card labels)."""
     global RULES, BACKTEST
-    new = str(pd.Timestamp(day).date()) >= V104_FROM
-    Y.HA_TARGET = 0.03 if new else 0.0; Y.FLIP = new; Y.FLIP_MAX = 1
-    RULES = 'v1.05' if new else 'v1.03'; BACKTEST = BT105 if new else BT103
+    d = str(pd.Timestamp(day).date())
+    Y.HA_TARGET = 0.03 if d >= V104_FROM else 0.0; Y.FLIP = d >= V104_FROM; Y.FLIP_MAX = 1; Y.HAM_HOUR = 7 if d >= V106_FROM else -1
+    RULES = 'v1.06' if d >= V106_FROM else ('v1.05' if d >= V104_FROM else 'v1.03')
+    BACKTEST = BT106 if d >= V106_FROM else (BT105 if d >= V104_FROM else BT103)
 
 def loadj(p, d):
     try: return json.load(open(p))
@@ -200,7 +207,12 @@ def main():
     print(f'USDJPY paper: {now} broker | trades today {len(rows)} | bars {len(b)} (empty chunks {SKIPPED}) | history to {H["through"]} | added {added}')
 
 def base_card():
-    if RULES != 'v1.03':
+    if RULES == 'v1.06':
+        note = ('stop: quiet signals ¼ of the 14-day range, others ¾ · Heikin-Ashi 7am (⅓ size) closes WHOLE at +0.03 x risk, and fires again at '
+                'broker hour 7 (same ⅓-size tiny target, added v1.06) · others close half at +0.5 x risk (quiet) / +0.1 x risk, then the rest closes at the entry · '
+                'a quiet breakout against the day closes open trades and switches the side (max once a day) · '
+                'day lock: once the day reaches +2R, close all at +1R, no more trades · one trade per minute · close 6:00 pm broker (Fridays 2:00 pm)')
+    elif RULES != 'v1.03':
         note = ('stop: quiet signals ¼ of the 14-day range, others ¾ · Heikin-Ashi 7am (⅓ size) closes WHOLE at +0.03 x risk · others close half at +0.5 x risk (quiet) / '
                 '+0.1 x risk, then the rest closes at the entry · a quiet breakout against the day closes open trades and switches the side (max once a day) · '
                 'day lock: once the day reaches +2R, close all at +1R, no more trades · one trade per minute · close 6:00 pm broker (Fridays 2:00 pm)')
