@@ -17,6 +17,15 @@ v1.04 (24 Oct 2026, his MT4 run SP500_DAYTRADE v1.04: net $16,896, net/DD 8.83, 
              up >= 0.5 x stop (= $50 at $100 risk) after cost, counting closed + open legs at the entry price. The first leg is never blocked.
   NIGHT LEG  on high-fear nights (last Cboe close before the broker day: VIX > VIX3M, or VIX in its 1-year top 10%, or VVIX in its 1-year
              top 10%) BUY at 6:01 pm New York (01:01 broker), stop 2.0 x range, close at 10:00 am New York (17:00 broker). Not part of the ladder.
+v1.08 (3 Nov 2026, "Night V3": his MT4 run SP500_DAYTRADE v1.07 Magic 500114 layered on the 500109 baseline - net $14,518.89 (+$579.68 vs
+       500109's $13,939.21), DD $2,213.73/0.22% (improved $163.64), 2445 trades (+83), the 83 new legs alone = 57.8% closed in profit):
+  NIGHT LEG V3  a SECOND, independent night trigger (fires only when the regular high-fear night leg above does NOT, so the two never
+                double-trade the same night): on broker-day Wed/Thu/Fri only, BUY at 6:01 pm New York (01:01 broker) if gold (GC=F) and
+                WTI (CL=F) both had a big daily move 2 calendar days before - the smaller of the two 252-day-rolling percentile-ranked
+                |daily % close move|, min(gold_pct, wti_pct) >= 0.70 - same stop (1.0 x range) and close (10:00 am New York) as the
+                regular night leg. Found 2 Nov 2026 free-data hunt (gold+WTI combined overnight shock, 21-idea round in the S&P chat),
+                MT4-confirmed 3 Nov. Source for gc_pct/wti_pct: Yahoo Finance daily closes (free), cached/refreshed once a day - see
+                gw_today() in sp_run.py.
 Results: points per leg after a 0.8 pt cost (never less than Capital.com's live spread)."""
 import numpy as np, pandas as pd
 
@@ -26,6 +35,9 @@ COST = 0.8
 LATE_MIN = 18 * 60; GREEN_R = 0.5                                     # v1.04 day rules (rows 17 / 16 of the EA)
 NIGHT_IN = 61; NIGHT_OUT = 17 * 60; NIGHT_SM = 1.0                    # v1.04 night leg entry/exit; stop mult 1.0x range from v1.07 row19 (was 2.0x)
 NIGHT_DOW_MAX = 2                                                     # v1.07 row18: night leg only broker-day Mon(0)/Tue(1)/Wed(2)
+V3_DOW = (2, 3, 4)                                                    # v1.08 Night V3: only broker-day Wed(2)/Thu(3)/Fri(4)
+V3_LAG_DAYS = 2                                                       # commodity close used is exactly 2 calendar days before the broker day
+V3_COMBO_MIN = 0.70                                                   # min(gold_pct, wti_pct) threshold (MT4-confirmed at this value, Magic 500114)
 TOM_IN = 16 * 60 + 30; TOM_DECIDE = 17 * 60; TOM_SM = 0.75            # v1.07 row20: Turn-of-Month day leg (entry price marker 16:30;
                                                                        # opened only once no other S&P leg has fired by 17:00 broker, so it never stacks with an early day/night leg)
 
@@ -130,9 +142,28 @@ def stress_flag(V, day):
     f = bool(d['vix'] > d['vix3m'] or d['vix_pct'] > 0.9 or d['vvix_pct'] > 0.9)
     return f, d
 
-def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_done=False):
-    """v1.04 night leg (call only on high-fear days): BUY at the first bar at/after 01:01 broker (within 5 min), stop 2.0 x range,
-    exit at the open of the first bar at/after 17:00 broker. Returns [] or [managed leg dict] (same keys as manage, night=True)."""
+def combo_flag(G, day):
+    """v1.08 Night V3 trigger. G: DataFrame indexed by date with columns gc_pct/cl_pct (252-day rolling percentile rank of each
+    commodity's |daily % close move|, Yahoo GC=F/CL=F, built by gw_today() in sp_run.py - no look-ahead, each day's own rank only
+    uses closes up to and including that day). Fires only on broker-day Wed/Thu/Fri when the commodity data from exactly
+    V3_LAG_DAYS (2) calendar days before `day` has min(gc_pct, cl_pct) >= V3_COMBO_MIN. Formula validated 3 Nov 2026 against the
+    EA's own baked NV3P array (SP500_DAYTRADE_v107_TOM4.mq4): 1356/1382 dates match to <0.001, rest are early-window rounding."""
+    d = pd.Timestamp(day).normalize()
+    if d.dayofweek not in V3_DOW: return False, {}
+    if G is None or not len(G): return False, {}
+    k = d - pd.Timedelta(days=V3_LAG_DAYS)
+    if k not in G.index: return False, {}
+    row = G.loc[k]
+    if not (np.isfinite(row.gc_pct) and np.isfinite(row.cl_pct)): return False, {}
+    combo = float(min(row.gc_pct, row.cl_pct))
+    dd = dict(date=str(k.date()), gc_pct=float(row.gc_pct), cl_pct=float(row.cl_pct), combo_min=combo)
+    return bool(combo >= V3_COMBO_MIN), dd
+
+def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_done=False,
+              name='Night long (high-fear night: VIX / VVIX)', src=1):
+    """v1.04 night leg (call only on high-fear days, or - v1.08, name/src overridden - on a Night V3 gold+WTI combo night): BUY at
+    the first bar at/after 01:01 broker (within 5 min), stop 2.0 x range (v1.07: 1.0x, NIGHT_SM), exit at the open of the first bar
+    at/after 17:00 broker. Returns [] or [managed leg dict] (same keys as manage, night=True)."""
     if not len(b) or not np.isfinite(A): return []
     O, H, L, C = (b[c].values.astype(float) for c in 'ohlc'); hm = (b.index.hour * 60 + b.index.minute).values; n = len(O)
     j = _first_bar(hm, entry_min)
@@ -143,7 +174,7 @@ def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_do
         if L[m] <= stp: st, ex, ext = 'stopped', stp, m; break
     if st == 'open' and now_done: st, ex, ext = 'eod', C[n - 1], n - 1
     pts = None if ex is None else (ex - en) - sp
-    return [dict(j=j, dir=1, src=1, name='Night long (high-fear night: VIX / VVIX)', leg=0, night=True, t=b.index[j], entry=float(en), stop=float(stp),
+    return [dict(j=j, dir=1, src=src, name=name, leg=0, night=True, t=b.index[j], entry=float(en), stop=float(stp),
                  stop0=float(stp), sd=float(sd), A=float(A), status=st, exit=None if ex is None else float(ex), exit_t=None if ext is None else b.index[ext],
                  pts=pts, r=None if pts is None else pts / sd, r_now=((C[n - 1] - en) - sp) / sd if n else None)]
 

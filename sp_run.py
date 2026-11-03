@@ -15,22 +15,58 @@ PICK_LATE = pd.Timedelta(minutes=3)   # 22 Oct fix: a Nasdaq pick first seen mor
 EPIC = os.environ.get('CAPITAL_EPIC_SP', 'US500')
 MIN_SPREAD = S.COST                   # the paper result never uses less than 0.8 index points per leg (as in the MT4 test)
 PASS = dict(green=40.0, pf=1.15, months=3)
-RULES = 'v1.07'
+RULES = 'v1.08'
 BACKTEST_104 = dict(direction='—', days='44.5% profit days / 87% traded', perday='1.37', win='53.4%', pf='1.32', net='+$16,896 at $100 risk per leg',
                 source='MT4 test SP500_DAYTRADE v1.04 (his run 24 Oct, spread 0.8 pt), 2020-01-01..2026-09-30, 2,416 trades (2,135 day + 281 night); '
                        'worst day -$315; net/DD 8.83; max DD $1,914')
-BACKTEST = dict(direction='—', days='49.87% profit days (n=1,554 days)', perday='—', win='—', pf='—', net='+$13,939.21 at $100 risk per leg',
+BACKTEST_107 = dict(direction='—', days='49.87% profit days (n=1,554 days)', perday='—', win='—', pf='—', net='+$13,939.21 at $100 risk per leg',
                 source='MT4 test SP500_DAYTRADE v1.07 (his run 1 Nov, Magic 500109, spread 18, Every tick), 2019.10.12-2026.10.10, 2,362 trades; '
                        'max DD $2,377.37 (0.24%); net/DD 5.86; row18=1 (night leg Mon/Tue/Wed only), row19=1.0 (night stop mult, was 2.0), row20=true (Turn-of-Month day leg)')
+BACKTEST = dict(direction='—', days='—', perday='—', win='57.8% of the 83 new Night V3 legs closed in profit', pf='—', net='+$14,518.89 at $100 risk per leg',
+                source='MT4 test SP500_DAYTRADE v1.07 (his run 3 Nov, Magic 500114, spread 18, Every tick), 2019.10.12-2026.10.10, 2,445 trades (+83 vs the '
+                       '500109 baseline\'s 2,362); max DD $2,213.73 (0.22%, improved from 500109\'s $2,377.37); same 500109 rules (row18/19/20) PLUS Night '
+                       'V3 (rows 23-24): a 2nd night trigger, Wed/Thu/Fri only, on a gold+WTI combined overnight shock (min of each commodity\'s 252-day '
+                       'percentile |daily move| >= 0.70, 2 days lagged, free Yahoo data) - isolating the 83 new legs alone: net +$579.68, DD improved '
+                       '$163.64 vs 500109, 57.8% closed in profit')
 CBOE = os.path.join(HERE, 'docs', 'cboe_sp.json')          # v1.04: the day's high-fear flag (decided once per broker day)
 CBOE_URL = 'https://cdn.cboe.com/api/global/us_indices/daily_prices/{}_History.csv'
 CBOE_Q = 'https://cdn.cboe.com/api/global/delayed_quotes/quotes/_{}.json'
+GW = os.path.join(HERE, 'docs', 'gw_sp.json')              # v1.08: cached gold (GC=F) + WTI (CL=F) daily closes for the Night V3 combo trigger
 
 def _cboe_series(sym, col):
     import io
     r = requests.get(CBOE_URL.format(sym), timeout=20); r.raise_for_status()
     x = pd.read_csv(io.StringIO(r.text)); x['DATE'] = pd.to_datetime(x.DATE, format='%m/%d/%Y')
     return x.set_index('DATE')[col if col in x.columns else x.columns[-1]].astype(float)
+
+def _yahoo_daily_close(sym, period='2y'):
+    import yfinance as yf
+    d = yf.download(sym, period=period, interval='1d', progress=False, auto_adjust=False)
+    if isinstance(d.columns, pd.MultiIndex): d.columns = [c[0] for c in d.columns]
+    s = d['Close'].dropna().astype(float); s.index = pd.DatetimeIndex(s.index).tz_localize(None).normalize(); return s
+
+def gw_today(day):
+    """v1.08 Night V3: gold+WTI daily closes (cached in docs/gw_sp.json, refreshed once per broker day - same once-a-day shape as
+    stress_today()'s Cboe cache). Returns a DataFrame indexed by date with gc_pct/cl_pct (each commodity's 252-day rolling
+    percentile rank of |daily % close move|, >= 120 days warm-up) for combo_flag() in sp_engine.py, or None on a fetch failure
+    (Night V3 then simply does not fire that night - same fail-safe shape as the Cboe fetch for the existing night leg)."""
+    c = loadj(GW, {})
+    if c.get('day') == str(day.date()) and 'dates' in c:
+        idx = pd.to_datetime(c['dates'])
+        gc = pd.Series([np.nan if x is None else x for x in c['gc']], index=idx)
+        cl = pd.Series([np.nan if x is None else x for x in c['cl']], index=idx)
+    else:
+        try:
+            gc = _yahoo_daily_close('GC=F'); cl = _yahoo_daily_close('CL=F')
+            idx = gc.index.union(cl.index); gc = gc.reindex(idx); cl = cl.reindex(idx)
+            c = dict(day=str(day.date()), dates=[str(t.date()) for t in idx],
+                     gc=[None if pd.isna(x) else float(x) for x in gc], cl=[None if pd.isna(x) else float(x) for x in cl], at=str(pd.Timestamp.utcnow()))
+            dumpj(c, GW, indent=1)
+        except Exception:
+            return None
+    gc_pct = gc.pct_change().abs().rolling(252, min_periods=120).rank(pct=True)
+    cl_pct = cl.pct_change().abs().rolling(252, min_periods=120).rank(pct=True)
+    return pd.DataFrame(dict(gc_pct=gc_pct, cl_pct=cl_pct))
 
 def stress_today(day, now):
     """v1.04 night-leg flag for broker day `day` (cached in docs/cboe_sp.json). The last close before the day must be the previous NY
@@ -227,12 +263,14 @@ def base_card(A=None):
             'high/low sweep, big move by 10 am New York · close 3:30 pm New York · NIGHT trade on high-fear nights (VIX above VIX3M, or VIX / VVIX in '
             'their 1-year top 10%): BUY 6:01 pm New York (v1.07: Mon/Tue/Wed broker-days only), stop 1 x range (v1.07, was 2x), close 10:00 am New York · '
             'v1.07 TURN-OF-MONTH: on the last broker weekday of the month and the first 3 of the next, BUY 9:30 am New York, stop 0.75 x range, close 3:30 pm '
-            'New York - only on a day with no other S&P trade')
+            'New York - only on a day with no other S&P trade · v1.08 NIGHT V3: a 2nd, independent night trigger (only fires when the night trade above does '
+            'not - never both), broker-day Wed/Thu/Fri only, on a gold+WTI combined overnight shock (the smaller of gold\'s and WTI\'s own 252-day-percentile '
+            '|daily move|, from 2 days before, >= 0.70): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the night leg above')
     return dict(code='US500', name='S&P 500', symbol='US500 · Capital.com US 500', live=False, paper=True, status='Paper', version=RULES,
                 unit='pts', dp=1, stats=BACKTEST, pass_bar=PASS, day_note=note,
-                what_note='Tracks whether live S&P signals do as well as the v1.07 MT4 test. Decision after about 3 months.',
+                what_note='Tracks whether live S&P signals do as well as the v1.08 MT4 test (500109 + Night V3). Decision after about 3 months.',
                 cost_note='Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).',
-                net_label='Net points (v1.07 rules)')
+                net_label='Net points (v1.08 rules)')
 
 def picks_for(day, now, jd, record=True):
     """Today's Nasdaq desk picks [(nasdaq minute, side)] (22 Oct fix). Each pick's FIRST-SEEN time is kept in the journal day (picks_seen);
@@ -288,6 +326,8 @@ def compute(hist, b, day, now, picks, sp, jd):
     legs = legs_now(b[['o', 'h', 'l', 'c']], A, pH, pL, picks, day, bool(now >= eod), jd)
     trades = S.manage(b[['o', 'h', 'l', 'c']], legs, A, day, sp, now_done=bool(now >= eod))
     if jd.get('stress'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod)) + trades     # v1.04 night leg (v1.07: Mon/Tue/Wed only, stop 1.0x range - gated above)
+    elif jd.get('v3'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),                # v1.08 Night V3: gold+WTI combo night (Wed/Thu/Fri only, gated below) -
+                                            name='Night long (gold+WTI overnight shock)', src=3) + trades                 # never both: only fires when the regular stress-night leg above did NOT
     if not trades and S.tom_window(day) and np.isfinite(A) and now.hour * 60 + now.minute >= S.TOM_DECIDE:
         trades = S.tom_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod)) + trades                        # v1.07 row20: only once no other S&P leg has fired by 17:00 broker
     for t in trades:                                     # past the close time but no bar there yet: close at the last price
@@ -353,6 +393,14 @@ def main(feed=None, get=None, now=None):
         if stress and not jd['stress']:
             jd['stress_note'] = ('high-fear night, but the check ran after 6:06 pm New York - no night trade' if not ok_time
                                  else 'high-fear night, but v1.07 only trades the night leg Mon/Tue/Wed - no night trade')
+    if 'v3' not in jd and 'stress' in jd:                 # v1.08 Night V3: decided once per day, only once stress is already known (mutual exclusion)
+        ok_time = now.hour * 60 + now.minute <= S.NIGHT_IN + 5
+        G = None if jd['stress'] else gw_today(day)       # don't even fetch gold/WTI on a night the stress leg already took
+        fired, ginfo = S.combo_flag(G, day) if G is not None else (False, {})
+        jd['v3'] = bool(fired) and ok_time and not jd['stress']
+        if ginfo: jd['v3_detail'] = ginfo
+        if G is None and not jd['stress'] and day.dayofweek in S.V3_DOW:
+            jd['v3_note'] = 'gold/WTI data unavailable this run - no Night V3 check'
     trades = compute(hist, b, day, now, picks, sp, jd)
     freeze_legs(jd, trades)
     rows = [row(t, b, now, sp) for t in trades]; drows = [r for r in rows if not r.get('night')]; nrow = [r for r in rows if r.get('night')]
@@ -363,7 +411,7 @@ def main(feed=None, get=None, now=None):
         spark = [[F.broker_to_dubai(t).strftime('%-I:%M %p').lower(), round(float(r.c), 1), round(float(r.o), 1), round(float(r.h), 1), round(float(r.l), 1)] for t, r in g5.iterrows()]
     if J.get('start') is None: J['start'] = str(day.date())
     J['days'] = sorted([d for d in J['days'] if d['date'] != str(day.date())] +
-                       [dict({k: jd[k] for k in ('picks_seen', 'legs_frozen', 'stress', 'stress_note') if k in jd}, date=str(day.date()), rules=RULES,
+                       [dict({k: jd[k] for k in ('picks_seen', 'legs_frozen', 'stress', 'stress_note', 'v3', 'v3_note', 'v3_detail') if k in jd}, date=str(day.date()), rules=RULES,
                              label=day.strftime('%a %d %b'), side=(drows[0]['side'] if drows else None), trades=rows, final=bool(now >= eod))],
                       key=lambda d: d['date'])
     J['summary'] = summary(J, day); dumpj(J, JOUR, indent=1)
@@ -376,13 +424,14 @@ def main(feed=None, get=None, now=None):
     elif now >= xt: state, msg = 'none', 'No paper day trade today.'
     else: state, msg = 'waiting', (f'Waiting for the first day signal (from {dubai(day + pd.Timedelta(minutes=16 * 60 + 40))} Dubai: 9:40 am New York move, '
                                    'Nasdaq signals; earlier: yesterday high/low sweep).')
-    if nrow:                                             # v1.04 night leg
-        n_ = nrow[0]
-        msg = (f"NIGHT BUY (high-fear night) at {n_['time']} Dubai, stop {n_['stop']}, " +
+    if nrow:                                             # v1.04 night leg (v1.08: or Night V3, gold+WTI combo - jd['v3'])
+        n_ = nrow[0]; label = 'gold+WTI shock' if jd.get('v3') else 'high-fear night'
+        msg = (f"NIGHT BUY ({label}) at {n_['time']} Dubai, stop {n_['stop']}, " +
                (f"closes at {dubai(day + pd.Timedelta(minutes=S.NIGHT_OUT))} Dubai (10:00 am New York). " if n_['status'] == 'open' else f"closed ({n_['status']}). ") + msg)
         if state in ('none', 'waiting') and n_['status'] == 'open': state = 'buy'
     elif jd.get('stress_note'): msg += ' (' + jd['stress_note'] + '.)'
-    elif jd.get('stress') is False: msg += ' No night trade today (not a high-fear night).'
+    elif jd.get('stress') is False and jd.get('v3') is False: msg += ' No night trade today (not a high-fear night, no gold+WTI shock).'
+    elif jd.get('v3_note'): msg += ' (' + jd['v3_note'] + '.)'
     elif stress is None: msg += f" (Night-trade check: Cboe data not available - {cinfo.get('error', '')}.)"
     if pnote and now.hour * 60 + now.minute >= S.US_LO: msg += f' ({pnote}.)'
     mk['US500'] = dict(base_card(A if A == A else None), state=state, message=msg, price=last, change=(None if last is None or first is None else round(last - first, 1)),
