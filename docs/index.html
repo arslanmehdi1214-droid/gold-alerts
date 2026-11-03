@@ -326,7 +326,7 @@ function evOut0(g){const L=g.items.filter(i=>REL[i.title]);if(!L.length)return g
   return `<div class="x evo">${L.length>1?'<span class="dim">'+i.title+':</span> ':''}If <b>higher</b> than forecast → first 15 min: ${arr(1)}<br>If <b>lower</b>: ${arr(-1)}<br><span class="dim">% = how often that held on 2020-26 (years the rule never saw). The number itself is a coin flip before release.</span></div>`}).join('')}
 function buildT(){T.length=0;const bk=bkey(),wkd=new Date(bk+'T12:00:00Z').getUTCDay();   /* 25 Oct: only TODAY's broker-day trades (none on Sat/Sun; a card still holding an older day is skipped) */
  MK.forEach(m=>{const x=M[m.c];if(!x||!x.entries||wkd===0||wkd===6||(x.actions_day&&x.actions_day!==bk))return;x.entries.forEach((e,i)=>T.push({m,x,e,i:i+1}))});tradeSound()}
-const done=e=>e.status&&e.status!=='open';let tradeSeen={},tradeHalfSeen={},tradeSoundInit=false;function orderSound(code,side,action){try{if(!sound)return;const a=new Audio(`${code}_${side}_${action}.mp3`);a.volume=1;a.play().catch(()=>{})}catch(e){}}function orderPartial(code){try{if(!sound)return;const a=new Audio(`${code}_partial.mp3`);a.volume=1;a.play().catch(()=>{})}catch(e){}}function tradeSound(){T.forEach(o=>{if(o.e.status==='late')return;const k=o.m.c+'|'+o.i+'|'+o.e.time,was=tradeSeen[k],isDone=done(o.e),half=!!o.e.half,sd=o.e.side==='BUY'?'buy':'sell';if(tradeSoundInit){if(was==null){if(isDone){orderSound(o.m.c,sd,'out');notify(`${o.m.n}: trade closed`)}else{orderSound(o.m.c,sd,'in');notify(`${o.m.n}: new ${o.e.side} trade opened at ${f(o.e.price,o.m.dp)}`);if(half)orderPartial(o.m.c)}}else{if(!isDone&&half&&!tradeHalfSeen[k]){orderPartial(o.m.c);notify(`${o.m.n}: part closed`)}if(was==='open'&&isDone){const c=calc(o);orderSound(o.m.c,sd,'out');notify(`${o.m.n}: trade closed, ${sg(c.pl*AED)} AED`)}}}tradeSeen[k]=isDone?'closed':'open';tradeHalfSeen[k]=half});tradeSoundInit=true}
+const done=e=>e.status&&e.status!=='open';let tradeSeen={},tradeHalfSeen={},tradeSoundInit=false;function orderSound(code,side,action){try{if(!sound)return;const a=new Audio(`${code}_${side}_${action}.mp3`);a.volume=1;a.play().catch(()=>{})}catch(e){}}function orderPartial(code){try{if(!sound)return;const a=new Audio(`${code}_partial.mp3`);a.volume=1;a.play().catch(()=>{})}catch(e){}}function tradeSound(){T.forEach(o=>{if(o.e.late)return;const k=o.m.c+'|'+o.i+'|'+o.e.time,was=tradeSeen[k],isDone=done(o.e),half=!!o.e.half,sd=o.e.side==='BUY'?'buy':'sell';if(tradeSoundInit){if(was==null){if(isDone){orderSound(o.m.c,sd,'out');notify(`${o.m.n}: trade closed`)}else{orderSound(o.m.c,sd,'in');notify(`${o.m.n}: new ${o.e.side} trade opened at ${f(o.e.price,o.m.dp)}`);if(half)orderPartial(o.m.c)}}else{if(!isDone&&half&&!tradeHalfSeen[k]){orderPartial(o.m.c);notify(`${o.m.n}: part closed`)}if(was==='open'&&isDone){const c=calc(o);orderSound(o.m.c,sd,'out');notify(`${o.m.n}: trade closed, ${sg(c.pl*AED)} AED`)}}}tradeSeen[k]=isDone?'closed':'open';tradeHalfSeen[k]=half});tradeSoundInit=true}
 /* LIVE PRICES: the Cloudflare Worker (Capital.com, every few seconds). Until it exists, gold comes live from gold-api.com (free) and the rest use the desk price. */
 const WORKER_URL='https://desk-prices.arslanmehdi1214.workers.dev/';
 const DATA_URL='data.json';   // filled in after setup, e.g. https://desk-prices.<you>.workers.dev
@@ -453,11 +453,12 @@ function applySel(){const tag=SEL==='ALL'?null:MK.find(m=>m.c===SEL).tag;
  document.querySelectorAll('.ev[data-mk]').forEach(el=>el.classList.toggle('hide',!!tag&&!el.dataset.mk.split('|').includes(tag)));
 try{renderHist()}catch(e){}
  try{renderNews()}catch(e){}
- oth.textContent=`Open trades · ${document.querySelectorAll('.row:not(.hide),.tk:not(.hide),.pt tr[data-c]:not(.hide)').length}`}
+ oth.textContent=`Open trades · ${document.querySelectorAll('.row:not(.hide),.tk:not(.hide),.pt tr[data-c]:not(.hide)').length}`;
+ const clh=document.getElementById('clhdr');if(clh)clh.textContent=`Closed today · ${document.querySelectorAll('#closedbox tr[data-c]:not(.hide)').length}`}
 function render(){
  try{actsLive()}catch(e){}
  try{actsRender()}catch(e){}
- const C=T.map(o=>({o,...calc(o)})),tot=C.filter(c=>c.o.e.status!=='late').reduce((a,c)=>a+c.pl,0),op=C.filter(c=>!done(c.o.e)&&c.R>-1&&!hitFullTarget(c)),cl=C.filter(c=>done(c.o.e)&&c.o.e.status!=='late');
+ const C=T.map(o=>({o,...calc(o)})),tot=C.filter(c=>!c.o.e.late).reduce((a,c)=>a+c.pl,0),op=C.filter(c=>!done(c.o.e)&&c.R>-1&&!hitFullTarget(c)),cl=C.filter(c=>done(c.o.e)&&!c.o.e.late);
  const tabs=[{c:'ALL',n:'All markets'}].concat(MK);
  mtab.innerHTML=tabs.map(m=>{if(m.c==='ALL')return `<button data-c="ALL" class="${SEL==='ALL'?'on':''}">All<small>${op.length} open</small></button>`;
   const x=M[m.c]||{},d=dirOf(x);return `<button data-c="${m.c}" class="${SEL===m.c?'on':''}">${m.n} <em class="${d==='BUY'?'pos':d==='SELL'?'neg':'dim'}">${d==='NONE'?'WAIT':(d==='BUY'?'▲ ':'▼ ')+d}</em><small>${f(nowPx(m,x),m.dp)} <i class="dot ${liveOf(m)?'on':''}"></i></small></button>`}).join('');
@@ -470,7 +471,7 @@ function render(){
  cards.innerHTML=op.map(ticket).join('');
  const idle=MK.filter(m=>!T.some(o=>o.m===m&&!done(o.e)));
  idle.innerHTML=idle.length?idle.map(m=>`<span data-c="${m.c}"><b>${m.n}</b> ${dirOf(M[m.c])==='NONE'?'waiting for first signal':'no open trade'}</span>`).join(' &nbsp; '):'';
- closedbox.innerHTML=cl.length?`<h3>Closed today · ${cl.length}</h3><table>${cl.map(c=>`<tr data-c="${c.o.m.c}"><td>${c.o.m.n}</td><td class="${c.o.e.side==='BUY'?'pos':'neg'}">${c.o.e.side}</td><td class="num dim">${c.o.e.time}</td><td class="r num ${c.mv>=0?'pos':'neg'}">${sg(c.R)}R</td><td class="r num ${c.pl>=0?'pos':'neg'}">${sg(c.pl*AED)} AED</td></tr>`).join('')}</table>`:'';
+ closedbox.innerHTML=cl.length?`<h3 id="clhdr">Closed today · ${cl.length}</h3><table>${cl.map(c=>`<tr data-c="${c.o.m.c}"><td>${c.o.m.n}</td><td class="${c.o.e.side==='BUY'?'pos':'neg'}">${c.o.e.side}</td><td class="num dim">${c.o.e.time}</td><td class="r num ${c.mv>=0?'pos':'neg'}">${sg(c.R)}R</td><td class="r num ${c.pl>=0?'pos':'neg'}">${sg(c.pl*AED)} AED</td></tr>`).join('')}</table>`:'';
  const now=new Date();
  const DKeys=[...new Set(G.map(g=>dkey(g.t)))].sort();
  if(!DKeys.length)DKeys.push(dkey(now));
@@ -617,7 +618,7 @@ let HSHOW=false,HOLD=false,HP='30d',HR='transactions',HCF='',HCT='',HTOP='profit
 const RHOUR=60;
 function rDT(date,tm){if(!tm)return null;const mm=mins(tm);if(mm==null)return null;const d=new Date(date+'T00:00:00Z');if(mm<RHOUR)d.setUTCDate(d.getUTCDate()+1);d.setUTCMinutes(mm);return d}   /* Dubai wall time as a UTC-coded date */
 function rNow(){const n=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Dubai'}));return new Date(Date.UTC(n.getFullYear(),n.getMonth(),n.getDate(),n.getHours(),n.getMinutes()))}
-function rAll(only){const out=[];HMK.filter(m=>!only||m.c===only.c).forEach(m=>{const J=HJ[m.c];if(!J||!J.days)return;J.days.forEach(d=>(d.trades||[]).forEach(t=>{const u=tU(m,t);if(u==null||t.status==='open'||t.status==='late')return;
+function rAll(only){const out=[];HMK.filter(m=>!only||m.c===only.c).forEach(m=>{const J=HJ[m.c];if(!J||!J.days)return;J.days.forEach(d=>(d.trades||[]).forEach(t=>{const u=tU(m,t);if(u==null||t.status==='open'||t.late)return;
   const op=rDT(d.date,t.time),cl=rDT(d.date,t.exit_time)||op;
   /* 28 Oct fix: a FULL target (whole trade closes at one level, part>=100%) is the only thing counted as "target hit" -
      it is hit only when the trade's own status is literally 'target'. A PART-profit level (part<100%, e.g. oil's 25% bank
