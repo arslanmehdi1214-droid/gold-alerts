@@ -43,6 +43,21 @@ v1.09 (3 Nov 2026, "Night V4": his MT4 run SP500_DAYTRADE v1.08 Magic 500115 lay
                 is on a different scale to the RoboForex data the backtest used, so mixing them into one 20-day rolling z-score
                 would be invalid) - needs ~2-4 weeks of live data to accumulate the 10-day minimum before it can fire at all; by
                 design, not a bug. See lh_today() in sp_run.py.
+v1.10 (3 Nov 2026, "Night V5": his MT4 run SP500_DAYTRADE v1.10 Magic 500116 layered on 500115 - net $15,298.06 (+$401.77 vs
+       500115's $14,896.29), DD $2,188.15/0.22% (unchanged), 2489 trades (+18), the 18 new legs alone ~72% closed in profit):
+  NIGHT LEG V5  a FOURTH, independent night trigger (fires only when the three night triggers above do NOT - the four
+                never double-trade the same night): no weekday restriction, BUY at 6:01 pm New York (01:01 broker) if the US
+                Dollar Index weakened over the prior 5 trading days (252-day rolling percentile of the 5-day % change <= 0.20)
+                AND the market narrowed on BOTH a 10-day and a 20-day horizon (252-day rolling percentile of the 10-day and
+                20-day % change in the RSP/SPY ratio - equal-weight vs cap-weight S&P 500, i.e. mega-caps leading - both
+                <= 0.20) - same stop (1.0 x range) and close (10:00 am New York) as the other night legs. Found 3 Nov 2026
+                systematic triple-interaction hunt (Rounds 46-47, S&P chat), MT4-confirmed same day. HONEST CAVEATS carried
+                into the live card: only 20 historical Python occurrences (18 confirmed in MT4 after excluding nights V2/V3/V4
+                already took), thin like Night V4's sample but a cleaner independence profile (70% VIX-gate overlap vs V4's
+                91-92%, 0 loss years across 6 calendar years, survives a stricter trim-robustness check than any earlier leg) -
+                still a watch item, not a settled edge. Source for dxy_chg5_pct/rs_chg10_pct/rs_chg20_pct: Yahoo Finance daily
+                closes (DX-Y.NYB, RSP, SPY - free), cached/refreshed once a day, available from day one (unlike Night V4's
+                volume feature, no live warm-up needed) - see dxyrs_today() in sp_run.py.
 Results: points per leg after a 0.8 pt cost (never less than Capital.com's live spread)."""
 import numpy as np, pandas as pd
 
@@ -58,6 +73,7 @@ V3_COMBO_MIN = 0.70                                                   # min(gold
 TOM_IN = 16 * 60 + 30; TOM_DECIDE = 17 * 60; TOM_SM = 0.75            # v1.07 row20: Turn-of-Month day leg (entry price marker 16:30;
                                                                        # opened only once no other S&P leg has fired by 17:00 broker, so it never stacks with an early day/night leg)
 V4_LH_MAX = 0.30; V4_VOLZ_MIN = 2.00                                  # v1.09 Night V4: weak-close percentile (<=) / volume z-score (>=) thresholds
+V5_DXY_MAX = 0.20; V5_RS10_MAX = 0.20; V5_RS20_MAX = 0.20             # v1.10 Night V5: dollar-weakening 5d / breadth-narrowing 10d AND 20d thresholds (all <=)
 
 def eod_minutes(day): return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
@@ -191,6 +207,22 @@ def v4_flag(S, day):
     if not (np.isfinite(row.lh_pct) and np.isfinite(row.lhvol_z)): return False, {}
     dd = dict(date=str(k.date()), lh_pct=float(row.lh_pct), lhvol_z=float(row.lhvol_z))
     return bool(row.lh_pct <= V4_LH_MAX and row.lhvol_z >= V4_VOLZ_MIN), dd
+
+def v5_flag(X, day):
+    """v1.10 Night V5 trigger. X: DataFrame indexed by date (built by dxyrs_today() in sp_run.py) with columns dxy_chg5_pct
+    (252-day rolling percentile of the 5-day % change in the US Dollar Index, DX-Y.NYB - low = dollar weakening), rs_chg10_pct
+    and rs_chg20_pct (252-day rolling percentile of the 10-day and 20-day % change in the RSP/SPY ratio, equal-weight vs
+    cap-weight S&P 500 - low = breadth narrowing, mega-caps leading). The broker day `day`'s own NY-date row is day - 1 calendar
+    day (same relationship as V3/V4's baked arrays: d = ny_date + 1). Fires when ALL THREE are <= their threshold at once
+    (dollar weakening AND breadth narrowing on both horizons - a soft-dollar, narrow-market regime, 85% of its 20 historical
+    occurrences genuinely new coverage beyond V2/V3/V4). Missing values (not enough rolling history yet, or no data that day)
+    mean it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if X is None or not len(X) or k not in X.index: return False, {}
+    row = X.loc[k]
+    if not (np.isfinite(row.dxy_chg5_pct) and np.isfinite(row.rs_chg10_pct) and np.isfinite(row.rs_chg20_pct)): return False, {}
+    dd = dict(date=str(k.date()), dxy_chg5_pct=float(row.dxy_chg5_pct), rs_chg10_pct=float(row.rs_chg10_pct), rs_chg20_pct=float(row.rs_chg20_pct))
+    return bool(row.dxy_chg5_pct <= V5_DXY_MAX and row.rs_chg10_pct <= V5_RS10_MAX and row.rs_chg20_pct <= V5_RS20_MAX), dd
 
 def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_done=False,
               name='Night long (high-fear night: VIX / VVIX)', src=1):
