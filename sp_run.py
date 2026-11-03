@@ -15,23 +15,29 @@ PICK_LATE = pd.Timedelta(minutes=3)   # 22 Oct fix: a Nasdaq pick first seen mor
 EPIC = os.environ.get('CAPITAL_EPIC_SP', 'US500')
 MIN_SPREAD = S.COST                   # the paper result never uses less than 0.8 index points per leg (as in the MT4 test)
 PASS = dict(green=40.0, pf=1.15, months=3)
-RULES = 'v1.08'
+RULES = 'v1.09'
 BACKTEST_104 = dict(direction='—', days='44.5% profit days / 87% traded', perday='1.37', win='53.4%', pf='1.32', net='+$16,896 at $100 risk per leg',
                 source='MT4 test SP500_DAYTRADE v1.04 (his run 24 Oct, spread 0.8 pt), 2020-01-01..2026-09-30, 2,416 trades (2,135 day + 281 night); '
                        'worst day -$315; net/DD 8.83; max DD $1,914')
 BACKTEST_107 = dict(direction='—', days='49.87% profit days (n=1,554 days)', perday='—', win='—', pf='—', net='+$13,939.21 at $100 risk per leg',
                 source='MT4 test SP500_DAYTRADE v1.07 (his run 1 Nov, Magic 500109, spread 18, Every tick), 2019.10.12-2026.10.10, 2,362 trades; '
                        'max DD $2,377.37 (0.24%); net/DD 5.86; row18=1 (night leg Mon/Tue/Wed only), row19=1.0 (night stop mult, was 2.0), row20=true (Turn-of-Month day leg)')
-BACKTEST = dict(direction='—', days='—', perday='—', win='57.8% of the 83 new Night V3 legs closed in profit', pf='—', net='+$14,518.89 at $100 risk per leg',
-                source='MT4 test SP500_DAYTRADE v1.07 (his run 3 Nov, Magic 500114, spread 18, Every tick), 2019.10.12-2026.10.10, 2,445 trades (+83 vs the '
-                       '500109 baseline\'s 2,362); max DD $2,213.73 (0.22%, improved from 500109\'s $2,377.37); same 500109 rules (row18/19/20) PLUS Night '
-                       'V3 (rows 23-24): a 2nd night trigger, Wed/Thu/Fri only, on a gold+WTI combined overnight shock (min of each commodity\'s 252-day '
-                       'percentile |daily move| >= 0.70, 2 days lagged, free Yahoo data) - isolating the 83 new legs alone: net +$579.68, DD improved '
-                       '$163.64 vs 500109, 57.8% closed in profit')
+BACKTEST = dict(direction='—', days='—', perday='—', win='~68% of the 25 new Night V4 legs closed in profit', pf='—', net='+$14,896.29 at $100 risk per leg',
+                source='MT4 test SP500_DAYTRADE v1.08 (his run 3 Nov, Magic 500115, spread 18, Every tick), 2019.10.12-2026.10.31, 2,471 trades (+25 vs the '
+                       '500114 baseline\'s 2,446); max DD $2,188.15 (0.22%, improved from 500114\'s $2,213.73); same 500114 rules (row18/19/20/23/24) PLUS '
+                       'Night V4 (rows 25-27): a 3rd night trigger, no weekday restriction, on a weak last-hour close (252-day percentile of the 15:00-16:00 '
+                       'NY return <= 0.30) combined with a last-hour volume spike (z-score vs its own trailing 20-day average >= 2.0) - isolating the 25 new '
+                       'legs alone: net +$476.75, DD improved $25.58 vs 500114, ~68% closed in profit. WATCH ITEM: only 25 historical occurrences, 91-92% '
+                       'already overlap the Night V2 VIX gate (row 21), 2022 a loss year inside the sample - treat as a refinement still proving itself, not '
+                       'a settled edge; on the live page it needs ~2-4 weeks of its own Capital.com volume history before it can fire at all (see sp_run.py)')
 CBOE = os.path.join(HERE, 'docs', 'cboe_sp.json')          # v1.04: the day's high-fear flag (decided once per broker day)
 CBOE_URL = 'https://cdn.cboe.com/api/global/us_indices/daily_prices/{}_History.csv'
 CBOE_Q = 'https://cdn.cboe.com/api/global/delayed_quotes/quotes/_{}.json'
 GW = os.path.join(HERE, 'docs', 'gw_sp.json')              # v1.08: cached gold (GC=F) + WTI (CL=F) daily closes for the Night V3 combo trigger
+LH_SEED = os.path.join(HERE, 'docs', 'sp_lh_seed.json')     # v1.09: static seed, last-hour % return per date from the MT4 backtest (RoboForex,
+                                                             # Sep 2019 on) - committed once, never changes; no volume (see lh_today())
+LH_LIVE = os.path.join(HERE, 'docs', 'sp_lh_live.json')     # v1.09: one row per finished day since Night V4 went live - return AND volume,
+                                                             # both computed from the dashboard's own stored Capital.com minute history
 
 def _cboe_series(sym, col):
     import io
@@ -67,6 +73,49 @@ def gw_today(day):
     gc_pct = gc.pct_change().abs().rolling(252, min_periods=120).rank(pct=True)
     cl_pct = cl.pct_change().abs().rolling(252, min_periods=120).rank(pct=True)
     return pd.DataFrame(dict(gc_pct=gc_pct, cl_pct=cl_pct))
+
+def lasthour_stats(b):
+    """v1.09 Night V4: b = one finished broker day's minute bars (o h l c v). Returns (ret, vol) for the 22:00-23:00 broker window
+    (= 15:00-16:00 NY, the same window the backtest's lh_pct/lhvol_z were built from), or (None, None) if that window has no bars.
+    ret = % price return, open of the window's first bar -> close of its last bar. vol = sum of lastTradedVolume over the window
+    (NaN bars treated as 0; None if the whole window has no volume data, e.g. months saved before this went live)."""
+    hm = b.index.hour * 60 + b.index.minute
+    w = b[(hm >= 22 * 60) & (hm < 23 * 60)]
+    if not len(w) or not w.o.iloc[0]: return None, None
+    ret = float(w.c.iloc[-1] / w.o.iloc[0] - 1)
+    vol = float(np.nansum(w.v.values)) if w.v.notna().any() else None
+    return ret, vol
+
+def lh_today(day, hist):
+    """v1.09 Night V4: extends docs/sp_lh_live.json with every newly-finished day's own last-hour return+volume (from `hist`, the
+    dashboard's stored minute history - cheap, only new days since the last call are computed), merges the return series onto the
+    static backtest seed (docs/sp_lh_seed.json), and returns a DataFrame indexed by date with lh_pct (252-day rolling percentile
+    of the return, >=120 days warm-up - active from day one via the seed) and lhvol_z (z-score of the last hour's volume vs its
+    own trailing 20-day average, >=10 days warm-up - starts with nothing and fills in naturally over the dashboard's own first
+    ~2-4 live weeks, since Capital.com's volume count is a different scale to the RoboForex data the seed uses, so it is
+    deliberately NOT seeded - see the v1.09 header note in sp_engine.py)."""
+    seed = loadj(LH_SEED, {'dates': [], 'ret': []})
+    live = loadj(LH_LIVE, {'dates': [], 'ret': [], 'vol': []})
+    last_live = pd.Timestamp(live['dates'][-1]) if live['dates'] else None
+    days = sorted(set(hist.index.normalize()))
+    changed = False
+    for d in days:
+        if d >= day: continue                                                        # only finished days strictly before the one being decided
+        if last_live is not None and d <= last_live: continue
+        b = hist[(hist.index >= d) & (hist.index < d + pd.Timedelta(days=1))]
+        ret, vol = lasthour_stats(b)
+        if ret is None: continue
+        live['dates'].append(str(d.date())); live['ret'].append(ret); live['vol'].append(vol); changed = True
+    if changed: dumpj(live, LH_LIVE, indent=1)
+    if not live['dates']: return None
+    idx_s = pd.to_datetime(seed['dates']); idx_l = pd.to_datetime(live['dates'])
+    ret = pd.concat([pd.Series(seed.get('ret', []), index=idx_s), pd.Series(live['ret'], index=idx_l)])
+    ret = ret[~ret.index.duplicated(keep='last')].sort_index()
+    vol = pd.Series(live['vol'], index=idx_l).sort_index()
+    lh_pct = ret.rolling(252, min_periods=120).rank(pct=True)
+    vmean = vol.rolling(20, min_periods=10).mean(); vstd = vol.rolling(20, min_periods=10).std()
+    lhvol_z = (vol - vmean) / vstd
+    return pd.DataFrame(dict(lh_pct=lh_pct, lhvol_z=lhvol_z))
 
 def stress_today(day, now):
     """v1.04 night-leg flag for broker day `day` (cached in docs/cboe_sp.json). The last close before the day must be the previous NY
@@ -150,7 +199,9 @@ def feed_check(b, now, eod, st, key):
 
 def load_month(f):
     if not os.path.exists(f): return None
-    z = np.load(f); return pd.DataFrame({'o': z['o'], 'h': z['h'], 'l': z['l'], 'c': z['c']}, index=pd.DatetimeIndex(z['t'].astype('datetime64[m]')))
+    z = np.load(f)
+    v = z['v'] if 'v' in z.files else np.full(len(z['t']), np.nan)   # v1.09: months saved before Night V4 have no volume column - NaN, not a crash
+    return pd.DataFrame({'o': z['o'], 'h': z['h'], 'l': z['l'], 'c': z['c'], 'v': v}, index=pd.DatetimeIndex(z['t'].astype('datetime64[m]')))
 def load_hist():
     fr = [load_month(f) for f in sorted(glob.glob(os.path.join(MIN, '*.npz')))]
     fr = [x for x in fr if x is not None]
@@ -158,10 +209,12 @@ def load_hist():
     return pd.concat(fr).sort_index()
 def save_day(bars):
     os.makedirs(MIN, exist_ok=True); per = bars.index[0].strftime('%Y-%m'); f = os.path.join(MIN, per + '.npz')
-    old = load_month(f); d = pd.concat([old, bars[['o', 'h', 'l', 'c']]]) if old is not None else bars[['o', 'h', 'l', 'c']]
+    b = bars.copy()
+    if 'v' not in b.columns: b['v'] = np.nan                          # v1.09: callers that still pass o/h/l/c only still work
+    old = load_month(f); d = pd.concat([old, b[['o', 'h', 'l', 'c', 'v']]]) if old is not None else b[['o', 'h', 'l', 'c', 'v']]
     d = d[~d.index.duplicated(keep='last')].sort_index(); tmp = f + '.part'
     with open(tmp, 'wb') as fh:
-        np.savez_compressed(fh, t=d.index.values.astype('datetime64[m]').astype(np.int64), o=d.o.values, h=d.h.values, l=d.l.values, c=d.c.values)
+        np.savez_compressed(fh, t=d.index.values.astype('datetime64[m]').astype(np.int64), o=d.o.values, h=d.h.values, l=d.l.values, c=d.c.values, v=d.v.values)
     os.replace(tmp, f)
 
 EPIC_NOW = [EPIC]; _TRIED = [False]
@@ -188,16 +241,16 @@ def minutes(feed, start_b, end_b):
             for p in r.json().get('prices', []):
                 ask = (p.get('closePrice') or {}).get('ask')
                 out.append((p['snapshotTimeUTC'], p['openPrice']['bid'], p['highPrice']['bid'], p['lowPrice']['bid'], p['closePrice']['bid'],
-                            np.nan if ask is None else ask - p['closePrice']['bid']))
+                            np.nan if ask is None else ask - p['closePrice']['bid'], p.get('lastTradedVolume')))   # v1.09: volume, for Night V4's lhvol_z
         elif r.status_code == 404 and 'epic' in r.text.lower() and not _TRIED[0]:
             _TRIED[0] = True; find_epic(feed); continue
         elif r.status_code not in (400, 404):
             r.raise_for_status()
         t0 = t1; time.sleep(0.15)
-    if not out: return pd.DataFrame(columns=['o', 'h', 'l', 'c', 'sp'], index=pd.DatetimeIndex([]), dtype=float)
-    d = pd.DataFrame(out, columns=['t', 'o', 'h', 'l', 'c', 'sp']).drop_duplicates('t')
+    if not out: return pd.DataFrame(columns=['o', 'h', 'l', 'c', 'sp', 'v'], index=pd.DatetimeIndex([]), dtype=float)
+    d = pd.DataFrame(out, columns=['t', 'o', 'h', 'l', 'c', 'sp', 'v']).drop_duplicates('t')
     d.index = F.utc_to_broker(pd.to_datetime(d.t)); d = d[d.index.dayofweek < 5]
-    return d[['o', 'h', 'l', 'c', 'sp']].astype(float).sort_index()
+    return d[['o', 'h', 'l', 'c', 'sp', 'v']].astype(float).sort_index()
 
 def catch_up(feed, hist, day, get=None, now=None, st=None):
     """Add every finished weekday after the last stored day and before `day` (Capital.com minutes), only when complete (judge_day).
@@ -265,12 +318,17 @@ def base_card(A=None):
             'v1.07 TURN-OF-MONTH: on the last broker weekday of the month and the first 3 of the next, BUY 9:30 am New York, stop 0.75 x range, close 3:30 pm '
             'New York - only on a day with no other S&P trade · v1.08 NIGHT V3: a 2nd, independent night trigger (only fires when the night trade above does '
             'not - never both), broker-day Wed/Thu/Fri only, on a gold+WTI combined overnight shock (the smaller of gold\'s and WTI\'s own 252-day-percentile '
-            '|daily move|, from 2 days before, >= 0.70): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the night leg above')
+            '|daily move|, from 2 days before, >= 0.70): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the night leg '
+            'above · v1.09 NIGHT V4: a 3rd, independent night trigger (only fires when the two night trades above do not - never more than one a night), no '
+            'weekday restriction, on a weak last-hour close (252-day percentile of the 15:00-16:00 New York return <= 0.30) combined with a last-hour volume '
+            'spike (z-score vs its own trailing 20-day average >= 2.0): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the '
+            'other night trades. WATCH ITEM (only 25 historical occurrences, mostly overlapping the VIX night trade above) - needs ~2-4 weeks of its own '
+            'live volume history before it can fire at all')
     return dict(code='US500', name='S&P 500', symbol='US500 · Capital.com US 500', live=False, paper=True, status='Paper', version=RULES,
                 unit='pts', dp=1, stats=BACKTEST, pass_bar=PASS, day_note=note,
-                what_note='Tracks whether live S&P signals do as well as the v1.08 MT4 test (500109 + Night V3). Decision after about 3 months.',
+                what_note='Tracks whether live S&P signals do as well as the v1.09 MT4 test (500109 + Night V3 + Night V4). Decision after about 3 months.',
                 cost_note='Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).',
-                net_label='Net points (v1.08 rules)')
+                net_label='Net points (v1.09 rules)')
 
 def picks_for(day, now, jd, record=True):
     """Today's Nasdaq desk picks [(nasdaq minute, side)] (22 Oct fix). Each pick's FIRST-SEEN time is kept in the journal day (picks_seen);
@@ -328,6 +386,8 @@ def compute(hist, b, day, now, picks, sp, jd):
     if jd.get('stress'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod)) + trades     # v1.04 night leg (v1.07: Mon/Tue/Wed only, stop 1.0x range - gated above)
     elif jd.get('v3'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),                # v1.08 Night V3: gold+WTI combo night (Wed/Thu/Fri only, gated below) -
                                             name='Night long (gold+WTI overnight shock)', src=3) + trades                 # never both: only fires when the regular stress-night leg above did NOT
+    elif jd.get('v4'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),                # v1.09 Night V4: weak-close + volume-spike night (gated below) -
+                                            name='Night long (weak-close + volume-spike)', src=4) + trades                # never with the other two: only fires when stress AND v3 above did NOT
     if not trades and S.tom_window(day) and np.isfinite(A) and now.hour * 60 + now.minute >= S.TOM_DECIDE:
         trades = S.tom_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod)) + trades                        # v1.07 row20: only once no other S&P leg has fired by 17:00 broker
     for t in trades:                                     # past the close time but no bar there yet: close at the last price
@@ -401,6 +461,14 @@ def main(feed=None, get=None, now=None):
         if ginfo: jd['v3_detail'] = ginfo
         if G is None and not jd['stress'] and day.dayofweek in S.V3_DOW:
             jd['v3_note'] = 'gold/WTI data unavailable this run - no Night V3 check'
+    if 'v4' not in jd and 'v3' in jd:                      # v1.09 Night V4: decided once per day, only once stress+v3 are already known (mutual exclusion)
+        ok_time = now.hour * 60 + now.minute <= S.NIGHT_IN + 5
+        Sdf = None if (jd['stress'] or jd['v3']) else lh_today(day, hist)
+        fired, linfo = S.v4_flag(Sdf, day) if Sdf is not None else (False, {})
+        jd['v4'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3']
+        if linfo: jd['v4_detail'] = linfo
+        if Sdf is None and not jd['stress'] and not jd['v3']:
+            jd['v4_note'] = 'no Night V4 check (volume history still warming up, or data unavailable)'
     trades = compute(hist, b, day, now, picks, sp, jd)
     freeze_legs(jd, trades)
     rows = [row(t, b, now, sp) for t in trades]; drows = [r for r in rows if not r.get('night')]; nrow = [r for r in rows if r.get('night')]
@@ -411,7 +479,7 @@ def main(feed=None, get=None, now=None):
         spark = [[F.broker_to_dubai(t).strftime('%-I:%M %p').lower(), round(float(r.c), 1), round(float(r.o), 1), round(float(r.h), 1), round(float(r.l), 1)] for t, r in g5.iterrows()]
     if J.get('start') is None: J['start'] = str(day.date())
     J['days'] = sorted([d for d in J['days'] if d['date'] != str(day.date())] +
-                       [dict({k: jd[k] for k in ('picks_seen', 'legs_frozen', 'stress', 'stress_note', 'v3', 'v3_note', 'v3_detail') if k in jd}, date=str(day.date()), rules=RULES,
+                       [dict({k: jd[k] for k in ('picks_seen', 'legs_frozen', 'stress', 'stress_note', 'v3', 'v3_note', 'v3_detail', 'v4', 'v4_note', 'v4_detail') if k in jd}, date=str(day.date()), rules=RULES,
                              label=day.strftime('%a %d %b'), side=(drows[0]['side'] if drows else None), trades=rows, final=bool(now >= eod))],
                       key=lambda d: d['date'])
     J['summary'] = summary(J, day); dumpj(J, JOUR, indent=1)
@@ -424,14 +492,15 @@ def main(feed=None, get=None, now=None):
     elif now >= xt: state, msg = 'none', 'No paper day trade today.'
     else: state, msg = 'waiting', (f'Waiting for the first day signal (from {dubai(day + pd.Timedelta(minutes=16 * 60 + 40))} Dubai: 9:40 am New York move, '
                                    'Nasdaq signals; earlier: yesterday high/low sweep).')
-    if nrow:                                             # v1.04 night leg (v1.08: or Night V3, gold+WTI combo - jd['v3'])
-        n_ = nrow[0]; label = 'gold+WTI shock' if jd.get('v3') else 'high-fear night'
+    if nrow:                                             # v1.04 night leg (v1.08: or Night V3, gold+WTI combo - jd['v3']; v1.09: or Night V4 - jd['v4'])
+        n_ = nrow[0]; label = 'weak-close + volume-spike' if jd.get('v4') else ('gold+WTI shock' if jd.get('v3') else 'high-fear night')
         msg = (f"NIGHT BUY ({label}) at {n_['time']} Dubai, stop {n_['stop']}, " +
                (f"closes at {dubai(day + pd.Timedelta(minutes=S.NIGHT_OUT))} Dubai (10:00 am New York). " if n_['status'] == 'open' else f"closed ({n_['status']}). ") + msg)
         if state in ('none', 'waiting') and n_['status'] == 'open': state = 'buy'
     elif jd.get('stress_note'): msg += ' (' + jd['stress_note'] + '.)'
-    elif jd.get('stress') is False and jd.get('v3') is False: msg += ' No night trade today (not a high-fear night, no gold+WTI shock).'
+    elif jd.get('stress') is False and jd.get('v3') is False and jd.get('v4') is False: msg += ' No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike).'
     elif jd.get('v3_note'): msg += ' (' + jd['v3_note'] + '.)'
+    elif jd.get('v4_note'): msg += ' (' + jd['v4_note'] + '.)'
     elif stress is None: msg += f" (Night-trade check: Cboe data not available - {cinfo.get('error', '')}.)"
     if pnote and now.hour * 60 + now.minute >= S.US_LO: msg += f' ({pnote}.)'
     mk['US500'] = dict(base_card(A if A == A else None), state=state, message=msg, price=last, change=(None if last is None or first is None else round(last - first, 1)),

@@ -26,6 +26,23 @@ v1.08 (3 Nov 2026, "Night V3": his MT4 run SP500_DAYTRADE v1.07 Magic 500114 lay
                 regular night leg. Found 2 Nov 2026 free-data hunt (gold+WTI combined overnight shock, 21-idea round in the S&P chat),
                 MT4-confirmed 3 Nov. Source for gc_pct/wti_pct: Yahoo Finance daily closes (free), cached/refreshed once a day - see
                 gw_today() in sp_run.py.
+v1.09 (3 Nov 2026, "Night V4": his MT4 run SP500_DAYTRADE v1.08 Magic 500115 layered on 500114 - net $14,896.29 (+$476.75 vs
+       500114's $14,419.54), DD $2,188.15/0.22% (tighter, -$25.58), 2471 trades (+25), the 25 new legs ~68% closed in profit):
+  NIGHT LEG V4  a THIRD, independent night trigger (fires only when the regular night leg AND V3 above both do NOT - the three
+                never double-trade the same night): no weekday restriction, BUY at 6:01 pm New York (01:01 broker) if the broker
+                day's own last-hour (15:00-16:00 NY) close was WEAK (252-day rolling percentile of the last-hour % price return
+                <= 0.30 - sold off into the close) AND that same last hour's trading volume was a SHORT-TERM SPIKE (z-score vs its
+                own trailing 20-day average >= 2.0) - same stop (1.0 x range) and close (10:00 am New York) as the other night
+                legs. Found 3 Nov 2026 free-data hunt (Round 30, S&P chat), MT4-confirmed same day. HONEST CAVEATS carried into
+                the live card: only 25 historical occurrences behind this number, 91-92% already overlap the VIX stress-night
+                gate above (so mostly a refinement on an already-trading population, not an independent new trigger), and 2022 was
+                a loss year inside the sample - treat as a watch item still proving itself, not a settled edge.
+                Source for lh_pct: a static seed from the MT4 backtest's own last-hour-return history (RoboForex, Sep 2019 on,
+                docs/sp_lh_seed.json, committed once) extended day by day with the dashboard's own Capital.com minute closes.
+                Source for lhvol_z: the dashboard's own Capital.com lastTradedVolume ONLY (not seeded - Capital.com's volume count
+                is on a different scale to the RoboForex data the backtest used, so mixing them into one 20-day rolling z-score
+                would be invalid) - needs ~2-4 weeks of live data to accumulate the 10-day minimum before it can fire at all; by
+                design, not a bug. See lh_today() in sp_run.py.
 Results: points per leg after a 0.8 pt cost (never less than Capital.com's live spread)."""
 import numpy as np, pandas as pd
 
@@ -40,6 +57,7 @@ V3_LAG_DAYS = 2                                                       # commodit
 V3_COMBO_MIN = 0.70                                                   # min(gold_pct, wti_pct) threshold (MT4-confirmed at this value, Magic 500114)
 TOM_IN = 16 * 60 + 30; TOM_DECIDE = 17 * 60; TOM_SM = 0.75            # v1.07 row20: Turn-of-Month day leg (entry price marker 16:30;
                                                                        # opened only once no other S&P leg has fired by 17:00 broker, so it never stacks with an early day/night leg)
+V4_LH_MAX = 0.30; V4_VOLZ_MIN = 2.00                                  # v1.09 Night V4: weak-close percentile (<=) / volume z-score (>=) thresholds
 
 def eod_minutes(day): return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
@@ -158,6 +176,21 @@ def combo_flag(G, day):
     combo = float(min(row.gc_pct, row.cl_pct))
     dd = dict(date=str(k.date()), gc_pct=float(row.gc_pct), cl_pct=float(row.cl_pct), combo_min=combo)
     return bool(combo >= V3_COMBO_MIN), dd
+
+def v4_flag(S, day):
+    """v1.09 Night V4 trigger. S: DataFrame indexed by date (built by lh_today() in sp_run.py) with columns lh_pct (252-day
+    rolling percentile of the broker day's own last-hour (15:00-16:00 NY) % price return - low = sold off into the close) and
+    lhvol_z (that same last hour's traded volume, z-scored against its own trailing 20-day average). The broker day `day`'s own
+    NY session closed just hours earlier at NY date = day - 1 calendar day (same relationship proven for the EA's baked NV2T/
+    NV4 arrays: d = ny_date + 1), so that is the row looked up. No weekday restriction (unlike V3) - the Python research found no
+    weekday pattern. Fires when lh_pct <= V4_LH_MAX and lhvol_z >= V4_VOLZ_MIN; either value missing (not enough rolling history
+    yet, or no data that day) means it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if S is None or not len(S) or k not in S.index: return False, {}
+    row = S.loc[k]
+    if not (np.isfinite(row.lh_pct) and np.isfinite(row.lhvol_z)): return False, {}
+    dd = dict(date=str(k.date()), lh_pct=float(row.lh_pct), lhvol_z=float(row.lhvol_z))
+    return bool(row.lh_pct <= V4_LH_MAX and row.lhvol_z >= V4_VOLZ_MIN), dd
 
 def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_done=False,
               name='Night long (high-fear night: VIX / VVIX)', src=1):
