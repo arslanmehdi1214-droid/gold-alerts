@@ -1,7 +1,7 @@
 name: gold-alerts
 on:
   schedule:
-    - cron: '*/30 * * * 0-5'    # starts a checking job (Sunday-Friday UTC); each job checks EVERY MINUTE and hands over to the next
+    - cron: '*/30 * * * 0-5'    # backup only now: starts a checking job if the self-chain below ever breaks (Sunday-Friday UTC)
   workflow_dispatch:
     inputs:
       test:
@@ -9,7 +9,7 @@ on:
         default: 'yes'
 permissions:
   contents: write
-  actions: read
+  actions: write
 concurrency: gold-alerts
 jobs:
   run:
@@ -37,10 +37,20 @@ jobs:
           LOOP_MINUTES: '330'
         run: |
           git config user.name gold-bot; git config user.email gold-bot@users.noreply.github.com
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then python run.py --test; else python loop.py; fi
+          # a REAL manual test = workflow_dispatch with the "test" input left as "yes" (the default, unchanged behaviour).
+          # a self-chained continuation (below) always passes test=no, so it runs the real loop, not a test.
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.test }}" = "yes" ]; then python run.py --test; else python loop.py; fi
       - name: Save sent-alerts list
         if: always()
         run: |
           git add sent.json docs/*.json 2>/dev/null || true
           for p in autotrade_state.json autotrade_log.json docs/sp_min docs/sv_min docs/nq_min; do git add "$p" 2>/dev/null || true; done
           git diff --cached --quiet || (git commit -m "alerts state" && (git push || (git pull --rebase -X theirs && git push)))
+      - name: Start the next run now (self-chain - don't wait for the next cron tick)
+        if: always() && (github.event_name != 'workflow_dispatch' || github.event.inputs.test != 'yes')
+        run: |
+          curl -sf -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/gold_alerts.yml/dispatches" \
+            -d '{"ref":"main","inputs":{"test":"no"}}'
