@@ -1,4 +1,8 @@
-"""USDJPY_DAYTRADE v1.05 rules (v1.04 + at most ONE flip a day that closes open trades; MT4 run 22 Oct passed)
+"""USDJPY_DAYTRADE v1.06 rules (v1.05 + a 12th signal "HAM": the SAME Heikin-Ashi 7am scalp as signal 1, fired again at one
+more broker hour (HAM_HOUR=7) to raise win rate and trade frequency - the accuracy/frequency goal, 2 Nov. Corresponds to the
+MT4-confirmed EA build "v1.09 HAM(hour7)", real MT4 run 3 Nov 2026: PASSED all 12 pass-bar criteria (win rate +1.39pt FULL /
++1.28pt 2023-26, trades/day +23%, every P&L guardrail milder than predicted, worst day unchanged) - see day-trading-usdjpy-2.
+v1.05 (v1.04 + at most ONE flip a day that closes open trades; MT4 run 22 Oct passed)
 = v1.04 rules (the MT4 EA, 11 signals) as a PAPER engine for the portal - same logic as the EA, line by line.
 v1.04 (MT4 run 22 Oct passed): (a) the Heikin-Ashi 7am trade closes WHOLE at a tiny target = 0.03 x its risk (status 'target');
 (b) BREAKOUT FLIP: a quiet signal (3,4,5,6,7,11) against the day's side closes today's open trades at its price (status 'reversed')
@@ -11,10 +15,10 @@ History = the EA's own daily and hourly bars: finished broker days / hours built
 Times are integer seconds on the broker clock (naive)."""
 import numpy as np
 
-NS = 11
-TAG = ['J13', 'L3', 'M8', 'N3', 'M1a', 'J21', 'M1b', 'L1', 'U5', 'L7', 'Q5']
+NS = 12
+TAG = ['J13', 'L3', 'M8', 'N3', 'M1a', 'J21', 'M1b', 'L1', 'U5', 'L7', 'Q5', 'S12 HAM']
 NAME = ['Heikin-Ashi 7am', 'Week-so-far break', 'Inside-week break', 'Inside-day break', 'Quiet 5-day break', 'Squeeze 4pm',
-        'Quiet 2-day break', 'EMA10 break', 'Last-week break', 'Morning pullback', 'Hourly squeeze 3pm']
+        'Quiet 2-day break', 'EMA10 break', 'Last-week break', 'Morning pullback', 'Hourly squeeze 3pm', 'HAM (Heikin-Ashi, 2nd hour)']
 PT = 0.001; MIN_SPREAD = 0.01                        # 1 pip = the MT4 test spread; the paper P/L never uses less
 FIX_SPREAD = 0.010                                   # 22 Oct fix: ONE fixed spread (1.0 pip = the MT4 v1.05 test) for entry, stop, half level and P/L.
                                                      # Capital.com re-sends a different ask for the same finished minute, so the live spread made
@@ -25,6 +29,8 @@ QUIET = {2, 3, 4, 5, 6, 10}                          # EA signals 3,4,5,6,7,11 (
 Q_STOP, Q_HALF, O_STOP, O_HALF = 0.25, 0.50, 0.75, 0.10   # stop = x 14-day range; half at + x risk (risk = stop distance incl. spread)
 PART, LOCK_PK, LOCK_FL, HA_W = 0.5, 2.0, 1.0, 1 / 3      # half part; day lock peak / floor in R; Heikin-Ashi 7am size
 HA_TARGET = 0.03                                     # v1.04: Heikin-Ashi 7am closes the whole trade at + this x risk (0 = v1.03 half-close)
+HAM_HOUR = 7                                         # v1.06: signal 12 "HAM" - the EXACT same Heikin-Ashi scalp as signal 0 (weight/target below),
+                                                     # fired again once more at this broker hour (do not use 6,8,9,14,15 - already used by other signals)
 FLIP = True                                          # v1.04: a quiet signal against the day's side closes open trades and switches the side
 FLIP_MAX = 1                                         # v1.05: at most this many flips a day that close open trades (0 = no limit = v1.04)
 RISK_USD = 100.0                                     # v1.03 set file Risk_Dollars=100: a full-size stop = $100 (the MT4 backtest's size)
@@ -164,6 +170,9 @@ class Yen:
                 if wd >= 3:
                     p1 = len(wKey) - 2 if (wKey and wKey[-1] == cw) else len(wKey) - 1
                     if p1 >= 0: ArmBreak(8, wH[p1], wL[p1], 0)
+            if HAM_HOUR >= 0 and h >= HAM_HOUR and not hourDone[HAM_HOUR]:        # v1.06: S12 HAM - a 2nd sample of signal 0's own logic, same hour each day
+                hourDone[HAM_HOUR] = True
+                if self.nH >= 211 and self.haCol != 0: Fire(11, self.haCol, 0., i, O_[i], True)
             if h >= 8 and not hourDone[8]:
                 hourDone[8] = True
                 if S['cBars'] > 0:
@@ -270,9 +279,9 @@ class Yen:
                 sd = (Q_STOP if q else O_STOP) * tr['atr']
                 if not sd > 0: continue
                 sp = SP(j); e = px + sp if d > 0 else px; sl = px - sd if d > 0 else px + sp + sd; k = Q_HALF if q else O_HALF
-                tgt = (s == 0 and HA_TARGET > 0)
+                tgt = (s in (0, 11) and HA_TARGET > 0)                   # v1.06: S12 HAM (s==11) is the same tiny-target trade as S1 (s==0)
                 if tgt: k = HA_TARGET
-                legs.append(dict(tr=tr, w=(HA_W if s == 0 else 1.0), d=d, px=px, e=e, sl=sl, sl0=sl, sd=sd, sp=sp,
+                legs.append(dict(tr=tr, w=(HA_W if s in (0, 11) else 1.0), d=d, px=px, e=e, sl=sl, sl0=sl, sd=sd, sp=sp,
                                  hp=(e + d * k * abs(e - sl)) if k > 0 else None, half=False, half_t=None, bank=0., j=j, on=True,
                                  r=None, ex=None, ext=None, status='open', tgt=tgt, first=(ddir == 0)))
                 if ddir == 0: ddir = d
