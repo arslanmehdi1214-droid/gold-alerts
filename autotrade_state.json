@@ -1,14 +1,14 @@
 {
- "balance": 1123.13,
+ "balance": 1121.1,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-03",
-  "pl": -13.34,
+  "pl": -17.4,
   "start_balance": 1148.75,
   "start_equity": 1148.75,
   "stopped": false
  },
- "open_positions": 3,
+ "open_positions": 2,
  "open_risk_aed": 56.67,
  "risk_usd": 8.168822328114365,
  "trades": {
@@ -446,16 +446,17 @@
    "part_x": 0.5,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-7077-8535-0495-7fc60004511e",
     "level": 158.385,
-    "open": true,
+    "open": false,
     "size": 3200.0,
     "tp": null
    },
    "risk_aed": 29.84,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 158.351
   },
   "USDJPY|2026-11-03|8:00 am|SELL|Heikin-Ashi 7am": {
