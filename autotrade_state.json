@@ -1,15 +1,15 @@
 {
- "balance": 1138.39,
+ "balance": 1103.49,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-03",
-  "pl": -20.72,
+  "pl": -47.13,
   "start_balance": 1148.75,
   "start_equity": 1148.75,
   "stopped": false
  },
- "open_positions": 2,
- "open_risk_aed": 72.2,
+ "open_positions": 1,
+ "open_risk_aed": 27.58,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-10-30|11:00 am|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -136,16 +136,17 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-7074-c389-0495-7fc60004511e",
     "level": 3900.94,
-    "open": true,
+    "open": false,
     "size": 0.32,
     "tp": null
    },
    "risk_aed": 44.62,
    "risk_usd": 12.25,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 3937.54
   },
   "OIL|2026-10-30|5:43 am|BUY|Open \u00b1 \u00bd range": {
@@ -254,6 +255,18 @@
    "state": "closed",
    "stop": 99.52
   },
+  "OIL|2026-11-03|4:28 pm|SELL|Whole dollar": {
+   "at": "Tue 3 Nov 6:33 PM",
+   "market": "OIL",
+   "state": "not entered",
+   "why": "desk trade seen 126 min after entry, status be"
+  },
+  "OIL|2026-11-03|5:30 pm|SELL|Yesterday's high/low": {
+   "at": "Tue 3 Nov 6:33 PM",
+   "market": "OIL",
+   "state": "not entered",
+   "why": "desk trade seen 64 min after entry, status be"
+  },
   "OIL|2026-11-03|9:00 am|SELL|Side sell (weak close)": {
    "at": "Tue 3 Nov 9:01 AM",
    "market": "OIL",
@@ -322,6 +335,12 @@
    "state": "not entered",
    "why": "desk trade seen 166 min after entry, status stopped"
   },
+  "US100|2026-11-03|4:02 pm|BUY|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm": {
+   "at": "Tue 3 Nov 6:33 PM",
+   "market": "US100",
+   "state": "not entered",
+   "why": "desk trade seen 152 min after entry, status open"
+  },
   "US500|2026-10-30|5:40 pm|SELL|S&P 9:40 am New York opening move": {
    "desk_price": 7632.0,
    "market": "US500",
@@ -387,6 +406,12 @@
    "state": "closed",
    "stop": 157.288
   },
+  "USDJPY|2026-11-03|5:26 pm|SELL|Squeeze 4pm": {
+   "at": "Tue 3 Nov 6:33 PM",
+   "market": "USDJPY",
+   "state": "not entered",
+   "why": "desk trade seen 68 min after entry, status be"
+  },
   "USDJPY|2026-11-03|8:00 am|SELL|Heikin-Ashi 7am": {
    "desk_price": 157.88,
    "market": "USDJPY",
@@ -399,6 +424,12 @@
    "state": "not entered",
    "stop": 158.492,
    "why": "rejected by Capital.com"
+  },
+  "USDJPY|2026-11-03|9:00 am|SELL|HAM (Heikin-Ashi, 2nd hour)": {
+   "at": "Tue 3 Nov 6:33 PM",
+   "market": "USDJPY",
+   "state": "not entered",
+   "why": "desk trade seen 574 min after entry, status target"
   }
  },
  "untracked_seen": {}
