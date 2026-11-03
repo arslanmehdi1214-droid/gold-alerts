@@ -8,8 +8,8 @@
   "start_equity": 1148.75,
   "stopped": false
  },
- "open_positions": 1,
- "open_risk_aed": 27.58,
+ "open_positions": 0,
+ "open_risk_aed": 0,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-11-02|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -37,9 +37,10 @@
    "market": "GBPUSD",
    "opened_at": "Tue 3 Nov 12:01 PM",
    "part": {
+    "closed_by": "desk: eod",
     "id": "00000000-7074-7b47-0495-7fc60004511e",
     "level": 1.34218,
-    "open": true,
+    "open": false,
     "size": 1000.0,
     "tp": 1.34969
    },
@@ -48,7 +49,7 @@
    "risk_aed": 27.58,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 1.33429
   },
   "GOLD|2026-10-31|7:00 am|BUY|N2 near100": {
