@@ -1,5 +1,5 @@
 {
- "updated": "Wed 04 Nov \u00b7 3:14 am",
+ "updated": "Wed 04 Nov \u00b7 3:15 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 3931.19,
+   "price": 3930.96,
    "close_at": "12:50 am",
-   "change": 0.21,
+   "change": -0.02,
    "size": 0.1,
    "datr": 73.41,
    "open_now": 0,
@@ -37,9 +37,9 @@
     ],
     [
      "3:10 am",
-     3931.19,
+     3930.96,
      3928.69,
-     3932.63,
+     3932.66,
      3927.45
     ]
    ],
@@ -285,8 +285,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 49.768,
-   "change": 0.007,
+   "price": 49.755,
+   "change": -0.006,
    "entries": [],
    "spark": [
     [
@@ -305,7 +305,7 @@
     ],
     [
      "3:10 am",
-     49.768,
+     49.755,
      49.755,
      49.791,
      49.739
@@ -466,8 +466,8 @@
    "net_label": "Net R / $ at $100 risk (v1.06 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 158.698,
-   "change_pips": 2.8,
+   "price": 158.716,
+   "change_pips": 4.6,
    "atr_pips": 81.1,
    "entries": [
     {
@@ -495,7 +495,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.0888,
+     "r_now": 0.1776,
      "rwf": null,
      "spread": 1.0
     }
@@ -510,9 +510,9 @@
     ],
     [
      "3:10 am",
-     158.698,
+     158.716,
      158.676,
-     158.702,
+     158.719,
      158.673
     ]
    ],
@@ -567,7 +567,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.0888,
+       "r_now": 0.1776,
        "rwf": null,
        "spread": 1.0
       }
@@ -1881,7 +1881,7 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 6.0,
+   "live_spread_pips": 4.5,
    "history_note": "history to 2026-11-03 (300 days)"
   },
   "DE40": {
@@ -1920,8 +1920,8 @@
    "net_label": "Net $ per barrel (v1.10)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 95.924,
-   "change": -0.1,
+   "price": 95.934,
+   "change": -0.09,
    "entries": [],
    "spark": [
     [
@@ -1940,7 +1940,7 @@
     ],
     [
      "3:10 am",
-     95.92,
+     95.93,
      95.92,
      95.94,
      95.9
@@ -2953,12 +2953,12 @@
     "pf": 1.15,
     "months": 3
    },
-   "day_note": "14-day range 92 pts \u00b7 stop 0.75 x range (= 69 pts) \u00b7 no half-close \u00b7 the day's first signal sets BUY or SELL, later signals the same way add (max 3 trades) \u00b7 v1.04: no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop \u00b7 signals: Nasdaq desk signals copied in US hours + S&P 9:40 am New York move, yesterday high/low sweep, big move by 10 am New York \u00b7 close 3:30 pm New York \u00b7 NIGHT trade on high-fear nights (VIX above VIX3M, or VIX / VVIX in their 1-year top 10%): BUY 6:01 pm New York (v1.07: Mon/Tue/Wed broker-days only), stop 1 x range (v1.07, was 2x), close 10:00 am New York \u00b7 v1.07 TURN-OF-MONTH: on the last broker weekday of the month and the first 3 of the next, BUY 9:30 am New York, stop 0.75 x range, close 3:30 pm New York - only on a day with no other S&P trade \u00b7 v1.08 NIGHT V3: a 2nd, independent night trigger (only fires when the night trade above does not - never both), broker-day Wed/Thu/Fri only, on a gold+WTI combined overnight shock (the smaller of gold's and WTI's own 252-day-percentile |daily move|, from 2 days before, >= 0.70): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the night leg above \u00b7 v1.09 NIGHT V4: a 3rd, independent night trigger (only fires when the two night trades above do not - never more than one a night), no weekday restriction, on a weak last-hour close (252-day percentile of the 15:00-16:00 New York return <= 0.30) combined with a last-hour volume spike (z-score vs its own trailing 20-day average >= 2.0): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the other night trades. WATCH ITEM (only 25 historical occurrences, mostly overlapping the VIX night trade above) - needs ~2-4 weeks of its own live volume history before it can fire at all \u00b7 v1.10 NIGHT V5: a 4th, independent night trigger (only fires when the three night trades above do not - never more than one a night), no weekday restriction, on the US Dollar Index weakening over 5 days (252-day percentile of the 5-day % change <= 0.20) combined with the market narrowing on both a 10-day AND a 20-day horizon (252-day percentile of the RSP/SPY equal-weight/cap-weight ratio's 10-day and 20-day % change, both <= 0.20): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the other night trades. WATCH ITEM (20 historical Python occurrences, 18 confirmed in MT4) - unlike Night V4, this data is available from day one, no live warm-up needed",
+   "day_note": "14-day range \u2014 \u00b7 stop 0.75 x range \u00b7 no half-close \u00b7 the day's first signal sets BUY or SELL, later signals the same way add (max 3 trades) \u00b7 v1.04: no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop \u00b7 signals: Nasdaq desk signals copied in US hours + S&P 9:40 am New York move, yesterday high/low sweep, big move by 10 am New York \u00b7 close 3:30 pm New York \u00b7 NIGHT trade on high-fear nights (VIX above VIX3M, or VIX / VVIX in their 1-year top 10%): BUY 6:01 pm New York (v1.07: Mon/Tue/Wed broker-days only), stop 1 x range (v1.07, was 2x), close 10:00 am New York \u00b7 v1.07 TURN-OF-MONTH: on the last broker weekday of the month and the first 3 of the next, BUY 9:30 am New York, stop 0.75 x range, close 3:30 pm New York - only on a day with no other S&P trade \u00b7 v1.08 NIGHT V3: a 2nd, independent night trigger (only fires when the night trade above does not - never both), broker-day Wed/Thu/Fri only, on a gold+WTI combined overnight shock (the smaller of gold's and WTI's own 252-day-percentile |daily move|, from 2 days before, >= 0.70): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the night leg above \u00b7 v1.09 NIGHT V4: a 3rd, independent night trigger (only fires when the two night trades above do not - never more than one a night), no weekday restriction, on a weak last-hour close (252-day percentile of the 15:00-16:00 New York return <= 0.30) combined with a last-hour volume spike (z-score vs its own trailing 20-day average >= 2.0): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the other night trades. WATCH ITEM (only 25 historical occurrences, mostly overlapping the VIX night trade above) - needs ~2-4 weeks of its own live volume history before it can fire at all \u00b7 v1.10 NIGHT V5: a 4th, independent night trigger (only fires when the three night trades above do not - never more than one a night), no weekday restriction, on the US Dollar Index weakening over 5 days (252-day percentile of the 5-day % change <= 0.20) combined with the market narrowing on both a 10-day AND a 20-day horizon (252-day percentile of the RSP/SPY equal-weight/cap-weight ratio's 10-day and 20-day % change, both <= 0.20): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the other night trades. WATCH ITEM (20 historical Python occurrences, 18 confirmed in MT4) - unlike Night V4, this data is available from day one, no live warm-up needed",
    "what_note": "Tracks whether live S&P signals do as well as the v1.10 MT4 test (500109 + Night V3 + Night V4 + Night V5). Decision after about 3 months.",
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.10 rules)",
    "state": "buy",
-   "message": "NIGHT BUY (gold+WTI shock) at 3:01 am Dubai, stop 7494.7, closes at 7:00 pm Dubai (10:00 am New York). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
+   "message": "S&P paper update failed at 3:15 am Dubai (FeedError: price bars missing between 2:06 am-2:11 am Dubai) \u2014 shows the last good update; retries every minute.",
    "price": 7589.5,
    "change": 10.6,
    "entries": [
@@ -3561,7 +3561,7 @@
      "final": true
     }
    ],
-   "feed_error": false,
+   "feed_error": true,
    "picks_stale": false,
    "epic": "US500",
    "close_at": "12:30 am",
@@ -3597,8 +3597,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 28329.4,
-   "change": 42.4,
+   "price": 28322.4,
+   "change": 35.4,
    "entries": [],
    "spark": [
     [
@@ -3694,7 +3694,7 @@
     ],
     [
      "3:10 am",
-     28329.4,
+     28322.4,
      28308.7,
      28330.7,
      28302.3
@@ -4442,8 +4442,8 @@
    "regime": 0.152,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.34087,
-   "change": 0.00047,
+   "price": 1.34082,
+   "change": 0.00042,
    "entries": [],
    "spark": [
     [
@@ -4539,10 +4539,10 @@
     ],
     [
      "3:10 am",
-     1.34087,
+     1.34082,
      1.34095,
      1.34095,
-     1.34082
+     1.34076
     ]
    ],
    "journal": {
