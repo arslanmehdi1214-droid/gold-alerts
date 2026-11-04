@@ -75,6 +75,25 @@ v1.11 (4 Nov 2026, "Night V6": his MT4 run SP500_DAYTRADE v1.11 Magic 500117 lay
                 as a watch item still proving itself, not a settled edge. Source for dtwex_lvl_pct/stoxx_shock_pct: FRED
                 DTWEXBGS (broad dollar index, free, no key needed) + Yahoo Finance ^STOXX50E daily closes, cached/refreshed
                 once a day, available from day one (no live warm-up needed) - see dtwexstoxx_today() in sp_run.py.
+v1.12 (4 Nov 2026, "Night V7": his MT4 run SP500_DAYTRADE v1.12 Magic 500119 layered on 500117 - net $16,133.31 (+$757.18 vs
+       500117's $15,376.13), DD $2,155.51/0.21% (DOWN, not just unchanged - the first leg where DD actually falls), 2581
+       trades (+78, all long - confirmed byte-for-byte to the predicted calendar dates after a recompile fix), 63.16%
+       of the 78 new legs closed in profit (48W/28L - a bit below the Python 68.8% estimate, flagged honestly)):
+  NIGHT LEG V7  a SIXTH, independent night trigger (fires only when the five night triggers above do NOT - the six
+                never double-trade the same night): no weekday restriction, BUY at 6:01 pm New York (01:01 broker) if
+                the materials sector (XLB) was relatively WEAK vs SPY (252-day rolling percentile of the XLB/SPY ratio
+                LEVEL <= 0.30) AND the communications-services sector (XLC, mega-cap/growth-heavy) was RALLYING sharply
+                vs SPY (252-day rolling percentile of the 10-day % change in the XLC/SPY ratio >= 0.85) at once - a
+                sector-rotation-into-growth signal - same stop (1.0 x range) and close (10:00 am New York) as the
+                other night legs. Found 4 Nov 2026 full 11-GICS-sector grid hunt (Round 58, S&P chat) - the BIGGEST
+                Python sample of any night trigger this project (n=93), hardened the same way as V5/V6 (threshold
+                neighbourhood, outlier/clustering checks, not VIX-in-disguise: corr with vix_pct ~0), MT4-confirmed
+                4 Nov after an initial 0-trade MT4 run traced to a stale/uncompiled .ex4 on his side, not a code bug -
+                fixed by a fresh recompile. HONEST CAVEATS carried into the live card: live win rate (63.16%) ran a
+                touch below the Python hardening estimate (68.8%), moderate date clustering (a 15-night May 2020
+                episode and a 12-night Sep 2025 episode) - treat as a watch item still proving itself, not a settled
+                edge. Source for mt_lvl_pct/cm_chg10_pct: Yahoo Finance daily closes (XLB, XLC, SPY - free), cached/
+                refreshed once a day, available from day one (no live warm-up needed) - see mt_cm_today() in sp_run.py.
 Results: points per leg after a 0.8 pt cost (never less than Capital.com's live spread)."""
 import numpy as np, pandas as pd
 
@@ -92,6 +111,7 @@ TOM_IN = 16 * 60 + 30; TOM_DECIDE = 17 * 60; TOM_SM = 0.75            # v1.07 ro
 V4_LH_MAX = 0.30; V4_VOLZ_MIN = 2.00                                  # v1.09 Night V4: weak-close percentile (<=) / volume z-score (>=) thresholds
 V5_DXY_MAX = 0.20; V5_RS10_MAX = 0.20; V5_RS20_MAX = 0.20             # v1.10 Night V5: dollar-weakening 5d / breadth-narrowing 10d AND 20d thresholds (all <=)
 V6_DTWEX_MAX = 0.15; V6_STOXX_MIN = 0.85                              # v1.11 Night V6: broad-dollar-basket-weak (level, <=) / Europe-shock (|move|, >=) thresholds
+V7_MT_MAX = 0.30; V7_CM_MIN = 0.85                                    # v1.12 Night V7: materials-weak (level, <=) / communications-rally (10d change, >=) thresholds
 
 def eod_minutes(day): return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
@@ -258,6 +278,23 @@ def v6_flag(Y, day):
     if not (np.isfinite(row.dtwex_lvl_pct) and np.isfinite(row.stoxx_shock_pct)): return False, {}
     dd = dict(date=str(k.date()), dtwex_lvl_pct=float(row.dtwex_lvl_pct), stoxx_shock_pct=float(row.stoxx_shock_pct))
     return bool(row.dtwex_lvl_pct <= V6_DTWEX_MAX and row.stoxx_shock_pct >= V6_STOXX_MIN), dd
+
+def v7_flag(Z, day):
+    """v1.12 Night V7 trigger. Z: DataFrame indexed by date (built by mt_cm_today() in sp_run.py) with columns mt_lvl_pct
+    (252-day rolling percentile of the materials sector ETF (XLB) relative to SPY, LEVEL - low = materials/cyclicals
+    relatively weak) and cm_chg10_pct (252-day rolling percentile of the 10-day % change in the communications-services
+    sector ETF (XLC) relative to SPY - high = communications rallying sharply, a mega-cap/growth-heavy sector). The
+    broker day `day`'s own NY-date row is day - 1 calendar day (same lag relationship as V4/V5/V6's lookup: d = ny_date
+    + 1). Fires when materials are weak (mt_lvl_pct <= V7_MT_MAX) AND communications are rallying (cm_chg10_pct >=
+    V7_CM_MIN) at once - a sector-rotation-into-growth signal, the biggest Python sample (n=93) of any night trigger
+    found this project. Missing values (not enough rolling history yet, or no data that day) mean it simply never
+    fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if Z is None or not len(Z) or k not in Z.index: return False, {}
+    row = Z.loc[k]
+    if not (np.isfinite(row.mt_lvl_pct) and np.isfinite(row.cm_chg10_pct)): return False, {}
+    dd = dict(date=str(k.date()), mt_lvl_pct=float(row.mt_lvl_pct), cm_chg10_pct=float(row.cm_chg10_pct))
+    return bool(row.mt_lvl_pct <= V7_MT_MAX and row.cm_chg10_pct >= V7_CM_MIN), dd
 
 def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_done=False,
               name='Night long (high-fear night: VIX / VVIX)', src=1):
