@@ -1,19 +1,5 @@
 [
  {
-  "action": "OPEN SELL part",
-  "detail": "USDJPY|2026-10-20|4:14 pm|SELL|Squeeze 4pm size 4800.0 at 158.091 stop 158.305 target 157.972 | trade risk 49.51 AED",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Tue 20 Oct 4:15 PM"
- },
- {
-  "action": "OPEN SELL rest",
-  "detail": "USDJPY|2026-10-20|4:14 pm|SELL|Squeeze 4pm size 4800.0 at 158.092 stop 158.305 | trade risk 49.51 AED",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Tue 20 Oct 4:15 PM"
- },
- {
   "action": "part closed on demo",
   "detail": "USDJPY|2026-10-20|4:14 pm|SELL|Squeeze 4pm",
   "market": "USDJPY",
@@ -2798,5 +2784,19 @@
   "market": "US500",
   "ok": true,
   "t": "Wed 4 Nov 6:41 PM"
+ },
+ {
+  "action": "part closed on demo",
+  "detail": "US100|2026-11-04|6:39 pm|BUY|US+10 H16 price crosses month open after 7am follow",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 4 Nov 6:44 PM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "US100|2026-11-04|6:39 pm|BUY|US+10 H16 price crosses month open after 7am follow to 28506.3 (stop to entry: each position at its own fill price)",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 4 Nov 6:44 PM"
  }
 ]
