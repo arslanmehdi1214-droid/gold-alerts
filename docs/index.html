@@ -216,7 +216,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
 @media(max-width:860px){.row{grid-template-columns:auto 1fr auto;gap:8px 10px}.row .nb,.row .mini{display:none}.row .btn{display:none}}
 .st .tm b.at{color:var(--mute);font-size:17px}.st .tm b.soon{color:var(--amber)}
 .nchips{display:inline-flex;gap:4px;margin-left:6px;vertical-align:1px}.nc{font:700 9.5px Inter;font-style:normal;letter-spacing:.6px;padding:1px 6px;border-radius:4px}
-.nc.Gold{background:rgba(226,194,122,.18);color:var(--gold)}.nc.Oil{background:rgba(143,160,255,.18);color:#a9b6ff}.nc.USDJPY{background:rgba(255,197,107,.15);color:var(--amber)}.nc.Nasdaq{background:rgba(155,231,196,.14);color:var(--live)}.nc.SP{background:rgba(120,200,255,.14);color:#8fd0ff}.nc.Silver{background:rgba(200,206,214,.16);color:#d5dbe3}.nc.GBPUSD{background:rgba(214,160,255,.15);color:#dcb4ff}
+.nc.Gold{background:rgba(226,194,122,.18);color:var(--gold)}.nc.Oil{background:rgba(143,160,255,.18);color:#a9b6ff}.nc.USDJPY{background:rgba(255,197,107,.15);color:var(--amber)}.nc.Nasdaq{background:rgba(155,231,196,.14);color:var(--live)}.nc.SP{background:rgba(120,200,255,.14);color:#8fd0ff}.nc.GBPUSD{background:rgba(214,160,255,.15);color:#dcb4ff}
 .oh{display:flex;align-items:center;gap:12px;margin-bottom:12px}.oh h3{margin:0}
 .sty{margin-left:auto;display:flex;gap:6px;align-items:center;font:500 11.5px Inter;color:var(--dim)}
 .sty button{background:var(--panel);border:1px solid var(--line);color:var(--mute);border-radius:7px;padding:4px 9px;font:600 11.5px Inter;cursor:pointer}.sty button.on{border-color:var(--gold);color:var(--ink)}
@@ -294,7 +294,6 @@ const MK=[{c:'GOLD',ep:'GOLD',n:'Gold',tag:'Gold',tv:'CAPITALCOM:XAUUSD',dp:2,lo
  {c:'OIL',ep:'OIL_CRUDE',n:'Oil',tag:'Oil',tv:'CAPITALCOM:USOIL',dp:2,lot:10,lotL:'10 bbl'},
  {c:'US100',ep:'US100',n:'Nasdaq 100',tag:'Nasdaq',tv:'CAPITALCOM:US100',dp:1,lot:0.1,lotL:'$0.10/pt'},
  {c:'US500',ep:'US500',n:'S&P 500',tag:'S&P',tv:'CAPITALCOM:US500',dp:1,lot:0.1,lotL:'$0.10/pt'},
- {c:'SILVER',ep:'SILVER',n:'Silver',tag:'Silver',tv:'CAPITALCOM:SILVER',dp:3,lot:50,lotL:'50 oz'},
  {c:'GBPUSD',ep:'GBPUSD',n:'GBP/USD',tag:'GBP/USD',tv:'CAPITALCOM:GBPUSD',dp:5,lot:1000,lotL:'1,000 units'}];
 const CAP=25000,AED=3.6725,TZ={timeZone:'Asia/Dubai'};
 const t12=d=>d.toLocaleTimeString('en-US',{...TZ,hour:'numeric',minute:'2-digit'}).toLowerCase();
@@ -340,7 +339,7 @@ async function pullLive(){try{
 /* size weight like weight() in autotrade.py: '1/3' (OIL), 'third' (US100, USDJPY) = one third, a number = itself, else full */
 const szW=s=>typeof s==='number'?s:['third','1/3','⅓'].includes(String(s??'').toLowerCase())?1/3:1;
 function calc(o){const {m,x,e}=o,s=e.side==='BUY'?1:-1,px=done(e)?(e.exit??+x.price):nowPx(m,x),sd=Math.abs(e.price-(e.stop0??e.stop))||1,run=s*(px-e.price),pq=e.part??0.5,mv=e.half?pq*s*(e.half_px-e.price)+(1-pq)*run:run;
- const k=m.c==='SILVER'?(+e.size||1):m.c==='GOLD'?(+e.size_x||1):szW(e.size);return {px,mv,R:mv/sd,pl:k*usd(m,mv,px),risk:k*usd(m,sd,px)}}
+ const k=m.c==='GOLD'?(+e.size_x||1):szW(e.size);return {px,mv,R:mv/sd,pl:k*usd(m,mv,px),risk:k*usd(m,sd,px)}}
 function hitFullTarget(c){const e=c.o.e;
  if(e.half_px!=null&&(e.part??0.5)<0.999)return false;
  const s=e.side==='BUY'?1:-1,sd=Math.abs(e.price-(e.stop0??e.stop))||1,tR=e.half_px==null?2:s*(e.half_px-e.price)/sd;
@@ -572,8 +571,6 @@ const HMK=[
   tag:t=>(t.name||'').split(':')[0],info:t=>`in ${f(t.price,1)} · stop ${f(t.stop,1)}${t.exit!=null?` · out ${f(t.exit,1)}`:''}${t.res!=null?` · ${sg(t.res,1)} pts`:''}`},
  {c:'US500',n:'S&P 500',file:'journal_sp.json',usd:t=>t.res==null?null:t.res*0.1,
   tag:t=>(t.src||'')+(t.leg?' · leg '+t.leg:''),info:t=>`in ${f(t.price,1)} · stop ${f(t.stop,1)}${t.exit!=null?` · out ${f(t.exit,1)}`:''}${t.res!=null?` · ${sg(t.res,1)} pts`:''}`},
- {c:'SILVER',n:'Silver',file:'journal_sv.json',usd:t=>{const r=t.res_sized??t.res;return r==null?null:r*50},
-  tag:t=>(t.name||'')+(t.size>1?' · size '+t.size:''),info:t=>`in ${f(t.price,3)} · stop ${f(t.stop0??t.stop,3)} · ½ at ${f(t.half_px,3)}${t.half?' ✓':''}${t.exit!=null?` · out ${f(t.exit,3)}`:''}`},
  {c:'GBPUSD',n:'GBP/USD',file:'journal_gbp.json',usd:t=>t.pips==null?null:t.pips*0.1,
   tag:t=>t.name||'',info:t=>`in ${f(t.price,5)} · stop ${f(t.stop,5)} · target ${f(t.half_px,5)}${t.half?' ✓':''}${t.exit!=null?` · out ${f(t.exit,5)}`:''}${t.pips!=null?` · ${sg(t.pips,1)} pips`:''}`}];
 let HJ={},HC=null,HV='today',HM=null,HALL=false;
@@ -606,7 +603,7 @@ function renderHist(){const m=hmk();if(!m){HC=null;if(SEL==='ALL'){renderRep(nul
  else if(HV==='today'){const td=days.find(d=>d.date===TK);h+=td?dayRow(td,true):`<div class="dim">No ${m.n} trade yet today${(M[m.c]&&M[m.c].message)?' · '+M[m.c].message:''}</div>`}
  else{const past=days.filter(d=>d.date!==TK);h+=past.length?past.slice(0,HALL?past.length:5).map(d=>dayRow(d,false)).join('')+(past.length>5?`<button class="hmore" data-more>${HALL?'Show last 5 days':'Show all '+past.length+' days'}</button>`:''):'<div class="dim">No earlier trades yet</div>'}
  h+=TOT;
- const lot={GOLD:'1 oz',USDJPY:'1,000 units',OIL:'10 bbl for a full-size trade (1/3-size trades count one third)',US100:'0.10 per point (0.37 AED)',US500:'0.10 per point (0.37 AED)',SILVER:'50 oz for a size-1 trade (size-2 trades count double)',GBPUSD:'1,000 units (0.10 $ = 0.37 AED per pip)'}[m.c];
+ const lot={GOLD:'1 oz',USDJPY:'1,000 units',OIL:'10 bbl for a full-size trade (1/3-size trades count one third)',US100:'0.10 per point (0.37 AED)',US500:'0.10 per point (0.37 AED)',GBPUSD:'1,000 units (0.10 $ = 0.37 AED per pip)'}[m.c];
  h+=`<div class="hnote">${m.n} only · source: ${m.n} desk journal (${m.file}), live since ${JN.summary&&JN.summary.since||JN.start}. Each trade at 0.01 lot = ${lot}, after the spread.${m.split?' Days before '+new Date(m.split+'T12:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'})+' used the earlier rules (totals kept separate).':''}</div>`;
  histbox.innerHTML=h;bindHist()}
 /* ---- ALL MARKETS REPORTS (25 Oct, his ask: "exactly like Capital.com analytics"): Transactions / Trades / Analytics tabs, period pills
