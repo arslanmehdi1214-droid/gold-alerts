@@ -1,5 +1,5 @@
 {
- "updated": "Wed 04 Nov \u00b7 5:18 pm",
+ "updated": "Wed 04 Nov \u00b7 5:19 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -32,9 +32,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4037.39,
+   "price": 4037.62,
    "close_at": "12:50 am",
-   "change": 106.41,
+   "change": 106.64,
    "size": 0.1,
    "datr": 73.41,
    "open_now": 2,
@@ -1284,7 +1284,7 @@
     ],
     [
      "5:15 pm",
-     4037.39,
+     4037.62,
      4041.29,
      4041.29,
      4034.08
@@ -2896,8 +2896,8 @@
    "net_label": "Net R / $ at $100 risk (v1.06 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 158.29,
-   "change_pips": -38.0,
+   "price": 158.289,
+   "change_pips": -38.1,
    "atr_pips": 81.1,
    "entries": [
     {
@@ -4152,7 +4152,7 @@
     ],
     [
      "5:15 pm",
-     158.29,
+     158.289,
      158.221,
      158.315,
      158.221
@@ -5591,7 +5591,7 @@
    "net_label": "Net $ per barrel (v1.10)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Close 25% at the part level, then move the stop to entry; everything closes at 10:00 pm Dubai. No new trades after 6:30 pm (one late first trade allowed).",
-   "price": 93.574,
+   "price": 93.579,
    "change": -2.45,
    "entries": [
     {
@@ -6817,7 +6817,7 @@
     ],
     [
      "5:15 pm",
-     93.57,
+     93.58,
      93.6,
      93.7,
      93.49
@@ -7836,31 +7836,31 @@
    "live": false,
    "paper": true,
    "status": "Paper",
-   "version": "v1.10",
+   "version": "v1.11",
    "unit": "pts",
    "dp": 1,
    "stats": {
     "direction": "\u2014",
     "days": "\u2014",
     "perday": "\u2014",
-    "win": "~72% of the 18 new Night V5 legs closed in profit",
+    "win": "~79% of the 14 new Night V6 legs closed in profit",
     "pf": "\u2014",
-    "net": "+$15,298.06 at $100 risk per leg",
-    "source": "MT4 test SP500_DAYTRADE v1.10 (his run 3 Nov, Magic 500116, spread 18, Every tick), 2019.10.12-2026.10.31, 2,489 trades (+18 vs the 500115 baseline's 2,471); max DD $2,188.15 (0.22%, unchanged from 500115); same 500115 rules (row18/19/20/23/24/25-27) PLUS Night V5 (rows 28-31): a 4th night trigger, no weekday restriction, on the US Dollar Index weakening over 5 days (252-day percentile of the 5-day % change <= 0.20) combined with the market narrowing on both a 10-day AND a 20-day horizon (252-day percentile of the RSP/SPY equal-weight/cap-weight ratio's 10-day and 20-day % change, both <= 0.20) - isolating the 18 new legs alone: net +$401.77, DD unchanged vs 500115, ~72% closed in profit. WATCH ITEM: only 20 historical Python occurrences (18 confirmed in MT4 after excluding nights V2/V3/V4 already took), 70% overlap the Night V2 VIX gate (vs 67.5% baseline - not VIX-in-disguise), 0 loss years across 6 calendar years, survives a stricter trim-robustness check than any earlier leg - treat as a refinement still proving itself, not a settled edge. Unlike Night V4, this data (Yahoo Finance DXY/RSP/SPY) is available from day one - no live warm-up needed (see dxyrs_today() in sp_run.py)."
+    "net": "+$15,376.13 at $100 risk per leg",
+    "source": "MT4 test SP500_DAYTRADE v1.11 (his run 4 Nov, Magic 500117, spread 18, Every tick), 2018.01.01-2026.10.31, 2,503 trades (+14 vs the 500116 baseline's 2,489, all 14 long-side - V6 is BUY only); max DD $2,188.15 (0.22%, unchanged from 500116); same 500116 rules (row18/19/20/23/24/25-27/28-31) PLUS Night V6 (rows 32-34): a 5th night trigger, no weekday restriction, on the broad trade-weighted US Dollar index (FRED DTWEXBGS, 26-currency basket) being broadly weak (252-day percentile of its LEVEL <= 0.15) combined with the pan-European STOXX50E index having a shock move the prior session (252-day percentile of its |daily % close move| >= 0.85) - isolating the 14 new legs alone: net +$436.68, DD unchanged vs 500116, ~79% closed in profit (matches the Python hardening estimate almost exactly). WATCH ITEM: only 24 historical Python occurrences (14 confirmed in MT4 after excluding nights V2-V5 already took), long-only (no short leg tested), moderate date clustering (a 5-night cluster in Apr-May 2026) - treat as a refinement still proving itself, not a settled edge. Like Night V5, this data (FRED DTWEXBGS + Yahoo Finance ^STOXX50E) is available from day one - no live warm-up needed (see dtwexstoxx_today() in sp_run.py)."
    },
    "pass_bar": {
     "green": 40.0,
     "pf": 1.15,
     "months": 3
    },
-   "day_note": "14-day range 92 pts \u00b7 stop 0.75 x range (= 69 pts) \u00b7 no half-close \u00b7 the day's first signal sets BUY or SELL, later signals the same way add (max 3 trades) \u00b7 v1.04: no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop \u00b7 signals: Nasdaq desk signals copied in US hours + S&P 9:40 am New York move, yesterday high/low sweep, big move by 10 am New York \u00b7 close 3:30 pm New York \u00b7 NIGHT trade on high-fear nights (VIX above VIX3M, or VIX / VVIX in their 1-year top 10%): BUY 6:01 pm New York (v1.07: Mon/Tue/Wed broker-days only), stop 1 x range (v1.07, was 2x), close 10:00 am New York \u00b7 v1.07 TURN-OF-MONTH: on the last broker weekday of the month and the first 3 of the next, BUY 9:30 am New York, stop 0.75 x range, close 3:30 pm New York - only on a day with no other S&P trade \u00b7 v1.08 NIGHT V3: a 2nd, independent night trigger (only fires when the night trade above does not - never both), broker-day Wed/Thu/Fri only, on a gold+WTI combined overnight shock (the smaller of gold's and WTI's own 252-day-percentile |daily move|, from 2 days before, >= 0.70): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the night leg above \u00b7 v1.09 NIGHT V4: a 3rd, independent night trigger (only fires when the two night trades above do not - never more than one a night), no weekday restriction, on a weak last-hour close (252-day percentile of the 15:00-16:00 New York return <= 0.30) combined with a last-hour volume spike (z-score vs its own trailing 20-day average >= 2.0): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the other night trades. WATCH ITEM (only 25 historical occurrences, mostly overlapping the VIX night trade above) - needs ~2-4 weeks of its own live volume history before it can fire at all \u00b7 v1.10 NIGHT V5: a 4th, independent night trigger (only fires when the three night trades above do not - never more than one a night), no weekday restriction, on the US Dollar Index weakening over 5 days (252-day percentile of the 5-day % change <= 0.20) combined with the market narrowing on both a 10-day AND a 20-day horizon (252-day percentile of the RSP/SPY equal-weight/cap-weight ratio's 10-day and 20-day % change, both <= 0.20): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the other night trades. WATCH ITEM (20 historical Python occurrences, 18 confirmed in MT4) - unlike Night V4, this data is available from day one, no live warm-up needed",
-   "what_note": "Tracks whether live S&P signals do as well as the v1.10 MT4 test (500109 + Night V3 + Night V4 + Night V5). Decision after about 3 months.",
+   "day_note": "14-day range 92 pts \u00b7 stop 0.75 x range (= 69 pts) \u00b7 no half-close \u00b7 the day's first signal sets BUY or SELL, later signals the same way add (max 3 trades) \u00b7 v1.04: no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop \u00b7 signals: Nasdaq desk signals copied in US hours + S&P 9:40 am New York move, yesterday high/low sweep, big move by 10 am New York \u00b7 close 3:30 pm New York \u00b7 NIGHT trade on high-fear nights (VIX above VIX3M, or VIX / VVIX in their 1-year top 10%): BUY 6:01 pm New York (v1.07: Mon/Tue/Wed broker-days only), stop 1 x range (v1.07, was 2x), close 10:00 am New York \u00b7 v1.07 TURN-OF-MONTH: on the last broker weekday of the month and the first 3 of the next, BUY 9:30 am New York, stop 0.75 x range, close 3:30 pm New York - only on a day with no other S&P trade \u00b7 v1.08 NIGHT V3: a 2nd, independent night trigger (only fires when the night trade above does not - never both), broker-day Wed/Thu/Fri only, on a gold+WTI combined overnight shock (the smaller of gold's and WTI's own 252-day-percentile |daily move|, from 2 days before, >= 0.70): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the night leg above \u00b7 v1.09 NIGHT V4: a 3rd, independent night trigger (only fires when the two night trades above do not - never more than one a night), no weekday restriction, on a weak last-hour close (252-day percentile of the 15:00-16:00 New York return <= 0.30) combined with a last-hour volume spike (z-score vs its own trailing 20-day average >= 2.0): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the other night trades. WATCH ITEM (only 25 historical occurrences, mostly overlapping the VIX night trade above) - needs ~2-4 weeks of its own live volume history before it can fire at all \u00b7 v1.10 NIGHT V5: a 4th, independent night trigger (only fires when the three night trades above do not - never more than one a night), no weekday restriction, on the US Dollar Index weakening over 5 days (252-day percentile of the 5-day % change <= 0.20) combined with the market narrowing on both a 10-day AND a 20-day horizon (252-day percentile of the RSP/SPY equal-weight/cap-weight ratio's 10-day and 20-day % change, both <= 0.20): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the other night trades. WATCH ITEM (20 historical Python occurrences, 18 confirmed in MT4) - unlike Night V4, this data is available from day one, no live warm-up needed \u00b7 v1.11 NIGHT V6: a 5th, independent night trigger (only fires when the four night trades above do not - never more than one a night), no weekday restriction, on the broad trade-weighted US Dollar index (FRED DTWEXBGS, 26-currency basket) being broadly weak (252-day percentile of its level <= 0.15) combined with the pan-European STOXX50E index having a shock move the prior session (252-day percentile of its |daily % close move| >= 0.85): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the other night trades. WATCH ITEM (24 historical Python occurrences, 14 confirmed in MT4) - like Night V5, this data is available from day one, no live warm-up needed",
+   "what_note": "Tracks whether live S&P signals do as well as the v1.11 MT4 test (500109 + Night V3 + Night V4 + Night V5 + Night V6). Decision after about 3 months.",
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
-   "net_label": "Net points (v1.10 rules)",
+   "net_label": "Net points (v1.11 rules)",
    "state": "waiting",
    "message": "NIGHT BUY (gold+WTI shock) at 3:01 am Dubai, stop 7494.7, closed (stopped). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7634.9,
-   "change": 56.0,
+   "price": 7636.4,
+   "change": 57.5,
    "entries": [
     {
      "time": "3:01 am",
@@ -9165,25 +9165,25 @@
     ],
     [
      "5:15 pm",
-     7634.9,
+     7636.4,
      7634.6,
-     7637.2,
+     7637.4,
      7632.7
     ]
    ],
    "journal": {
-    "since": "03 Nov 2026",
-    "weekdays": 2,
-    "trades": 2,
+    "since": "04 Nov 2026",
+    "weekdays": 1,
+    "trades": 1,
     "days": 100.0,
     "perday": 1.0,
-    "closed": 2,
-    "win": 50.0,
-    "pf": 0.07,
-    "net": -86.0,
-    "rules": "v1.10",
+    "closed": 1,
+    "win": 0.0,
+    "pf": 0.0,
+    "net": -92.5,
+    "rules": "v1.11",
     "direction": null,
-    "green": 50.0
+    "green": 0.0
    },
    "jdays": [
     {
@@ -9201,8 +9201,9 @@
      },
      "v4": false,
      "v5": false,
+     "v6": false,
      "date": "2026-11-04",
-     "rules": "v1.10",
+     "rules": "v1.11",
      "label": "Wed 04 Nov",
      "side": null,
      "trades": [
@@ -9682,8 +9683,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 28214.1,
-   "change": -72.9,
+   "price": 28229.9,
+   "change": -57.1,
    "entries": [
     {
      "time": "5:32 am",
@@ -10991,7 +10992,7 @@
     ],
     [
      "5:15 pm",
-     28214.1,
+     28229.9,
      28220.9,
      28237.4,
      28206.0
