@@ -1,5 +1,5 @@
 {
- "updated": "Wed 04 Nov \u00b7 1:59 pm",
+ "updated": "Wed 04 Nov \u00b7 2:00 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4042.67,
+   "price": 4041.25,
    "close_at": "12:50 am",
-   "change": 111.69,
+   "change": 110.27,
    "size": 0.1,
    "datr": 73.41,
    "open_now": 1,
@@ -970,10 +970,10 @@
     ],
     [
      "1:55 pm",
-     4042.67,
+     4041.25,
      4044.65,
      4044.78,
-     4042.66
+     4041.24
     ]
    ],
    "history": [
@@ -1218,8 +1218,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 51.993,
-   "change": 2.232,
+   "price": 51.947,
+   "change": 2.186,
    "entries": [],
    "spark": [
     [
@@ -2141,10 +2141,10 @@
     ],
     [
      "1:55 pm",
-     51.993,
+     51.947,
      52.044,
      52.045,
-     51.992
+     51.946
     ]
    ],
    "journal": {
@@ -2302,8 +2302,8 @@
    "net_label": "Net R / $ at $100 risk (v1.06 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 158.408,
-   "change_pips": -26.2,
+   "price": 158.406,
+   "change_pips": -26.4,
    "atr_pips": 81.1,
    "entries": [
     {
@@ -2360,7 +2360,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.0977,
+     "r_now": 0.096,
      "rwf": null,
      "spread": 1.0
     }
@@ -3278,7 +3278,7 @@
     ],
     [
      "1:55 pm",
-     158.408,
+     158.406,
      158.377,
      158.417,
      158.373
@@ -3364,7 +3364,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.0977,
+       "r_now": 0.096,
        "rwf": null,
        "spread": 1.0
       }
@@ -4678,7 +4678,7 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 1.2,
+   "live_spread_pips": 0.8,
    "history_note": "history to 2026-11-03 (300 days)"
   },
   "DE40": {
@@ -4717,8 +4717,8 @@
    "net_label": "Net $ per barrel (v1.10)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 95.164,
-   "change": -0.86,
+   "price": 95.194,
+   "change": -0.83,
    "entries": [],
    "spark": [
     [
@@ -5640,9 +5640,9 @@
     ],
     [
      "1:55 pm",
-     95.16,
-     94.99,
      95.19,
+     94.99,
+     95.21,
      94.98
     ]
    ],
@@ -6659,8 +6659,8 @@
    "net_label": "Net points (v1.10 rules)",
    "state": "waiting",
    "message": "NIGHT BUY (gold+WTI shock) at 3:01 am Dubai, stop 7494.7, closed (stopped). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7620.5,
-   "change": 41.6,
+   "price": 7620.1,
+   "change": 41.2,
    "entries": [
     {
      "time": "3:01 am",
@@ -7685,7 +7685,7 @@
     ],
     [
      "1:55 pm",
-     7620.5,
+     7620.1,
      7622.3,
      7622.8,
      7620.0
@@ -8202,8 +8202,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 28338.1,
-   "change": 51.1,
+   "price": 28335.3,
+   "change": 48.3,
    "entries": [
     {
      "time": "5:32 am",
@@ -9231,7 +9231,7 @@
     ],
     [
      "1:55 pm",
-     28338.1,
+     28335.3,
      28347.9,
      28354.7,
      28334.3
