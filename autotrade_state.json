@@ -1,14 +1,14 @@
 {
- "balance": 1114.86,
+ "balance": 1112.15,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-04",
-  "pl": 59.07,
+  "pl": 53.65,
   "start_balance": 1115.73,
   "start_equity": 1115.73,
   "stopped": false
  },
- "open_positions": 6,
+ "open_positions": 5,
  "open_risk_aed": 143.04,
  "risk_usd": 8.168822328114365,
  "trades": {
@@ -293,16 +293,17 @@
    "part_x": 0.25,
    "px_adj": 0.04,
    "rest": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-70ce-1821-0495-7fc60004511e",
     "level": 93.349,
-    "open": true,
+    "open": false,
     "size": 1.0,
     "tp": null
    },
    "risk_aed": 11.61,
    "risk_usd": 2.72,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 93.35
   },
   "OIL|2026-11-04|5:51 pm|SELL|Yesterday's high/low": {
@@ -438,7 +439,7 @@
    "risk_usd": 8.17,
    "side": "BUY",
    "state": "open",
-   "stop": 28506.3
+   "stop": 28521.5
   },
   "US500|2026-11-02|6:30 pm|BUY|Turn-of-month long (last/first broker days of the month)": {
    "at": "Mon 2 Nov 9:24 PM",
