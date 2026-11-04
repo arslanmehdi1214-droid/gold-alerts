@@ -1,5 +1,5 @@
 """Keeps one GitHub job checking the signals EVERY MINUTE (GitHub only starts scheduled jobs every ~20 minutes, often later).
-Each minute: run.safe_main() (gold v2.06 + USDJPY paper + WTI paper + Nasdaq paper + silver paper + GBP/USD paper, unchanged rules). Telegram alerts go out the same minute; the page data
+Each minute: run.safe_main() (gold v2.06 + USDJPY paper + WTI paper + Nasdaq paper + GBP/USD paper, unchanged rules; Silver removed 4 Nov). Telegram alerts go out the same minute; the page data
 is pushed every 10 minutes, and at once after any alert. The job hands over to the next scheduled job as soon as that one is
 waiting, stops after LOOP_MINUTES, and does one pass only when the market is closed for the weekend.
 Prices: one Capital.com session is shared and re-made after any feed error; the 460-day hourly history is fetched in full every
@@ -42,7 +42,7 @@ REPO, RUN_ID, TOKEN = os.environ.get('GITHUB_REPOSITORY'), os.environ.get('GITHU
 def git(*a): return subprocess.run(['git', *a], capture_output=True, text=True)
 def push():
     # one path per add: a path that matches nothing makes git add refuse the WHOLE list (22 Oct)
-    for p in ('sent.json', 'docs/*.json', 'docs/nq_min', 'docs/sv_min', 'docs/sp_min',   # Nasdaq / silver / S&P minute files
+    for p in ('sent.json', 'docs/*.json', 'docs/nq_min', 'docs/sp_min',   # Nasdaq / S&P minute files
               'autotrade_state.json', 'autotrade_log.json',                              # demo auto-trader memory (which demo positions are ours)
               'data/sentiment'):                                                         # Capital.com client sentiment, 1 row/market/minute (23 Oct)
         git('add', p)
@@ -87,8 +87,6 @@ def main():
     except Exception: wti_run = None
     try: import nq_run                                                     # same for the Nasdaq paper page
     except Exception: nq_run = None
-    try: import sv_run                                                     # same for the silver paper page
-    except Exception: sv_run = None
     try: import sp_run                                                     # same for the S&P paper page (22 Oct)
     except Exception: sp_run = None
     try: import gbp_run                                                    # same for the GBP/USD paper page (24 Oct)
@@ -102,7 +100,6 @@ def main():
         if yen_run is not None and hasattr(yen_run, 'DEADLINE'): yen_run.DEADLINE = time.time() + 90
         if wti_run is not None and hasattr(wti_run, 'DEADLINE'): wti_run.DEADLINE = time.time() + 90
         if nq_run is not None and hasattr(nq_run, 'DEADLINE'): nq_run.DEADLINE = time.time() + 90
-        if sv_run is not None and hasattr(sv_run, 'DEADLINE'): sv_run.DEADLINE = time.time() + 90
         if sp_run is not None and hasattr(sp_run, 'DEADLINE'): sp_run.DEADLINE = time.time() + 90
         if gbp_run is not None and hasattr(gbp_run, 'DEADLINE'): gbp_run.DEADLINE = time.time() + 90
         R.safe_main(); n += 1

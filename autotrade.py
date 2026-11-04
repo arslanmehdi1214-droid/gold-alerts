@@ -14,7 +14,8 @@ How it works (one pass per minute, right after the desk engines ran):
 Safety: works ONLY on the demo server (CAPITAL_DEMO=1) and only when AUTOTRADE=1; touches ONLY positions it opened itself
 (their deal ids are kept in autotrade_state.json); caps new positions per minute and open positions in total; any error is
 logged and the desk carries on. 22 Oct fixes: risk limits from autotrade_config.json (open risk <= max_open_risk_pct of the
-balance, daily_loss_pct stop, group_risk_aed for GOLD+SILVER and US100+US500, skip if lot rounding makes the risk > max_real_risk_x);
+balance, daily_loss_pct stop, group_risk_aed for US100+US500, skip if lot rounding makes the risk > max_real_risk_x); (Silver removed
+4 Nov - was grouped with GOLD)
 an order is never sent twice (lost answer -> the position is found and adopted); lost state -> positions matching a desk row are
 adopted; a watchdog closes everything past each market's day-end even with a feed error or when switched off. Sizes: AUTOTRADE_RISK_USD dollars lost if a FULL-size trade hits its first stop (1/3-size
 trades risk one third)."""
@@ -43,7 +44,6 @@ MARKETS = {                   # desk code -> Capital.com epic, quote currency
     'USDJPY': dict(epic='USDJPY', quote='JPY'),
     'OIL': dict(epic='OIL_CRUDE', quote='USD'),
     'US100': dict(epic='US100', quote='USD'),
-    'SILVER': dict(epic='SILVER', quote='USD'),
     'US500': dict(epic='US500', quote='USD'),        # 22 Oct: S&P 500 paper (version A, no part close -> one position per leg)
     'GBPUSD': dict(epic='GBPUSD', quote='USD'),      # 26 Oct (his A): GBP/USD v1.04 - one trade a day, part 1.0 -> one position with the take-profit
 }
@@ -155,11 +155,10 @@ def day_end(code, bnow, winter):
           'USDJPY': (14, 0) if fri else (18, 0),
           'OIL': (20, 0),
           'US100': (22, 50) if fri else (23, 0),
-          'SILVER': (22, 50) if fri else (23, 0),
           'US500': (22, 30),
           'GBPUSD': (23, 45)}.get(code, (23, 0))                         # 26 Oct: GBP/USD v1.04 closes everything at 23:45 broker
     return bnow.replace(hour=hm[0], minute=hm[1], second=0, microsecond=0)
-GROUPS = ({'GOLD', 'SILVER'}, {'US100', 'US500'})                        # moves together: one risk cap per group
+GROUPS = ({'US100', 'US500'},)                                           # moves together: one risk cap per group (Silver dropped 4 Nov)
 def group_of(code): return next((g for g in GROUPS if code in g), {code})
 def utc_of(txt):
     """Capital.com 'createdDateUTC' ('2026-10-22T08:05:12.345') -> aware UTC datetime (None if missing)."""
