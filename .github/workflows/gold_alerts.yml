@@ -44,7 +44,7 @@ jobs:
         if: always()
         run: |
           git add sent.json docs/*.json 2>/dev/null || true
-          for p in autotrade_state.json autotrade_log.json docs/sp_min docs/sv_min docs/nq_min; do git add "$p" 2>/dev/null || true; done
+          for p in autotrade_state.json autotrade_log.json docs/sp_min docs/nq_min; do git add "$p" 2>/dev/null || true; done
           git diff --cached --quiet || (git commit -m "alerts state" && (git push || (git pull --rebase -X theirs && git push)))
       - name: Start the next run now (self-chain - don't wait for the next cron tick)
         if: always() && (github.event_name != 'workflow_dispatch' || github.event.inputs.test != 'yes')
