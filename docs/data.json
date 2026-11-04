@@ -1,5 +1,5 @@
 {
- "updated": "Wed 04 Nov \u00b7 5:49 pm",
+ "updated": "Wed 04 Nov \u00b7 5:50 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -32,9 +32,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4043.05,
+   "price": 4042.32,
    "close_at": "12:50 am",
-   "change": 112.07,
+   "change": 111.34,
    "size": 0.1,
    "datr": 73.41,
    "open_now": 2,
@@ -1326,7 +1326,7 @@
     ],
     [
      "5:45 pm",
-     4043.05,
+     4042.32,
      4045.99,
      4047.11,
      4041.23
@@ -2938,8 +2938,8 @@
    "net_label": "Net R / $ at $100 risk (v1.06 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 158.361,
-   "change_pips": -30.9,
+   "price": 158.371,
+   "change_pips": -29.9,
    "atr_pips": 81.1,
    "entries": [
     {
@@ -4236,9 +4236,9 @@
     ],
     [
      "5:45 pm",
-     158.361,
+     158.371,
      158.349,
-     158.375,
+     158.376,
      158.315
     ]
    ],
@@ -5636,7 +5636,7 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 1.2,
+   "live_spread_pips": 1.3,
    "history_note": "history to 2026-11-03 (300 days)"
   },
   "DE40": {
@@ -5675,8 +5675,8 @@
    "net_label": "Net $ per barrel (v1.10)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Close 25% at the part level, then move the stop to entry; everything closes at 10:00 pm Dubai. No new trades after 6:30 pm (one late first trade allowed).",
-   "price": 92.839,
-   "change": -3.19,
+   "price": 92.874,
+   "change": -3.15,
    "entries": [
     {
      "time": "5:01 pm",
@@ -6943,7 +6943,7 @@
     ],
     [
      "5:45 pm",
-     92.84,
+     92.87,
      93.09,
      93.17,
      92.76
@@ -9851,8 +9851,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 28269.6,
-   "change": -17.4,
+   "price": 28268.9,
+   "change": -18.1,
    "entries": [
     {
      "time": "5:32 am",
@@ -11202,10 +11202,10 @@
     ],
     [
      "5:45 pm",
-     28269.6,
+     28268.9,
      28303.5,
      28313.0,
-     28266.9
+     28261.4
     ]
    ],
    "journal": {
@@ -11979,8 +11979,8 @@
    "regime": 0.152,
    "gap": 0.253,
    "message": "PAPER BUY at 1.34768 (12:00 pm Dubai). Stop 1.34818, target 1.35446 - close the WHOLE trade at the target; otherwise it closes at 1:45 am Dubai. Stop now locked at 1.34818 (entry + 5 pips) since 5:02 pm Dubai.",
-   "price": 1.34894,
-   "change": 0.00854,
+   "price": 1.34907,
+   "change": 0.00867,
    "entries": [
     {
      "time": "12:00 pm",
@@ -12006,7 +12006,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": 11.1,
+     "live": 12.4,
      "spread": 1.5,
      "next": "Hold \u00b7 stop MOVED to 1.34818 (entry + 5 pips, locked) \u00b7 target 1.35446 (close the WHOLE trade there) \u00b7 closes at 1:45 am Dubai"
     }
@@ -13330,10 +13330,10 @@
     ],
     [
      "5:45 pm",
-     1.34894,
+     1.34907,
      1.34917,
      1.34954,
-     1.34892
+     1.34888
     ]
    ],
    "journal": {
@@ -13382,7 +13382,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": 11.1,
+       "live": 12.4,
        "spread": 1.5,
        "next": "Hold \u00b7 stop MOVED to 1.34818 (entry + 5 pips, locked) \u00b7 target 1.35446 (close the WHOLE trade there) \u00b7 closes at 1:45 am Dubai"
       }
