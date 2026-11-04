@@ -1,14 +1,14 @@
 {
- "balance": 1095.62,
+ "balance": 1090.52,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-04",
-  "pl": 25.07,
+  "pl": 14.87,
   "start_balance": 1115.73,
   "start_equity": 1115.73,
   "stopped": false
  },
- "open_positions": 6,
+ "open_positions": 5,
  "open_risk_aed": 87.46,
  "risk_usd": 8.168822328114365,
  "trades": {
@@ -330,16 +330,17 @@
    "part_x": 0.25,
    "px_adj": 0.04,
    "rest": {
+    "closed_by": "desk: be",
     "id": "00000000-70ce-b521-0495-7fc60004511e",
     "level": 92.529,
-    "open": true,
+    "open": false,
     "size": 2.5,
     "tp": null
    },
    "risk_aed": 29.01,
    "risk_usd": 8.17,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 92.3
   },
   "US100|2026-11-02|4:06 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am": {
