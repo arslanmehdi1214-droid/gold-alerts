@@ -1,12 +1,5 @@
 [
  {
-  "action": "error",
-  "detail": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
-  "market": "ALL",
-  "ok": false,
-  "t": "Tue 20 Oct 3:36 PM"
- },
- {
   "action": "OPEN BUY rest",
   "detail": "OIL|2026-10-20|3:36 pm|BUY|Open \u00b1 1 range size 1.2 at 101.035 stop 97.3 | trade risk 16.48 AED",
   "market": "OIL",
@@ -2798,5 +2791,12 @@
   "market": "OIL",
   "ok": true,
   "t": "Wed 4 Nov 6:16 PM"
+ },
+ {
+  "action": "rest closed on demo",
+  "detail": "OIL|2026-11-04|5:51 pm|SELL|Yesterday's high/low",
+  "market": "OIL",
+  "ok": true,
+  "t": "Wed 4 Nov 6:30 PM"
  }
 ]
