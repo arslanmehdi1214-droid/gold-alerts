@@ -1,12 +1,5 @@
 [
  {
-  "action": "OPEN BUY rest",
-  "detail": "OIL|2026-10-20|3:36 pm|BUY|Open \u00b1 1 range size 1.2 at 101.035 stop 97.3 | trade risk 16.48 AED",
-  "market": "OIL",
-  "ok": true,
-  "t": "Tue 20 Oct 3:37 PM"
- },
- {
   "action": "error",
   "detail": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
   "market": "ALL",
@@ -2798,5 +2791,12 @@
   "market": "OIL",
   "ok": true,
   "t": "Wed 4 Nov 6:30 PM"
+ },
+ {
+  "action": "part closed on demo",
+  "detail": "GBPUSD|2026-11-04|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded",
+  "market": "GBPUSD",
+  "ok": true,
+  "t": "Wed 4 Nov 6:38 PM"
  }
 ]
