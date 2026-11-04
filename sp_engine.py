@@ -58,6 +58,23 @@ v1.10 (3 Nov 2026, "Night V5": his MT4 run SP500_DAYTRADE v1.10 Magic 500116 lay
                 still a watch item, not a settled edge. Source for dxy_chg5_pct/rs_chg10_pct/rs_chg20_pct: Yahoo Finance daily
                 closes (DX-Y.NYB, RSP, SPY - free), cached/refreshed once a day, available from day one (unlike Night V4's
                 volume feature, no live warm-up needed) - see dxyrs_today() in sp_run.py.
+v1.11 (4 Nov 2026, "Night V6": his MT4 run SP500_DAYTRADE v1.11 Magic 500117 layered on 500116 - net $15,376.13 (+$436.68 vs
+       500116's $14,939.45), DD unchanged $2,188.15/0.22%, 2503 trades (+14, OP_BUY only), the 14 new legs alone ~79% closed
+       in profit, matching the Python hardening estimate almost exactly):
+  NIGHT LEG V6  a FIFTH, independent night trigger (fires only when the four night triggers above do NOT - the five
+                never double-trade the same night): no weekday restriction, BUY at 6:01 pm New York (01:01 broker) if the
+                broad trade-weighted US Dollar index was broadly weak (252-day rolling percentile of its LEVEL, 26-currency
+                FRED basket - wider than DXY's 6 - <= 0.15) AND the pan-European STOXX50E index had a shock move the prior
+                session (252-day rolling percentile of its |daily % close move| >= 0.85) - same stop (1.0 x range) and close
+                (10:00 am New York) as the other night legs. Found 4 Nov 2026 systematic pairwise hunt over 13 fresh-sourced
+                features (Round 56, S&P chat), hardened with the same threshold-neighbourhood + lag-sweep stress test that
+                validated Night V5 (whole neighbourhood stays positive, lag-sweep shows the exact V5 signature: same-day dead,
+                this 1-day lag a strong pass, one extra day decaying), MT4-confirmed same day. HONEST CAVEATS carried into the
+                live card: only 24 historical Python occurrences (14 confirmed in MT4 after excluding nights V2-V5 already
+                took), long-only (no short leg tested), moderate date clustering (a 5-night cluster in Apr-May 2026) - treat
+                as a watch item still proving itself, not a settled edge. Source for dtwex_lvl_pct/stoxx_shock_pct: FRED
+                DTWEXBGS (broad dollar index, free, no key needed) + Yahoo Finance ^STOXX50E daily closes, cached/refreshed
+                once a day, available from day one (no live warm-up needed) - see dtwexstoxx_today() in sp_run.py.
 Results: points per leg after a 0.8 pt cost (never less than Capital.com's live spread)."""
 import numpy as np, pandas as pd
 
@@ -74,6 +91,7 @@ TOM_IN = 16 * 60 + 30; TOM_DECIDE = 17 * 60; TOM_SM = 0.75            # v1.07 ro
                                                                        # opened only once no other S&P leg has fired by 17:00 broker, so it never stacks with an early day/night leg)
 V4_LH_MAX = 0.30; V4_VOLZ_MIN = 2.00                                  # v1.09 Night V4: weak-close percentile (<=) / volume z-score (>=) thresholds
 V5_DXY_MAX = 0.20; V5_RS10_MAX = 0.20; V5_RS20_MAX = 0.20             # v1.10 Night V5: dollar-weakening 5d / breadth-narrowing 10d AND 20d thresholds (all <=)
+V6_DTWEX_MAX = 0.15; V6_STOXX_MIN = 0.85                              # v1.11 Night V6: broad-dollar-basket-weak (level, <=) / Europe-shock (|move|, >=) thresholds
 
 def eod_minutes(day): return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
@@ -223,6 +241,23 @@ def v5_flag(X, day):
     if not (np.isfinite(row.dxy_chg5_pct) and np.isfinite(row.rs_chg10_pct) and np.isfinite(row.rs_chg20_pct)): return False, {}
     dd = dict(date=str(k.date()), dxy_chg5_pct=float(row.dxy_chg5_pct), rs_chg10_pct=float(row.rs_chg10_pct), rs_chg20_pct=float(row.rs_chg20_pct))
     return bool(row.dxy_chg5_pct <= V5_DXY_MAX and row.rs_chg10_pct <= V5_RS10_MAX and row.rs_chg20_pct <= V5_RS20_MAX), dd
+
+def v6_flag(Y, day):
+    """v1.11 Night V6 trigger. Y: DataFrame indexed by date (built by dtwexstoxx_today() in sp_run.py) with columns dtwex_lvl_pct
+    (252-day rolling percentile of the FRED broad trade-weighted dollar index DTWEXBGS LEVEL - 26-currency basket, wider than
+    DXY's 6 - low = dollar broadly weak) and stoxx_shock_pct (252-day rolling percentile of the pan-European STOXX50E index's
+    |daily % close move| - high = a European equity shock). The broker day `day`'s own NY-date row is day - 1 calendar day
+    (same relationship as V4/V5's lookup: d = ny_date + 1) - confirmed the correct lag by a lag-sweep stress test (same-day
+    dead, this lag a strong pass, one extra day decaying - the signature of a real short-lived regime effect, not noise).
+    Fires when the dollar basket is broadly weak (dtwex_lvl_pct <= V6_DTWEX_MAX) AND Europe had a shock move
+    (stoxx_shock_pct >= V6_STOXX_MIN) at once. Missing values (not enough rolling history yet, or no data that day) mean it
+    simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if Y is None or not len(Y) or k not in Y.index: return False, {}
+    row = Y.loc[k]
+    if not (np.isfinite(row.dtwex_lvl_pct) and np.isfinite(row.stoxx_shock_pct)): return False, {}
+    dd = dict(date=str(k.date()), dtwex_lvl_pct=float(row.dtwex_lvl_pct), stoxx_shock_pct=float(row.stoxx_shock_pct))
+    return bool(row.dtwex_lvl_pct <= V6_DTWEX_MAX and row.stoxx_shock_pct >= V6_STOXX_MIN), dd
 
 def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_done=False,
               name='Night long (high-fear night: VIX / VVIX)', src=1):
