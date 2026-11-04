@@ -796,19 +796,42 @@
   {
    "date": "2026-11-04",
    "label": "Wed 04 Nov",
-   "side": null,
-   "trades": [],
+   "side": "BUY",
+   "trades": [
+    {
+     "time": "10:02 am",
+     "side": "BUY",
+     "tag": "N6 bigrange",
+     "price": 4009.81,
+     "stop": 3972.6,
+     "stop0": 3972.6,
+     "half_px": null,
+     "half": false,
+     "half_time": null,
+     "size": 0.1,
+     "status": "open",
+     "first": true,
+     "exit": null,
+     "exit_time": null,
+     "pnl": null,
+     "pnl_oz": null,
+     "size_x": 1.5,
+     "rwf": null,
+     "next": "Hold to the stop 3972.60 or the day-end close \u00b7 no half-close \u00b7 size x1.5",
+     "late": false
+    }
+   ],
    "skipped": 0,
    "final": false
   }
  ],
  "summary": {
   "since": "03 Oct 2026",
-  "trades": 34,
+  "trades": 35,
   "direction": 37.5,
   "decided": 16,
-  "days": 91.3,
-  "perday": 1.48,
+  "days": 95.7,
+  "perday": 1.52,
   "avg_pnl": -9.85,
   "closed": 34,
   "total_pnl_01": -33.47
