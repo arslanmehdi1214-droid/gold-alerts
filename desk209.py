@@ -1,4 +1,4 @@
-"""GOLD v2.15 trade manager (from V215_FROM; v2.11 before that) (SPLIT=False below; v2.09/v2.10 = SPLIT=True) for the Signal Desk (same rules as EA GOLD_DAYTRADE v2.09 + DT209_GOLD_MAX2_HALF020.set).
+"""GOLD v2.20 trade manager (from V220_FROM; v2.15 before that, v2.11 before that) (SPLIT=False below; v2.09/v2.10 = SPLIT=True) for the Signal Desk (same rules as EA GOLD_DAYTRADE v2.09 + DT209_GOLD_MAX2_HALF020.set).
 Input: today's engine signals (engine206.run_day, skipped ones removed) + today's closed minute bars. Output: the trades he
 should hold (legs), their state, and a time-ordered list of ACTIONS for the page (no Telegram).
 
@@ -11,7 +11,10 @@ Rules (tested: MT4 his run 2020-26, trades win ~80%, ~73% green days; Python mir
   sell: above the ask). CLOSE HALF when profit = 0.20 x stop distance, then MOVE STOP TO ENTRY on the rest.
   The rest runs to its stop (entry) or the day-end close.
 - FILL: if no engine signal by then, the broker 10:00-11:59 range; the first break within 6 hours is faded (break up = SELL,
-  break down = BUY), entered at the next minute's open.
+  break down = BUY), entered at the next minute's open. v2.20 (from V220_FROM, mirrors EA Fill_Target_x_DailyATR=0.5): the FILL
+  leg also gets a take-profit target = entry +/- FILLTX x atr; whichever of stop/target is touched first in a bar closes it
+  (tie-break on the same up/down-bar tick order already used for the entry-minute stop check). Signal ('s') legs never get a
+  target - only the FILL ('f') leg does.
 Prices: bars are Bid. Buys fill at Ask (= bid + spread) and exit at Bid; sells fill at Bid and exit at Ask."""
 import numpy as np
 
@@ -31,6 +34,9 @@ RY_SIZE = 1.5                             # v2.13: a trade AGAINST the latest kn
 FAM_SIZE = 1.5                            # v2.14: strong-family signals (quiet/compression breakouts) = size 1.5 (signal trades only, not the fill)
 STRONG = {'G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8', 'G9', 'G10', 'G11', 'G13', 'A15', 'N11', 'N13', 'N16', 'N16b', 'S24', 'T15'}
 PYRN, PYRX = 3, 1.25                      # v2.15: a 3rd same-way trade only if EVERY open trade is up >= 1.25 x its own stop distance
+# ---- v2.20 (= EA GOLD_DAYTRADE v2.20 Fill_Target fix: the FILL range-fade leg gets a take-profit, mirroring its stop)
+V220_FROM = np.datetime64('2026-11-04')   # from this broker day: the FILL leg also gets a target (before this, no target - stop only)
+FILLTX = 0.5                              # FILL take-profit = FILLTX x 14-day average daily range (Fill_Target_x_DailyATR)
 
 
 def size_of(kind, tag, d, ry):
@@ -59,6 +65,7 @@ def run(signals, day, m1, now, atr, eod, label=None, ry=None):
     T = np.asarray(m1['t'], dtype='datetime64[m]'); O, H, L, C = (np.asarray(m1[k], float) for k in ('o', 'h', 'l', 'c'))
     SPLIT = np.datetime64(day, 'D') < V211_FROM                      # True = v2.10 half-close rules (days before the switch)
     V215 = np.datetime64(day, 'D') >= V215_FROM                      # True = v2.15 lock + sizes + add to winners
+    V220 = np.datetime64(day, 'D') >= V220_FROM                      # True = v2.20 FILL leg gets a take-profit target
     st = dict(closedR=0.0, peak=0.0, locked=False)
     legs, act = [], []
     if len(T) == 0 or atr <= 0: return legs, act
@@ -80,9 +87,11 @@ def run(signals, day, m1, now, atr, eod, label=None, ry=None):
         if d > 0: e = p0 + SP; sl = (e - sd) if kind == 'f' else (p0 - sd)
         else: e = p0; sl = (e + sd) if kind == 'f' else (p0 + SP + sd)
         risk = abs(e - sl); hp = (e + d * (K * risk + EX)) if SPLIT else None
+        tgt = (e + d * FILLTX * atr) if (kind == 'f' and V220) else None   # v2.20: FILL leg only, from V220_FROM
         g = dict(li=len(legs), j=j, t=t, dir=d, tag=tag, kind=kind, p0=float(p0), entry=round(e, 2), stop0=round(sl, 2), stop=round(sl, 2), risk=round(risk, 2), sd=sd,
                  size_x=(size_of(kind, tag, d, ry) if V215 else 1.0),
-                 half_px=(round(hp, 2) if hp is not None else None), status='open', half_t=None, exit=None, exit_t=None, pnl_oz=None, time_txt=('from ' + label(t)) if label else '#%d' % (len(legs) + 1))
+                 half_px=(round(hp, 2) if hp is not None else None), target=(round(tgt, 2) if tgt is not None else None),
+                 status='open', half_t=None, exit=None, exit_t=None, pnl_oz=None, time_txt=('from ' + label(t)) if label else '#%d' % (len(legs) + 1))
         legs.append(g); return g
 
     def close_leg(g, px, t, why):
@@ -94,21 +103,56 @@ def run(signals, day, m1, now, atr, eod, label=None, ry=None):
     def walk(j0, j1):
         """Stops and half-closes on bars j0..j1-1. FIX 22 Oct (fixpack): the stop is live from the fill, like the EA and
         engine206.manage - in the ENTRY minute the part of the bar after the fill is checked on the EA tester's tick path
-        (up bar O-L-H-C, down bar O-H-L-C; a fill at the bar open meets the whole bar). Before: the entry minute was skipped."""
+        (up bar O-L-H-C, down bar O-H-L-C; a fill at the bar open meets the whole bar). Before: the entry minute was skipped.
+        v2.20: the FILL leg's target competes with its stop the same way - see touch() below."""
+
+        def touch(j, g):
+            """v2.20: which of stop/target (if either) is hit on bar j. Reuses the SAME up/down-bar tick order as the
+            entry-minute stop check above (up bar visits L before H: O-L-H-C; down bar visits H before L: O-H-L-C) to
+            decide which is touched first when BOTH are hit within the same bar. Only called for legs that have a target
+            (the FILL leg, from V220_FROM) - other legs keep the plain stop-only checks below untouched."""
+            d = g['dir']
+            stop_hit = (L[j] <= g['stop']) if d > 0 else (H[j] + SP >= g['stop'])
+            targ_hit = (H[j] >= g['target']) if d > 0 else (L[j] + SP <= g['target'])
+            if stop_hit and targ_hit:
+                up_bar = C[j] >= O[j]
+                stop_first = up_bar if d > 0 else (not up_bar)   # up bar: L-side level first (stop if long, target if short)
+                return 'stop' if stop_first else 'target'
+            if stop_hit: return 'stop'
+            if targ_hit: return 'target'
+            return None
+
         for j in range(j0, j1):
             if T[j] >= eod: return
             for g in openl():
                 if j < g['j']: continue
                 d = g['dir']
+                has_tgt = g['target'] is not None
                 if j == g['j']:
                     at_open = abs(g['p0'] - O[j]) < 1e-9; up_bar = C[j] >= O[j]
-                    if d > 0: hit = (L[j] if (at_open or not up_bar) else C[j]) <= g['stop']
+                    if has_tgt:
+                        w = touch(j, g)
+                        if w == 'target':
+                            close_leg(g, g['target'], T[j], 'target hit')
+                            add(T[j], 'TARGET', d, f"{side(d)} {g['time_txt']}: TARGET HIT at {g['target']:.2f} in its entry minute - trade closed", g['target'], g)
+                            continue
+                        hit = (w == 'stop')
+                    elif d > 0: hit = (L[j] if (at_open or not up_bar) else C[j]) <= g['stop']
                     else: hit = (H[j] if (at_open or up_bar) else C[j]) + SP >= g['stop']
                     if hit:
                         close_leg(g, g['stop'], T[j], 'stop hit')
                         add(T[j], 'STOP', d, f"{side(d)} {g['time_txt']}: STOP HIT at {g['stop']:.2f} in its entry minute - trade closed", g['stop'], g)
                     continue
-                if (d > 0 and L[j] <= g['stop']) or (d < 0 and H[j] + SP >= g['stop']):
+                if has_tgt:
+                    w = touch(j, g)
+                    if w == 'target':
+                        close_leg(g, g['target'], T[j], 'target hit')
+                        add(T[j], 'TARGET', d, f"{side(d)} {g['time_txt']}: TARGET HIT at {g['target']:.2f} - trade closed", g['target'], g)
+                        continue
+                    stop_now = (w == 'stop')
+                else:
+                    stop_now = (d > 0 and L[j] <= g['stop']) or (d < 0 and H[j] + SP >= g['stop'])
+                if stop_now:
                     px = min(g['stop'], O[j]) if d > 0 else max(g['stop'], O[j] + SP)
                     be = g['status'] == 'half'
                     close_leg(g, px, T[j], 'stop at entry' if be else 'stop hit')
