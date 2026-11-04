@@ -1,5 +1,5 @@
 {
- "updated": "Wed 04 Nov \u00b7 11:59 am",
+ "updated": "Wed 04 Nov \u00b7 12:00 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4021.96,
+   "price": 4022.3,
    "close_at": "12:50 am",
-   "change": 90.98,
+   "change": 91.32,
    "size": 0.1,
    "datr": 73.41,
    "open_now": 1,
@@ -802,9 +802,9 @@
     ],
     [
      "11:55 am",
-     4021.96,
+     4022.3,
      4021.52,
-     4022.97,
+     4023.25,
      4020.24
     ]
    ],
@@ -1050,8 +1050,8 @@
    "net_label": "Net $/oz (v1.8 honest rules)",
    "state": "waiting",
    "message": "Waiting for 2 of 3 voters to agree (gold signal, fast gold catch-up, compression break).",
-   "price": 51.591,
-   "change": 1.83,
+   "price": 51.607,
+   "change": 1.846,
    "entries": [],
    "spark": [
     [
@@ -1805,7 +1805,7 @@
     ],
     [
      "11:55 am",
-     51.591,
+     51.607,
      51.617,
      51.643,
      51.572
@@ -1966,8 +1966,8 @@
    "net_label": "Net R / $ at $100 risk (v1.06 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 158.075,
-   "change_pips": -59.5,
+   "price": 158.085,
+   "change_pips": -58.5,
    "atr_pips": 81.1,
    "entries": [
     {
@@ -2745,7 +2745,7 @@
     ],
     [
      "11:55 am",
-     158.075,
+     158.085,
      158.041,
      158.128,
      158.04
@@ -4155,8 +4155,8 @@
    "net_label": "Net $ per barrel (v1.10)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 95.394,
-   "change": -0.63,
+   "price": 95.364,
+   "change": -0.66,
    "entries": [],
    "spark": [
     [
@@ -4910,7 +4910,7 @@
     ],
     [
      "11:55 am",
-     95.39,
+     95.36,
      95.34,
      95.44,
      95.29
@@ -5896,7 +5896,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.04,
+   "live_spread": 0.062,
    "history_note": "history to 2026-11-03 (60 days)"
   },
   "US500": {
@@ -5929,8 +5929,8 @@
    "net_label": "Net points (v1.10 rules)",
    "state": "waiting",
    "message": "NIGHT BUY (gold+WTI shock) at 3:01 am Dubai, stop 7494.7, closed (stopped). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7562.8,
-   "change": -16.1,
+   "price": 7562.0,
+   "change": -16.9,
    "entries": [
     {
      "time": "3:01 am",
@@ -6787,7 +6787,7 @@
     ],
     [
      "11:55 am",
-     7562.8,
+     7562.0,
      7559.8,
      7562.9,
      7559.6
@@ -7304,8 +7304,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 28142.9,
-   "change": -144.1,
+   "price": 28133.7,
+   "change": -153.3,
    "entries": [
     {
      "time": "5:32 am",
@@ -7333,7 +7333,7 @@
      "live": null,
      "rwf": 0,
      "spread": 1.8,
-     "spread_live": 1.8
+     "spread_live": 2.7
     }
    ],
    "spark": [
@@ -8165,7 +8165,7 @@
     ],
     [
      "11:55 am",
-     28142.9,
+     28133.7,
      28131.1,
      28145.6,
      28126.3
@@ -8219,7 +8219,7 @@
        "live": null,
        "rwf": 0,
        "spread": 1.8,
-       "spread_live": 1.8
+       "spread_live": 2.7
       }
      ],
      "final": false
@@ -8937,13 +8937,13 @@
    "what_note": "Tracks whether live GBP/USD signals do as well as the v1.04 MT4 test. The auto-trader places each trade on the Capital.com demo (from 27 Oct). Decision after about 3 months.",
    "cost_note": "Results are pips per trade after the spread (at least 1.5 pips). 0.01 lot = 1,000 units = $0.10 per pip.",
    "net_label": "Net pips (v1.04 rules)",
-   "state": "waiting",
+   "state": "none",
    "mode": "calm",
    "regime": 0.152,
    "gap": null,
-   "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.34763,
-   "change": 0.00723,
+   "message": "No trade today: no price bar between 12:00 pm and 12:05 pm Dubai.",
+   "price": 1.34766,
+   "change": 0.00726,
    "entries": [],
    "spark": [
     [
@@ -9774,9 +9774,9 @@
     ],
     [
      "11:55 am",
-     1.34763,
+     1.34766,
      1.34752,
-     1.34764,
+     1.34782,
      1.34703
     ]
    ],
