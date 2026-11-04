@@ -1,15 +1,15 @@
 {
- "balance": 1097.86,
+ "balance": 1095.3,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-04",
-  "pl": 31.21,
+  "pl": 24.58,
   "start_balance": 1115.73,
   "start_equity": 1115.73,
   "stopped": false
  },
- "open_positions": 4,
- "open_risk_aed": 103.22,
+ "open_positions": 3,
+ "open_risk_aed": 73.61,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-11-02|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -464,9 +464,10 @@
    "market": "USDJPY",
    "opened_at": "Wed 4 Nov 1:12 PM",
    "part": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-70cb-fa51-0495-7fc60004511e",
     "level": 158.35,
-    "open": true,
+    "open": false,
     "size": 1000.0,
     "tp": 158.413
    },
@@ -483,7 +484,7 @@
    "risk_usd": 8.17,
    "side": "BUY",
    "state": "open",
-   "stop": 157.733
+   "stop": 158.351
   },
   "USDJPY|2026-11-04|3:05 am|BUY|Inside-week break": {
    "desk_price": 158.67,
