@@ -1,34 +1,6 @@
 [
  {
   "action": "stop moved",
-  "detail": "USDJPY|2026-10-21|7:00 am|SELL|Heikin-Ashi 7am to 158.876",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Wed 21 Oct 7:19 AM"
- },
- {
-  "action": "stop moved",
-  "detail": "USDJPY|2026-10-21|7:00 am|SELL|Heikin-Ashi 7am to 158.878",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Wed 21 Oct 7:20 AM"
- },
- {
-  "action": "OPEN BUY rest",
-  "detail": "GOLD|2026-10-21|7:31 am|BUY|N15 hsq size 0.39 at 4125.26 stop 4090.06 | trade risk 49.53 AED",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Wed 21 Oct 7:32 AM"
- },
- {
-  "action": "part closed on demo",
-  "detail": "USDJPY|2026-10-21|7:00 am|SELL|Heikin-Ashi 7am",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Wed 21 Oct 7:36 AM"
- },
- {
-  "action": "stop moved",
   "detail": "USDJPY|2026-10-21|7:00 am|SELL|Heikin-Ashi 7am to 158.257",
   "market": "USDJPY",
   "ok": true,
@@ -2798,5 +2770,33 @@
   "market": "ALL",
   "ok": false,
   "t": "Thu 5 Nov 1:23 AM"
+ },
+ {
+  "action": "error",
+  "detail": "ReadTimeout: HTTPSConnectionPool(host='demo-api-capital.backend-capital.com', port=443): Read timed out. (read timeout=20)",
+  "market": "ALL",
+  "ok": false,
+  "t": "Thu 5 Nov 1:25 AM"
+ },
+ {
+  "action": "error",
+  "detail": "HTTPError: 504 Server Error: Gateway Time-out for url: https://demo-api-capital.backend-capital.com/api/v1/session",
+  "market": "ALL",
+  "ok": false,
+  "t": "Thu 5 Nov 1:28 AM"
+ },
+ {
+  "action": "error",
+  "detail": "HTTPError: 504 Server Error: Gateway Time-out for url: https://demo-api-capital.backend-capital.com/api/v1/session",
+  "market": "ALL",
+  "ok": false,
+  "t": "Thu 5 Nov 1:32 AM"
+ },
+ {
+  "action": "error",
+  "detail": "ReadTimeout: HTTPSConnectionPool(host='demo-api-capital.backend-capital.com', port=443): Read timed out. (read timeout=20)",
+  "market": "ALL",
+  "ok": false,
+  "t": "Thu 5 Nov 1:35 AM"
  }
 ]

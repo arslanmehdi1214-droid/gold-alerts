@@ -37,7 +37,7 @@
    "actions_day": "2026-11-04",
    "feed_error": true,
    "state": "buy",
-   "message": "Price feed problem at 1:21 am Dubai (ReadTimeout) - the page shows the last good update; it retries every minute.",
+   "message": "Price feed problem at 1:33 am Dubai (HTTPError) - the page shows the last good update; it retries every minute.",
    "price": 4065.4,
    "close_at": "12:50 am",
    "change": 134.42,
@@ -3573,7 +3573,7 @@
    "cost_note": "Pips are for the whole trade (\u2153-size trades count one third), after a fixed 1.0-pip spread (as in the MT4 test; fixed so shown levels never change). $ = at $100 risk per full-size trade, like the MT4 test.",
    "net_label": "Net R / $ at $100 risk (v1.06 sizes)",
    "state": "buy",
-   "message": "USDJPY paper update failed at 1:21 am Dubai (ReadTimeout: HTTPSConnectionPool(host='demo-api-capital.backend-capital.com', port=443): Read timed out. (read timeout=20)) \u2014 shows the last good update; retries every 5 minutes.",
+   "message": "USDJPY paper update failed at 1:33 am Dubai (ReadTimeout: HTTPSConnectionPool(host='demo-api-capital.backend-capital.com', port=443): Read timed out. (read timeout=20)) \u2014 shows the last good update; retries every 5 minutes.",
    "price": 158.423,
    "change_pips": -24.7,
    "atr_pips": 81.1,
@@ -6940,7 +6940,7 @@
    "cost_note": "Results are $ per barrel (sizes: full or \u2153), from the signal price with the backtest's slip, after a fixed 4-cent spread (the MT4 test's spread and Capital.com's usual; fixed so shown levels never change).",
    "net_label": "Net $ per barrel (v1.10)",
    "state": "sell",
-   "message": "WTI paper update failed at 1:22 am Dubai (HTTPError: 504 Server Error: Gateway Time-out for url: https://demo-api-capital.backend-capital.com/api/v1/prices/OIL_CRUDE?resolut) \u2014 shows the last good update; retries every minute.",
+   "message": "WTI paper update failed at 1:34 am Dubai (ReadTimeout: HTTPSConnectionPool(host='demo-api-capital.backend-capital.com', port=443): Read timed out. (read timeout=20)) \u2014 shows the last good update; retries every minute.",
    "price": 87.744,
    "change": -8.28,
    "entries": [
@@ -9968,7 +9968,7 @@
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
-   "message": "S&P paper update failed at 1:22 am Dubai (ReadTimeout: HTTPSConnectionPool(host='demo-api-capital.backend-capital.com', port=443): Read timed out. (read timeout=20)) \u2014 shows the last good update; retries every minute.",
+   "message": "S&P paper update failed at 1:34 am Dubai (ReadTimeout: HTTPSConnectionPool(host='demo-api-capital.backend-capital.com', port=443): Read timed out. (read timeout=20)) \u2014 shows the last good update; retries every minute.",
    "price": 7701.7,
    "change": 122.8,
    "entries": [
@@ -12585,7 +12585,7 @@
    "cost_note": "Results are index points for the whole trade at its v1.02 size (sells \u2153, the 25% / 15% part included), after a fixed 1.8-point spread (as in the MT4 test; entry, stop and part levels use it too). Capital.com's live spread is shown for reference only.",
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
-   "message": "Nasdaq paper update failed at 1:22 am Dubai (ReadTimeout: HTTPSConnectionPool(host='demo-api-capital.backend-capital.com', port=443): Read timed out. (read timeout=20)) \u2014 shows the last good update; retries every minute.",
+   "message": "Nasdaq paper update failed at 1:34 am Dubai (ReadTimeout: HTTPSConnectionPool(host='demo-api-capital.backend-capital.com', port=443): Read timed out. (read timeout=20)) \u2014 shows the last good update; retries every minute.",
    "price": 28493.9,
    "change": 206.9,
    "entries": [
@@ -15399,7 +15399,7 @@
    "mode": "calm",
    "regime": 0.152,
    "gap": 0.253,
-   "message": "GBP/USD paper update failed at 1:23 am Dubai (ReadTimeout: HTTPSConnectionPool(host='demo-api-capital.backend-capital.com', port=443): Read timed out. (read timeout=20)) \u2014 shows the last good update; retries every minute.",
+   "message": "GBP/USD paper update failed at 1:35 am Dubai (ReadTimeout: HTTPSConnectionPool(host='demo-api-capital.backend-capital.com', port=443): Read timed out. (read timeout=20)) \u2014 shows the last good update; retries every minute.",
    "price": 1.34733,
    "change": 0.00693,
    "entries": [
