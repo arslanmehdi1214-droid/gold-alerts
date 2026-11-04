@@ -4,20 +4,6 @@
   "detail": "USDJPY|2026-10-21|7:00 am|SELL|Heikin-Ashi 7am to 158.876",
   "market": "USDJPY",
   "ok": true,
-  "t": "Wed 21 Oct 7:08 AM"
- },
- {
-  "action": "stop moved",
-  "detail": "USDJPY|2026-10-21|7:00 am|SELL|Heikin-Ashi 7am to 158.878",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Wed 21 Oct 7:09 AM"
- },
- {
-  "action": "stop moved",
-  "detail": "USDJPY|2026-10-21|7:00 am|SELL|Heikin-Ashi 7am to 158.876",
-  "market": "USDJPY",
-  "ok": true,
   "t": "Wed 21 Oct 7:19 AM"
  },
  {
@@ -2798,5 +2784,19 @@
   "market": "GOLD",
   "ok": true,
   "t": "Thu 5 Nov 12:50 AM"
+ },
+ {
+  "action": "error",
+  "detail": "ReadTimeout: HTTPSConnectionPool(host='demo-api-capital.backend-capital.com', port=443): Read timed out. (read timeout=20)",
+  "market": "ALL",
+  "ok": false,
+  "t": "Thu 5 Nov 1:20 AM"
+ },
+ {
+  "action": "error",
+  "detail": "ReadTimeout: HTTPSConnectionPool(host='demo-api-capital.backend-capital.com', port=443): Read timed out. (read timeout=20)",
+  "market": "ALL",
+  "ok": false,
+  "t": "Thu 5 Nov 1:23 AM"
  }
 ]
