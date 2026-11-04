@@ -7,7 +7,7 @@
 //   CAPITAL_API_KEY, CAPITAL_IDENTIFIER, CAPITAL_API_PASSWORD
 // Plain variable:  CAPITAL_DEMO = 1  (1 = demo server, like the desk now; 0 = live server)
 
-const EPICS = ['GOLD', 'USDJPY', 'OIL_CRUDE', 'US100', 'SILVER', 'US500', 'GBPUSD'];
+const EPICS = ['GOLD', 'USDJPY', 'OIL_CRUDE', 'US100', 'US500', 'GBPUSD'];
 const ALLOWED = ['https://arslanmehdi1214-droid.github.io', 'null']; // 'null' = opening the page from a file on your computer
 const CACHE_SECONDS = 2;          // one Capital.com call serves every viewer for 2 seconds
 let session = null;               // { cst, token, at } kept while the worker stays warm
