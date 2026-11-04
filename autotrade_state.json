@@ -1,15 +1,15 @@
 {
- "balance": 1099.73,
+ "balance": 1102.0,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-04",
-  "pl": 31.89,
+  "pl": 36.43,
   "start_balance": 1115.73,
   "start_equity": 1115.73,
   "stopped": false
  },
- "open_positions": 5,
- "open_risk_aed": 117.43,
+ "open_positions": 7,
+ "open_risk_aed": 173.01,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-11-02|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -484,6 +484,44 @@
    "side": "BUY",
    "state": "closed",
    "stop": 7494.7
+  },
+  "US500|2026-11-04|6:40 pm|BUY|Nasdaq signal copied": {
+   "desk_price": 7683.3,
+   "market": "US500",
+   "opened_at": "Wed 4 Nov 6:41 PM",
+   "part_x": 0.0,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-70cf-4e48-0495-7fc60004511e",
+    "level": 7683.9,
+    "open": true,
+    "size": 0.11,
+    "tp": null
+   },
+   "risk_aed": 27.79,
+   "risk_usd": 8.17,
+   "side": "BUY",
+   "state": "open",
+   "stop": 7614.5
+  },
+  "US500|2026-11-04|6:40 pm|BUY|S&P 9:40 am New York opening move": {
+   "desk_price": 7683.3,
+   "market": "US500",
+   "opened_at": "Wed 4 Nov 6:41 PM",
+   "part_x": 0.0,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-70cf-4e58-0495-7fc60004511e",
+    "level": 7683.9,
+    "open": true,
+    "size": 0.11,
+    "tp": null
+   },
+   "risk_aed": 27.79,
+   "risk_usd": 8.17,
+   "side": "BUY",
+   "state": "open",
+   "stop": 7614.5
   },
   "USDJPY|2026-11-02|5:37 pm|SELL|Squeeze 4pm": {
    "at": "Mon 2 Nov 9:24 PM",

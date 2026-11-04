@@ -1,5 +1,5 @@
 {
- "updated": "Wed 04 Nov \u00b7 6:40 pm",
+ "updated": "Wed 04 Nov \u00b7 6:41 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -32,9 +32,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4048.55,
+   "price": 4047.24,
    "close_at": "12:50 am",
-   "change": 117.57,
+   "change": 116.26,
    "size": 0.1,
    "datr": 73.41,
    "open_now": 2,
@@ -1400,6 +1400,13 @@
      4044.61,
      4051.61,
      4043.12
+    ],
+    [
+     "6:40 pm",
+     4047.24,
+     4048.57,
+     4048.81,
+     4045.4
     ]
    ],
    "history": [
@@ -4380,6 +4387,13 @@
      158.388,
      158.473,
      158.388
+    ],
+    [
+     "6:40 pm",
+     158.447,
+     158.446,
+     158.45,
+     158.427
     ]
    ],
    "journal": {
@@ -5776,7 +5790,7 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 1.3,
+   "live_spread_pips": 1.2,
    "history_note": "history to 2026-11-03 (300 days)"
   },
   "DE40": {
@@ -5815,8 +5829,8 @@
    "net_label": "Net $ per barrel (v1.10)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Close 25% at the part level, then move the stop to entry; everything closes at 10:00 pm Dubai. No new trades after 6:30 pm (one late first trade allowed).",
-   "price": 92.439,
-   "change": -3.59,
+   "price": 92.464,
+   "change": -3.56,
    "entries": [
     {
      "time": "5:01 pm",
@@ -7201,6 +7215,13 @@
      92.19,
      92.46,
      92.17
+    ],
+    [
+     "6:40 pm",
+     92.46,
+     92.43,
+     92.52,
+     92.34
     ]
    ],
    "journal": {
@@ -8281,10 +8302,10 @@
    "what_note": "Tracks whether live S&P signals do as well as the v1.11 MT4 test (500109 + Night V3 + Night V4 + Night V5 + Night V6). Decision after about 3 months.",
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.11 rules)",
-   "state": "waiting",
-   "message": "NIGHT BUY (gold+WTI shock) at 3:01 am Dubai, stop 7494.7, closed (stopped). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7683.8,
-   "change": 104.9,
+   "state": "buy",
+   "message": "NIGHT BUY (gold+WTI shock) at 3:01 am Dubai, stop 7494.7, closed (stopped). PAPER BUY day: 2 trades today (2 running). Only BUY signals count today (max 3; no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop). Each trade keeps its stop, no half-close; everything closes at 12:30 am Dubai (3:30 pm New York).",
+   "price": 7683.3,
+   "change": 104.4,
    "entries": [
     {
      "time": "3:01 am",
@@ -8309,6 +8330,56 @@
      "r": -1.009,
      "r_sized": -1.009,
      "live": null,
+     "spread": 0.8
+    },
+    {
+     "time": "6:40 pm",
+     "side": "BUY",
+     "name": "Nasdaq signal copied",
+     "src": "Nasdaq",
+     "leg": 1,
+     "night": false,
+     "price": 7683.3,
+     "entry": 7683.3,
+     "stop": 7614.5,
+     "stop0": 7614.5,
+     "stop_pts": 68.8,
+     "half_px": null,
+     "half": false,
+     "size": "full",
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "r": null,
+     "r_sized": null,
+     "live": -0.8,
+     "spread": 0.8
+    },
+    {
+     "time": "6:40 pm",
+     "side": "BUY",
+     "name": "S&P 9:40 am New York opening move",
+     "src": "S&P",
+     "leg": 2,
+     "night": false,
+     "price": 7683.3,
+     "entry": 7683.3,
+     "stop": 7614.5,
+     "stop0": 7614.5,
+     "stop_pts": 68.8,
+     "half_px": null,
+     "half": false,
+     "size": "full",
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "r": null,
+     "r_sized": null,
+     "live": -0.8,
      "spread": 0.8
     }
    ],
@@ -9705,14 +9776,21 @@
      7653.0,
      7683.8,
      7653.0
+    ],
+    [
+     "6:40 pm",
+     7683.3,
+     7683.3,
+     7683.8,
+     7680.0
     ]
    ],
    "journal": {
     "since": "04 Nov 2026",
     "weekdays": 1,
-    "trades": 1,
+    "trades": 3,
     "days": 100.0,
-    "perday": 1.0,
+    "perday": 3.0,
     "closed": 1,
     "win": 0.0,
     "pf": 0.0,
@@ -9727,7 +9805,26 @@
       "2026-11-04 03:32:00|-1": "2026-11-04 03:33:27.579651",
       "2026-11-04 16:39:00|1": "2026-11-04 16:40:15.755999"
      },
-     "legs_frozen": [],
+     "legs_frozen": [
+      {
+       "t": "2026-11-04 16:40:00",
+       "dir": 1,
+       "src": 0,
+       "name": "Nasdaq signal copied",
+       "leg": 1,
+       "entry": 7683.3,
+       "sd": 68.79642857142856
+      },
+      {
+       "t": "2026-11-04 16:40:00",
+       "dir": 1,
+       "src": 1,
+       "name": "S&P 9:40 am New York opening move",
+       "leg": 2,
+       "entry": 7683.3,
+       "sd": 68.79642857142856
+      }
+     ],
      "stress": false,
      "v3": true,
      "v3_detail": {
@@ -9742,7 +9839,7 @@
      "date": "2026-11-04",
      "rules": "v1.11",
      "label": "Wed 04 Nov",
-     "side": null,
+     "side": "BUY",
      "trades": [
       {
        "time": "3:01 am",
@@ -9767,6 +9864,56 @@
        "r": -1.009,
        "r_sized": -1.009,
        "live": null,
+       "spread": 0.8
+      },
+      {
+       "time": "6:40 pm",
+       "side": "BUY",
+       "name": "Nasdaq signal copied",
+       "src": "Nasdaq",
+       "leg": 1,
+       "night": false,
+       "price": 7683.3,
+       "entry": 7683.3,
+       "stop": 7614.5,
+       "stop0": 7614.5,
+       "stop_pts": 68.8,
+       "half_px": null,
+       "half": false,
+       "size": "full",
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "res_sized": null,
+       "r": null,
+       "r_sized": null,
+       "live": -0.8,
+       "spread": 0.8
+      },
+      {
+       "time": "6:40 pm",
+       "side": "BUY",
+       "name": "S&P 9:40 am New York opening move",
+       "src": "S&P",
+       "leg": 2,
+       "night": false,
+       "price": 7683.3,
+       "entry": 7683.3,
+       "stop": 7614.5,
+       "stop0": 7614.5,
+       "stop_pts": 68.8,
+       "half_px": null,
+       "half": false,
+       "size": "full",
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "res_sized": null,
+       "r": null,
+       "r_sized": null,
+       "live": -0.8,
        "spread": 0.8
       }
      ],
@@ -10220,8 +10367,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "2 paper trades today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 28521.0,
-   "change": 234.0,
+   "price": 28544.7,
+   "change": 257.7,
    "entries": [
     {
      "time": "5:32 am",
@@ -10274,7 +10421,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 14.7,
+     "live": 38.4,
      "rwf": null,
      "spread": 1.8,
      "spread_live": 1.8
@@ -11673,6 +11820,13 @@
      28284.5,
      28521.0,
      28284.5
+    ],
+    [
+     "6:40 pm",
+     28544.7,
+     28520.9,
+     28550.2,
+     28514.6
     ]
    ],
    "journal": {
@@ -11748,7 +11902,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 14.7,
+       "live": 38.4,
        "rwf": null,
        "spread": 1.8,
        "spread_live": 1.8
@@ -12474,8 +12628,8 @@
    "regime": 0.152,
    "gap": 0.253,
    "message": "Locked stop hit at 6:37 pm Dubai: +3.5 pips. Done for today.",
-   "price": 1.34806,
-   "change": 0.00766,
+   "price": 1.34804,
+   "change": 0.00764,
    "entries": [
     {
      "time": "12:00 pm",
@@ -13899,6 +14053,13 @@
      1.349,
      1.34902,
      1.34781
+    ],
+    [
+     "6:40 pm",
+     1.34804,
+     1.34807,
+     1.34817,
+     1.34799
     ]
    ],
    "journal": {
