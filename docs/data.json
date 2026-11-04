@@ -1,5 +1,5 @@
 {
- "updated": "Thu 05 Nov \u00b7 2:00 am",
+ "updated": "Thu 05 Nov \u00b7 2:11 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -1627,7 +1627,7 @@
    "net_label": "Net R / $ at $100 risk (v1.06 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
+   "price": 158.359,
    "change_pips": null,
    "atr_pips": 85.4,
    "entries": [],
@@ -3035,8 +3035,8 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": null,
-   "history_note": "history to 2026-11-04 (300 days) \u00b7 added 2026-11-04"
+   "live_spread_pips": 9.0,
+   "history_note": "history to 2026-11-04 (300 days)"
   },
   "DE40": {
    "code": "DE40",
@@ -4136,7 +4136,7 @@
    "feed_error": false,
    "epic": "OIL_CRUDE",
    "live_spread": null,
-   "history_note": "history to 2026-11-04 (60 days) \u00b7 added 2026-11-04"
+   "history_note": "history to 2026-11-04 (60 days)"
   },
   "US500": {
    "code": "US500",
@@ -4168,10 +4168,18 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally).",
-   "price": null,
-   "change": null,
+   "price": 7703.3,
+   "change": 0.2,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     7703.3,
+     7703.1,
+     7703.9,
+     7702.7
+    ]
+   ],
    "journal": {
     "since": "04 Nov 2026",
     "weekdays": 2,
@@ -4756,7 +4764,7 @@
    "picks_stale": false,
    "epic": "US500",
    "close_at": "12:30 am",
-   "history_note": "history to 2026-11-04 (30 days) \u00b7 added 2026-11-04"
+   "history_note": "history to 2026-11-04 (30 days)"
   },
   "US100": {
    "code": "US100",
@@ -4788,10 +4796,25 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 28529.8,
+   "change": 15.0,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     28527.4,
+     28514.8,
+     28530.6,
+     28504.1
+    ],
+    [
+     "2:10 am",
+     28529.8,
+     28527.5,
+     28529.8,
+     28526.6
+    ]
+   ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 14,
@@ -5565,7 +5588,7 @@
    "feed_error": false,
    "epic": "US100",
    "close_at": "1:00 am",
-   "history_note": "history to 2026-11-04 (370 days) \u00b7 added 2026-11-04"
+   "history_note": "history to 2026-11-04 (370 days)"
   },
   "GBPUSD": {
    "code": "GBPUSD",
@@ -5599,10 +5622,25 @@
    "regime": 0.156,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": null,
-   "change": null,
+   "price": 1.34631,
+   "change": 0.00068,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     1.3466,
+     1.34563,
+     1.3466,
+     1.34563
+    ],
+    [
+     "2:10 am",
+     1.34631,
+     1.34652,
+     1.34657,
+     1.3463
+    ]
+   ],
    "journal": {
     "since": "26 Oct 2026",
     "weekdays": 9,
