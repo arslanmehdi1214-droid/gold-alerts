@@ -184,6 +184,9 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
             if (d > 0 and L[m] <= g['stop']) or (d < 0 and H[m] >= g['stop']):
                 b = min(g['stop'], O[m]) if d > 0 else max(g['stop'], O[m])
                 close_leg(g, b, m, 'be' if g['half'] else 'stopped'); continue
+            if P.get('decay') and not g['half'] and g['half_px'] is not None and not g.get('dec') and (t[m] - t[g['i']]) >= pd.Timedelta(minutes=P['decay'][0]):
+                g['dec'] = True; kk = P['decay'][1] if d < 0 else P['decay'][2]; rk_ = g['sd'] + g['sp']      # v1.11: still no part-close after DECAY minutes -> the part-close level drops to kk x the trade's risk (ladder trades only)
+                g['half_px'] = float(g['e'] - kk * rk_ - g['sp']) if d < 0 else float(g['e'] + kk * rk_)
             if not g['half'] and g['half_px'] is not None and ((d > 0 and H[m] >= g['half_px']) or (d < 0 and L[m] <= g['half_px'])):
                 g['bank'] += PART * d * ((g['half_px'] if d > 0 else g['half_px'] + g['sp']) - g['e']) / g['sd']; g['q'] = 1.0 - PART; g['half'] = True
                 g['half_t'] = t[m]; g['stop'] = float(g['e'] if d > 0 else g['e'] - g['sp'])      # rest's stop = entry price (bid terms)
