@@ -15,7 +15,7 @@ PICK_LATE = pd.Timedelta(minutes=3)   # 22 Oct fix: a Nasdaq pick first seen mor
 EPIC = os.environ.get('CAPITAL_EPIC_SP', 'US500')
 MIN_SPREAD = S.COST                   # the paper result never uses less than 0.8 index points per leg (as in the MT4 test)
 PASS = dict(green=40.0, pf=1.15, months=3)
-RULES = 'v1.12'
+RULES = 'v1.13'
 BACKTEST_104 = dict(direction='—', days='44.5% profit days / 87% traded', perday='1.37', win='53.4%', pf='1.32', net='+$16,896 at $100 risk per leg',
                 source='MT4 test SP500_DAYTRADE v1.04 (his run 24 Oct, spread 0.8 pt), 2020-01-01..2026-09-30, 2,416 trades (2,135 day + 281 night); '
                        'worst day -$315; net/DD 8.83; max DD $1,914')
@@ -52,7 +52,7 @@ BACKTEST_111 = dict(direction='—', days='—', perday='—', win='~79% of the 
                        'V2-V5 already took), long-only (no short leg tested), moderate date clustering (a 5-night cluster in Apr-May 2026) - treat as a '
                        'refinement still proving itself, not a settled edge. Like Night V5, this data (FRED DTWEXBGS + Yahoo Finance ^STOXX50E) is '
                        'available from day one - no live warm-up needed (see dtwexstoxx_today() in sp_run.py).')
-BACKTEST = dict(direction='—', days='—', perday='—', win='63.16% of the 78 new Night V7 legs closed in profit (48W/28L)', pf='—', net='+$16,133.31 at $100 risk per leg',
+BACKTEST_112 = dict(direction='—', days='—', perday='—', win='63.16% of the 78 new Night V7 legs closed in profit (48W/28L)', pf='—', net='+$16,133.31 at $100 risk per leg',
                 source='MT4 test SP500_DAYTRADE v1.12 (his run 4 Nov, Magic 500119, spread 18, Every tick), 2018.01.01-2026.10.31, 2,581 trades (+78 vs the '
                        '500117 baseline\'s 2,503, all long - V7 is BUY only); max DD $2,155.51 (0.21%, DOWN from 500117\'s $2,188.15 - the first leg where '
                        'DD actually falls, not just holds steady); same 500117 rules (row18/19/20/23/24/25-27/28-31/32-34) PLUS Night V7 (rows 35-37): a '
@@ -64,6 +64,18 @@ BACKTEST = dict(direction='—', days='—', perday='—', win='63.16% of the 78
                        'after an initial 0-trade run traced to a stale/uncompiled .ex4 and fixed by a recompile), moderate date clustering (a 15-night May '
                        '2020 episode and a 12-night Sep 2025 episode) - treat as a refinement still proving itself, not a settled edge. Like Night V5/V6, '
                        'this data (Yahoo Finance XLB/XLC/SPY) is available from day one - no live warm-up needed (see mt_cm_today() in sp_run.py).')
+BACKTEST = dict(direction='—', days='—', perday='—', win='60.0% of the 40 new Night V8 legs closed in profit (24W/16L)', pf='—', net='+$16,213.81 at $100 risk per leg',
+                source='MT4 test SP500_DAYTRADE v1.13 (his run 5 Nov, Magic 500121, spread 18, Every tick), 2018.01.01-2026.10.31, 2,621 trades (+40 vs the '
+                       '500119 baseline\'s 2,581, all long - V8 is BUY only); max DD $2,122.32 (0.21%, down slightly from 500119\'s $2,155.51, normal '
+                       'diversification, not a leak); same 500119 rules (row18/19/20/23/24/25-27/28-31/32-34/35-37) PLUS Night V8 (rows 38-40): a 7th '
+                       'night trigger, no weekday restriction, on credit markets quietly de-risking (252-day percentile of the 10-day % change in the '
+                       'HYG/LQD ratio - junk bonds underperforming investment-grade - <= 0.15) combined with the industrials sector (XLI) relatively '
+                       'weak vs SPY (252-day percentile of the 10-day % change in the XLI/SPY ratio <= 0.30) - isolating the 40 new legs alone: net '
+                       '+$80.50, DD down slightly vs 500119, 60.0% closed in profit (8.6pp below the Python hardening estimate of 68.6%, the widest gap '
+                       'of any leg, flagged honestly). WATCH ITEM (thinnest edge of any leg built so far, $2.01/trade avg): 65 historical Python '
+                       'occurrences, 40 confirmed in MT4 after excluding nights V2-V7 already took, exact 40/40 date+profit reconciliation (no '
+                       'lot-rounding gap) - treat as a refinement still proving itself, not a settled edge, more so than any prior leg. Like Night V5-V7, '
+                       'this data (Yahoo Finance HYG/LQD/XLI/SPY) is available from day one - no live warm-up needed (see cq_in_today() in sp_run.py).')
 CBOE = os.path.join(HERE, 'docs', 'cboe_sp.json')          # v1.04: the day's high-fear flag (decided once per broker day)
 CBOE_URL = 'https://cdn.cboe.com/api/global/us_indices/daily_prices/{}_History.csv'
 CBOE_Q = 'https://cdn.cboe.com/api/global/delayed_quotes/quotes/_{}.json'
@@ -75,6 +87,7 @@ LH_LIVE = os.path.join(HERE, 'docs', 'sp_lh_live.json')     # v1.09: one row per
 DXYRS = os.path.join(HERE, 'docs', 'dxyrs_sp.json')         # v1.10: cached US Dollar Index + RSP/SPY daily closes for the Night V5 trigger
 DTWEXSTOXX = os.path.join(HERE, 'docs', 'dtwexstoxx_sp.json')  # v1.11: cached FRED broad-dollar-index + STOXX50E daily closes for the Night V6 trigger
 MTCM = os.path.join(HERE, 'docs', 'mtcm_sp.json')           # v1.12: cached materials/communications/SPY daily closes for the Night V7 trigger
+CQIN = os.path.join(HERE, 'docs', 'cqin_sp.json')            # v1.13: cached HYG/LQD/XLI/SPY daily closes for the Night V8 trigger
 FRED_URL = 'https://fred.stlouisfed.org/graph/fredgraph.csv?id={}'   # free, no API key needed
 
 def _cboe_series(sym, col):
@@ -204,6 +217,37 @@ def mt_cm_today(day):
     mt_lvl_pct = mt.rolling(252, min_periods=120).rank(pct=True)
     cm_chg10_pct = cm.pct_change(10).rolling(252, min_periods=120).rank(pct=True)
     return pd.DataFrame(dict(mt_lvl_pct=mt_lvl_pct, cm_chg10_pct=cm_chg10_pct))
+
+def cq_in_today(day):
+    """v1.13 Night V8: high-yield (HYG) + investment-grade (LQD) + industrials (XLI) + SPY daily closes (cached in
+    docs/cqin_sp.json, refreshed once per broker day - same once-a-day shape as mt_cm_today()). Returns a DataFrame
+    indexed by date with cq_chg10_pct (252-day rolling percentile of the 10-day % change in the HYG/LQD ratio - low =
+    junk bonds underperforming investment-grade, i.e. credit markets de-risking) and in_chg10_pct (252-day rolling
+    percentile of the 10-day % change in the XLI/SPY ratio - low = industrials/cyclicals relatively weak) for
+    v8_flag() in sp_engine.py, or None on a fetch failure (Night V8 then simply does not fire that night - same
+    fail-safe shape as the other night-trigger fetches)."""
+    c = loadj(CQIN, {})
+    if c.get('day') == str(day.date()) and 'dates' in c:
+        idx = pd.to_datetime(c['dates'])
+        hyg = pd.Series([np.nan if x is None else x for x in c['hyg']], index=idx)
+        lqd = pd.Series([np.nan if x is None else x for x in c['lqd']], index=idx)
+        xli = pd.Series([np.nan if x is None else x for x in c['xli']], index=idx)
+        spy = pd.Series([np.nan if x is None else x for x in c['spy']], index=idx)
+    else:
+        try:
+            hyg = _yahoo_daily_close('HYG'); lqd = _yahoo_daily_close('LQD'); xli = _yahoo_daily_close('XLI'); spy = _yahoo_daily_close('SPY')
+            idx = hyg.index.union(lqd.index).union(xli.index).union(spy.index)
+            hyg = hyg.reindex(idx); lqd = lqd.reindex(idx); xli = xli.reindex(idx); spy = spy.reindex(idx)
+            c = dict(day=str(day.date()), dates=[str(t.date()) for t in idx],
+                     hyg=[None if pd.isna(x) else float(x) for x in hyg], lqd=[None if pd.isna(x) else float(x) for x in lqd],
+                     xli=[None if pd.isna(x) else float(x) for x in xli], spy=[None if pd.isna(x) else float(x) for x in spy], at=str(pd.Timestamp.utcnow()))
+            dumpj(c, CQIN, indent=1)
+        except Exception:
+            return None
+    cq = hyg / lqd; inr = xli / spy
+    cq_chg10_pct = cq.pct_change(10).rolling(252, min_periods=120).rank(pct=True)
+    in_chg10_pct = inr.pct_change(10).rolling(252, min_periods=120).rank(pct=True)
+    return pd.DataFrame(dict(cq_chg10_pct=cq_chg10_pct, in_chg10_pct=in_chg10_pct))
 
 def lasthour_stats(b):
     """v1.09 Night V4: b = one finished broker day's minute bars (o h l c v). Returns (ret, vol) for the 22:00-23:00 broker window
@@ -540,6 +584,8 @@ def compute(hist, b, day, now, picks, sp, jd):
                                             name='Night long (dollar-basket-weak + Europe-shock)', src=6) + trades         # never with the other four: only fires when stress, V3, V4 and V5 above did NOT
     elif jd.get('v7'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),                # v1.12 Night V7: materials-weak + communications-rally night (gated below) -
                                             name='Night long (materials-weak + communications-rally)', src=7) + trades     # never with the other five: only fires when stress, V3, V4, V5 and V6 above did NOT
+    elif jd.get('v8'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),                # v1.13 Night V8: credit-de-risking + industrials-weak night (gated below) -
+                                            name='Night long (credit-de-risking + industrials-weak)', src=8) + trades      # never with the other six: only fires when stress, V3, V4, V5, V6 and V7 above did NOT
     if not trades and S.tom_window(day) and np.isfinite(A) and now.hour * 60 + now.minute >= S.TOM_DECIDE:
         trades = S.tom_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod)) + trades                        # v1.07 row20: only once no other S&P leg has fired by 17:00 broker
     for t in trades:                                     # past the close time but no bar there yet: close at the last price
@@ -645,6 +691,14 @@ def main(feed=None, get=None, now=None):
         if zinfo: jd['v7_detail'] = zinfo
         if Zdf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6']:
             jd['v7_note'] = 'materials/communications data unavailable this run - no Night V7 check'
+    if 'v8' not in jd and 'v7' in jd:                       # v1.13 Night V8: decided once per day, only once stress+v3+v4+v5+v6+v7 are already known (mutual exclusion)
+        ok_time = now.hour * 60 + now.minute <= S.NIGHT_IN + 5
+        Wdf = None if (jd['stress'] or jd['v3'] or jd['v4'] or jd['v5'] or jd['v6'] or jd['v7']) else cq_in_today(day)
+        fired, winfo = S.v8_flag(Wdf, day) if Wdf is not None else (False, {})
+        jd['v8'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7']
+        if winfo: jd['v8_detail'] = winfo
+        if Wdf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7']:
+            jd['v8_note'] = 'credit/industrials data unavailable this run - no Night V8 check'
     trades = compute(hist, b, day, now, picks, sp, jd)
     freeze_legs(jd, trades)
     rows = [row(t, b, now, sp) for t in trades]; drows = [r for r in rows if not r.get('night')]; nrow = [r for r in rows if r.get('night')]
@@ -655,7 +709,7 @@ def main(feed=None, get=None, now=None):
         spark = [[F.broker_to_dubai(t).strftime('%-I:%M %p').lower(), round(float(r.c), 1), round(float(r.o), 1), round(float(r.h), 1), round(float(r.l), 1)] for t, r in g5.iterrows()]
     if J.get('start') is None: J['start'] = str(day.date())
     J['days'] = sorted([d for d in J['days'] if d['date'] != str(day.date())] +
-                       [dict({k: jd[k] for k in ('picks_seen', 'legs_frozen', 'stress', 'stress_note', 'v3', 'v3_note', 'v3_detail', 'v4', 'v4_note', 'v4_detail', 'v5', 'v5_note', 'v5_detail', 'v6', 'v6_note', 'v6_detail', 'v7', 'v7_note', 'v7_detail') if k in jd}, date=str(day.date()), rules=RULES,
+                       [dict({k: jd[k] for k in ('picks_seen', 'legs_frozen', 'stress', 'stress_note', 'v3', 'v3_note', 'v3_detail', 'v4', 'v4_note', 'v4_detail', 'v5', 'v5_note', 'v5_detail', 'v6', 'v6_note', 'v6_detail', 'v7', 'v7_note', 'v7_detail', 'v8', 'v8_note', 'v8_detail') if k in jd}, date=str(day.date()), rules=RULES,
                              label=day.strftime('%a %d %b'), side=(drows[0]['side'] if drows else None), trades=rows, final=bool(now >= eod))],
                       key=lambda d: d['date'])
     J['summary'] = summary(J, day); dumpj(J, JOUR, indent=1)
@@ -668,18 +722,19 @@ def main(feed=None, get=None, now=None):
     elif now >= xt: state, msg = 'none', 'No paper day trade today.'
     else: state, msg = 'waiting', (f'Waiting for the first day signal (from {dubai(day + pd.Timedelta(minutes=16 * 60 + 40))} Dubai: 9:40 am New York move, '
                                    'Nasdaq signals; earlier: yesterday high/low sweep).')
-    if nrow:                                             # v1.04 night leg (v1.08: or Night V3 - jd['v3']; v1.09: or Night V4 - jd['v4']; v1.10: or Night V5 - jd['v5']; v1.11: or Night V6 - jd['v6']; v1.12: or Night V7 - jd['v7'])
-        n_ = nrow[0]; label = ('materials-weak + communications-rally' if jd.get('v7') else ('dollar-basket-weak + Europe-shock' if jd.get('v6') else ('dollar-weak + breadth-narrow' if jd.get('v5') else ('weak-close + volume-spike' if jd.get('v4') else ('gold+WTI shock' if jd.get('v3') else 'high-fear night')))))
+    if nrow:                                             # v1.04 night leg (v1.08: or Night V3 - jd['v3']; v1.09: or Night V4 - jd['v4']; v1.10: or Night V5 - jd['v5']; v1.11: or Night V6 - jd['v6']; v1.12: or Night V7 - jd['v7']; v1.13: or Night V8 - jd['v8'])
+        n_ = nrow[0]; label = ('credit-de-risking + industrials-weak' if jd.get('v8') else ('materials-weak + communications-rally' if jd.get('v7') else ('dollar-basket-weak + Europe-shock' if jd.get('v6') else ('dollar-weak + breadth-narrow' if jd.get('v5') else ('weak-close + volume-spike' if jd.get('v4') else ('gold+WTI shock' if jd.get('v3') else 'high-fear night'))))))
         msg = (f"NIGHT BUY ({label}) at {n_['time']} Dubai, stop {n_['stop']}, " +
                (f"closes at {dubai(day + pd.Timedelta(minutes=S.NIGHT_OUT))} Dubai (10:00 am New York). " if n_['status'] == 'open' else f"closed ({n_['status']}). ") + msg)
         if state in ('none', 'waiting') and n_['status'] == 'open': state = 'buy'
     elif jd.get('stress_note'): msg += ' (' + jd['stress_note'] + '.)'
-    elif jd.get('stress') is False and jd.get('v3') is False and jd.get('v4') is False and jd.get('v5') is False and jd.get('v6') is False and jd.get('v7') is False: msg += ' No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally).'
+    elif jd.get('stress') is False and jd.get('v3') is False and jd.get('v4') is False and jd.get('v5') is False and jd.get('v6') is False and jd.get('v7') is False and jd.get('v8') is False: msg += ' No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak).'
     elif jd.get('v3_note'): msg += ' (' + jd['v3_note'] + '.)'
     elif jd.get('v4_note'): msg += ' (' + jd['v4_note'] + '.)'
     elif jd.get('v5_note'): msg += ' (' + jd['v5_note'] + '.)'
     elif jd.get('v6_note'): msg += ' (' + jd['v6_note'] + '.)'
     elif jd.get('v7_note'): msg += ' (' + jd['v7_note'] + '.)'
+    elif jd.get('v8_note'): msg += ' (' + jd['v8_note'] + '.)'
     elif stress is None: msg += f" (Night-trade check: Cboe data not available - {cinfo.get('error', '')}.)"
     if pnote and now.hour * 60 + now.minute >= S.US_LO: msg += f' ({pnote}.)'
     mk['US500'] = dict(base_card(A if A == A else None), state=state, message=msg, price=last, change=(None if last is None or first is None else round(last - first, 1)),

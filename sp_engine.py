@@ -94,6 +94,27 @@ v1.12 (4 Nov 2026, "Night V7": his MT4 run SP500_DAYTRADE v1.12 Magic 500119 lay
                 episode and a 12-night Sep 2025 episode) - treat as a watch item still proving itself, not a settled
                 edge. Source for mt_lvl_pct/cm_chg10_pct: Yahoo Finance daily closes (XLB, XLC, SPY - free), cached/
                 refreshed once a day, available from day one (no live warm-up needed) - see mt_cm_today() in sp_run.py.
+v1.13 (5 Nov 2026, "Night V8": his MT4 run SP500_DAYTRADE v1.13 Magic 500121 layered on 500119 - net $16,213.81 (+$80.50 vs
+       500119's $16,133.31), DD $2,122.32/0.21% (down slightly), 2621 trades (+40, all long - confirmed exact 40/40
+       date+profit reconciliation, no lot-rounding gap), 60.0% of the 40 new legs closed in profit (24W/16L - a bit
+       below the Python 68.6% estimate, flagged honestly - thinner edge than any prior leg)):
+  NIGHT LEG V8  a SEVENTH, independent night trigger (fires only when the six night triggers above do NOT - the seven
+                never double-trade the same night): no weekday restriction, BUY at 6:01 pm New York (01:01 broker) if
+                credit markets were quietly de-risking (252-day rolling percentile of the 10-day % change in the
+                HYG/LQD ratio - junk bonds underperforming investment-grade bonds - <= 0.15) AND the industrials
+                sector (XLI) was relatively weak vs SPY (252-day rolling percentile of the 10-day % change in the
+                XLI/SPY ratio <= 0.30) at once - a credit-quality risk-appetite signal, the first time corporate
+                credit spreads/bond-ETF ratios have been tested in this project (every prior leg used equity-only or
+                macro-only features) - same stop (1.0 x range) and close (10:00 am New York) as the other night legs.
+                Found 4 Nov 2026 credit-quality risk-appetite hunt (Round 59, S&P chat), hardened the same way as
+                V5-V7 (threshold neighbourhood, outlier/clustering+episode-exclusion checks, not VIX-in-disguise: corr
+                with vix_pct only +0.165), MT4-confirmed 5 Nov with an exact 40/40 date+profit reconciliation (no
+                lot-rounding gap, cleaner check than V7's original one). HONEST CAVEATS carried into the live card:
+                the THINNEST edge of any leg built so far ($2.01/trade avg vs V7's far larger $9.71/trade), live win
+                rate (60.0%) ran 8.6pp below the Python hardening estimate (68.6%, the widest gap of any leg) - treat
+                as a genuine WATCH ITEM, more so than any prior leg, not a settled edge. Source for cq_chg10_pct/
+                in_chg10_pct: Yahoo Finance daily closes (HYG, LQD, XLI, SPY - free), cached/refreshed once a day,
+                available from day one (no live warm-up needed) - see cq_in_today() in sp_run.py.
 Results: points per leg after a 0.8 pt cost (never less than Capital.com's live spread)."""
 import numpy as np, pandas as pd
 
@@ -112,6 +133,7 @@ V4_LH_MAX = 0.30; V4_VOLZ_MIN = 2.00                                  # v1.09 Ni
 V5_DXY_MAX = 0.20; V5_RS10_MAX = 0.20; V5_RS20_MAX = 0.20             # v1.10 Night V5: dollar-weakening 5d / breadth-narrowing 10d AND 20d thresholds (all <=)
 V6_DTWEX_MAX = 0.15; V6_STOXX_MIN = 0.85                              # v1.11 Night V6: broad-dollar-basket-weak (level, <=) / Europe-shock (|move|, >=) thresholds
 V7_MT_MAX = 0.30; V7_CM_MIN = 0.85                                    # v1.12 Night V7: materials-weak (level, <=) / communications-rally (10d change, >=) thresholds
+V8_CQ_MAX = 0.15; V8_IN_MAX = 0.30                                    # v1.13 Night V8: credit-de-risking (HYG/LQD 10d change, <=) / industrials-weak (XLI/SPY 10d change, <=) thresholds
 
 def eod_minutes(day): return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
@@ -295,6 +317,23 @@ def v7_flag(Z, day):
     if not (np.isfinite(row.mt_lvl_pct) and np.isfinite(row.cm_chg10_pct)): return False, {}
     dd = dict(date=str(k.date()), mt_lvl_pct=float(row.mt_lvl_pct), cm_chg10_pct=float(row.cm_chg10_pct))
     return bool(row.mt_lvl_pct <= V7_MT_MAX and row.cm_chg10_pct >= V7_CM_MIN), dd
+
+def v8_flag(W, day):
+    """v1.13 Night V8 trigger. W: DataFrame indexed by date (built by cq_in_today() in sp_run.py) with columns cq_chg10_pct
+    (252-day rolling percentile of the 10-day % change in the HYG/LQD ratio - junk bonds vs investment-grade bonds - low =
+    credit markets quietly de-risking) and in_chg10_pct (252-day rolling percentile of the 10-day % change in the XLI/SPY
+    ratio - low = industrials/cyclicals relatively weak). The broker day `day`'s own NY-date row is day - 1 calendar day
+    (same lag relationship as V4-V7's lookup: d = ny_date + 1). Fires when credit is de-risking (cq_chg10_pct <= V8_CQ_MAX)
+    AND industrials are weak (in_chg10_pct <= V8_IN_MAX) at once - a credit-quality risk-appetite signal, the first time
+    corporate credit spreads/bond-ETF ratios have been tested in this project (every prior leg used equity-only or
+    macro-only features). Missing values (not enough rolling history yet, or no data that day) mean it simply never
+    fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if W is None or not len(W) or k not in W.index: return False, {}
+    row = W.loc[k]
+    if not (np.isfinite(row.cq_chg10_pct) and np.isfinite(row.in_chg10_pct)): return False, {}
+    dd = dict(date=str(k.date()), cq_chg10_pct=float(row.cq_chg10_pct), in_chg10_pct=float(row.in_chg10_pct))
+    return bool(row.cq_chg10_pct <= V8_CQ_MAX and row.in_chg10_pct <= V8_IN_MAX), dd
 
 def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_done=False,
               name='Night long (high-fear night: VIX / VVIX)', src=1):
