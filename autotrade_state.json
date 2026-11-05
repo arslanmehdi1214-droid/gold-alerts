@@ -1,15 +1,15 @@
 {
- "balance": 1159.73,
+ "balance": 1169.02,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-05",
-  "pl": 61.08,
+  "pl": 79.66,
   "start_balance": 1145.68,
   "start_equity": 1145.68,
   "stopped": false
  },
- "open_positions": 3,
- "open_risk_aed": 87.52,
+ "open_positions": 5,
+ "open_risk_aed": 97.14,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-11-02|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -535,6 +535,32 @@
    "side": "BUY",
    "state": "closed",
    "stop": 27923.4
+  },
+  "US100|2026-11-05|7:45 pm|SELL|J30 U8 only when vol high (>1.1)": {
+   "desk_price": 26941.8,
+   "market": "US100",
+   "opened_at": "Thu 5 Nov 7:46 PM",
+   "part": {
+    "id": "00000000-7153-7517-0495-7fc60004511e",
+    "level": 26905.7,
+    "open": true,
+    "size": 0.002,
+    "tp": 26854.4
+   },
+   "part_x": 0.15,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-7153-753d-0495-7fc60004511e",
+    "level": 26906.4,
+    "open": true,
+    "size": 0.013,
+    "tp": null
+   },
+   "risk_aed": 9.62,
+   "risk_usd": 2.72,
+   "side": "SELL",
+   "state": "open",
+   "stop": 27116.4
   },
   "US500|2026-11-02|6:30 pm|BUY|Turn-of-month long (last/first broker days of the month)": {
    "at": "Mon 2 Nov 9:24 PM",
