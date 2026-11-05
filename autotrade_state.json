@@ -1,15 +1,15 @@
 {
- "balance": 1095.52,
+ "balance": 1090.34,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-05",
-  "pl": -69.87,
+  "pl": -50.33,
   "start_balance": 1145.68,
   "start_equity": 1145.68,
   "stopped": false
  },
- "open_positions": 5,
- "open_risk_aed": 88.05,
+ "open_positions": 3,
+ "open_risk_aed": 58.59,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-11-02|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -493,25 +493,27 @@
    "market": "US100",
    "opened_at": "Thu 5 Nov 4:44 PM",
    "part": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-7150-8b8f-0495-7fc60004511e",
     "level": 28203.7,
-    "open": true,
+    "open": false,
     "size": 0.007,
     "tp": 28341.0
    },
    "part_x": 0.25,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-7150-8b9e-0495-7fc60004511e",
     "level": 28203.7,
-    "open": true,
+    "open": false,
     "size": 0.022,
     "tp": null
    },
    "risk_aed": 29.46,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 27923.4
   },
   "US500|2026-11-02|6:30 pm|BUY|Turn-of-month long (last/first broker days of the month)": {
