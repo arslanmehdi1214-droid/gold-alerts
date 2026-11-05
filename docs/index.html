@@ -458,9 +458,10 @@ function render(){
  try{actsLive()}catch(e){}
  try{actsRender()}catch(e){}
  const C=T.map(o=>({o,...calc(o)})),tot=C.filter(c=>!c.o.e.late).reduce((a,c)=>a+c.pl,0),op=C.filter(c=>!done(c.o.e)&&c.R>-1&&!hitFullTarget(c)),cl=C.filter(c=>done(c.o.e)&&!c.o.e.late);
+ const dirFor=m=>{const oo=op.find(c=>c.o.m.c===m.c);return oo?oo.o.e.side:dirOf(M[m.c]||{})};  /* 5 Nov: show the REAL open trade's side (matches the Open Trades ladder below), day-type label only when nothing is open */
  const tabs=[{c:'ALL',n:'All markets'}].concat(MK);
  mtab.innerHTML=tabs.map(m=>{if(m.c==='ALL')return `<button data-c="ALL" class="${SEL==='ALL'?'on':''}">All<small>${op.length} open</small></button>`;
-  const x=M[m.c]||{},d=dirOf(x);return `<button data-c="${m.c}" class="${SEL===m.c?'on':''}">${m.n} <em class="${d==='BUY'?'pos':d==='SELL'?'neg':'dim'}">${d==='NONE'?'WAIT':(d==='BUY'?'▲ ':'▼ ')+d}</em><small>${f(nowPx(m,x),m.dp)} <i class="dot ${liveOf(m)?'on':''}"></i></small></button>`}).join('');
+  const x=M[m.c]||{},d=dirFor(m);return `<button data-c="${m.c}" class="${SEL===m.c?'on':''}">${m.n} <em class="${d==='BUY'?'pos':d==='SELL'?'neg':'dim'}">${d==='NONE'?'WAIT':(d==='BUY'?'▲ ':'▼ ')+d}</em><small>${f(nowPx(m,x),m.dp)} <i class="dot ${liveOf(m)?'on':''}"></i></small></button>`}).join('');
  mtab.querySelectorAll('button').forEach(b=>b.onclick=()=>{SEL=b.dataset.c;render();applySel()});
  const ev=equity(),w=300,h=56,lo=Math.min(0,...ev),hi=Math.max(0,...ev),r=hi-lo||1,Y=v=>(3+(h-6)*(1-(v-lo)/r)).toFixed(1);
  const ep=ev.length>1?ev.map((v,i)=>(i?'L':'M')+(i/(ev.length-1)*w).toFixed(1)+','+Y(v)).join(''):'',col=tot>=0?'var(--buy)':'var(--sell)';
