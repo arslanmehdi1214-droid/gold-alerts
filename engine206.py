@@ -13,6 +13,8 @@ S = dict(Signal_Stop_Target=0.5, Stop_Other=0.75, Signal_Last_Hour=19, Close_HHM
          DailyATR_Days=14, U2_Step=50.0, U2_From=9, U8_From=12,
          N1_Min_Gap=0.05, N1_From=9, N2_Near=0.15, N2_Hour=6, N3_From=0, N4_From=9, N5_From=9,
          N6_End=8, N6_Min_Range=0.6, N11_Calm=0.8, N11_Days=2, N11_From=9, N12_Pct=0.2, N12_Days=3, N12_From=10,
+         Gate_N4N11_By_DayHad=True,  # v2.22 weak-tag gate (EA extern row 313, default true): N4 nr7 and N11 calm only
+         # lose money when they are the day's FIRST trade - block them from opening until the day already has one.
          N13_ADX=15, N13_Days=2, N13_From=9, N15_Hour=6, N15_Pct=0.2, N15_Range_Hours=4, N15_Window_Hours=6,
          A15_ADX=15, A15_Days=2, A15_From=12, T15_KC=1.5, T15_Days=5, T15_From=9, N16_Min=3, N16_Days=5, N16b_Days=3,
          N16_From=12, S24_Hour=3, S24_Max=0.6, S24_Hours=24, G3_Box=1.0156,
@@ -49,6 +51,9 @@ G_TAG = ["", "G1 q3vs60", "G2 calm3ys", "G3 box20", "G4 q3vsusd", "G5 rng5q3", "
          "G9 bb30ys", "G10 q3vstnx", "G11 q3vix", "G12 q3r3s3", "G13 adx18usd", "G14 sq2husd", "G15 bbnr4usd",
          "G16 ttmnr7usd", "G17 adxysusd", "G18 adx5musd"]
 OTHER = ("U2 ", "U8 ", "N1 ", "N2 ", "N3 ", "N4 ", "N5 ", "N6 ")
+V222_FROM = np.datetime64('2026-11-05')   # v2.22 Weak-tag gate (Gate_N4N11_By_DayHad) goes live dashboard-side from push day -
+# no MT4-confirmed go-live date given for this one (same situation as v2.20's V220_FROM in desk209.py), his call: live from push
+# day. Gated by date so past days already shown in the journal/Analytics history are never recomputed differently.
 
 
 class Daily:
@@ -192,6 +197,7 @@ def run_day(day, D, Hh, m1, inp):
     if len(T) == 0: return []
     O, Hi, Lo, Cl = (np.asarray(m1[k], float) for k in ('o', 'h', 'l', 'c'))
     st = dict(net=0); trades = []
+    V222 = day >= V222_FROM   # v2.22 Weak-tag gate active from this broker day on
     atr = D.atr(0)
     if atr <= 0: return []
     friday = int(day.astype('datetime64[D]').astype('int64')) % 7 == 1   # 1970-01-01 was a Thursday, so day % 7 == 1 is a Friday
@@ -315,7 +321,8 @@ def run_day(day, D, Hh, m1, inp):
             if not done['n3'] and n3ok and h >= S['N3_From'] and last:
                 if p >= yH: sig_open(1, 'N3 inside', t, fill(yH)); done['n3'] = True
                 elif p <= yL: sig_open(-1, 'N3 inside', t, fill(yL)); done['n3'] = True
-            if not done['n4'] and n4ok and h >= S['N4_From'] and last:
+            n4gate = not S['Gate_N4N11_By_DayHad'] or not V222 or st['net'] != 0   # v2.22: blocked while today has no trade yet
+            if not done['n4'] and n4ok and h >= S['N4_From'] and last and n4gate:
                 if p >= yH: sig_open(1, 'N4 nr7', t, fill(yH)); done['n4'] = True
                 elif p <= yL: sig_open(-1, 'N4 nr7', t, fill(yL)); done['n4'] = True
             # N5 weekly pivot R1 / S1
@@ -338,7 +345,8 @@ def run_day(day, D, Hh, m1, inp):
             # N11 calm / N12 squeeze / N13 low ADX
             for key, ok, hh_, ll_, fr, tag in (('n11', n11ok, n11H, n11L, S['N11_From'], 'N11 calm'), ('n12', n12ok, n12H, n12L, S['N12_From'], 'N12 squeeze'),
                                                ('n13', n13ok, n13H, n13L, S['N13_From'], 'N13 adx')):
-                if not done[key] and ok and h >= fr and last:
+                gok_ = key != 'n11' or not S['Gate_N4N11_By_DayHad'] or not V222 or st['net'] != 0   # v2.22 gate, N11 only
+                if not done[key] and ok and h >= fr and last and gok_:
                     if p >= hh_: sig_open(1, tag, t, fill(hh_)); done[key] = True
                     elif p <= ll_: sig_open(-1, tag, t, fill(ll_)); done[key] = True
             # N15 hourly squeeze (set at the first tick of 6:00, window 6 hours)
