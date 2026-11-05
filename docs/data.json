@@ -2889,30 +2889,30 @@
    "live": false,
    "paper": true,
    "status": "Paper",
-   "version": "v1.06",
+   "version": "v1.07",
    "lots": 0.1,
    "stats": {
     "direction": "\u2014",
     "days": "68.9% green / 99.5% traded",
     "perday": "3.78",
-    "win": "86.3%",
-    "pf": "1.40",
-    "net": "+$19,269 at $100 risk per trade",
-    "source": "MT4 backtest v1.09 HAM(hour7) (his run 3 Nov) 2020-01-02 to 2026-10-09, 6,656 trades"
+    "win": "86.4%",
+    "pf": "1.42",
+    "net": "+$20,021 at $100 risk per trade",
+    "source": "MT4 backtest v1.11 WGAP (his run 5 Nov) 2020-01-02 to 2026-10-09, 6,680 trades"
    },
    "pass_bar": {
     "green": 60.0,
     "pf": 1.1,
     "months": 3
    },
-   "day_note": "stop: quiet signals \u00bc of the 14-day range, others \u00be \u00b7 Heikin-Ashi 7am (\u2153 size) closes WHOLE at +0.03 x risk, and fires again at broker hour 7 (same \u2153-size tiny target, added v1.06) \u00b7 others close half at +0.5 x risk (quiet) / +0.1 x risk, then the rest closes at the entry \u00b7 a quiet breakout against the day closes open trades and switches the side (max once a day) \u00b7 day lock: once the day reaches +2R, close all at +1R, no more trades \u00b7 one trade per minute \u00b7 close 6:00 pm broker (Fridays 2:00 pm)",
-   "what_note": "This page tracks whether live USD/JPY signals do as well as the v1.06 backtest. Decision after about 3 months.",
+   "day_note": "stop: quiet signals \u00bc of the 14-day range, others \u00be \u00b7 Heikin-Ashi 7am (\u2153 size) closes WHOLE at +0.03 x risk, and fires again at broker hour 7 (same \u2153-size tiny target, added v1.06) \u00b7 others close half at +0.5 x risk (quiet) / +0.1 x risk, then the rest closes at the entry \u00b7 a quiet breakout against the day closes open trades and switches the side (max once a day) \u00b7 weekend-gap fade (full size, added v1.07): fades the Friday-close-to-Monday-open gap once a week, own stop (0.60 x range) and own tiny target (+0.03 x risk, closes WHOLE), and is EXEMPT from the breakout-flip above - it only ever exits via its own stop, its own target, or the day's close \u00b7 day lock: once the day reaches +2R, close all at +1R, no more trades \u00b7 one trade per minute \u00b7 close 6:00 pm broker (Fridays 2:00 pm)",
+   "what_note": "This page tracks whether live USD/JPY signals do as well as the v1.07 backtest. Decision after about 3 months.",
    "cost_note": "Pips are for the whole trade (\u2153-size trades count one third), after a fixed 1.0-pip spread (as in the MT4 test; fixed so shown levels never change). $ = at $100 risk per full-size trade, like the MT4 test.",
-   "net_label": "Net R / $ at $100 risk (v1.06 sizes)",
+   "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 158.448,
-   "change_pips": 6.5,
+   "price": 158.442,
+   "change_pips": 5.9,
    "atr_pips": 85.4,
    "entries": [
     {
@@ -2969,7 +2969,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.1265,
+     "r_now": 0.1218,
      "rwf": null,
      "spread": 1.0
     }
@@ -4216,35 +4216,35 @@
     ],
     [
      "5:50 pm",
-     158.448,
+     158.442,
      158.45,
      158.466,
-     158.443
+     158.439
     ]
    ],
    "journal": {
-    "since": "03 Nov 2026",
-    "weekdays": 3,
-    "trades": 8,
-    "decided": 7,
-    "direction": 28.6,
+    "since": "05 Nov 2026",
+    "weekdays": 1,
+    "trades": 2,
+    "decided": 1,
+    "direction": 0.0,
     "days": 100.0,
-    "perday": 2.67,
-    "closed": 7,
-    "win": 71.4,
-    "pf": 0.4,
-    "pf_pips": 0.45,
-    "net_pips": -24.1,
-    "net_usd": -15.17,
-    "rules": "v1.06",
-    "net_r": -1.26,
-    "net_usd_risk": -126.5,
-    "green": 33.3
+    "perday": 2.0,
+    "closed": 1,
+    "win": 0.0,
+    "pf": 0.0,
+    "pf_pips": 0.0,
+    "net_pips": -22.4,
+    "net_usd": -14.14,
+    "rules": "v1.07",
+    "net_r": -1.05,
+    "net_usd_risk": -104.7,
+    "green": 0.0
    },
    "jdays": [
     {
      "date": "2026-11-05",
-     "rules": "v1.06",
+     "rules": "v1.07",
      "label": "Thu 05 Nov",
      "side": "BUY",
      "trades": [
@@ -4302,7 +4302,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.1265,
+       "r_now": 0.1218,
        "rwf": null,
        "spread": 1.0
       }
@@ -5723,8 +5723,8 @@
    "net_label": "Net $ per barrel (v1.10)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 10:00 pm Dubai. No new trades after 6:30 pm (one late first trade allowed).",
-   "price": 88.675,
-   "change": 1.24,
+   "price": 88.62,
+   "change": 1.19,
    "entries": [
     {
      "time": "9:12 am",
@@ -7020,7 +7020,7 @@
     ],
     [
      "5:50 pm",
-     88.67,
+     88.62,
      88.5,
      88.7,
      88.41
@@ -8128,7 +8128,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.027,
+   "live_spread": 0.04,
    "history_note": "history to 2026-11-04 (60 days)"
   },
   "US500": {
@@ -8138,17 +8138,17 @@
    "live": false,
    "paper": true,
    "status": "Paper",
-   "version": "v1.13",
+   "version": "v1.15",
    "unit": "pts",
    "dp": 1,
    "stats": {
     "direction": "\u2014",
     "days": "\u2014",
     "perday": "\u2014",
-    "win": "60.0% of the 40 new Night V8 legs closed in profit (24W/16L)",
+    "win": "64.86% of the 37 new Night V10 legs closed in profit (24W/13L)",
     "pf": "\u2014",
-    "net": "+$16,213.81 at $100 risk per leg",
-    "source": "MT4 test SP500_DAYTRADE v1.13 (his run 5 Nov, Magic 500121, spread 18, Every tick), 2018.01.01-2026.10.31, 2,621 trades (+40 vs the 500119 baseline's 2,581, all long - V8 is BUY only); max DD $2,122.32 (0.21%, down slightly from 500119's $2,155.51, normal diversification, not a leak); same 500119 rules (row18/19/20/23/24/25-27/28-31/32-34/35-37) PLUS Night V8 (rows 38-40): a 7th night trigger, no weekday restriction, on credit markets quietly de-risking (252-day percentile of the 10-day % change in the HYG/LQD ratio - junk bonds underperforming investment-grade - <= 0.15) combined with the industrials sector (XLI) relatively weak vs SPY (252-day percentile of the 10-day % change in the XLI/SPY ratio <= 0.30) - isolating the 40 new legs alone: net +$80.50, DD down slightly vs 500119, 60.0% closed in profit (8.6pp below the Python hardening estimate of 68.6%, the widest gap of any leg, flagged honestly). WATCH ITEM (thinnest edge of any leg built so far, $2.01/trade avg): 65 historical Python occurrences, 40 confirmed in MT4 after excluding nights V2-V7 already took, exact 40/40 date+profit reconciliation (no lot-rounding gap) - treat as a refinement still proving itself, not a settled edge, more so than any prior leg. Like Night V5-V7, this data (Yahoo Finance HYG/LQD/XLI/SPY) is available from day one - no live warm-up needed (see cq_in_today() in sp_run.py)."
+    "net": "+$17,433.26 at $100 risk per leg",
+    "source": "MT4 test SP500_DAYTRADE v1.15 (his run 5 Nov, Magic 500125, spread 18, Every tick), 2018.01.01-2026.10.31, 2,691 trades (+37 vs the 500123 baseline's 2,654, all long - V10 is BUY only); max DD $2,083.65 (0.21%, down again from 500123's $2,118.92 - the 5th straight leg with DD flat-or-falling, look-ahead-checked and cleared each time); same 500123 rules (row18/19/20/23/24/25-27/28-31/32-34/35-37/38-40/41-43) PLUS Night V10 (rows 44-46): a 9th night trigger, no weekday restriction, on the bank/leveraged-loan sector weakening fast vs high-yield bonds (252-day percentile of the 10-day % change in the BKLN/HYG ratio <= 0.15 - a duration-favoring/dovish credit backdrop) combined with CFTC leveraged-money positioning in the S&P E-mini futures already net-long/bullish (52-week percentile of the leveraged-money net position, 3-day publication lag applied, >= 0.70) - isolating the 37 new legs alone: net +$560.54, DD down slightly vs 500123, 64.86% closed in profit (within 0.8pp of the Python collision-adjusted estimate of 65.7% - among the tightest Python-to-MT4 matches of any leg built in this project). CONFIRMED-STRONG, not a thin watch item like V8: 45 historical Python occurrences, 37 confirmed in MT4 after excluding nights V2-V9 already took (within 2 trades of the Python prediction), $15.15/trade avg (back in line with V6/V7/V9-grade edges). This data (Yahoo Finance BKLN/HYG, free) + CFTC's public Socrata API (publicreporting.cftc.gov, free, no key) is available from day one - no live warm-up needed (see bk_es_today() in sp_run.py)."
    },
    "pass_bar": {
     "green": 40.0,
@@ -8160,9 +8160,9 @@
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
-   "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak).",
-   "price": 7698.3,
-   "change": -4.8,
+   "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak, no duration-curve-steepening + tech-weak, no bank-loan-weak + E-mini COT net-long).",
+   "price": 7698.8,
+   "change": -4.3,
    "entries": [],
    "spark": [
     [
@@ -9490,7 +9490,7 @@
     ],
     [
      "5:50 pm",
-     7698.3,
+     7698.8,
      7700.3,
      7700.8,
      7697.1
@@ -9506,7 +9506,7 @@
     "win": null,
     "pf": null,
     "net": null,
-    "rules": "v1.13",
+    "rules": "v1.15",
     "direction": null,
     "green": 0.0
    },
@@ -9545,8 +9545,20 @@
       "cq_chg10_pct": 0.11904761904761904,
       "in_chg10_pct": 0.7420634920634921
      },
+     "v9": false,
+     "v9_detail": {
+      "date": "2026-11-04",
+      "du_chg10_pct": 0.6984126984126984,
+      "tk_chg10_pct": 0.031746031746031744
+     },
+     "v10": false,
+     "v10_detail": {
+      "date": "2026-11-04",
+      "bk_chg10_pct": 0.6904761904761905,
+      "es_cot_pct": 0.4807692307692308
+     },
      "date": "2026-11-05",
-     "rules": "v1.13",
+     "rules": "v1.15",
      "label": "Thu 05 Nov",
      "side": null,
      "trades": [],
@@ -10120,8 +10132,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 28201.4,
-   "change": -313.4,
+   "price": 28204.7,
+   "change": -310.1,
    "entries": [
     {
      "time": "4:43 pm",
@@ -10146,7 +10158,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -0.4,
+     "live": 2.9,
      "rwf": null,
      "spread": 1.8,
      "spread_live": 1.8
@@ -11478,10 +11490,10 @@
     ],
     [
      "5:50 pm",
-     28201.4,
+     28204.7,
      28212.4,
      28221.1,
-     28192.2
+     28188.3
     ]
    ],
    "journal": {
@@ -11529,7 +11541,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -0.4,
+       "live": 2.9,
        "rwf": null,
        "spread": 1.8,
        "spread_live": 1.8
@@ -12320,8 +12332,8 @@
    "regime": 0.156,
    "gap": -0.074,
    "message": "PAPER BUY at 1.34707 (12:00 pm Dubai). Stop 1.34028, target 1.35386 - close the WHOLE trade at the target; otherwise it closes at 1:45 am Dubai. CALM day: when price reaches 1.34944, move the stop to 1.34757 (entry + 5 pips).",
-   "price": 1.34596,
-   "change": 0.00033,
+   "price": 1.34599,
+   "change": 0.00036,
    "entries": [
     {
      "time": "12:00 pm",
@@ -12347,7 +12359,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": -12.6,
+     "live": -12.3,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.34028 \u00b7 target 1.35386 \u00b7 when price reaches 1.34944, MOVE THE STOP to 1.34757 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 1:45 am Dubai"
     }
@@ -13678,7 +13690,7 @@
     ],
     [
      "5:50 pm",
-     1.34596,
+     1.34599,
      1.3457,
      1.34604,
      1.3456
@@ -13730,7 +13742,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": -12.6,
+       "live": -12.3,
        "spread": 1.5,
        "next": "Hold \u00b7 stop 1.34028 \u00b7 target 1.35386 \u00b7 when price reaches 1.34944, MOVE THE STOP to 1.34757 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 1:45 am Dubai"
       }
