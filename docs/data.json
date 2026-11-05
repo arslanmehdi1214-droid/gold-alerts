@@ -10,9 +10,9 @@
    "version": "v2.15",
    "actions": [],
    "actions_day": "2026-11-06",
-   "feed_error": false,
+   "feed_error": true,
    "state": "waiting",
-   "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
+   "message": "Price feed problem at 3:04 am Dubai (ReadTimeout) - the page shows the last good update; it retries every minute.",
    "price": 4088.18,
    "close_at": "12:50 am",
    "change": 0.27,
@@ -1635,7 +1635,7 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 157.663,
+   "price": 157.647,
    "change_pips": null,
    "atr_pips": 87.7,
    "entries": [],
@@ -3150,13 +3150,13 @@
    "net_label": "Net $ per barrel (v1.11)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 90.129,
-   "change": -0.16,
+   "price": 90.199,
+   "change": -0.09,
    "entries": [],
    "spark": [
     [
      "3:00 am",
-     90.13,
+     90.2,
      90.28,
      90.3,
      90.08
@@ -4307,8 +4307,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
    "message": "NIGHT BUY (gold+WTI shock) at 3:01 am Dubai, stop 7211.2, closes at 7:00 pm Dubai (10:00 am New York). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7331.9,
-   "change": 1.8,
+   "price": 7323.3,
+   "change": -6.8,
    "entries": [
     {
      "time": "3:01 am",
@@ -4332,7 +4332,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -3.1,
+     "live": -11.7,
      "spread": 1.5
     }
    ],
@@ -4416,10 +4416,10 @@
     ],
     [
      "3:00 am",
-     7331.9,
+     7323.3,
      7336.3,
      7343.5,
-     7323.8
+     7322.4
     ]
    ],
    "journal": {
@@ -4483,7 +4483,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -3.1,
+       "live": -11.7,
        "spread": 1.5
       }
      ],
@@ -5147,8 +5147,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 26529.8,
-   "change": 7.7,
+   "price": 26493.3,
+   "change": -28.8,
    "entries": [],
    "spark": [
     [
@@ -5230,7 +5230,7 @@
     ],
     [
      "3:00 am",
-     26529.8,
+     26493.3,
      26525.4,
      26599.7,
      26468.2
