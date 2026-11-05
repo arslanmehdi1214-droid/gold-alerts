@@ -137,6 +137,32 @@ v1.14 (5 Nov 2026, "Night V9": his MT4 run SP500_DAYTRADE v1.14 Magic 500123 lay
                 CONFIRMED-STRONG leg, not a thin watch item like V8. Source for du_chg10_pct/tk_chg10_pct: Yahoo
                 Finance daily closes (TLT, IEF, XLK, SPY - free), cached/refreshed once a day, available from day one
                 (no live warm-up needed) - see du_tk_today() in sp_run.py.
+v1.15 (5 Nov 2026, "Night V10": his MT4 run SP500_DAYTRADE v1.15 Magic 500125 layered on 500123 - net $17,433.26
+       (+$560.54 vs 500123's $16,872.72), DD $2,083.65/0.21% (down again, the 5th straight leg with DD flat-or-
+       falling, look-ahead-checked and cleared each time), 2691 trades (+37, all long), 64.86% of the 37 new legs
+       closed in profit (24W/13L - within 0.8pp of the Python collision-adjusted estimate of 65.7%, among the
+       tightest Python-to-MT4 matches of any leg built in this project)):
+  NIGHT LEG V10 a NINTH, independent night trigger (fires only when the eight night triggers above do NOT - the
+                nine never double-trade the same night): no weekday restriction, BUY at 6:01 pm New York (01:01
+                broker) if the bank/leveraged-loan sector was weakening fast vs high-yield bonds (252-day rolling
+                percentile of the 10-day % change in the BKLN/HYG ratio <= 0.15 - a duration-favoring/dovish credit
+                backdrop) AND the S&P E-mini futures leveraged-money positioning (CFTC Traders in Financial Futures,
+                "S&P 500 Consolidated", weekly, 3-day publication lag applied so nothing is look-ahead) was already
+                net-long/bullish (52-week rolling percentile of the leveraged-money net position >= 0.70) at once -
+                a "credit and futures positioning both already leaning the same way" momentum signal, the first
+                round to pair COT data on the S&P's own contract (distinct from the parked Round 57 candidate,
+                which used VIX-futures COT positioning) with a credit-duration feature - same stop (1.0 x range)
+                and close (10:00 am New York) as the other night legs. Found 5 Nov 2026 bank-loan/HY-credit x
+                COT-E-mini-positioning hunt (Round 61, S&P chat), hardened the same way as V5-V9 (threshold
+                neighbourhood, outlier/clustering checks, every calendar year 2020-2026 individually positive - the
+                best year-spread consistency of any candidate yet, not VIX-in-disguise: corr with vix_pct only
+                +0.063/-0.160), MT4-confirmed 5 Nov with a +37 net-new trade match within 2 trades of the Python
+                prediction (35 predicted after the full V3-V9 collision count). HONEST NOTE: $15.15/trade avg, back
+                in line with V6/V7/V9-grade edges, not a thin watch item like V8 - his words, "best of the best."
+                Source for bk_chg10_pct: Yahoo Finance daily closes (BKLN, HYG - free), cached/refreshed once a day,
+                available from day one. Source for es_cot_pct: CFTC's public Socrata API (publicreporting.cftc.gov,
+                dataset gpe5-46if, "Traders in Financial Futures - Futures Only"), free, no API key, cached/
+                refreshed once a day - see bk_es_today() in sp_run.py.
 Results: points per leg after a 0.8 pt cost (never less than Capital.com's live spread)."""
 import numpy as np, pandas as pd
 
@@ -157,6 +183,7 @@ V6_DTWEX_MAX = 0.15; V6_STOXX_MIN = 0.85                              # v1.11 Ni
 V7_MT_MAX = 0.30; V7_CM_MIN = 0.85                                    # v1.12 Night V7: materials-weak (level, <=) / communications-rally (10d change, >=) thresholds
 V8_CQ_MAX = 0.15; V8_IN_MAX = 0.30                                    # v1.13 Night V8: credit-de-risking (HYG/LQD 10d change, <=) / industrials-weak (XLI/SPY 10d change, <=) thresholds
 V9_DU_MIN = 0.70; V9_TK_MAX = 0.20                                    # v1.14 Night V9: duration-curve-steepening (TLT/IEF 10d change, >=) / tech-weak (XLK/SPY 10d change, <=) thresholds
+V10_BK_MAX = 0.15; V10_ES_MIN = 0.70                                  # v1.15 Night V10: bank-loan-weak-vs-HY (BKLN/HYG 10d change, <=) / E-mini COT leveraged-money net-long (52wk pctile, >=) thresholds
 
 def eod_minutes(day): return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
@@ -374,6 +401,24 @@ def v9_flag(T, day):
     if not (np.isfinite(row.du_chg10_pct) and np.isfinite(row.tk_chg10_pct)): return False, {}
     dd = dict(date=str(k.date()), du_chg10_pct=float(row.du_chg10_pct), tk_chg10_pct=float(row.tk_chg10_pct))
     return bool(row.du_chg10_pct >= V9_DU_MIN and row.tk_chg10_pct <= V9_TK_MAX), dd
+
+def v10_flag(X, day):
+    """v1.15 Night V10 trigger. X: DataFrame indexed by date (built by bk_es_today() in sp_run.py) with columns
+    bk_chg10_pct (252-day rolling percentile of the 10-day % change in the BKLN/HYG ratio - bank/leveraged-loan
+    ETF weakening fast vs high-yield bonds - low = a duration-favoring/dovish credit backdrop) and es_cot_pct
+    (52-week rolling percentile of the CFTC leveraged-money net position in S&P E-mini futures, weekly data with
+    a 3-day publication lag already applied so nothing is look-ahead - high = already net-long/bullish
+    positioning). The broker day `day`'s own NY-date row is day - 1 calendar day (same lag relationship as
+    V4-V9's lookup: d = ny_date + 1). Fires when bank loans are weak vs HY (bk_chg10_pct <= V10_BK_MAX) AND
+    E-mini COT positioning is already net-long (es_cot_pct >= V10_ES_MIN) at once - a "credit and futures
+    positioning both already leaning the same way" momentum signal. Missing values (not enough rolling history
+    yet, or no data that day) mean it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if X is None or not len(X) or k not in X.index: return False, {}
+    row = X.loc[k]
+    if not (np.isfinite(row.bk_chg10_pct) and np.isfinite(row.es_cot_pct)): return False, {}
+    dd = dict(date=str(k.date()), bk_chg10_pct=float(row.bk_chg10_pct), es_cot_pct=float(row.es_cot_pct))
+    return bool(row.bk_chg10_pct <= V10_BK_MAX and row.es_cot_pct >= V10_ES_MIN), dd
 
 def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_done=False,
               name='Night long (high-fear night: VIX / VVIX)', src=1):
