@@ -115,6 +115,28 @@ v1.13 (5 Nov 2026, "Night V8": his MT4 run SP500_DAYTRADE v1.13 Magic 500121 lay
                 as a genuine WATCH ITEM, more so than any prior leg, not a settled edge. Source for cq_chg10_pct/
                 in_chg10_pct: Yahoo Finance daily closes (HYG, LQD, XLI, SPY - free), cached/refreshed once a day,
                 available from day one (no live warm-up needed) - see cq_in_today() in sp_run.py.
+v1.14 (5 Nov 2026, "Night V9": his MT4 run SP500_DAYTRADE v1.14 Magic 500123 layered on 500121 - net $16,872.72 (+$658.91 vs
+       500121's $16,213.81), DD $2,118.92/0.21% (slightly down, normal diversification not a leak), 2654 trades (+33, all
+       long - EXACT match to the Python prediction), 75.76% of the 33 new legs closed in profit (25W/8L - only 0.76pp
+       off the Python 75.0% estimate, the tightest Python-to-MT4 match of any leg built in this project)):
+  NIGHT LEG V9  an EIGHTH, independent night trigger (fires only when the seven night triggers above do NOT - the eight
+                never double-trade the same night): no weekday restriction, BUY at 6:01 pm New York (01:01 broker) if
+                the Treasury duration curve was steepening sharply (252-day rolling percentile of the 10-day % change
+                in the TLT/IEF ratio - long-duration Treasuries rallying harder than intermediate, i.e. the bond market
+                pricing in rate cuts or a growth scare - >= 0.70) AND the tech sector (XLK) was relatively weak vs SPY
+                (252-day rolling percentile of the 10-day % change in the XLK/SPY ratio <= 0.20) at once - a
+                rates-driven rotation-out-of-growth/tech signal, economically distinct from every prior leg (V3-V6 are
+                overnight-shock/dollar/Europe features, V7/V8 are sector-rotation/credit features - this is the first
+                duration-curve-based signal tried) - same stop (1.0 x range) and close (10:00 am New York) as the
+                other night legs. Found 5 Nov 2026 genuinely-new-categories hunt (Round 60, S&P chat), hardened the
+                same way as V5-V8 (threshold neighbourhood, outlier/clustering+episode-exclusion, era-split, not
+                VIX-in-disguise: corr with vix_pct only -0.212/-0.101), MT4-confirmed 5 Nov with an exact +33 new-trade
+                match to the Python prediction (net of collisions with V2-V8). HONEST NOTE: the best live win-rate
+                match to its own Python hardening estimate of any leg built so far (only 0.76pp gap, vs V7's ~5.6pp and
+                V8's 8.6pp) and the strongest $/trade since V6/V7 ($19.97/trade, far above V8's thin $2.01/trade) - a
+                CONFIRMED-STRONG leg, not a thin watch item like V8. Source for du_chg10_pct/tk_chg10_pct: Yahoo
+                Finance daily closes (TLT, IEF, XLK, SPY - free), cached/refreshed once a day, available from day one
+                (no live warm-up needed) - see du_tk_today() in sp_run.py.
 Results: points per leg after a 0.8 pt cost (never less than Capital.com's live spread)."""
 import numpy as np, pandas as pd
 
@@ -134,6 +156,7 @@ V5_DXY_MAX = 0.20; V5_RS10_MAX = 0.20; V5_RS20_MAX = 0.20             # v1.10 Ni
 V6_DTWEX_MAX = 0.15; V6_STOXX_MIN = 0.85                              # v1.11 Night V6: broad-dollar-basket-weak (level, <=) / Europe-shock (|move|, >=) thresholds
 V7_MT_MAX = 0.30; V7_CM_MIN = 0.85                                    # v1.12 Night V7: materials-weak (level, <=) / communications-rally (10d change, >=) thresholds
 V8_CQ_MAX = 0.15; V8_IN_MAX = 0.30                                    # v1.13 Night V8: credit-de-risking (HYG/LQD 10d change, <=) / industrials-weak (XLI/SPY 10d change, <=) thresholds
+V9_DU_MIN = 0.70; V9_TK_MAX = 0.20                                    # v1.14 Night V9: duration-curve-steepening (TLT/IEF 10d change, >=) / tech-weak (XLK/SPY 10d change, <=) thresholds
 
 def eod_minutes(day): return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
@@ -334,6 +357,23 @@ def v8_flag(W, day):
     if not (np.isfinite(row.cq_chg10_pct) and np.isfinite(row.in_chg10_pct)): return False, {}
     dd = dict(date=str(k.date()), cq_chg10_pct=float(row.cq_chg10_pct), in_chg10_pct=float(row.in_chg10_pct))
     return bool(row.cq_chg10_pct <= V8_CQ_MAX and row.in_chg10_pct <= V8_IN_MAX), dd
+
+def v9_flag(T, day):
+    """v1.14 Night V9 trigger. T: DataFrame indexed by date (built by du_tk_today() in sp_run.py) with columns
+    du_chg10_pct (252-day rolling percentile of the 10-day % change in the TLT/IEF ratio - long-duration Treasuries
+    rallying harder than intermediate, i.e. the bond market pricing in rate cuts or a growth scare - high = duration
+    curve steepening sharply) and tk_chg10_pct (252-day rolling percentile of the 10-day % change in the XLK/SPY
+    ratio - low = tech sector relatively weak vs the index). The broker day `day`'s own NY-date row is day - 1
+    calendar day (same lag relationship as V4-V8's lookup: d = ny_date + 1). Fires when the duration curve is
+    steepening (du_chg10_pct >= V9_DU_MIN) AND tech is weak (tk_chg10_pct <= V9_TK_MAX) at once - a rates-driven
+    rotation-out-of-growth/tech signal, the first duration-curve-based trigger tried in this project. Missing values
+    (not enough rolling history yet, or no data that day) mean it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if T is None or not len(T) or k not in T.index: return False, {}
+    row = T.loc[k]
+    if not (np.isfinite(row.du_chg10_pct) and np.isfinite(row.tk_chg10_pct)): return False, {}
+    dd = dict(date=str(k.date()), du_chg10_pct=float(row.du_chg10_pct), tk_chg10_pct=float(row.tk_chg10_pct))
+    return bool(row.du_chg10_pct >= V9_DU_MIN and row.tk_chg10_pct <= V9_TK_MAX), dd
 
 def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_done=False,
               name='Night long (high-fear night: VIX / VVIX)', src=1):
