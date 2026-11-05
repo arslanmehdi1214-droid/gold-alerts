@@ -1,4 +1,13 @@
-"""USDJPY_DAYTRADE v1.06 rules (v1.05 + a 12th signal "HAM": the SAME Heikin-Ashi 7am scalp as signal 1, fired again at one
+"""USDJPY_DAYTRADE v1.07 rules (v1.06 + a 13th signal "WGAP": fades the Friday-close-to-Monday-open gap, firing once at
+Monday's first bar when the gap >= WGAP_MIN_ATR x the 14-day range; its own stop (WGAP_STOP x range) and its own tiny
+target (WGAP_TARGET x risk, closes WHOLE like S1/S12), full size. KEY FIX (the whole point of this signal): WGAP's own
+open leg is EXEMPT from the day-side BREAKOUT FLIP below - it still exits normally via its own stop, its own tiny target,
+or the day's close, it just never gets force-closed by another signal's flip. Without this exemption the flip mechanism
+force-closed ~29% of WGAP's own trades (era 2012-19 alone), always for a loss, masking the real edge. Corresponds to the
+MT4-confirmed EA build "v1.11 WGAP", real MT4 run 5 Nov 2026: PASSED (win rate hit-target +0.15pt FULL / +0.23pt 2023-26,
+both clearing the +0.1pt bar; flip-protected count >0 in both "on" runs - the fix engaged for real; net/DD/worst-day/
+green-days all flat or improved) - see day-trading-usdjpy-2.
+v1.06 (v1.05 + a 12th signal "HAM": the SAME Heikin-Ashi 7am scalp as signal 1, fired again at one
 more broker hour (HAM_HOUR=7) to raise win rate and trade frequency - the accuracy/frequency goal, 2 Nov. Corresponds to the
 MT4-confirmed EA build "v1.09 HAM(hour7)", real MT4 run 3 Nov 2026: PASSED all 12 pass-bar criteria (win rate +1.39pt FULL /
 +1.28pt 2023-26, trades/day +23%, every P&L guardrail milder than predicted, worst day unchanged) - see day-trading-usdjpy-2.
@@ -15,10 +24,11 @@ History = the EA's own daily and hourly bars: finished broker days / hours built
 Times are integer seconds on the broker clock (naive)."""
 import numpy as np
 
-NS = 12
-TAG = ['J13', 'L3', 'M8', 'N3', 'M1a', 'J21', 'M1b', 'L1', 'U5', 'L7', 'Q5', 'S12 HAM']
+NS = 13
+TAG = ['J13', 'L3', 'M8', 'N3', 'M1a', 'J21', 'M1b', 'L1', 'U5', 'L7', 'Q5', 'S12 HAM', 'S13 WGAP']
 NAME = ['Heikin-Ashi 7am', 'Week-so-far break', 'Inside-week break', 'Inside-day break', 'Quiet 5-day break', 'Squeeze 4pm',
-        'Quiet 2-day break', 'EMA10 break', 'Last-week break', 'Morning pullback', 'Hourly squeeze 3pm', 'HAM (Heikin-Ashi, 2nd hour)']
+        'Quiet 2-day break', 'EMA10 break', 'Last-week break', 'Morning pullback', 'Hourly squeeze 3pm', 'HAM (Heikin-Ashi, 2nd hour)',
+        'WGAP (weekend-gap fade)']
 PT = 0.001; MIN_SPREAD = 0.01                        # 1 pip = the MT4 test spread; the paper P/L never uses less
 FIX_SPREAD = 0.010                                   # 22 Oct fix: ONE fixed spread (1.0 pip = the MT4 v1.05 test) for entry, stop, half level and P/L.
                                                      # Capital.com re-sends a different ask for the same finished minute, so the live spread made
@@ -31,6 +41,10 @@ PART, LOCK_PK, LOCK_FL, HA_W = 0.5, 2.0, 1.0, 1 / 3      # half part; day lock p
 HA_TARGET = 0.03                                     # v1.04: Heikin-Ashi 7am closes the whole trade at + this x risk (0 = v1.03 half-close)
 HAM_HOUR = 7                                         # v1.06: signal 12 "HAM" - the EXACT same Heikin-Ashi scalp as signal 0 (weight/target below),
                                                      # fired again once more at this broker hour (do not use 6,8,9,14,15 - already used by other signals)
+WGAP_ON = True                                       # v1.07: signal 12 (0-based) "WGAP" on/off switch (yen_run.py date-gates this, like HAM_HOUR=-1)
+WGAP_MIN_ATR = 0.10                                  # gap vs the last finished day's close must be >= this x the 14-day range to fire
+WGAP_STOP = 0.60                                     # WGAP's own real stop, x the 14-day range (not the quiet/other convention)
+WGAP_TARGET = 0.03                                   # WGAP closes the WHOLE trade at + this x risk - same tiny-target mechanism as S1/S12
 FLIP = True                                          # v1.04: a quiet signal against the day's side closes open trades and switches the side
 FLIP_MAX = 1                                         # v1.05: at most this many flips a day that close open trades (0 = no limit = v1.04)
 RISK_USD = 100.0                                     # v1.03 set file Risk_Dollars=100: a full-size stop = $100 (the MT4 backtest's size)
@@ -128,13 +142,16 @@ class Yen:
             ResetSig(s); sUp[s] = up; sDn[s] = dn; sBarsMax[s] = bm; sArmed[s] = True
         def FinishHour():
             self._finish_hour(S['hO'], S['hH'], S['hL'], S['hC']); S['hBars'] = 0
-        def StartDay(dt, o0):
+        def StartDay(dt, o0, i):
             S.update(curDate=dt, cO=o0, cH=o0, cL=o0, cC=o0, cBars=0, dayDir=0); fills.clear()
             for h in range(24): hourDone[h] = False
             for s in range(NS): ResetSig(s)
             S['dayATR'] = self.atr(); S['dayOK'] = S['dayATR'] > 0
             if not S['dayOK']: return
             k = len(dDate); wd = dow(dt); cw = weekof(dt)
+            if WGAP_ON and wd == 1 and k >= 1:              # v1.07: S13 WGAP - fade the gap vs the last finished day's close (normally Friday's), fires once
+                gap = o0 - dC[k - 1]
+                if abs(gap) >= WGAP_MIN_ATR * S['dayATR']: Fire(12, (-1 if gap > 0 else 1), 0., i, o0, True)
             if wd >= 3:
                 qs = [q for q in range(max(0, k - 5), k) if dWeek[q] == cw]
                 if len(qs) >= 2: ArmBreak(1, max(dH[q] for q in qs), min(dL[q] for q in qs), 0)
@@ -203,7 +220,7 @@ class Yen:
             if not inwin(t): return
             dt = dateof(t); hk = dt + hour(t) * 3600
             if S['hBars'] > 0 and hk != S['hKey']: FinishHour()
-            if dt != S['curDate']: StartDay(dt, O_[i])
+            if dt != S['curDate']: StartDay(dt, O_[i], i)
             for s in range(NS):
                 if sArmed[s] and sBarsMax[s] > 0:
                     sBarsCnt[s] += 1
@@ -270,17 +287,17 @@ class Yen:
                     if any(l['on'] for l in legs):         # ... v1.04 flip: a quiet signal closes the open trades at its price and switches the side
                         if FLIP_MAX > 0 and nflip >= FLIP_MAX: continue          # v1.05: at most FLIP_MAX such flips a day
                         fsp = SP(j)
-                        for l in legs:
-                            if l['on']: shut(l, tr['px'] if l['d'] > 0 else tr['px'] + fsp, j, 'reversed')
+                        for l in legs:                                          # v1.07: S13 WGAP's own leg is EXEMPT from flip-closure (still exits via its own stop/target/EOD)
+                            if l['on'] and l['tr']['s'] != 12: shut(l, tr['px'] if l['d'] > 0 else tr['px'] + fsp, j, 'reversed')
                         nflip += 1
                     ddir = tr['dir']
                 if took: continue
                 s, d, px = tr['s'], tr['dir'], tr['px']; q = s in QUIET
-                sd = (Q_STOP if q else O_STOP) * tr['atr']
+                sd = (WGAP_STOP if s == 12 else (Q_STOP if q else O_STOP)) * tr['atr']    # v1.07: S13 WGAP uses its own stop (x 14-day range)
                 if not sd > 0: continue
                 sp = SP(j); e = px + sp if d > 0 else px; sl = px - sd if d > 0 else px + sp + sd; k = Q_HALF if q else O_HALF
-                tgt = (s in (0, 11) and HA_TARGET > 0)                   # v1.06: S12 HAM (s==11) is the same tiny-target trade as S1 (s==0)
-                if tgt: k = HA_TARGET
+                tgt = (s in (0, 11) and HA_TARGET > 0) or (s == 12 and WGAP_TARGET > 0)   # v1.06: S12 HAM; v1.07: S13 WGAP - both close WHOLE at a tiny target
+                if tgt: k = WGAP_TARGET if s == 12 else HA_TARGET
                 legs.append(dict(tr=tr, w=(HA_W if s in (0, 11) else 1.0), d=d, px=px, e=e, sl=sl, sl0=sl, sd=sd, sp=sp,
                                  hp=(e + d * k * abs(e - sl)) if k > 0 else None, half=False, half_t=None, bank=0., j=j, on=True,
                                  r=None, ex=None, ext=None, status='open', tgt=tgt, first=(ddir == 0)))
