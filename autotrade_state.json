@@ -1,14 +1,14 @@
 {
- "balance": 1181.06,
+ "balance": 1168.69,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-05",
-  "pl": 103.35,
+  "pl": 79.49,
   "start_balance": 1145.68,
   "start_equity": 1145.68,
   "stopped": false
  },
- "open_positions": 4,
+ "open_positions": 3,
  "open_risk_aed": 87.52,
  "risk_usd": 8.168822328114365,
  "trades": {
@@ -551,16 +551,17 @@
    "part_x": 0.15,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-7153-753d-0495-7fc60004511e",
     "level": 26906.4,
-    "open": true,
+    "open": false,
     "size": 0.013,
     "tp": null
    },
    "risk_aed": 9.62,
    "risk_usd": 2.72,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 26923.8
   },
   "US500|2026-11-02|6:30 pm|BUY|Turn-of-month long (last/first broker days of the month)": {
