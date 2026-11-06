@@ -191,6 +191,33 @@ v1.16 (6 Nov 2026, "Night V12": his MT4 run SP500_DAYTRADE v1.17 Magic 500129 la
                 gpe5-46if, "Traders in Financial Futures - Futures Only", free, no API key), cached/refreshed once
                 a day. Source for cr_chg10_pct: Yahoo Finance daily closes (ETH-USD, BTC-USD - free), cached/
                 refreshed once a day, available from day one - see djia_cr_today() in sp_run.py.
+v1.17 (6 Nov 2026, "Night V13": his MT4 run SP500_DAYTRADE v1.18 Magic 500131 layered on 500130 - net $19,056.52
+       (+$721.99 vs 500130's $18,334.53), DD $1,877.39/0.19% (down $30.89, essentially flat/slightly improved,
+       look-ahead-checked and cleared - same validated lag methodology as every prior COT leg), 2776 trades
+       (+44, all long), 77.27% of the 44 new legs closed in profit (34W/10L - 0.23pp off the Python hardening
+       estimate of 77.5%, one of the tightest Python-to-MT4 matches of any leg built in this project)):
+  NIGHT LEG V13 an ELEVENTH, independent night trigger (fires only when the ten night triggers above do NOT -
+                row 47-49 "Night V11" stays PARKED, never ported, so V13 is built straight on top of V12): no
+                weekday restriction, BUY at 6:01 pm New York (01:01 broker) if MSCI Emerging-Markets equity-
+                index futures leveraged-money positioning (CFTC Traders in Financial Futures, 3-way CFTC rename
+                "MSCI EMERGING MKTS MINI INDEX"/"MSCI EMERGING MKTS INDEX"/"MSCI EM INDEX" concatenated into one
+                series, 3-day publication lag applied so nothing is look-ahead) was already positioned
+                extreme-bullish/long (52-week rolling percentile of the net position LEVEL - not a 4-report
+                shift like V9/V12 - >= 0.85) AND the communications-services sector (XLC/SPY ratio) was
+                underperforming the index over 10 days (252-day rolling percentile of the 10-day % change <=
+                0.30) at once - a "smart money already long emerging markets + domestic rotation out of one
+                mega-cap growth sector" signal, the first round to pair international-equity-index COT with a
+                sector-rotation feature. Found 6 Nov 2026 international-equity-index + EM/minor-currency +
+                crypto-futures + Fed-Funds COT hunt (Round 70, S&P chat) - highest net-new coverage fraction of
+                the whole project (80% vs V12's 68%), lowest outlier concentration of any strong candidate since
+                the live desk was built (top-3-of-50 profit share only 24.1%), clean monotonic threshold-
+                neighborhood grid (not a lucky single cell), not VIX-in-disguise (both legs corr <=0.26 w/
+                vix_pct). MT4-confirmed 6 Nov with a +44 net-new trade match (close to the 40 net-new Python
+                estimate after the full V3-V12 collision count).
+                Source for msciem_cot_pct: CFTC's public Socrata API (publicreporting.cftc.gov, dataset
+                gpe5-46if, "Traders in Financial Futures - Futures Only", free, no API key), cached/refreshed
+                once a day. Source for cm_chg10_pct: Yahoo Finance daily closes (XLC, SPY - free), cached/
+                refreshed once a day, available from day one - see msciem_cm_today() in sp_run.py.
 Results: points per leg after a 0.8 pt cost (never less than Capital.com's live spread)."""
 import numpy as np, pandas as pd
 
@@ -213,6 +240,7 @@ V8_CQ_MAX = 0.15; V8_IN_MAX = 0.30                                    # v1.13 Ni
 V9_DU_MIN = 0.70; V9_TK_MAX = 0.20                                    # v1.14 Night V9: duration-curve-steepening (TLT/IEF 10d change, >=) / tech-weak (XLK/SPY 10d change, <=) thresholds
 V10_BK_MAX = 0.15; V10_ES_MIN = 0.70                                  # v1.15 Night V10: bank-loan-weak-vs-HY (BKLN/HYG 10d change, <=) / E-mini COT leveraged-money net-long (52wk pctile, >=) thresholds
 V12_DJIA_MIN = 0.70; V12_CR_MAX = 0.20                                # v1.16 Night V12: DJIA leveraged-money COT 4-report-shift (52wk pctile, >=) / ETH-USD/BTC-USD ratio 10d change (252d pctile, <=) thresholds
+V13_MSCIEM_MIN = 0.85; V13_CM_MAX = 0.30                              # v1.17 Night V13: MSCI-EM-futures leveraged-money LEVEL (52wk pctile, >=) / XLC-SPY ratio 10d change (252d pctile, <=) thresholds
 
 def eod_minutes(day): return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
@@ -468,6 +496,25 @@ def v12_flag(Q, day):
     if not (np.isfinite(row.djia_cot_chg4_pct) and np.isfinite(row.cr_chg10_pct)): return False, {}
     dd = dict(date=str(k.date()), djia_cot_chg4_pct=float(row.djia_cot_chg4_pct), cr_chg10_pct=float(row.cr_chg10_pct))
     return bool(row.djia_cot_chg4_pct >= V12_DJIA_MIN and row.cr_chg10_pct <= V12_CR_MAX), dd
+
+def v13_flag(R, day):
+    """v1.17 Night V13 trigger. R: DataFrame indexed by date (built by msciem_cm_today() in sp_run.py) with columns
+    msciem_cot_pct (52-week rolling percentile of the CFTC leveraged-money net position LEVEL - long minus short,
+    normalized by open interest - in MSCI Emerging-Markets equity-index futures, weekly data with a 3-day
+    publication lag already applied so nothing is look-ahead - high = already positioned extreme-bullish/long)
+    and cm_chg10_pct (252-day rolling percentile of the 10-day % change in the XLC/SPY ratio - low = communications
+    services underperforming the index). The broker day `day`'s own NY-date row is day - 1 calendar day (same lag
+    relationship as V4-V12's lookup: d = ny_date + 1). Fires when MSCI-EM COT positioning is already extreme-long
+    (msciem_cot_pct >= V13_MSCIEM_MIN) AND communications is weak vs SPY (cm_chg10_pct <= V13_CM_MAX) at once -
+    Round 70's best (highest net-new coverage fraction of the project, lowest outlier concentration of any strong
+    candidate since the live desk was built). Missing values (not enough rolling history yet, or no data that
+    day) mean it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if R is None or not len(R) or k not in R.index: return False, {}
+    row = R.loc[k]
+    if not (np.isfinite(row.msciem_cot_pct) and np.isfinite(row.cm_chg10_pct)): return False, {}
+    dd = dict(date=str(k.date()), msciem_cot_pct=float(row.msciem_cot_pct), cm_chg10_pct=float(row.cm_chg10_pct))
+    return bool(row.msciem_cot_pct >= V13_MSCIEM_MIN and row.cm_chg10_pct <= V13_CM_MAX), dd
 
 def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_done=False,
               name='Night long (high-fear night: VIX / VVIX)', src=1):
