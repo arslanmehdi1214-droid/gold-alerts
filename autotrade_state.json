@@ -1,15 +1,15 @@
 {
- "balance": 1223.34,
+ "balance": 1221.22,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-06",
-  "pl": 18.39,
+  "pl": 14.15,
   "start_balance": 1193.33,
   "start_equity": 1193.33,
   "stopped": false
  },
- "open_positions": 2,
- "open_risk_aed": 56.59,
+ "open_positions": 1,
+ "open_risk_aed": 28.07,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-11-03|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -204,16 +204,17 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-715a-80fd-0495-7fc60004511e",
     "level": 4049.01,
-    "open": true,
+    "open": false,
     "size": 0.19,
     "tp": null
    },
    "risk_aed": 28.52,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 4010.12
   },
   "OIL|2026-11-03|4:28 pm|SELL|Whole dollar": {
