@@ -7442,7 +7442,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.055,
+   "live_spread": 0.04,
    "history_note": "history to 2026-11-05 (60 days)"
   },
   "US500": {
@@ -7452,17 +7452,17 @@
    "live": false,
    "paper": true,
    "status": "Paper",
-   "version": "v1.15",
+   "version": "v1.17",
    "unit": "pts",
    "dp": 1,
    "stats": {
     "direction": "\u2014",
     "days": "\u2014",
     "perday": "\u2014",
-    "win": "64.86% of the 37 new Night V10 legs closed in profit (24W/13L)",
+    "win": "77.27% of the 44 new Night V13 legs closed in profit (34W/10L)",
     "pf": "\u2014",
-    "net": "+$17,433.26 at $100 risk per leg",
-    "source": "MT4 test SP500_DAYTRADE v1.15 (his run 5 Nov, Magic 500125, spread 18, Every tick), 2018.01.01-2026.10.31, 2,691 trades (+37 vs the 500123 baseline's 2,654, all long - V10 is BUY only); max DD $2,083.65 (0.21%, down again from 500123's $2,118.92 - the 5th straight leg with DD flat-or-falling, look-ahead-checked and cleared each time); same 500123 rules (row18/19/20/23/24/25-27/28-31/32-34/35-37/38-40/41-43) PLUS Night V10 (rows 44-46): a 9th night trigger, no weekday restriction, on the bank/leveraged-loan sector weakening fast vs high-yield bonds (252-day percentile of the 10-day % change in the BKLN/HYG ratio <= 0.15 - a duration-favoring/dovish credit backdrop) combined with CFTC leveraged-money positioning in the S&P E-mini futures already net-long/bullish (52-week percentile of the leveraged-money net position, 3-day publication lag applied, >= 0.70) - isolating the 37 new legs alone: net +$560.54, DD down slightly vs 500123, 64.86% closed in profit (within 0.8pp of the Python collision-adjusted estimate of 65.7% - among the tightest Python-to-MT4 matches of any leg built in this project). CONFIRMED-STRONG, not a thin watch item like V8: 45 historical Python occurrences, 37 confirmed in MT4 after excluding nights V2-V9 already took (within 2 trades of the Python prediction), $15.15/trade avg (back in line with V6/V7/V9-grade edges). This data (Yahoo Finance BKLN/HYG, free) + CFTC's public Socrata API (publicreporting.cftc.gov, free, no key) is available from day one - no live warm-up needed (see bk_es_today() in sp_run.py)."
+    "net": "+$19,056.52 at $100 risk per leg",
+    "source": "MT4 test SP500_DAYTRADE v1.18 (his run 6 Nov, Magic 500131, spread 18, Every tick), 2018.01.01-2026.10.31, 2,776 trades (+44 vs the 500130 baseline's 2,732, all long - V13 is BUY only); max DD $1,877.39 (0.19%, down $30.89 vs 500130's $1,908.28 - essentially flat/slightly improved, look-ahead-checked and cleared); same 500130 rules (row18/19/20/23/24/25-27/28-31/32-34/35-37/38-40/41-43/44-46/50-52) PLUS Night V13 (rows 53-55): an 11th night trigger (row 47-49 \"Night V11\" MT4-confirmed 5 Nov but PARKED by his call, never pushed here - V13 is built straight on top of V12), no weekday restriction, on MSCI Emerging-Markets equity-index futures leveraged-money positioning (CFTC Traders in Financial Futures, 3-way-renamed MSCI EM series concatenated) already extreme-bullish/long (52-week percentile of the net position LEVEL, 3-day publication lag applied, >= 0.85) combined with the communications-services sector underperforming the index (252-day percentile of the 10-day % change in the XLC/SPY ratio <= 0.30) - isolating the 44 new legs alone: net +$721.99, DD down $30.89 vs 500130, 77.27% closed in profit (0.23pp off the 40 net-new Python estimate's 77.5% win rate - one of the tightest Python-to-MT4 matches of any leg built in this project). Highest net-new coverage fraction of the whole project (80%), lowest outlier concentration of any strong candidate since the live desk was built. This data (CFTC's public Socrata API, publicreporting.cftc.gov, free, no key) + Yahoo Finance XLC/SPY (free) is available from day one - no live warm-up needed (see msciem_cm_today() in sp_run.py)."
    },
    "pass_bar": {
     "green": 40.0,
@@ -8578,18 +8578,18 @@
     ]
    ],
    "journal": {
-    "since": "05 Nov 2026",
-    "weekdays": 2,
-    "trades": 2,
+    "since": "06 Nov 2026",
+    "weekdays": 1,
+    "trades": 1,
     "days": 100.0,
     "perday": 1.0,
-    "closed": 1,
-    "win": 100.0,
+    "closed": 0,
+    "win": null,
     "pf": null,
-    "net": 255.0,
-    "rules": "v1.15",
+    "net": null,
+    "rules": "v1.17",
     "direction": null,
-    "green": 50.0
+    "green": 0.0
    },
    "jdays": [
     {
@@ -8613,8 +8613,10 @@
      "v8": false,
      "v9": false,
      "v10": false,
+     "v12": false,
+     "v13": false,
      "date": "2026-11-06",
-     "rules": "v1.15",
+     "rules": "v1.17",
      "label": "Fri 06 Nov",
      "side": null,
      "trades": [
