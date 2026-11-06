@@ -500,6 +500,15 @@ def safe_main():
             import gbp_run; gbp_run.fail(e)
         except Exception:
             traceback.print_exc()
+    try:                                    # Brent paper page (v1.04, 6 Nov; copied to the demo auto-trader - his 6 Nov go-ahead)
+        import brent_run
+        brent_run.main()
+    except Exception as e:
+        traceback.print_exc()
+        try:
+            import brent_run; brent_run.fail(e)
+        except Exception:
+            traceback.print_exc()
 
 if __name__ == '__main__':
     safe_main()

@@ -1,4 +1,4 @@
-"""DEMO AUTO-TRADER (20 Oct 2026; 22 Oct: part = 1.0 -> one position with the take-profit; stop-to-entry uses each position's real fill; US500 added; 26 Oct: GBPUSD added). Copies the Signal Desk's trades onto the Capital.com DEMO account, every minute, inside loop.py.
+"""DEMO AUTO-TRADER (20 Oct 2026; 22 Oct: part = 1.0 -> one position with the take-profit; stop-to-entry uses each position's real fill; US500 added; 26 Oct: GBPUSD added; 6 Nov: BRENT added - reverses his earlier 6 Nov "signals only, EA is backtest only" instruction, per his explicit go-ahead later the same day). Copies the Signal Desk's trades onto the Capital.com DEMO account, every minute, inside loop.py.
 
 How it works (one pass per minute, right after the desk engines ran):
   * reads docs/data.json (the desk's own trades for today, all markets)
@@ -46,6 +46,7 @@ MARKETS = {                   # desk code -> Capital.com epic, quote currency
     'US100': dict(epic='US100', quote='USD'),
     'US500': dict(epic='US500', quote='USD'),        # 22 Oct: S&P 500 paper (version A, no part close -> one position per leg)
     'GBPUSD': dict(epic='GBPUSD', quote='USD'),      # 26 Oct (his A): GBP/USD v1.04 - one trade a day, part 1.0 -> one position with the take-profit
+    'BRENT': dict(epic='OIL_BRENT', quote='USD'),    # 6 Nov (his go-ahead): Brent v1.04 - part 1.0, no target, stop only (1.0x 20-day ADR); epic unverified, watch for feed_error
 }
 DUBAI = dt.timezone(dt.timedelta(hours=4))
 
@@ -156,7 +157,8 @@ def day_end(code, bnow, winter):
           'OIL': (20, 0),
           'US100': (22, 50) if fri else (23, 0),
           'US500': (22, 30),
-          'GBPUSD': (23, 45)}.get(code, (23, 0))                         # 26 Oct: GBP/USD v1.04 closes everything at 23:45 broker
+          'GBPUSD': (23, 45),                                            # 26 Oct: GBP/USD v1.04 closes everything at 23:45 broker
+          'BRENT': (21, 30)}.get(code, (23, 0))                          # 6 Nov: Brent v1.04 closes everything at 21:30 broker (his spec's own fixed exit time, no fri/winter variation)
     return bnow.replace(hour=hm[0], minute=hm[1], second=0, microsecond=0)
 GROUPS = ({'US100', 'US500'},)                                           # moves together: one risk cap per group (Silver dropped 4 Nov)
 def group_of(code): return next((g for g in GROUPS if code in g), {code})
@@ -210,7 +212,9 @@ def plan(code, cfg, e, rules):
             p_size = 0.0; r_size = max(rnd_size(size, rules), rules['min'])
     side = 'BUY' if e['side'] == 'BUY' else 'SELL'
     # 22 Oct: OIL sells - desk stop/target are bid prices, Capital.com triggers a sell's stop/target on the ask -> add the spread
-    adj = float(e.get('spread') or CFG_NOW().get('oil_sell_spread', 0.04)) if (code == 'OIL' and side == 'SELL') else 0.0
+    # 6 Nov: same fix applied to BRENT sells (same bid/ask issue, same instrument family) - own config key, same 0.04 default as OIL unless set
+    sell_spread_key = {'OIL': 'oil_sell_spread', 'BRENT': 'brent_sell_spread'}.get(code)
+    adj = float(e.get('spread') or CFG_NOW().get(sell_spread_key, 0.04)) if (sell_spread_key and side == 'SELL') else 0.0
     stop = rnd_px(float(e['stop']) + adj, rules)
     tp = None if e.get('half_px') is None else rnd_px(float(e['half_px']) + adj, rules)
     target_aed = RISK_USD * weight(code, e) * AED_PER_USD

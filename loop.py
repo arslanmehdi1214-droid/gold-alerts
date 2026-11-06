@@ -91,6 +91,8 @@ def main():
     except Exception: sp_run = None
     try: import gbp_run                                                    # same for the GBP/USD paper page (24 Oct)
     except Exception: gbp_run = None
+    try: import brent_run                                                  # same for the Brent paper page (6 Nov) - now in autotrade too, same pass as every other market
+    except Exception: brent_run = None
     try: import autotrade                                                  # demo auto-trader: copies the desk's trades to the Capital.com DEMO account
     except Exception as e: autotrade = None; print('autotrade not loaded:', type(e).__name__, e)
     try: import sentiment                                                  # read-only client-sentiment recorder (23 Oct)
@@ -102,6 +104,7 @@ def main():
         if nq_run is not None and hasattr(nq_run, 'DEADLINE'): nq_run.DEADLINE = time.time() + 90
         if sp_run is not None and hasattr(sp_run, 'DEADLINE'): sp_run.DEADLINE = time.time() + 90
         if gbp_run is not None and hasattr(gbp_run, 'DEADLINE'): gbp_run.DEADLINE = time.time() + 90
+        if brent_run is not None and hasattr(brent_run, 'DEADLINE'): brent_run.DEADLINE = time.time() + 90
         R.safe_main(); n += 1
         at_before = open('autotrade_state.json').read() if os.path.exists('autotrade_state.json') else ''
         if autotrade is not None:
