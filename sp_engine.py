@@ -163,6 +163,34 @@ v1.15 (5 Nov 2026, "Night V10": his MT4 run SP500_DAYTRADE v1.15 Magic 500125 la
                 available from day one. Source for es_cot_pct: CFTC's public Socrata API (publicreporting.cftc.gov,
                 dataset gpe5-46if, "Traders in Financial Futures - Futures Only"), free, no API key, cached/
                 refreshed once a day - see bk_es_today() in sp_run.py.
+v1.16 (6 Nov 2026, "Night V12": his MT4 run SP500_DAYTRADE v1.17 Magic 500129 layered on 500128 - net $18,334.53
+       (+$901.27 vs 500128's $17,433.26), DD $1,908.28/0.19% (down again, the biggest single-leg DD drop of any
+       leg yet), 2732 trades (+41, all long), 78.0% of the 41 new legs closed in profit (32W/9L - the best win
+       rate and best $/trade ($21.98) of any confirmed leg yet)):
+  NIGHT LEG V12 a TENTH, independent night trigger (fires only when the nine night triggers above do NOT - the
+                ten never double-trade the same night; row 51 "Night V11" cv_chg10<=0.30 & le_chg10>=0.85 was
+                MT4-confirmed 5 Nov but PARKED by his call - weakest leg, never pushed live, so V12 is built
+                straight on top of V10): no weekday restriction, BUY at 6:01 pm New York (01:01 broker) if DJIA
+                leveraged-money futures positioning (CFTC Traders in Financial Futures, "DJIA Consolidated",
+                weekly, 3-day publication lag applied so nothing is look-ahead) was shifting bullish FAST (52-week
+                rolling percentile of the 4-report change in the net position, normalized by open interest, >=
+                0.70) AND crypto was risk-off (252-day rolling percentile of the 10-day % change in the ETH-USD/
+                BTC-USD ratio <= 0.20 - ether underperforming bitcoin, a flight-to-the-senior-crypto-asset
+                pattern) at once - an "index futures positioning turning bullish while crypto flees to safety"
+                momentum signal, the first round to pair broad-index-futures COT (distinct from the S&P/VIX-
+                futures COT used in V10/Round 57) with a crypto-ratio feature. Found 6 Nov 2026 broad-index-
+                futures + USD-index + commodity-index COT hunt (Round 69, S&P chat) - the cleanest screen of any
+                round since V9/V10/R63 (10 full-verified PASSes vs Round 68's 31), biggest clean sample since
+                V9/V10/R63 (n=65), best year-spread of the project (all 7 years 2020-2026 represented), lowest
+                outlier concentration found yet (top-3-of-65 profit share only 22%), not VIX-in-disguise (both
+                legs corr <=0.07 w/ vix_pct). MT4-confirmed 6 Nov with a +41 net-new trade match (close to the
+                44 net-new Python estimate after the full V3-V10 collision count). HONEST NOTE: strongest
+                confirmed leg of the whole project on every measure - win rate, $/trade, total profit added and
+                DD improvement - his words, this beats V10's "best of the best."
+                Source for djia_cot_chg4_pct: CFTC's public Socrata API (publicreporting.cftc.gov, dataset
+                gpe5-46if, "Traders in Financial Futures - Futures Only", free, no API key), cached/refreshed once
+                a day. Source for cr_chg10_pct: Yahoo Finance daily closes (ETH-USD, BTC-USD - free), cached/
+                refreshed once a day, available from day one - see djia_cr_today() in sp_run.py.
 Results: points per leg after a 0.8 pt cost (never less than Capital.com's live spread)."""
 import numpy as np, pandas as pd
 
@@ -184,6 +212,7 @@ V7_MT_MAX = 0.30; V7_CM_MIN = 0.85                                    # v1.12 Ni
 V8_CQ_MAX = 0.15; V8_IN_MAX = 0.30                                    # v1.13 Night V8: credit-de-risking (HYG/LQD 10d change, <=) / industrials-weak (XLI/SPY 10d change, <=) thresholds
 V9_DU_MIN = 0.70; V9_TK_MAX = 0.20                                    # v1.14 Night V9: duration-curve-steepening (TLT/IEF 10d change, >=) / tech-weak (XLK/SPY 10d change, <=) thresholds
 V10_BK_MAX = 0.15; V10_ES_MIN = 0.70                                  # v1.15 Night V10: bank-loan-weak-vs-HY (BKLN/HYG 10d change, <=) / E-mini COT leveraged-money net-long (52wk pctile, >=) thresholds
+V12_DJIA_MIN = 0.70; V12_CR_MAX = 0.20                                # v1.16 Night V12: DJIA leveraged-money COT 4-report-shift (52wk pctile, >=) / ETH-USD/BTC-USD ratio 10d change (252d pctile, <=) thresholds
 
 def eod_minutes(day): return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
@@ -419,6 +448,26 @@ def v10_flag(X, day):
     if not (np.isfinite(row.bk_chg10_pct) and np.isfinite(row.es_cot_pct)): return False, {}
     dd = dict(date=str(k.date()), bk_chg10_pct=float(row.bk_chg10_pct), es_cot_pct=float(row.es_cot_pct))
     return bool(row.bk_chg10_pct <= V10_BK_MAX and row.es_cot_pct >= V10_ES_MIN), dd
+
+def v12_flag(Q, day):
+    """v1.16 Night V12 trigger. Q: DataFrame indexed by date (built by djia_cr_today() in sp_run.py) with columns
+    djia_cot_chg4_pct (52-week rolling percentile of the 4-report SHIFT in the CFTC leveraged-money net position -
+    long minus short, normalized by open interest - in DJIA futures, weekly data with a 3-day publication lag
+    already applied so nothing is look-ahead - high = DJIA futures positioning turning bullish fast) and
+    cr_chg10_pct (252-day rolling percentile of the 10-day % change in the ETH-USD/BTC-USD ratio - low = crypto
+    risk-off, ether underperforming bitcoin). The broker day `day`'s own NY-date row is day - 1 calendar day
+    (same lag relationship as V4-V10's lookup: d = ny_date + 1). Fires when DJIA leveraged-money positioning is
+    shifting bullish fast (djia_cot_chg4_pct >= V12_DJIA_MIN) AND crypto is risk-off (cr_chg10_pct <= V12_CR_MAX)
+    at once - an index-futures-positioning-turning-bullish-while-crypto-flees-to-safety signal, Round 69's best
+    (biggest clean sample since V9/V10, best year-spread, lowest outlier concentration of any candidate since the
+    live desk was built). Missing values (not enough rolling history yet, or no data that day) mean it simply
+    never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if Q is None or not len(Q) or k not in Q.index: return False, {}
+    row = Q.loc[k]
+    if not (np.isfinite(row.djia_cot_chg4_pct) and np.isfinite(row.cr_chg10_pct)): return False, {}
+    dd = dict(date=str(k.date()), djia_cot_chg4_pct=float(row.djia_cot_chg4_pct), cr_chg10_pct=float(row.cr_chg10_pct))
+    return bool(row.djia_cot_chg4_pct >= V12_DJIA_MIN and row.cr_chg10_pct <= V12_CR_MAX), dd
 
 def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_done=False,
               name='Night long (high-fear night: VIX / VVIX)', src=1):
