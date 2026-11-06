@@ -124,7 +124,7 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
         for lv in lvls:
             if lv is None or not np.isfinite(lv): continue
             side = 1 if O[a] > lv else -1
-            if abs(O[a] - lv) < MIN_DIST * A: continue
+            if abs(O[a] - lv) < P.get('mind', MIN_DIST) * A: continue   # v1.13: closer levels count (P['mind'] = 0.0125 from v1.13, else the old 0.05)
             for m in range(a, end):
                 if (side > 0 and L[m] <= lv - 0.01) or (side < 0 and H[m] >= lv + 0.01):
                     if best is None or m < best[0]: best = (m, lv, -side)
