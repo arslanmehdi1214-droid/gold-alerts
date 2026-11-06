@@ -135,6 +135,11 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
             while j < 4 and r > EDG[j]: j += 1
             EV.append((m, fi, d, px + (d * SLP[j] if SLIP else 0.0), nm, lv))
     EV.sort(key=lambda r: (r[0], r[1]))
+    SK = None
+    if P.get('skew'):                                    # v1.12: causal 5-minute down-vs-up squared-move flow, from completed 5-min bars (minute :04, :09 ...) strictly before bar m
+        _c = pd.Series(C, index=t); _bc = _c[t.minute % 5 == 4]; _r = np.log(_bc).diff().fillna(0.0)
+        _dn = (_r.clip(upper=0) ** 2).cumsum(); _up = (_r.clip(lower=0) ** 2).cumsum()
+        SK = ((_dn - _up) / (_dn + _up).replace(0, np.nan)).fillna(0.0).reindex(t, method='ffill').shift(1).fillna(0.0).values
     def SPm(m): return FIX_SP              # 23 Oct: fixed spread; the `spread` argument is accepted for old callers but no longer used
     bym = {}
     for ev in EV: bym.setdefault(ev[0], []).append(ev)
@@ -171,6 +176,7 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
             e = px + sp if d > 0 else px                                   # buy fills at the ask, sell at the bid
             stop_b = px - sd if d > 0 else px + sd                          # stop in BID terms (sell stop = ask + sd)
             rk = sd + sp; k = BUY_HALF if d > 0 else SELL_HALF
+            if SK is not None and d < 0 and SK[m] <= P['skew'][0]: k = min(k, P['skew'][1])   # v1.12: weak-flow ladder sell -> easier first target from the start
             hp = e + d * k * rk                                             # half level in the order's own price (buy: bid, sell: ask)
             nohalf = bool(d < 0 and P.get('hold_sells'))                    # v1.06: supply day -> sells keep the whole trade (no part, no stop move)
             legs.append(dict(i=m, t=t[m], dir=d, px=float(px), level=float(lv), fam=nm, name=FAM_NAME[nm], sd=sd, sp=sp, e=e, w=w,
