@@ -1,5 +1,5 @@
 {
- "updated": "Fri 06 Nov \u00b7 4:17 am",
+ "updated": "Fri 06 Nov \u00b7 4:18 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 4102.69,
+   "price": 4102.98,
    "close_at": "12:50 am",
-   "change": 14.78,
+   "change": 15.07,
    "size": 0.1,
    "datr": 80.74,
    "open_now": 0,
@@ -128,7 +128,7 @@
     ],
     [
      "4:15 am",
-     4102.69,
+     4102.98,
      4097.0,
      4106.21,
      4096.63
@@ -1740,8 +1740,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 4:00 pm Dubai close.",
-   "price": 157.634,
-   "change_pips": 8.0,
+   "price": 157.636,
+   "change_pips": 8.2,
    "atr_pips": 87.7,
    "entries": [
     {
@@ -1799,7 +1799,7 @@
      "r_sized": 0.051,
      "usd_risk": 5.1,
      "r_now": 0.0508,
-     "rwf": null,
+     "rwf": 0,
      "spread": 1.0
     }
    ],
@@ -1904,9 +1904,9 @@
     ],
     [
      "4:15 am",
-     157.634,
+     157.636,
      157.508,
-     157.642,
+     157.657,
      157.502
     ]
    ],
@@ -1914,8 +1914,8 @@
     "since": "05 Nov 2026",
     "weekdays": 2,
     "trades": 4,
-    "decided": 3,
-    "direction": 33.3,
+    "decided": 4,
+    "direction": 25.0,
     "days": 100.0,
     "perday": 2.0,
     "closed": 4,
@@ -1991,7 +1991,7 @@
        "r_sized": 0.051,
        "usd_risk": 5.1,
        "r_now": 0.0508,
-       "rwf": null,
+       "rwf": 0,
        "spread": 1.0
       }
      ],
@@ -3479,8 +3479,8 @@
    "net_label": "Net $ per barrel (v1.11)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 90.104,
-   "change": -0.18,
+   "price": 90.119,
+   "change": -0.17,
    "entries": [],
    "spark": [
     [
@@ -3590,7 +3590,7 @@
     ],
     [
      "4:15 am",
-     90.1,
+     90.12,
      90.17,
      90.18,
      90.04
@@ -4741,8 +4741,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
    "message": "NIGHT BUY (gold+WTI shock) at 3:01 am Dubai, stop 7211.2, closes at 7:00 pm Dubai (10:00 am New York). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7357.9,
-   "change": 27.8,
+   "price": 7359.6,
+   "change": 29.5,
    "entries": [
     {
      "time": "3:01 am",
@@ -4766,7 +4766,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 23.6,
+     "live": 25.3,
      "spread": 0.8
     }
    ],
@@ -4955,9 +4955,9 @@
     ],
     [
      "4:15 am",
-     7357.9,
+     7359.6,
      7341.9,
-     7360.1,
+     7361.9,
      7340.3
     ]
    ],
@@ -5024,7 +5024,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 23.6,
+       "live": 25.3,
        "spread": 0.8
       }
      ],
@@ -5688,8 +5688,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:50 am Dubai close. At most 2 trades a day.",
-   "price": 26755.8,
-   "change": 233.7,
+   "price": 26751.2,
+   "change": 229.1,
    "entries": [
     {
      "time": "3:25 am",
@@ -5714,7 +5714,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 246.4,
+     "live": 243.0,
      "rwf": 1,
      "spread": 1.8,
      "spread_live": 1.8
@@ -5905,9 +5905,9 @@
     ],
     [
      "4:15 am",
-     26755.8,
+     26751.2,
      26632.2,
-     26768.8,
+     26775.8,
      26619.8
     ]
    ],
@@ -5956,7 +5956,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 246.4,
+       "live": 243.0,
        "rwf": 1,
        "spread": 1.8,
        "spread_live": 1.8
@@ -6812,8 +6812,8 @@
    "regime": 0.112,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; stop moves to entry + 5 pips once +0.35 x stop in profit.",
-   "price": 1.34572,
-   "change": 0.00116,
+   "price": 1.34586,
+   "change": 0.0013,
    "entries": [],
    "spark": [
     [
@@ -7000,7 +7000,7 @@
     ],
     [
      "4:15 am",
-     1.34572,
+     1.34586,
      1.34609,
      1.34615,
      1.34569
