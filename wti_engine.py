@@ -39,7 +39,8 @@ FIX_SP = 0.04                             # 23 Oct fix: ONE fixed spread (4 cent
                                           # stop, part level and P/L. Capital.com re-sends a different ask for the same finished minute, so the
                                           # live spread made shown stops / part levels change after the fact.
 FAM_NAME = {'settle': "Yesterday's settlement", 'open+-0.5': 'Open ± ½ range', 'open+-0.7': 'Open ± 0.7 range', 'open+-1.0': 'Open ± 1 range',
-            'yday': "Yesterday's high/low", 'lastweek': "Last week's high/low", 'round1': 'Whole dollar'}
+            'yday': "Yesterday's high/low", 'lastweek': "Last week's high/low", 'round1': 'Whole dollar',
+            'open_b': 'Day open (buy)', 'morn_b': 'Morning high (buy)'}
 
 def close_hm(day):
     return CLOSE_HM                                                     # v1.03: 20:00 broker every day (Fridays too)
@@ -117,6 +118,10 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
     if a >= 0:
         p0 = O[a]; fl, ce = np.floor(p0), np.ceil(p0)
         fams.append(('round1', a, [fl if p0 - fl > ROUND_GAP * A else np.nan, ce if ce - p0 > ROUND_GAP * A else np.nan]))
+    if P.get('buyl'):                                    # v1.14: two buy-only level families (a break UP through a level the price is below = a buy, once a day each)
+        fams.append(('open_b', at(7 * 60), [O[0]]))      #   the day open, watched from 7:00 broker
+        _a10 = at(10 * 60)
+        if _a10 >= 1: fams.append(('morn_b', _a10, [float(np.max(H[:_a10]))]))   # the high of 0:00-10:00, set at 10:00
     EV = []
     for fi, (nm, a, lvls) in enumerate(fams):
         if a < 0 or a >= end: continue
@@ -124,6 +129,7 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
         for lv in lvls:
             if lv is None or not np.isfinite(lv): continue
             side = 1 if O[a] > lv else -1
+            if nm in ('open_b', 'morn_b') and side > 0: continue      # v1.14: buy-only families (price must start BELOW the level)
             if abs(O[a] - lv) < P.get('mind', MIN_DIST) * A: continue   # v1.13: closer levels count (P['mind'] = 0.0125 from v1.13, else the old 0.05)
             for m in range(a, end):
                 if (side > 0 and L[m] <= lv - 0.01) or (side < 0 and H[m] >= lv + 0.01):
