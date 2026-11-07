@@ -1,12 +1,13 @@
-"""Brent Oil PAPER signals for the page - BRENT v1.04 rules (brent_engine.py; MT4-proven 6 Nov 2026, his run: 754
-trades 2018-01..2026-10, +$44,702 at 0.30 lot, PF 1.47, max DD $8,162, 56% closed in profit, spread 8 = $0.08/bbl).
-SIGNALS ONLY: his standing instruction 6 Nov "don't focus on auto trading we are building this for trading dashboard
-not for auto trading the EA is only for back testing" - never copied to the Capital.com demo (not in autotrade.py).
+"""Brent Oil PAPER signals for the page - BRENT v1.05 rules (brent_engine.py; MT4-proven 7 Nov 2026, his run: 911
+trades 2018-01..2026-10, +$50,198 at 0.30 lot, PF 1.47, max DD $7,979, 55% closed in profit, spread 8 = $0.08/bbl;
+only losing year 2019). SIGNALS ONLY: his standing instruction 6 Nov "don't focus on auto trading we are building
+this for trading dashboard not for auto trading the EA is only for back testing" - never copied to the Capital.com
+demo (not in autotrade.py).
 Called by run.py every minute, after the other markets. Each run: (1) a rolling ~95-day Capital.com HOUR-bar history
 (docs/brent_daily.json: per broker day h, l, and the 10:00->14:00 move for rule A's 60-day spread) is kept up to date,
-fetched once a day; (2) today's Capital.com minute bars (bid + spread) feed brent_engine.run_day() - 0 to 3 independent
-trades a day (rules A/B/C/D, same stop, same 21:30 exit); (3) docs/journal_brent.json (every paper trade) and
-docs/data.json -> markets.BRENT (the page). Source of truth: Archive Trading/BRENT/BRENT_v104_DASHBOARD_SPEC.txt."""
+fetched once a day; (2) today's Capital.com minute bars (bid + spread) feed brent_engine.run_day() - 0 to 4 independent
+trades a day (rules A/B/C/D/E/F, same stop, same 21:30 exit); (3) docs/journal_brent.json (every paper trade) and
+docs/data.json -> markets.BRENT (the page). Source of truth: Archive Trading/BRENT/BRENT_v105_DASHBOARD_SPEC.txt."""
 import os, json, time, requests, numpy as np, pandas as pd
 import feeds as F, brent_engine as E
 DEADLINE = time.time() + 240          # loop.py resets this every minute; Brent never holds up gold
@@ -16,11 +17,11 @@ JOUR = os.path.join(HERE, 'docs', 'journal_brent.json'); PORTAL = os.path.join(H
 HIST = os.path.join(HERE, 'docs', 'brent_daily.json'); HIST_KEEP = 150     # days kept (rule A's 60-day spread + headroom)
 EPIC = os.environ.get('CAPITAL_EPIC_BRENT', 'OIL_BRENT')                  # NOT yet confirmed live - see brent_run.fail() note
 MIN_SPREAD = 0.02                     # the paper result never uses less than 2 cents a barrel
-RULES = 'v1.04'
+RULES = 'v1.05'
 PASS = dict(pf=1.10, months=3)
-BACKTEST = dict(direction='—', days='~30% of days (~1.5/week), 1.1 trades/trading day', perday='1.1', win='56% closed in profit', pf='1.47',
-                net='+$44,702 at 0.30 lot (max drawdown $8,162)',
-                source='MT4 BRENT_WED_HOL v1.04, his run 6 Nov 2026, 2018-01-01..2026-10-31, 754 trades, spread 8 ($0.08/bbl, RoboForex live spread); years 2018 +6,652 .. 2026 +974')
+BACKTEST = dict(direction='—', days='~35% of days (~1.7/week)', perday='1.3', win='55% closed in profit', pf='1.47',
+                net='+$50,198 at 0.30 lot (max drawdown $7,979)',
+                source='MT4 BRENT_WED_HOL v1.05, his run 7 Nov 2026, 2018-01-02..2026-10-30, 911 trades, spread 8 ($0.08/bbl, RoboForex live spread); only losing year 2019 (-$2,598); new v1.05 legs E 45 trades +$3,843, F 112 trades +$1,653')
 
 class FeedError(RuntimeError):
     pass
@@ -119,10 +120,11 @@ def base_card():
     note = ('STOP 1.0 x 20-day average daily range, no target · exit 21:30 broker (Dubai: see the trade times) if not stopped first · '
             'rules can fire together the same day (separate trades, same stop/exit): A) Wednesday - 10:00→14:00 move > 0.5x its own 60-day spread, trade that '
             'direction at 14:00 · B) SELL 10:00 the first trading day after a US federal holiday · C) 20-day range break - price inside the range at 10:00, '
-            'first 1-min close beyond it 10:00-19:00, follow · D) BUY 10:00 on a UK bank holiday the market trades, SELL 10:00 the next trading day')
+            'first 1-min close beyond it 10:00-19:00, follow · D) BUY 10:00 on a UK bank holiday the market trades, SELL 10:00 the next trading day · '
+            'E) SELL 10:00 the 2nd trading day after a UK bank holiday · F) BUY 19:00 the trading day before a US federal or UK bank holiday')
     return dict(code='BRENT', name='Brent Oil', symbol='BRENT · Capital.com Brent Oil Future', live=False, paper=True, status='Paper', version=RULES,
                 unit='usd', dp=2, stats=BACKTEST, pass_bar=PASS, day_note=note,
-                what_note='Tracks whether live Brent signals do as well as the v1.04 MT4 test. Copied to the Capital.com DEMO account by the auto-trader, same as Gold/USDJPY/Oil/Nasdaq/S&P (his 6 Nov go-ahead, reversing his earlier same-day "signals only" instruction). Decision after about 3 months.',
+                what_note='Tracks whether live Brent signals do as well as the v1.05 MT4 test. Copied to the Capital.com DEMO account by the auto-trader, same as Gold/USDJPY/Oil/Nasdaq/S&P (his 6 Nov go-ahead, reversing his earlier same-day "signals only" instruction). Decision after about 3 months.',
                 cost_note='Results are $ per barrel (0.30-lot backtest scale), from the signal price after the live Capital.com spread (at least 2 cents).',
                 net_label=f'Net $ per barrel ({RULES})')
 
@@ -156,7 +158,8 @@ def main(feed=None, get=None, getd=None, now=None):
     if J.get('start') is None: J['start'] = str(day.date())
     J['days'] = sorted([d for d in J['days'] if d['date'] != str(day.date())] +
                        [dict(date=str(day.date()), rules=RULES, label=day.strftime('%a %d %b'), side=(rows[0]['side'] if rows else None), trades=rows,
-                             range_usd=(None if not np.isfinite(A) else round(A, 2)), ruleB=dt['ruleB'], ruleD_buy=dt['ruleD_buy'], ruleD_sell=dt['ruleD_sell'], wed=dt['wed'])],
+                             range_usd=(None if not np.isfinite(A) else round(A, 2)), ruleB=dt['ruleB'], ruleD_buy=dt['ruleD_buy'], ruleD_sell=dt['ruleD_sell'],
+                             ruleE=dt['ruleE'], ruleF=dt['ruleF'], wed=dt['wed'])],
                        key=lambda d: d['date'])
     J['summary'] = summary(J, day); dumpj(J, JOUR, indent=1)
     last = float(b.c.iloc[-1]) if len(b) else None; first = float(b.o.iloc[0]) if len(b) else None
@@ -167,15 +170,16 @@ def main(feed=None, get=None, getd=None, now=None):
         state = 'mixed' if len(set(r['side'] for r in rows)) > 1 else rows[0]['side'].lower()
         msg = f"Today's signals: {sides}. Stop at 1.0 x the 20-day range, no target; closes at 9:30 pm Dubai winter (8:30 pm summer) if not stopped first."
     elif dt['wed']: state, msg = 'waiting', "Wednesday - checking the 10:00→14:00 move against its 60-day spread at 2:00 pm broker."
-    else: state, msg = 'none', 'No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, or 20-day range break).'
-    if dt.get('list_expiring'): msg += ' (Rule B/D holiday dates run out soon - the Brent chat needs to extend the EA\'s baked-in lists.)'
+    else: state, msg = 'none', 'No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).'
+    if dt.get('list_expiring'): msg += ' (A rule\'s holiday dates run out soon - the Brent chat needs to extend the EA\'s baked-in lists.)'
     spark = []
     if len(b):
         g5 = b[['o', 'h', 'l', 'c']].resample('5min').agg({'o': 'first', 'h': 'max', 'l': 'min', 'c': 'last'}).dropna()
         spark = [[F.broker_to_dubai(t).strftime('%-I:%M %p').lower(), round(float(r.c), 2), round(float(r.o), 2), round(float(r.h), 2), round(float(r.l), 2)] for t, r in g5.iterrows()]
     mk['BRENT'] = dict(base_card(), state=state, message=msg, price=last, change=(None if last is None or first is None else round(last - first, 2)),
                        entries=rows, spark=spark, journal=J['summary'], jdays=jdays(J), feed_error=False, epic=EPIC,
-                       range_usd=(None if not np.isfinite(A) else round(A, 2)), rule_today=dict(wed=dt['wed'], ruleB=dt['ruleB'], ruleD_buy=dt['ruleD_buy'], ruleD_sell=dt['ruleD_sell']))
+                       range_usd=(None if not np.isfinite(A) else round(A, 2)),
+                       rule_today=dict(wed=dt['wed'], ruleB=dt['ruleB'], ruleD_buy=dt['ruleD_buy'], ruleD_sell=dt['ruleD_sell'], ruleE=dt['ruleE'], ruleF=dt['ruleF']))
     dumpj(old, PORTAL, indent=1)
     print(f'Brent paper: {now} broker | bars {len(b)} | A {round(A,2) if np.isfinite(A) else None} | trades today {len(rows)} | rules {rule_tags}')
 

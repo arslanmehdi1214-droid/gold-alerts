@@ -1,9 +1,10 @@
-"""Brent Oil (BRENT) dashboard SIGNAL engine - BRENT v1.04 rules, source of truth EA BRENT_WED_HOL_v104.mq4
-(MT4-proven, his run 6 Nov 2026: 2018-01-01..2026-10-31, spread 8 (= $0.08/bbl, RoboForex live spread), 0.30 lot:
-754 trades, +$44,702, PF 1.47, max DD $8,162, 56% trades closed in profit; years 2018 +6,652 .. 2026 +974, all but
-2019/2021/2024/2025 positive at this stress spread). Pure functions, no I/O - used by brent_run.py (desk) only.
-SIGNALS ONLY, never auto-traded: his standing instruction 6 Nov "don't focus on auto trading we are building this
-for trading dashboard not for auto trading the EA is only for back testing" - not wired into autotrade.py/autotrade_config.json.
+"""Brent Oil (BRENT) dashboard SIGNAL engine - BRENT v1.05 rules, source of truth EA BRENT_WED_HOL_v105.mq4
+(MT4-proven, his run 7 Nov 2026: 2018-01-01..2026-10-30, spread 8 (= $0.08/bbl, RoboForex live spread), 0.30 lot:
+911 trades, +$50,198, PF 1.47, max DD $7,979, 55% trades closed in profit; only losing year 2019 (-$2,598). v1.04
+same test: 754 trades, +$44,702, DD $8,162 - v1.05's new E/F rules add net trades (E 45/+$3,843, F 112/+$1,653).
+Pure functions, no I/O - used by brent_run.py (desk) only. SIGNALS ONLY, never auto-traded: his standing instruction
+6 Nov "don't focus on auto trading we are building this for trading dashboard not for auto trading the EA is only
+for back testing" - not wired into autotrade.py/autotrade_config.json.
 Clock: broker = New York + 7h (same convention as every other desk market; Dubai = broker + 2h winter / +1h summer).
 Common to every rule: STOP = 1.0 x average daily (high-low) range of the last 20 broker days. No target.
 EXIT = 21:30 broker if the stop is not hit first. Several rules can fire the same day (separate trades, same stop rule).
@@ -15,14 +16,20 @@ RULE C - 20-DAY RANGE BREAK: at 10:00 broker price must be inside the prior 20 b
 RULE D - UK BANK HOLIDAY: BUY at 10:00 broker on a UK bank holiday the market trades (Christmas / New Year's Day /
   Good Friday are full market closures, excluded from "a UK bank holiday the market trades"); SELL at 10:00 on the
   next trading day (skipped when that next day is already a rule-B day, so the two rules never double up). (~8/yr)
-US/UK holiday dates are the EXACT baked-in lists from the proven EA (HOL_AFTER / UK_HOL_BUY / UK_HOL_SELL in
-BRENT_WED_HOL_v104.mq4), copied verbatim - NOT recomputed from a calendar library. A first attempt to recompute
-Rule D from pandas + the `holidays` package matched Rule B exactly but did NOT match Rule D (e.g. the EA's
-UK_HOL_BUY skips a Boxing-Day-observed buy that a plain calendar would have added, and UK_HOL_SELL is not simply
-"the day after every UK_HOL_BUY date" - 86 buy dates vs 78 sell dates 2010-2027, not a 1:1 pairing) - so the real,
-MT4-tested list is used as-is rather than re-derived. These lists run out at 2027.12.28/29 (B) and 2028.01.03 (D) -
-a v1.05+ extension (new baked dates from the Brent chat) will be needed before then; until extended, B/D simply
-stop firing past their last listed date (same limitation already in the live EA)."""
+RULE E (v1.05) - 2ND TRADING DAY AFTER A UK BANK HOLIDAY: SELL at 10:00 broker. A separate, later date than rule D's
+  own "next trading day" sell - both can exist for the same holiday without colliding (different calendar dates).
+RULE F (v1.05) - DAY BEFORE A US FEDERAL OR UK BANK HOLIDAY: BUY at 19:00 broker (pre-holiday drift). Same stop/exit
+  as every other rule (1.0x 20-day range, 21:30 broker exit, so this is a ~2.5h hold unless stopped first).
+US/UK holiday dates are the EXACT baked-in lists from the proven EA (HOL_AFTER / UK_HOL_BUY / UK_HOL_SELL /
+UK_HOL_SELL2 / PRE_HOL_BUY in BRENT_WED_HOL_v105.mq4), copied verbatim - NOT recomputed from a calendar library. A
+first attempt to recompute Rule D from pandas + the `holidays` package matched Rule B exactly but did NOT match
+Rule D (e.g. the EA's UK_HOL_BUY skips a Boxing-Day-observed buy that a plain calendar would have added, and
+UK_HOL_SELL is not simply "the day after every UK_HOL_BUY date" - 86 buy dates vs 78 sell dates 2010-2027, not a
+1:1 pairing) - so the real, MT4-tested lists are used as-is rather than re-derived; same reasoning extends to E/F's
+own lists, each independently baked rather than computed as an offset of another list. These lists run out at
+2027.12.28/29 (B), 2028.01.03 (D), 2028.12.28 (E, UK_HOL_SELL2) and 2028.12.22 (F, PRE_HOL_BUY) - a future
+extension (new baked dates from the Brent chat) will be needed before then; until extended, each list simply
+stops firing past its own last listed date (same limitation already in the live EA)."""
 import numpy as np, pandas as pd
 
 HOL_AFTER = ("2010.01.04,2010.01.19,2010.02.16,2010.06.01,2010.07.06,2010.09.07,2010.10.12,2010.11.12,2010.11.26,2010.12.27,"
@@ -61,33 +68,71 @@ UK_HOL_SELL = ("2010.04.06,2010.05.04,2010.08.31,2010.12.29,2011.01.04,2011.04.2
     "2022.01.04,2022.04.19,2022.05.03,2022.06.06,2022.08.30,2022.09.20,2022.12.28,2023.04.11,2023.05.02,2023.05.09,"
     "2023.08.29,2023.12.27,2024.04.02,2024.05.07,2024.08.27,2024.12.27,2025.04.22,2025.05.06,2025.08.26,2025.12.29,"
     "2026.04.07,2026.05.05,2026.09.01,2026.12.29,2027.03.30,2027.05.04,2027.08.31,2027.12.29")                           # rule D sell, EA source
+UK_HOL_SELL2 = (
+    "2011.01.05,2011.04.27,2011.05.04,2011.06.01,2011.08.31,2012.04.11,2012.05.09,2012.06.07,2012.08.29,2012.12.28,"
+    "2013.01.03,2013.04.03,2013.05.08,2013.05.29,2013.08.28,2013.12.30,2014.01.03,2014.04.23,2014.05.07,2014.05.28,"
+    "2014.08.27,2014.12.30,2015.04.08,2015.05.06,2015.05.27,2015.09.02,2015.12.30,2016.03.30,2016.05.04,2016.06.01,"
+    "2016.08.31,2016.12.29,2017.04.19,2017.05.03,2017.05.31,2017.08.30,2017.12.28,2018.04.04,2018.05.09,2018.05.30,"
+    "2018.08.29,2018.12.31,2019.04.24,2019.05.08,2019.05.29,2019.08.28,2019.12.30,2020.04.15,2020.05.12,2020.05.27,"
+    "2020.09.02,2020.12.30,2021.04.07,2021.05.05,2021.06.02,2021.09.01,2021.12.30,2022.01.05,2022.04.20,2022.05.04,"
+    "2022.06.07,2022.08.31,2022.09.21,2022.12.29,2023.04.12,2023.05.03,2023.05.10,2023.05.31,2023.08.30,2023.12.28,"
+    "2024.04.03,2024.05.08,2024.05.29,2024.08.28,2024.12.30,2025.04.23,2025.05.28,2025.08.27,2025.12.30,2026.04.09,"
+    "2026.05.06,2026.09.02,2026.12.30,2027.03.31,2027.05.05,2027.06.02,2027.09.01,2027.12.30,2028.01.05,2028.04.19,"
+    "2028.05.03,2028.05.31,2028.08.30,2028.12.28")                                                                       # rule E sell, EA source
+PRE_HOL_BUY = (
+    "2011.01.14,2011.02.18,2011.04.21,2011.04.28,2011.05.27,2011.07.01,2011.08.26,2011.09.02,2011.10.07,2012.04.05,"
+    "2012.05.04,2012.05.25,2012.06.01,2012.07.03,2012.08.24,2012.08.31,2012.10.05,2012.11.09,2012.11.21,2012.12.24,"
+    "2012.12.31,2013.01.18,2013.02.15,2013.03.28,2013.05.03,2013.05.24,2013.07.03,2013.08.23,2013.08.30,2013.10.11,"
+    "2013.11.08,2013.11.27,2013.12.24,2013.12.31,2014.01.17,2014.02.14,2014.04.17,2014.05.02,2014.05.23,2014.07.03,"
+    "2014.08.22,2014.08.29,2014.10.10,2014.11.10,2014.11.26,2014.12.24,2015.01.16,2015.02.13,2015.04.02,2015.05.01,"
+    "2015.05.22,2015.07.02,2015.08.28,2015.09.04,2015.10.09,2015.11.10,2015.11.25,2015.12.24,2016.02.12,2016.03.24,"
+    "2016.04.29,2016.05.27,2016.07.01,2016.08.26,2016.09.02,2016.10.07,2016.11.10,2016.11.23,2016.12.23,2017.01.13,"
+    "2017.02.17,2017.04.13,2017.04.28,2017.05.26,2017.07.03,2017.08.25,2017.09.01,2017.10.06,2017.11.09,2017.11.22,"
+    "2017.12.22,2018.01.12,2018.02.16,2018.03.29,2018.05.04,2018.05.25,2018.07.03,2018.08.24,2018.08.31,2018.10.05,"
+    "2018.11.09,2018.11.21,2018.12.24,2019.01.18,2019.02.15,2019.04.18,2019.05.03,2019.05.24,2019.07.03,2019.08.23,"
+    "2019.08.30,2019.10.11,2019.11.08,2019.11.27,2019.12.24,2020.01.17,2020.02.14,2020.04.09,2020.05.07,2020.05.22,"
+    "2020.07.02,2020.08.28,2020.09.04,2020.10.09,2020.11.10,2020.11.25,2020.12.24,2021.01.15,2021.02.12,2021.04.01,"
+    "2021.04.30,2021.05.28,2021.06.17,2021.07.02,2021.08.27,2021.09.03,2021.10.08,2021.11.10,2021.11.24,2021.12.23,"
+    "2021.12.24,2021.12.30,2021.12.31,2022.01.14,2022.02.18,2022.04.14,2022.04.29,2022.05.27,2022.06.01,2022.06.17,"
+    "2022.07.01,2022.08.26,2022.09.02,2022.09.16,2022.10.07,2022.11.10,2022.11.23,2022.12.23,2023.01.13,2023.02.17,"
+    "2023.04.06,2023.04.28,2023.05.05,2023.05.26,2023.06.16,2023.07.03,2023.08.25,2023.09.01,2023.11.09,2023.11.22,"
+    "2023.12.22,2024.01.12,2024.02.16,2024.03.28,2024.05.03,2024.05.24,2024.06.18,2024.07.03,2024.08.23,2024.08.30,"
+    "2024.10.11,2024.11.08,2024.11.27,2024.12.24,2025.01.17,2025.02.14,2025.04.17,2025.05.23,2025.06.18,2025.07.03,"
+    "2025.08.22,2025.08.29,2025.10.10,2025.11.10,2025.11.26,2025.12.24,2026.01.16,2026.02.13,2026.04.02,2026.05.01,"
+    "2026.06.18,2026.07.02,2026.08.28,2026.09.04,2026.10.09,2026.11.10,2026.11.25,2026.12.24,2027.01.15,2027.02.12,"
+    "2027.03.25,2027.04.30,2027.05.28,2027.06.17,2027.07.02,2027.08.27,2027.09.03,2027.10.08,2027.11.10,2027.11.24,"
+    "2027.12.23,2027.12.24,2027.12.30,2027.12.31,2028.04.13,2028.04.28,2028.05.26,2028.08.25,2028.12.22")                # rule F buy, EA source
 
 def _dateset(s): return frozenset(pd.Timestamp(d.replace('.', '-')) for d in s.split(','))
 RULE_B_DAYS, RULE_DBUY_DAYS, RULE_DSELL_DAYS = _dateset(HOL_AFTER), _dateset(UK_HOL_BUY), _dateset(UK_HOL_SELL)
-LIST_LAST = dict(B=max(RULE_B_DAYS), Dbuy=max(RULE_DBUY_DAYS), Dsell=max(RULE_DSELL_DAYS))
+RULE_E_DAYS, RULE_F_DAYS = _dateset(UK_HOL_SELL2), _dateset(PRE_HOL_BUY)                                                 # v1.05
+LIST_LAST = dict(B=max(RULE_B_DAYS), Dbuy=max(RULE_DBUY_DAYS), Dsell=max(RULE_DSELL_DAYS), E=max(RULE_E_DAYS), F=max(RULE_F_DAYS))
 
 ADR_DAYS = 20                                          # stop size + rule C's channel
 MOVE_WIN = 60                                           # days of 10:00->14:00 moves behind rule A's std dev
 MOVE_Z = 0.5
 SIG_START_MIN, ENTRY_A_MIN = 10 * 60, 14 * 60           # rule A: move measured 10:00->14:00, entry at 14:00
-ENTRY_BD_MIN = 10 * 60                                  # rules B and D entry 10:00
+ENTRY_BD_MIN = 10 * 60                                  # rules B, D and E entry 10:00
+ENTRY_F_MIN = 19 * 60                                   # rule F (v1.05) entry 19:00 broker (pre-holiday drift)
 C_START_MIN, C_END_MIN = 10 * 60, 19 * 60               # rule C watch window for the break
 EXIT_MIN = 21 * 60 + 30                                 # common exit, every rule
 ENTRY_LATE = 5                                          # a bar up to 5 min late still counts (same tolerance as gbp_engine)
 
 RULE_NAME = {'A': 'Rule A · Wednesday momentum', 'B': 'Rule B · day after US holiday',
-             'C': 'Rule C · 20-day range break', 'Dbuy': 'Rule D · UK bank holiday (buy)', 'Dsell': 'Rule D · UK bank holiday (sell next day)'}
+             'C': 'Rule C · 20-day range break', 'Dbuy': 'Rule D · UK bank holiday (buy)', 'Dsell': 'Rule D · UK bank holiday (sell next day)',
+             'E': 'Rule E · 2nd day after UK holiday (sell)', 'F': 'Rule F · day before holiday (buy)'}
 
 # ---------------- calendar lookups (exact EA lists above) ----------------
 def rule_flags(day):
-    """(ruleB, ruleD_buy, ruleD_sell) for broker day `day` - straight lookups in the EA's own date sets."""
+    """(ruleB, ruleD_buy, ruleD_sell, ruleE, ruleF) for broker day `day` - straight lookups in the EA's own date sets."""
     d = pd.Timestamp(day).normalize()
-    return bool(d in RULE_B_DAYS), bool(d in RULE_DBUY_DAYS), bool(d in RULE_DSELL_DAYS)
+    return (bool(d in RULE_B_DAYS), bool(d in RULE_DBUY_DAYS), bool(d in RULE_DSELL_DAYS),
+            bool(d in RULE_E_DAYS), bool(d in RULE_F_DAYS))
 
 def day_type(day):
     day = pd.Timestamp(day).normalize()
-    ruleB, d_buy, d_sell = rule_flags(day)
-    return dict(wed=bool(day.dayofweek == 2), ruleB=ruleB, ruleD_buy=d_buy, ruleD_sell=d_sell,
+    ruleB, d_buy, d_sell, ruleE, ruleF = rule_flags(day)
+    return dict(wed=bool(day.dayofweek == 2), ruleB=ruleB, ruleD_buy=d_buy, ruleD_sell=d_sell, ruleE=ruleE, ruleF=ruleF,
                 list_expiring=bool(day >= min(LIST_LAST.values()) - pd.Timedelta(days=30)))
 
 # ---------------- history stats (ADR / channel / rule-A move std) ----------------
@@ -187,6 +232,9 @@ def run_day(b, day, dt, A, hi, lo, sd, cost=0.08):
     if dt['ruleB']:
         t = fixed_trade(b, day, ENTRY_BD_MIN, -1, A, 'B', cost)
         if t: trades.append(t)
+    if dt['ruleE']:                                      # v1.05: 2nd trading day after a UK bank holiday - SELL 10:00
+        t = fixed_trade(b, day, ENTRY_BD_MIN, -1, A, 'E', cost)
+        if t: trades.append(t)
     if dt['wed']:
         side = wed_signal(today_move_10_14(b, day), sd)
         if side:
@@ -194,4 +242,7 @@ def run_day(b, day, dt, A, hi, lo, sd, cost=0.08):
             if t: trades.append(t)
     tC = range_break_trade(b, day, hi, lo, A, cost)
     if tC: trades.append(tC)
+    if dt['ruleF']:                                      # v1.05: day before a US federal / UK bank holiday - BUY 19:00
+        t = fixed_trade(b, day, ENTRY_F_MIN, +1, A, 'F', cost)
+        if t: trades.append(t)
     return trades
