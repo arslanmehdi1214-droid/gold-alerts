@@ -17,11 +17,11 @@ JOUR = os.path.join(HERE, 'docs', 'journal_gbp.json'); PORTAL = os.path.join(HER
 CFTC = os.path.join(HERE, 'docs', 'cftc_gbp.json'); CFTC_EUR = os.path.join(HERE, 'docs', 'cftc_eur.json'); HIST = os.path.join(HERE, 'docs', 'gbp_daily.json'); HIST_KEEP = 500          # days kept (regime needs 250 + 14)
 CFTC_URL = 'https://publicreporting.cftc.gov/resource/gpe5-46if.json'
 EPIC = os.environ.get('CAPITAL_EPIC_GBP', 'GBPUSD'); EPIC_EUR = os.environ.get('CAPITAL_EPIC_EUR', 'EURUSD')
-RULES = 'v1.04'
+RULES = 'v1.05'
 PASS = dict(pf=1.10, months=3)
-BACKTEST = dict(direction='—', days='95% of weekdays traded, max 1 a day · profit days 54%', perday='0.95', win='8.1% hit target · 57.3% closed in profit', pf='1.21',
-                net='+$15,966.95 at 0.10 lot (net/DD 9.76)',
-                source='MT4 test GBP_CROWD v1.04 (his run 5, 24 Oct, spread 1.8 pips), 2011-01..2026-06-19, 3,810 trades; max DD $1,636.34; losing years 3 (v1.03: 5)')
+BACKTEST = dict(direction='—', days='93% of weekdays traded, 1 trade a day (2 on ~14 days a year: + holiday sell) · profit days 55%', perday='0.98', win='7.9% hit target · 57.3% closed in profit', pf='1.19',
+                net='+$15,515.36 at 0.10 lot (net/DD 10.26)',
+                source='MT4 test GBP_CROWD v1.05 (his run 7, 7 Nov 2026, spread 1.8 pips), 2010-08..2026-06-19, 4,048 trades (200 holiday sells +$1,371); max DD $1,512.42; v1.04 same data: $14,144 / DD $1,792')
 
 class FeedError(RuntimeError):
     pass
@@ -149,11 +149,14 @@ def feed_check(b, now):
 # ---------------- page rows / journal ----------------
 def row(t, now_px, cost):
     s = t['dir']; st = t['status']; dp = 5
+    hol = t['layer'] == 6; sz = E.HOL_SIZE if hol else 1.0
     live = None if st != 'open' or now_px is None else round((s * (now_px - t['entry']) - cost) * 1e4, 1)
     nxt = None
     if st == 'open':
         cl = f"closes at {dubai(t['t'].normalize() + pd.Timedelta(minutes=E.CLOSE_MIN))} Dubai"
-        if t.get('lock') and t.get('locked'):
+        if hol:
+            nxt = f"Hold · HALF-size holiday sell · stop {t['stop']:.5f} · no target · {cl}"
+        elif t.get('lock') and t.get('locked'):
             nxt = f"Hold · stop MOVED to {t['stop']:.5f} (entry + 5 pips, locked) · target {t['target']:.5f} (close the WHOLE trade there) · {cl}"
         elif t.get('lock'):
             nxt = (f"Hold · stop {t['stop']:.5f} · target {t['target']:.5f} · when price reaches {t['lock_px']:.5f}, MOVE THE STOP to {t['lock_stop']:.5f} "
@@ -163,16 +166,17 @@ def row(t, now_px, cost):
     return dict(time=dubai(t['t']), side='BUY' if s == 1 else 'SELL', name=E.LAYER_NAME[t['layer']], layer=t['layer'],
                 price=round(t['entry'], dp), entry=round(t['entry'], dp), stop=round(t['stop'], dp), stop0=round(t.get('stop0', t['stop']), dp), stop_pips=round(t['sd'] * 1e4, 1),
                 mode=t.get('mode', 'normal'), lock_px=None if not t.get('lock') else round(t['lock_px'], dp), locked=bool(t.get('locked')),
-                half_px=round(t['target'], dp), half=(st == 'target'), part=1.0, size='full', status=st,
+                half_px=None if t['target'] is None else round(t['target'], dp), half=(st == 'target'), part=1.0, size=(round(E.HOL_SIZE * E.HOL_STOP, 4) if hol else 'full'), status=st,   # holiday: risk weight 0.75 = half the normal lots at a 1.5 x stop (as the MT4 EA)
+               
                 exit=None if t['exit'] is None else round(t['exit'], dp), exit_time=None if t['exit_t'] is None else dubai(t['exit_t']),
                 pips=None if t['pips'] is None else round(t['pips'], 1), res=None if t['pips'] is None else round(t['pips'], 1),
-                res_sized=None if t['pips'] is None else round(t['pips'], 1), r=None if t['pips'] is None else round(t['pips'] / (t['sd'] * 1e4), 3),
+                res_sized=None if t['pips'] is None else round(t['pips'] * sz, 1), r=None if t['pips'] is None else round(t['pips'] / (t['sd'] * 1e4), 3),
                 live=live, spread=round(cost * 1e4, 2), next=nxt)
 
 def summary(J, day=None):
     D3 = [d for d in J.get('days', []) if d.get('rules') == RULES]
     if not D3: return dict(since=None, trades=0, rules=RULES)
-    allt = [t for d in D3 for t in d['trades']]; rr = [t['pips'] for t in allt if t.get('pips') is not None]
+    allt = [t for d in D3 for t in d['trades']]; rr = [t.get('res_sized', t['pips']) for t in allt if t.get('pips') is not None]
     start = D3[0]['date']; end = str((day or pd.Timestamp(D3[-1]['date'])).date())
     wd = max(1, len(pd.bdate_range(start, end))); tdays = sum(1 for d in D3 if d['trades'])
     gp, gl = sum(p for p in rr if p > 0), -sum(p for p in rr if p < 0)
@@ -180,11 +184,11 @@ def summary(J, day=None):
                 closed=len(rr), win=(round(100 * sum(t.get('status') == 'target' for t in allt) / len(rr), 1) if rr else None),
                 inprofit=(round(100 * sum(p > 0 for p in rr) / len(rr), 1) if rr else None), pf=(round(gp / gl, 2) if gl > 0 else None),
                 net=round(sum(rr), 1) if rr else None, rules=RULES, direction=None,
-                green=round(100 * sum(1 for d in D3 if sum(t.get('pips') or 0 for t in d['trades']) > 0) / wd, 1))
+                green=round(100 * sum(1 for d in D3 if sum(t.get('res_sized', t.get('pips')) or 0 for t in d['trades']) > 0) / wd, 1))
 
 def jdays(J): return J.get('days', [])[-30:][::-1]
 
-def base_card(A=None, rep=None, code=0, md=None, pct=None):
+def base_card(A=None, rep=None, code=0, md=None, pct=None, hol=False):
     rp = '—' if rep is None else pd.Timestamp(rep).strftime('%a %d %b')
     lay = {0: 'no layer on', 1: 'layer 1 (hedge funds crowded)', 2: 'layer 2 (small traders crowded)', 3: 'layer 3 (small traders jumped in)',
            4: 'layer 4 (pound stretched vs euro)', 5: 'layer 5 (euro hedge funds trend)'}[abs(code)]
@@ -193,13 +197,14 @@ def base_card(A=None, rep=None, code=0, md=None, pct=None):
             + (' · BUSY rules: stop 1.25 x range, target 1.5 x stop · ' if md == 'busy' else
                ' · CALM rules: stop 1.0 x range, target 1.0 x stop, move the stop to entry + 5 pips once +0.35 x stop in profit; side set at 10:00 against any big overnight GBP-vs-EUR gap · ' if md in ('calm', 'calm_gap') else
                ' · stop 1.0 x range, target 1.0 x stop (close the whole trade there), no half-close · ')
+            + ('DAY AFTER A UK/US HOLIDAY: extra HALF-size SELL at 10:00, stop 1.5 x range, no target · ' if hol else '')
             + 'one trade a day at 10:00 broker (11:00 am Dubai in summer, 12:00 pm in winter) · everything closes at 23:45 broker '
             + '(12:45 am Dubai in summer, 1:45 am in winter)')
     return dict(code='GBPUSD', name='GBP/USD', symbol='GBPUSD · Capital.com GBP/USD', live=False, paper=True, status='Paper', version=RULES,
                 unit='pips', dp=5, stats=BACKTEST, pass_bar=PASS, day_note=note,
-                what_note='Tracks whether live GBP/USD signals do as well as the v1.04 MT4 test. The auto-trader places each trade on the Capital.com demo (from 27 Oct). Decision after about 3 months.',
+                what_note='Tracks whether live GBP/USD signals do as well as the v1.05 MT4 test. The auto-trader places each trade on the Capital.com demo (from 27 Oct). Decision after about 3 months.',
                 cost_note='Results are pips per trade after the spread (at least 1.5 pips). 0.01 lot = 1,000 units = $0.10 per pip.',
-                net_label='Net pips (v1.04 rules)')
+                net_label='Net pips (v1.05 rules, holiday sell at half size)')
 
 def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eur=None, eoget=None):
     global DEADLINE; DEADLINE = time.time() + 75     # own 75 s time budget per market
@@ -261,6 +266,7 @@ def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eu
         e0, e10_ = _DAILY.get('eo', (np.nan, np.nan))
         dv = E.gap_div(first_open(b, day), first_open(b, t_in), e0, e10_, A, eA)
     code, kS, kT, lk, md = E.mode(code, pct, dv)
+    A0 = A                                                                # v1.05 holiday sell uses today's own range
     jd = next((d for d in J['days'] if d['date'] == str(day.date())), None)
     if jd and jd.get('trades') and jd.get('frozen'):                       # a trade already shown keeps its entry, stop, target and rules
         fz = jd['frozen']; code = int(fz['code']); A = float(fz['A']); kS = float(fz.get('k', E.STOP_X)); kT = float(fz.get('t', E.TGT_X)); lk = bool(fz.get('lock', False)); md = fz.get('mode', 'normal')
@@ -268,10 +274,15 @@ def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eu
     if t: t['mode'] = md
     last = float(b.c.iloc[-1]) if len(b) else None; first = float(b.o.iloc[0]) if len(b) else None
     rows = [row(t, last, cost)] if t else []
+    hol = E.is_post_holiday(day); ht = None
+    if hol and np.isfinite(A0):                                           # v1.05: extra half-size SELL on the day after a UK/US holiday
+        ht = E.trade(b[['o', 'h', 'l', 'c']], day, -6, A0, now=now, cost=cost, k=E.HOL_STOP, tx=0.0, lock=False)
+        if ht: ht['mode'] = 'holiday'
+    hrows = [row(ht, last, cost)] if ht else []
     t_out = day + pd.Timedelta(minutes=E.CLOSE_MIN)
     if J.get('start') is None: J['start'] = str(day.date())
-    nd = dict(date=str(day.date()), rules=RULES, label=day.strftime('%a %d %b'), side=(rows[0]['side'] if rows else None), trades=rows,
-              final=bool(t is None and now >= t_in + pd.Timedelta(minutes=E.ENTRY_LATE + 1)) or bool(t and t['status'] != 'open'),
+    nd = dict(date=str(day.date()), rules=RULES, label=day.strftime('%a %d %b'), side=(rows[0]['side'] if rows else None), trades=rows + hrows,
+              final=(bool(t is None and now >= t_in + pd.Timedelta(minutes=E.ENTRY_LATE + 1)) or bool(t and t['status'] != 'open')) and not (ht and ht['status'] == 'open'),
               code=int(code), report=None if rep is None else str(pd.Timestamp(rep).date()), mode=md,
               regime=None if not np.isfinite(pct) else round(pct, 3), gap=None if not np.isfinite(dv) else round(dv, 3), code_before_gap=int(code0))
     if t: nd['frozen'] = dict(code=int(code), A=float(A), k=float(kS), t=float(kT), lock=bool(lk), mode=md)
@@ -305,9 +316,15 @@ def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eu
 
     elif not np.isfinite(A): state, msg = 'none', 'No trade: fewer than 14 days of price history for the average range.'
     else: state, msg = 'none', f'No trade today: no price bar between {dubai(t_in)} and {dubai(t_in + pd.Timedelta(minutes=E.ENTRY_LATE))} Dubai.'
+    if hrows:
+        h0 = hrows[0]
+        msg += (f" + HOLIDAY SELL (half size, day after a UK/US holiday) at {h0['price']:.5f} ({h0['time']} Dubai), stop {h0['stop']:.5f}, no target, closes {dubai(t_out)} Dubai." if h0['status'] == 'open'
+                else f" + Holiday sell closed ({h0['exit_time']} Dubai): {h0['pips']:+.1f} pips (half size).")
+    elif hol and now < t_in: msg += f" Day after a UK/US holiday: an extra HALF-size SELL opens at {dubai(t_in)} Dubai."
     if cnote: msg += f' ({cnote}.)'
-    mk['GBPUSD'] = dict(base_card(A if np.isfinite(A) else None, rep, code, md, pct if np.isfinite(pct) else None), state=state, mode=md, regime=None if not np.isfinite(pct) else round(pct, 3), gap=None if not np.isfinite(dv) else round(dv, 3), message=msg, price=last,
-                        change=(None if last is None or first is None else round(last - first, 5)), entries=rows, spark=spark, journal=J['summary'], jdays=jdays(J),
+    if not rows and hrows: state = 'sell'
+    mk['GBPUSD'] = dict(base_card(A if np.isfinite(A) else None, rep, code, md, pct if np.isfinite(pct) else None, hol), state=state, mode=md, regime=None if not np.isfinite(pct) else round(pct, 3), gap=None if not np.isfinite(dv) else round(dv, 3), message=msg, price=last,
+                        change=(None if last is None or first is None else round(last - first, 5)), entries=rows + hrows, spark=spark, journal=J['summary'], jdays=jdays(J),
                         feed_error=False, epic=EPIC, close_at=dubai(t_out), open_at=dubai(t_in), signal=side, layer=abs(int(code)), cftc_note=cnote,
                         report=None if rep is None else str(pd.Timestamp(rep).date()), range_pips=None if not np.isfinite(A) else round(A * 1e4, 1),
                         cftc=dict(levp=None if rep is None else round(float(C.loc[rep, 'levp']), 3), nrp=None if rep is None else round(float(C.loc[rep, 'nrp']), 3),
