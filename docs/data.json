@@ -15894,26 +15894,26 @@
    "symbol": "GBPUSD \u00b7 Capital.com GBP/USD",
    "live": false,
    "paper": true,
-   "version": "v1.04",
+   "version": "v1.05",
    "unit": "pips",
    "dp": 5,
    "stats": {
     "direction": "\u2014",
-    "days": "95% of weekdays traded, max 1 a day \u00b7 profit days 54%",
-    "perday": "0.95",
-    "win": "8.1% hit target \u00b7 57.3% closed in profit",
-    "pf": "1.21",
-    "net": "+$15,966.95 at 0.10 lot (net/DD 9.76)",
-    "source": "MT4 test GBP_CROWD v1.04 (his run 5, 24 Oct, spread 1.8 pips), 2011-01..2026-06-19, 3,810 trades; max DD $1,636.34; losing years 3 (v1.03: 5)"
+    "days": "93% of weekdays traded, 1 trade a day (2 on ~14 days a year: + holiday sell) \u00b7 profit days 55%",
+    "perday": "0.98",
+    "win": "7.9% hit target \u00b7 57.3% closed in profit",
+    "pf": "1.19",
+    "net": "+$15,515.36 at 0.10 lot (net/DD 10.26)",
+    "source": "MT4 test GBP_CROWD v1.05 (his run 7, 7 Nov 2026, spread 1.8 pips), 2010-08..2026-06-19, 4,048 trades (200 holiday sells +$1,371); max DD $1,512.42; v1.04 same data: $14,144 / DD $1,792"
    },
    "pass_bar": {
     "pf": 1.1,
     "months": 3
    },
    "day_note": "Today: NO TRADE \u00b7 no layer on \u00b7 CFTC report of Tue 03 Nov \u00b7 14-day range \u2014 \u00b7 stop 1.0 x range, target 1.0 x stop (close the whole trade there), no half-close \u00b7 one trade a day at 10:00 broker (11:00 am Dubai in summer, 12:00 pm in winter) \u00b7 everything closes at 23:45 broker (12:45 am Dubai in summer, 1:45 am in winter)",
-   "what_note": "Tracks whether live GBP/USD signals do as well as the v1.04 MT4 test. The auto-trader places each trade on the Capital.com demo (from 27 Oct). Decision after about 3 months.",
+   "what_note": "Tracks whether live GBP/USD signals do as well as the v1.05 MT4 test. The auto-trader places each trade on the Capital.com demo (from 27 Oct). Decision after about 3 months.",
    "cost_note": "Results are pips per trade after the spread (at least 1.5 pips). 0.01 lot = 1,000 units = $0.10 per pip.",
-   "net_label": "Net pips (v1.04 rules)",
+   "net_label": "Net pips (v1.05 rules, holiday sell at half size)",
    "state": "closed",
    "mode": "calm",
    "regime": 0.112,
@@ -17934,19 +17934,9 @@
     ]
    ],
    "journal": {
-    "since": "26 Oct 2026",
-    "weekdays": 10,
-    "trades": 10,
-    "days": 100.0,
-    "perday": 1.0,
-    "closed": 10,
-    "win": 0.0,
-    "inprofit": 50.0,
-    "pf": 0.49,
-    "net": -67.4,
-    "rules": "v1.04",
-    "direction": null,
-    "green": 50.0
+    "since": null,
+    "trades": 0,
+    "rules": "v1.05"
    },
    "jdays": [
     {
