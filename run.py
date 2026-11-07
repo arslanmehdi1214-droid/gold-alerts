@@ -86,6 +86,41 @@ def realyield(day):
     if len(prev) < 2 or pd.Timestamp(prev[-1][0]) < need - pd.Timedelta(days=6): return None
     return round(prev[-1][1] - prev[-2][1], 4)
 
+VOL_HIST_FILE = os.path.join(HERE, 'volmult_hist.csv')   # v2.21 DT225 sizing input (Vol_High_Size): EXACT port of the EA's own
+# hardcoded volD[]/volV[] array (GOLD_DAYTRADE.mq4, "combined GLD+GC-futures+SLV volume z-score x1000, by day 2008-2026") -
+# same real-backtestable-no-live-feed pattern the EA used for RYMult, which run.py mirrors LIVE instead via realyield() above.
+# This one is NOT live-extended: 7 Nov tried reverse-engineering a live equivalent from free GLD/SLV/GC=F volume data (6
+# formula variants - raw/log, rolling/expanding windows), best correlation only ~0.32 - not trustworthy enough to ship as a
+# live signal. His call 7 Nov: port the array as-is. The array's last date is 2026-09-21; any broker day after that (no
+# array coverage) sizes 1.0x (no boost) until a verified live source is found. See day-trading-gold-v3 memory for detail.
+VOL_HIGH_CUT = 0.14   # v2.21 Vol_High_Cut: combined-volume z-score cutoff for a "high volume day" (top third of real days)
+V225_FROM = np.datetime64('2026-11-07')   # v2.21 DT225 sizing goes live dashboard-side from push day - same precedent as
+# v2.20/v2.22/v2.24 above (no MT4-confirmed go-live date for the Python mirror). Gated by date so past journal/Analytics
+# days are never recomputed differently.
+_VOL_HIST = None
+def _vol_hist():
+    """Lazy-load + cache VOL_HIST_FILE as (sorted date list, matching z-score list)."""
+    global _VOL_HIST
+    if _VOL_HIST is None:
+        import csv, bisect as _b
+        dates, zs = [], []
+        with open(VOL_HIST_FILE) as f:
+            for row in csv.DictReader(f):
+                dates.append(np.datetime64(row['date'], 'D')); zs.append(int(row['z1000']) / 1000.0)
+        _VOL_HIST = (dates, zs)
+    return _VOL_HIST
+def volume_high(day):
+    """v2.21 DT225 sizing input for broker day `day`: True when the array's most recent date strictly before `day`
+    has a combined-volume z-score >= VOL_HIGH_CUT (same most-recent-prior-day lookup as the EA's VolMult()). False
+    before V225_FROM, and False for any day the array doesn't cover (see VOL_HIST_FILE comment above)."""
+    import bisect
+    d = np.datetime64(day, 'D')
+    if d < V225_FROM: return False
+    dates, zs = _vol_hist()
+    idx = bisect.bisect_left(dates, d) - 1
+    if idx < 0: return False
+    return zs[idx] >= VOL_HIGH_CUT
+
 def fmt(e):
     side = 'BUY' if e['dir'] == 1 else 'SELL'
     if e['kind'] == 'ENTRY':
@@ -257,7 +292,10 @@ def compute(h1, m1, day, now, inp):
     if dayst >= DK.V215_FROM:
         try: ry = realyield(day)
         except Exception as e: print('real yield failed', type(e).__name__, e)
-    legs, acts = DK.run(taken, dayst, mm, np.datetime64(now, 'm'), D.atr(0), np.datetime64(eod_of(day), 'm'), label=dubai, ry=ry) if len(m1) else ([], [])
+    vol = False
+    try: vol = volume_high(day)
+    except Exception as e: print('volume sizing failed', type(e).__name__, e)
+    legs, acts = DK.run(taken, dayst, mm, np.datetime64(now, 'm'), D.atr(0), np.datetime64(eod_of(day), 'm'), label=dubai, ry=ry, vol=vol) if len(m1) else ([], [])
     return legs, acts, skipped, D
 
 def missed_days(J, now, cache):

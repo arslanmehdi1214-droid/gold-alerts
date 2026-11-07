@@ -37,13 +37,18 @@ PYRN, PYRX = 3, 1.25                      # v2.15: a 3rd same-way trade only if 
 # ---- v2.20 (= EA GOLD_DAYTRADE v2.20 Fill_Target fix: the FILL range-fade leg gets a take-profit, mirroring its stop)
 V220_FROM = np.datetime64('2026-11-04')   # from this broker day: the FILL leg also gets a target (before this, no target - stop only)
 FILLTX = 0.5                              # FILL take-profit = FILLTX x 14-day average daily range (Fill_Target_x_DailyATR)
+# ---- v2.21 (= EA GOLD_DAYTRADE v2.21 Volume_Size_Mult, DT225_GOLD_VOLGENTLE115.set, MT4-confirmed PASS 6 Nov: net $467,262.88,
+# +0.3% vs DT223 baseline, maxDD 4.55% IMPROVED vs 4.57%, PF 1.32, trades 19 FEWER not more - a quality/safety gain, not frequency)
+VOL_SIZE = 1.15   # size for trades on a high prior-day combined GLD/GC-futures/SLV volume z-score day (Vol_High_Size; other days size 1)
 
 
-def size_of(kind, tag, d, ry):
-    """v2.15 size multiplier of a new trade. ry = latest known real-yield 1-day change (None = unknown -> no yield size)."""
+def size_of(kind, tag, d, ry, vol=False):
+    """v2.15 size multiplier of a new trade. ry = latest known real-yield 1-day change (None = unknown -> no yield size).
+    vol (v2.21, DT225) = True when run.py's volume_high(day) says today is a high-volume day (None/False = no size-up)."""
     fam = FAM_SIZE if (kind == 's' and str(tag).split(' ')[0] in STRONG) else 1.0
     yz = RY_SIZE if (ry is not None and ((ry > 0 and d > 0) or (ry < 0 and d < 0))) else 1.0
-    return round(fam * yz, 4)
+    vz = VOL_SIZE if vol else 1.0
+    return round(fam * yz * vz, 4)
 
 
 def fill_event(T, O, H, L, day, eod):
@@ -59,9 +64,10 @@ def fill_event(T, O, H, L, day, eod):
     return None
 
 
-def run(signals, day, m1, now, atr, eod, label=None, ry=None):
+def run(signals, day, m1, now, atr, eod, label=None, ry=None, vol=False):
     """signals: engine trades (dict t, dir, tag, px). day: np.datetime64[D]. m1: dict t,o,h,l,c (closed bars, broker time).
-    atr: 14-day average daily range. eod: np.datetime64[m] day-end close. Returns (legs, actions)."""
+    atr: 14-day average daily range. eod: np.datetime64[m] day-end close. vol (v2.21, DT225) = run.py's volume_high(day).
+    Returns (legs, actions)."""
     T = np.asarray(m1['t'], dtype='datetime64[m]'); O, H, L, C = (np.asarray(m1[k], float) for k in ('o', 'h', 'l', 'c'))
     SPLIT = np.datetime64(day, 'D') < V211_FROM                      # True = v2.10 half-close rules (days before the switch)
     V215 = np.datetime64(day, 'D') >= V215_FROM                      # True = v2.15 lock + sizes + add to winners
@@ -89,7 +95,7 @@ def run(signals, day, m1, now, atr, eod, label=None, ry=None):
         risk = abs(e - sl); hp = (e + d * (K * risk + EX)) if SPLIT else None
         tgt = (e + d * FILLTX * atr) if (kind == 'f' and V220) else None   # v2.20: FILL leg only, from V220_FROM
         g = dict(li=len(legs), j=j, t=t, dir=d, tag=tag, kind=kind, p0=float(p0), entry=round(e, 2), stop0=round(sl, 2), stop=round(sl, 2), risk=round(risk, 2), sd=sd,
-                 size_x=(size_of(kind, tag, d, ry) if V215 else 1.0),
+                 size_x=(size_of(kind, tag, d, ry, vol) if V215 else 1.0),
                  half_px=(round(hp, 2) if hp is not None else None), target=(round(tgt, 2) if tgt is not None else None),
                  status='open', half_t=None, exit=None, exit_t=None, pnl_oz=None, time_txt=('from ' + label(t)) if label else '#%d' % (len(legs) + 1))
         legs.append(g); return g
