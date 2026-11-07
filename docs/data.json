@@ -10183,17 +10183,17 @@
    "symbol": "US500 \u00b7 Capital.com US 500",
    "live": false,
    "paper": true,
-   "version": "v1.17",
+   "version": "v1.18",
    "unit": "pts",
    "dp": 1,
    "stats": {
     "direction": "\u2014",
     "days": "\u2014",
     "perday": "\u2014",
-    "win": "77.27% of the 44 new Night V13 legs closed in profit (34W/10L)",
+    "win": "75.0% of the 32 new Night V14 legs closed in profit (24W/8L)",
     "pf": "\u2014",
-    "net": "+$19,056.52 at $100 risk per leg",
-    "source": "MT4 test SP500_DAYTRADE v1.18 (his run 6 Nov, Magic 500131, spread 18, Every tick), 2018.01.01-2026.10.31, 2,776 trades (+44 vs the 500130 baseline's 2,732, all long - V13 is BUY only); max DD $1,877.39 (0.19%, down $30.89 vs 500130's $1,908.28 - essentially flat/slightly improved, look-ahead-checked and cleared); same 500130 rules (row18/19/20/23/24/25-27/28-31/32-34/35-37/38-40/41-43/44-46/50-52) PLUS Night V13 (rows 53-55): an 11th night trigger (row 47-49 \"Night V11\" MT4-confirmed 5 Nov but PARKED by his call, never pushed here - V13 is built straight on top of V12), no weekday restriction, on MSCI Emerging-Markets equity-index futures leveraged-money positioning (CFTC Traders in Financial Futures, 3-way-renamed MSCI EM series concatenated) already extreme-bullish/long (52-week percentile of the net position LEVEL, 3-day publication lag applied, >= 0.85) combined with the communications-services sector underperforming the index (252-day percentile of the 10-day % change in the XLC/SPY ratio <= 0.30) - isolating the 44 new legs alone: net +$721.99, DD down $30.89 vs 500130, 77.27% closed in profit (0.23pp off the 40 net-new Python estimate's 77.5% win rate - one of the tightest Python-to-MT4 matches of any leg built in this project). Highest net-new coverage fraction of the whole project (80%), lowest outlier concentration of any strong candidate since the live desk was built. This data (CFTC's public Socrata API, publicreporting.cftc.gov, free, no key) + Yahoo Finance XLC/SPY (free) is available from day one - no live warm-up needed (see msciem_cm_today() in sp_run.py)."
+    "net": "+$19,448.58 at $100 risk per leg",
+    "source": "MT4 test SP500_DAYTRADE v1.20 (his run 7 Nov, Magic 500133, spread 18, Every tick), 2018.01.02-2026.10.30, 2,807 trades (+32 vs the 500132 baseline's 2,775, all long - V14 is BUY only); max DD $1,877.39 (0.19%, unchanged vs 500132 - flat, look-ahead-checked and cleared - profit up with DD flat, not the up-profit-AND-down-DD leak pattern); same 500132 rules (row18/19/20/23/24/25-27/28-31/32-34/35-37/38-40/41-43/44-46/50-52/53-55) PLUS Night V14 (rows 56-58): a 12th night trigger (row 47-49 \"Night V11\" MT4-confirmed 5 Nov but PARKED by his call, never pushed here - V14 is built straight on top of V13), no weekday restriction, on Brazilian Real futures leveraged-money positioning (CFTC Traders in Financial Futures) shifting bullish fast (52-week percentile of the 4-report SHIFT in the net position, 3-day publication lag applied, >= 0.85) combined with UST 2-Year Note futures leveraged-money positioning (same 4-report-shift method, CFTC Feb-2022 rename concatenated) falling fast (<= 0.20) - isolating the 32 new legs alone: net +$292.71, DD unchanged vs 500132, 75.0% closed in profit (above Python's 69.0% pool-level estimate). Round 71's best - cleanest screen-to-pass ratio of the project, but thinner $/trade ($9.15) than V12/V13 and misses 3 of its 8 covered years (2019/2023/2026) - a real but more caveated leg. This data (CFTC's public Socrata API, publicreporting.cftc.gov, free, no key, both legs COT-only - no price-ratio fetch needed this time) is available from day one - no live warm-up needed (see brlfx_ust2y_today() in sp_run.py)."
    },
    "pass_bar": {
     "green": 40.0,
@@ -12221,18 +12221,9 @@
     ]
    ],
    "journal": {
-    "since": "06 Nov 2026",
-    "weekdays": 1,
-    "trades": 2,
-    "days": 100.0,
-    "perday": 2.0,
-    "closed": 2,
-    "win": 100.0,
-    "pf": null,
-    "net": 94.0,
-    "rules": "v1.17",
-    "direction": null,
-    "green": 100.0
+    "since": null,
+    "trades": 0,
+    "rules": "v1.18"
    },
    "jdays": [
     {
