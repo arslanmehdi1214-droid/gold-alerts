@@ -13,7 +13,11 @@ target 1.0 x stop, close 23:45 broker; a trade still open when the day has no 23
 v1.04 REGIME rules on crowd days (layers 1-3), regime = percentile of today's 14-day range among the last 250 days (min 120):
   busy (>= 0.8): stop 1.25 x range, target 1.5 x stop
   calm (< 0.5): once the trade is +0.35 x stop in profit, the stop moves to entry + 5 pips (from the next minute); and if GBP ran
-        ahead of / behind EUR from 00:00 to 10:00 broker by >= 0.3 (each move in its own 14-day range) -> trade AGAINST that gap."""
+        ahead of / behind EUR from 00:00 to 10:00 broker by >= 0.3 (each move in its own 14-day range) -> trade AGAINST that gap.
+v1.05 (MT4 his run 7, 7 Nov 2026): EXTRA half-size SELL at 10:00 on the day after a UK or US holiday (POST_HOL), stop 1.5 x range, no target, close 23:45.
+v1.06 (MT4 his run 8, 7 Nov 2026: 4,176 trades, net $16,244.01, max DD $1,596.44, profit days 55.3%, every period up vs v1.05):
+  EXTRA half-size BUY at 10:00 on FOMC statement days (FOMC_DAYS, federalreserve.gov), stop 1.0 x range, no target, close 20:55 broker
+  (before the 21:00 statement). Source: Mueller, Tahbaz-Salehi & Vedolin (2017) - the dollar weakens on FOMC days."""
 import numpy as np, pandas as pd
 
 Q1, Q2, Q3 = 0.10, 0.20, 0.25
@@ -21,7 +25,8 @@ STOP_X, TGT_X, RANGE_DAYS = 1.0, 1.0, 14
 ENTRY_MIN, ENTRY_LATE, CLOSE_MIN = 10 * 60, 5, 23 * 60 + 45
 COST = 0.00015                                   # 1.5 pips (the research cost); the desk uses max(this, live spread)
 LAYER_NAME = {1: 'Layer 1 · hedge funds crowded', 2: 'Layer 2 · small traders crowded', 3: 'Layer 3 · small traders jumped in',
-              4: 'Layer 4 · pound stretched vs euro', 5: 'Layer 5 · euro hedge funds trend', 6: 'Holiday sell · day after a UK/US holiday'}
+              4: 'Layer 4 · pound stretched vs euro', 5: 'Layer 5 · euro hedge funds trend', 6: 'Holiday sell · day after a UK/US holiday',
+              7: 'FOMC buy · Fed decision day'}
 Q5, EG_W, EG_Z = 0.25, 20, 1.5
 HOL_SIZE, HOL_STOP = 0.5, 1.5                    # v1.05 extra trade
 POST_HOL = frozenset([
@@ -53,6 +58,31 @@ POST_HOL = frozenset([
     '2026-06-22', '2026-07-06', '2026-09-08', '2026-10-13', '2026-11-12', '2026-11-27', '2026-12-29', '2027-01-04',
     '2027-01-19', '2027-02-16', '2027-03-29', '2027-05-04', '2027-06-01', '2027-06-21', '2027-07-06', '2027-09-07',
     '2027-10-12', '2027-11-12', '2027-11-26', '2027-12-29'])
+
+FOMC_SIZE, FOMC_STOP, FOMC_CLOSE_MIN = 0.5, 1.0, 20 * 60 + 55      # v1.06 extra trade
+FOMC_DAYS = frozenset([
+    '2010-08-10', '2010-09-21', '2010-11-03', '2010-12-14', '2011-01-26', '2011-03-15', '2011-04-27', '2011-06-22',
+    '2011-08-09', '2011-09-21', '2011-11-02', '2011-12-13', '2012-01-25', '2012-03-13', '2012-04-25', '2012-06-20',
+    '2012-08-01', '2012-09-13', '2012-10-24', '2012-12-12', '2013-01-30', '2013-03-20', '2013-05-01', '2013-06-19',
+    '2013-07-31', '2013-09-18', '2013-10-30', '2013-12-18', '2014-01-29', '2014-03-19', '2014-04-30', '2014-06-18',
+    '2014-07-30', '2014-09-17', '2014-10-29', '2014-12-17', '2015-01-28', '2015-03-18', '2015-04-29', '2015-06-17',
+    '2015-07-29', '2015-09-17', '2015-10-28', '2015-12-16', '2016-01-27', '2016-03-16', '2016-04-27', '2016-06-15',
+    '2016-07-27', '2016-09-21', '2016-11-02', '2016-12-14', '2017-02-01', '2017-03-15', '2017-05-03', '2017-06-14',
+    '2017-07-26', '2017-09-20', '2017-11-01', '2017-12-13', '2018-01-31', '2018-03-21', '2018-05-02', '2018-06-13',
+    '2018-08-01', '2018-09-26', '2018-11-08', '2018-12-19', '2019-01-30', '2019-03-20', '2019-05-01', '2019-06-19',
+    '2019-07-31', '2019-09-18', '2019-10-30', '2019-12-11', '2020-01-29', '2020-04-29', '2020-06-10', '2020-07-29',
+    '2020-09-16', '2020-11-05', '2020-12-16', '2021-01-27', '2021-03-17', '2021-04-28', '2021-06-16', '2021-07-28',
+    '2021-09-22', '2021-11-03', '2021-12-15', '2022-01-26', '2022-03-16', '2022-05-04', '2022-06-15', '2022-07-27',
+    '2022-09-21', '2022-11-02', '2022-12-14', '2023-02-01', '2023-03-22', '2023-05-03', '2023-06-14', '2023-07-26',
+    '2023-09-20', '2023-11-01', '2023-12-13', '2024-01-31', '2024-03-20', '2024-05-01', '2024-06-12', '2024-07-31',
+    '2024-09-18', '2024-11-07', '2024-12-18', '2025-01-29', '2025-03-19', '2025-05-07', '2025-06-18', '2025-07-30',
+    '2025-09-17', '2025-10-29', '2025-12-10', '2026-01-28', '2026-03-18', '2026-04-29', '2026-06-17', '2026-07-29',
+    '2026-09-16', '2026-10-28', '2026-12-09', '2027-01-27', '2027-03-17', '2027-04-28', '2027-06-09', '2027-07-28',
+    '2027-09-15', '2027-10-27', '2027-12-08'])
+
+def is_fomc_day(day):
+    """v1.06: True on an FOMC statement day (list = the EA's fmD list, 2010-2027)."""
+    return str(pd.Timestamp(day).date()) in FOMC_DAYS
 
 def is_post_holiday(day):
     """v1.05: True on the weekday after a UK or US holiday (list = the EA's hpD list, 2010-2027)."""
@@ -143,11 +173,11 @@ def avg_range(daily, day):
     if len(d) < RANGE_DAYS: return np.nan
     return float((d.h - d.l).iloc[-RANGE_DAYS:].mean())
 
-def trade(b, day, code, A, now=None, cost=COST, k=STOP_X, tx=TGT_X, lock=False):
+def trade(b, day, code, A, now=None, cost=COST, k=STOP_X, tx=TGT_X, lock=False, close_min=CLOSE_MIN):
     """b = the day's closed minute bars (index broker time, columns o h l c, bid). Returns a trade dict or None.
     status: open / target / stopped / eod (23:45 close) / close_now (day over, no 23:45 bar = catch-up close)."""
     if code == 0 or not np.isfinite(A) or A <= 0 or not len(b): return None
-    day = pd.Timestamp(day); t0 = day + pd.Timedelta(minutes=ENTRY_MIN); te = day + pd.Timedelta(minutes=CLOSE_MIN)
+    day = pd.Timestamp(day); t0 = day + pd.Timedelta(minutes=ENTRY_MIN); te = day + pd.Timedelta(minutes=close_min)
     a = int(b.index.searchsorted(t0))
     if a >= len(b) or b.index[a] - t0 > pd.Timedelta(minutes=ENTRY_LATE): return None    # no bar 10:00-10:05 -> no trade (as the EA)
     s = 1 if code > 0 else -1; en = float(b.o.values[a]); sd = k * A

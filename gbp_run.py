@@ -17,11 +17,11 @@ JOUR = os.path.join(HERE, 'docs', 'journal_gbp.json'); PORTAL = os.path.join(HER
 CFTC = os.path.join(HERE, 'docs', 'cftc_gbp.json'); CFTC_EUR = os.path.join(HERE, 'docs', 'cftc_eur.json'); HIST = os.path.join(HERE, 'docs', 'gbp_daily.json'); HIST_KEEP = 500          # days kept (regime needs 250 + 14)
 CFTC_URL = 'https://publicreporting.cftc.gov/resource/gpe5-46if.json'
 EPIC = os.environ.get('CAPITAL_EPIC_GBP', 'GBPUSD'); EPIC_EUR = os.environ.get('CAPITAL_EPIC_EUR', 'EURUSD')
-RULES = 'v1.05'
+RULES = 'v1.06'
 PASS = dict(pf=1.10, months=3)
-BACKTEST = dict(direction='—', days='93% of weekdays traded, 1 trade a day (2 on ~14 days a year: + holiday sell) · profit days 55%', perday='0.98', win='7.9% hit target · 57.3% closed in profit', pf='1.19',
-                net='+$15,515.36 at 0.10 lot (net/DD 10.26)',
-                source='MT4 test GBP_CROWD v1.05 (his run 7, 7 Nov 2026, spread 1.8 pips), 2010-08..2026-06-19, 4,048 trades (200 holiday sells +$1,371); max DD $1,512.42; v1.04 same data: $14,144 / DD $1,792')
+BACKTEST = dict(direction='—', days='93% of weekdays traded, 1 trade a day (2 on ~22 days a year: + holiday sell / FOMC buy) · profit days 55%', perday='1.01', win='7.3% hit target · 57.3% closed in profit', pf='1.20',
+                net='+$16,244.01 at 0.10 lot (net/DD 10.17)',
+                source='MT4 test GBP_CROWD v1.06 (his run 8, 7 Nov 2026, spread 1.8 pips), 2010-08..2026-06-19, 4,176 trades (200 holiday sells +$1,371, 126 FOMC buys +$668); max DD $1,596.44; v1.05 same data: $15,515 / DD $1,512')
 
 class FeedError(RuntimeError):
     pass
@@ -149,12 +149,14 @@ def feed_check(b, now):
 # ---------------- page rows / journal ----------------
 def row(t, now_px, cost):
     s = t['dir']; st = t['status']; dp = 5
-    hol = t['layer'] == 6; sz = E.HOL_SIZE if hol else 1.0
+    hol = t['layer'] == 6; fom = t['layer'] == 7; sz = E.HOL_SIZE if hol else E.FOMC_SIZE if fom else 1.0
     live = None if st != 'open' or now_px is None else round((s * (now_px - t['entry']) - cost) * 1e4, 1)
     nxt = None
     if st == 'open':
         cl = f"closes at {dubai(t['t'].normalize() + pd.Timedelta(minutes=E.CLOSE_MIN))} Dubai"
-        if hol:
+        if fom:
+            nxt = f"Hold · HALF-size FOMC buy · stop {t['stop']:.5f} · no target · closes at {dubai(t['t'].normalize() + pd.Timedelta(minutes=E.FOMC_CLOSE_MIN))} Dubai (before the Fed statement)"
+        elif hol:
             nxt = f"Hold · HALF-size holiday sell · stop {t['stop']:.5f} · no target · {cl}"
         elif t.get('lock') and t.get('locked'):
             nxt = f"Hold · stop MOVED to {t['stop']:.5f} (entry + 5 pips, locked) · target {t['target']:.5f} (close the WHOLE trade there) · {cl}"
@@ -166,7 +168,7 @@ def row(t, now_px, cost):
     return dict(time=dubai(t['t']), side='BUY' if s == 1 else 'SELL', name=E.LAYER_NAME[t['layer']], layer=t['layer'],
                 price=round(t['entry'], dp), entry=round(t['entry'], dp), stop=round(t['stop'], dp), stop0=round(t.get('stop0', t['stop']), dp), stop_pips=round(t['sd'] * 1e4, 1),
                 mode=t.get('mode', 'normal'), lock_px=None if not t.get('lock') else round(t['lock_px'], dp), locked=bool(t.get('locked')),
-                half_px=None if t['target'] is None else round(t['target'], dp), half=(st == 'target'), part=1.0, size=(round(E.HOL_SIZE * E.HOL_STOP, 4) if hol else 'full'), status=st,   # holiday: risk weight 0.75 = half the normal lots at a 1.5 x stop (as the MT4 EA)
+                half_px=None if t['target'] is None else round(t['target'], dp), half=(st == 'target'), part=1.0, size=(round(E.HOL_SIZE * E.HOL_STOP, 4) if hol else round(E.FOMC_SIZE * E.FOMC_STOP, 4) if fom else 'full'), status=st,   # holiday: risk weight 0.75 = half the normal lots at a 1.5 x stop (as the MT4 EA)
                
                 exit=None if t['exit'] is None else round(t['exit'], dp), exit_time=None if t['exit_t'] is None else dubai(t['exit_t']),
                 pips=None if t['pips'] is None else round(t['pips'], 1), res=None if t['pips'] is None else round(t['pips'], 1),
@@ -188,7 +190,7 @@ def summary(J, day=None):
 
 def jdays(J): return J.get('days', [])[-30:][::-1]
 
-def base_card(A=None, rep=None, code=0, md=None, pct=None, hol=False):
+def base_card(A=None, rep=None, code=0, md=None, pct=None, hol=False, fom=False):
     rp = '—' if rep is None else pd.Timestamp(rep).strftime('%a %d %b')
     lay = {0: 'no layer on', 1: 'layer 1 (hedge funds crowded)', 2: 'layer 2 (small traders crowded)', 3: 'layer 3 (small traders jumped in)',
            4: 'layer 4 (pound stretched vs euro)', 5: 'layer 5 (euro hedge funds trend)'}[abs(code)]
@@ -198,13 +200,14 @@ def base_card(A=None, rep=None, code=0, md=None, pct=None, hol=False):
                ' · CALM rules: stop 1.0 x range, target 1.0 x stop, move the stop to entry + 5 pips once +0.35 x stop in profit; side set at 10:00 against any big overnight GBP-vs-EUR gap · ' if md in ('calm', 'calm_gap') else
                ' · stop 1.0 x range, target 1.0 x stop (close the whole trade there), no half-close · ')
             + ('DAY AFTER A UK/US HOLIDAY: extra HALF-size SELL at 10:00, stop 1.5 x range, no target · ' if hol else '')
+            + ('FED DECISION DAY: extra HALF-size BUY at 10:00, stop 1.0 x range, no target, closed at 20:55 broker before the statement · ' if fom else '')
             + 'one trade a day at 10:00 broker (11:00 am Dubai in summer, 12:00 pm in winter) · everything closes at 23:45 broker '
             + '(12:45 am Dubai in summer, 1:45 am in winter)')
     return dict(code='GBPUSD', name='GBP/USD', symbol='GBPUSD · Capital.com GBP/USD', live=False, paper=True, status='Paper', version=RULES,
                 unit='pips', dp=5, stats=BACKTEST, pass_bar=PASS, day_note=note,
-                what_note='Tracks whether live GBP/USD signals do as well as the v1.05 MT4 test. The auto-trader places each trade on the Capital.com demo (from 27 Oct). Decision after about 3 months.',
+                what_note='Tracks whether live GBP/USD signals do as well as the v1.06 MT4 test. The auto-trader places each trade on the Capital.com demo (from 27 Oct). Decision after about 3 months.',
                 cost_note='Results are pips per trade after the spread (at least 1.5 pips). 0.01 lot = 1,000 units = $0.10 per pip.',
-                net_label='Net pips (v1.05 rules, holiday sell at half size)')
+                net_label='Net pips (v1.06 rules, holiday sell / FOMC buy at half size)')
 
 def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eur=None, eoget=None):
     global DEADLINE; DEADLINE = time.time() + 75     # own 75 s time budget per market
@@ -278,11 +281,15 @@ def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eu
     if hol and np.isfinite(A0):                                           # v1.05: extra half-size SELL on the day after a UK/US holiday
         ht = E.trade(b[['o', 'h', 'l', 'c']], day, -6, A0, now=now, cost=cost, k=E.HOL_STOP, tx=0.0, lock=False)
         if ht: ht['mode'] = 'holiday'
-    hrows = [row(ht, last, cost)] if ht else []
+    fom = E.is_fomc_day(day); ft = None
+    if fom and np.isfinite(A0):                                           # v1.06: extra half-size BUY on FOMC days, out at 20:55 broker
+        ft = E.trade(b[['o', 'h', 'l', 'c']], day, 7, A0, now=now, cost=cost, k=E.FOMC_STOP, tx=0.0, lock=False, close_min=E.FOMC_CLOSE_MIN)
+        if ft: ft['mode'] = 'fomc'
+    hrows = ([row(ht, last, cost)] if ht else []) + ([row(ft, last, cost)] if ft else [])
     t_out = day + pd.Timedelta(minutes=E.CLOSE_MIN)
     if J.get('start') is None: J['start'] = str(day.date())
     nd = dict(date=str(day.date()), rules=RULES, label=day.strftime('%a %d %b'), side=(rows[0]['side'] if rows else None), trades=rows + hrows,
-              final=(bool(t is None and now >= t_in + pd.Timedelta(minutes=E.ENTRY_LATE + 1)) or bool(t and t['status'] != 'open')) and not (ht and ht['status'] == 'open'),
+              final=(bool(t is None and now >= t_in + pd.Timedelta(minutes=E.ENTRY_LATE + 1)) or bool(t and t['status'] != 'open')) and not (ht and ht['status'] == 'open') and not (ft and ft['status'] == 'open'),
               code=int(code), report=None if rep is None else str(pd.Timestamp(rep).date()), mode=md,
               regime=None if not np.isfinite(pct) else round(pct, 3), gap=None if not np.isfinite(dv) else round(dv, 3), code_before_gap=int(code0))
     if t: nd['frozen'] = dict(code=int(code), A=float(A), k=float(kS), t=float(kT), lock=bool(lk), mode=md)
@@ -316,14 +323,19 @@ def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eu
 
     elif not np.isfinite(A): state, msg = 'none', 'No trade: fewer than 14 days of price history for the average range.'
     else: state, msg = 'none', f'No trade today: no price bar between {dubai(t_in)} and {dubai(t_in + pd.Timedelta(minutes=E.ENTRY_LATE))} Dubai.'
-    if hrows:
-        h0 = hrows[0]
-        msg += (f" + HOLIDAY SELL (half size, day after a UK/US holiday) at {h0['price']:.5f} ({h0['time']} Dubai), stop {h0['stop']:.5f}, no target, closes {dubai(t_out)} Dubai." if h0['status'] == 'open'
-                else f" + Holiday sell closed ({h0['exit_time']} Dubai): {h0['pips']:+.1f} pips (half size).")
-    elif hol and now < t_in: msg += f" Day after a UK/US holiday: an extra HALF-size SELL opens at {dubai(t_in)} Dubai."
+    for h0 in hrows:
+        if h0['layer'] == 6:
+            msg += (f" + HOLIDAY SELL (half size, day after a UK/US holiday) at {h0['price']:.5f} ({h0['time']} Dubai), stop {h0['stop']:.5f}, no target, closes {dubai(t_out)} Dubai." if h0['status'] == 'open'
+                    else f" + Holiday sell closed ({h0['exit_time']} Dubai): {h0['pips']:+.1f} pips (half size).")
+        else:
+            f_out = day + pd.Timedelta(minutes=E.FOMC_CLOSE_MIN)
+            msg += (f" + FOMC BUY (half size, Fed decision day) at {h0['price']:.5f} ({h0['time']} Dubai), stop {h0['stop']:.5f}, no target, closes {dubai(f_out)} Dubai before the statement." if h0['status'] == 'open'
+                    else f" + FOMC buy closed ({h0['exit_time']} Dubai): {h0['pips']:+.1f} pips (half size).")
+    if not hrows and hol and now < t_in: msg += f" Day after a UK/US holiday: an extra HALF-size SELL opens at {dubai(t_in)} Dubai."
+    if not hrows and fom and now < t_in: msg += f" Fed decision day: an extra HALF-size BUY opens at {dubai(t_in)} Dubai and closes before the statement."
     if cnote: msg += f' ({cnote}.)'
-    if not rows and hrows: state = 'sell'
-    mk['GBPUSD'] = dict(base_card(A if np.isfinite(A) else None, rep, code, md, pct if np.isfinite(pct) else None, hol), state=state, mode=md, regime=None if not np.isfinite(pct) else round(pct, 3), gap=None if not np.isfinite(dv) else round(dv, 3), message=msg, price=last,
+    if not rows and hrows: state = hrows[0]['side'].lower()
+    mk['GBPUSD'] = dict(base_card(A if np.isfinite(A) else None, rep, code, md, pct if np.isfinite(pct) else None, hol, fom), state=state, mode=md, regime=None if not np.isfinite(pct) else round(pct, 3), gap=None if not np.isfinite(dv) else round(dv, 3), message=msg, price=last,
                         change=(None if last is None or first is None else round(last - first, 5)), entries=rows + hrows, spark=spark, journal=J['summary'], jdays=jdays(J),
                         feed_error=False, epic=EPIC, close_at=dubai(t_out), open_at=dubai(t_in), signal=side, layer=abs(int(code)), cftc_note=cnote,
                         report=None if rep is None else str(pd.Timestamp(rep).date()), range_pips=None if not np.isfinite(A) else round(A * 1e4, 1),
