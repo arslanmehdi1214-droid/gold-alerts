@@ -1,13 +1,6 @@
 [
  {
   "action": "stop moved",
-  "detail": "USDJPY|2026-10-21|3:06 pm|SELL|Hourly squeeze 3pm to 158.222",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Wed 21 Oct 3:21 PM"
- },
- {
-  "action": "stop moved",
   "detail": "USDJPY|2026-10-21|3:06 pm|SELL|Hourly squeeze 3pm to 158.216",
   "market": "USDJPY",
   "ok": true,
@@ -2798,5 +2791,12 @@
   "market": "ALL",
   "ok": false,
   "t": "Sat 7 Nov 6:46 PM"
+ },
+ {
+  "action": "error",
+  "detail": "HTTPError: 429 Client Error:  for url: https://demo-api-capital.backend-capital.com/api/v1/session",
+  "market": "ALL",
+  "ok": false,
+  "t": "Sat 7 Nov 6:55 PM"
  }
 ]
