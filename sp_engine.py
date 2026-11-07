@@ -241,6 +241,7 @@ V9_DU_MIN = 0.70; V9_TK_MAX = 0.20                                    # v1.14 Ni
 V10_BK_MAX = 0.15; V10_ES_MIN = 0.70                                  # v1.15 Night V10: bank-loan-weak-vs-HY (BKLN/HYG 10d change, <=) / E-mini COT leveraged-money net-long (52wk pctile, >=) thresholds
 V12_DJIA_MIN = 0.70; V12_CR_MAX = 0.20                                # v1.16 Night V12: DJIA leveraged-money COT 4-report-shift (52wk pctile, >=) / ETH-USD/BTC-USD ratio 10d change (252d pctile, <=) thresholds
 V13_MSCIEM_MIN = 0.85; V13_CM_MAX = 0.30                              # v1.17 Night V13: MSCI-EM-futures leveraged-money LEVEL (52wk pctile, >=) / XLC-SPY ratio 10d change (252d pctile, <=) thresholds
+V14_BRLFX_MIN = 0.85; V14_UST2Y_MAX = 0.20                            # v1.18 Night V14: Brazilian-Real-futures leveraged-money COT 4-report-shift (52wk pctile, >=) / UST-2yr-futures leveraged-money COT 4-report-shift (52wk pctile, <=) thresholds
 
 def eod_minutes(day): return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
@@ -515,6 +516,25 @@ def v13_flag(R, day):
     if not (np.isfinite(row.msciem_cot_pct) and np.isfinite(row.cm_chg10_pct)): return False, {}
     dd = dict(date=str(k.date()), msciem_cot_pct=float(row.msciem_cot_pct), cm_chg10_pct=float(row.cm_chg10_pct))
     return bool(row.msciem_cot_pct >= V13_MSCIEM_MIN and row.cm_chg10_pct <= V13_CM_MAX), dd
+
+def v14_flag(T, day):
+    """v1.18 Night V14 trigger. T: DataFrame indexed by date (built by brlfx_ust2y_today() in sp_run.py) with columns
+    brlfx_cot_chg4_pct (52-week rolling percentile of the 4-report SHIFT in the CFTC leveraged-money net position -
+    long minus short, normalized by open interest - in Brazilian Real futures, weekly data with a 3-day publication
+    lag already applied so nothing is look-ahead - high = BRL futures positioning turning bullish fast) and
+    ust2y_cot_chg4_pct (same 4-report-shift method, UST 2-year Note futures, CFTC Feb-2022 rename concatenated -
+    low = 2yr-note positioning falling fast, a duration-favoring signal). The broker day `day`'s own NY-date row is
+    day - 1 calendar day (same lag relationship as V4-V13's lookup: d = ny_date + 1). Fires when Brazilian Real COT
+    positioning is shifting bullish fast (brlfx_cot_chg4_pct >= V14_BRLFX_MIN) AND UST 2yr-note COT positioning is
+    falling fast (ust2y_cot_chg4_pct <= V14_UST2Y_MAX) at once - Round 71's best (cleanest screen-to-pass ratio of
+    the whole project, though thinner/more caveated than V12/V13 - misses 3 of its 8 covered years). Missing values
+    (not enough rolling history yet, or no data that day) mean it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if T is None or not len(T) or k not in T.index: return False, {}
+    row = T.loc[k]
+    if not (np.isfinite(row.brlfx_cot_chg4_pct) and np.isfinite(row.ust2y_cot_chg4_pct)): return False, {}
+    dd = dict(date=str(k.date()), brlfx_cot_chg4_pct=float(row.brlfx_cot_chg4_pct), ust2y_cot_chg4_pct=float(row.ust2y_cot_chg4_pct))
+    return bool(row.brlfx_cot_chg4_pct >= V14_BRLFX_MIN and row.ust2y_cot_chg4_pct <= V14_UST2Y_MAX), dd
 
 def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_done=False,
               name='Night long (high-fear night: VIX / VVIX)', src=1):
