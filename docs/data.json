@@ -10183,17 +10183,17 @@
    "symbol": "US500 \u00b7 Capital.com US 500",
    "live": false,
    "paper": true,
-   "version": "v1.18",
+   "version": "v1.19",
    "unit": "pts",
    "dp": 1,
    "stats": {
     "direction": "\u2014",
     "days": "\u2014",
     "perday": "\u2014",
-    "win": "75.0% of the 32 new Night V14 legs closed in profit (24W/8L)",
+    "win": "58.0% of the 69 new Night V16+V18 legs closed in profit (40W/29L)",
     "pf": "\u2014",
-    "net": "+$19,448.58 at $100 risk per leg",
-    "source": "MT4 test SP500_DAYTRADE v1.20 (his run 7 Nov, Magic 500133, spread 18, Every tick), 2018.01.02-2026.10.30, 2,807 trades (+32 vs the 500132 baseline's 2,775, all long - V14 is BUY only); max DD $1,877.39 (0.19%, unchanged vs 500132 - flat, look-ahead-checked and cleared - profit up with DD flat, not the up-profit-AND-down-DD leak pattern); same 500132 rules (row18/19/20/23/24/25-27/28-31/32-34/35-37/38-40/41-43/44-46/50-52/53-55) PLUS Night V14 (rows 56-58): a 12th night trigger (row 47-49 \"Night V11\" MT4-confirmed 5 Nov but PARKED by his call, never pushed here - V14 is built straight on top of V13), no weekday restriction, on Brazilian Real futures leveraged-money positioning (CFTC Traders in Financial Futures) shifting bullish fast (52-week percentile of the 4-report SHIFT in the net position, 3-day publication lag applied, >= 0.85) combined with UST 2-Year Note futures leveraged-money positioning (same 4-report-shift method, CFTC Feb-2022 rename concatenated) falling fast (<= 0.20) - isolating the 32 new legs alone: net +$292.71, DD unchanged vs 500132, 75.0% closed in profit (above Python's 69.0% pool-level estimate). Round 71's best - cleanest screen-to-pass ratio of the project, but thinner $/trade ($9.15) than V12/V13 and misses 3 of its 8 covered years (2019/2023/2026) - a real but more caveated leg. This data (CFTC's public Socrata API, publicreporting.cftc.gov, free, no key, both legs COT-only - no price-ratio fetch needed this time) is available from day one - no live warm-up needed (see brlfx_ust2y_today() in sp_run.py)."
+    "net": "+$19,809.13 at $100 risk per leg",
+    "source": "MT4 test SP500_DAYTRADE v1.21 (his run 8 Nov, Magic 500139, spread 18, Every tick), 2018.01.01-2026.10.31, 2,876 trades (+69 vs the 500135 baseline's 2,807); max DD $1,756.74 (0.17%, DOWN from 500135's $1,877.39 - look-ahead-checked and cleared, matches the same benign profit-up/DD-down pattern already cleared for V7/V12/V13, not a fresh leak); same 500135 rules PLUS Night V16 (rows 62-64, UST-5yr-Note-futures leveraged-money COT 4-report-shift falling fast <= 0.15 combined with the SAME credit-de-risking HYG/LQD feature already used by V8, <= 0.30 - Round 67's best, parked since) and Night V18 (rows 68-70, Micro-Bitcoin-futures leveraged-money COT 4-report-shift <= 0.30 combined with the NG=F/CL=F ratio LEVEL >= 0.85 - Round 73's best); Night V17 (rows 65-67, Round 72's best survivor) MT4-tested separately (500137: net +$46.32 on 27 new legs, 55.6% win, DD UP to $1,984.99) and PARKED by his call, never ported here. Isolating V16 alone (500136 vs 500135): net +$374.04, DD down to $1,756.74, 30 new legs, 63.3% win (19W/11L). Isolating V18 alone (500138 vs 500135): net +$198.74, DD unchanged $1,877.39, 39 new legs, 56.4% win (22W/17L). Combined (V16+V18 both on, 500139): the two legs can both qualify on the same broker-night (code-order mutual exclusion, V16 checked first) - net new trades is the full sum of the two solo tests (30+39=69, no frequency lost to overlap), win split shifts by 1 trade vs the solo sum (a single overlap night going the other way), still 58.0% overall - a modest, real add on top of V14, thinner edge than V9/V10/V12/V13. This data (CFTC's public Socrata API, publicreporting.cftc.gov, free, no key) + Yahoo Finance HYG/LQD (already fetched for V8) + NG=F/CL=F (free) is available from day one - no live warm-up needed (see ust5y_cq_today()/mbtc_ng_today() in sp_run.py)."
    },
    "pass_bar": {
     "green": 40.0,
@@ -12223,7 +12223,7 @@
    "journal": {
     "since": null,
     "trades": 0,
-    "rules": "v1.18"
+    "rules": "v1.19"
    },
    "jdays": [
     {
