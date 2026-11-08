@@ -1,13 +1,27 @@
-"""Brent Oil PAPER signals for the page - BRENT v1.05 rules (brent_engine.py; MT4-proven 7 Nov 2026, his run: 911
-trades 2018-01..2026-10, +$50,198 at 0.30 lot, PF 1.47, max DD $7,979, 55% closed in profit, spread 8 = $0.08/bbl;
-only losing year 2019). SIGNALS ONLY: his standing instruction 6 Nov "don't focus on auto trading we are building
-this for trading dashboard not for auto trading the EA is only for back testing" - never copied to the Capital.com
-demo (not in autotrade.py).
+"""Brent Oil PAPER signals for the page - BRENT v1.06 rules, A-F only (brent_engine.py; rule G dropped - his 8 Nov
+decision: "drop rule G completely... push v1.06 with rules A-F only... no changes to autotrade.py"). MT4 proof for
+the FULL v1.06 bundle (A-F + G), his run 7 Nov 2026: 949 trades 2018-01..2026-10 on 851 days (~1.9/week), +$58,856
+at 0.30 lot, PF 1.46, max DD $9,529, 55.2% closed in profit, spread 8 = $0.08/bbl. That number is NOT this build's
+(G added real trades/profit) - the closer like-for-like reference is v1.05's own A-F result: 911 trades, +$50,198,
+DD $7,979, PF 1.47, 55% closed in profit (same window, same spread; only losing year 2019 -$2,598). By simple
+subtraction (not a separate MT4 run) G alone accounted for ~38 trades / ~$8,658 of the v1.06 bundle total. The
+v1.06 changes THIS build does carry - B/D entry 11:00 broker (was 10:00), rule C watching from 09:00 broker (was
+10:00) with its own 2.0x stop (was 1.0x, shared with the others), and the new conflict-close rule - were only ever
+MT4-tested bundled together with G, never in isolation; the live paper journal below is the first real read of
+them alone.
+Copied to the Capital.com DEMO account by autotrade.py (his 6 Nov go-ahead, given later the same day as his earlier
+"signals only, EA is backtest only" instruction - the go-ahead is what stands; autotrade.py's own MARKETS['BRENT']
+entry confirms it, verified against live main 8 Nov when this v1.06 port was built). Dropping rule G avoided a real
+problem found while building this: autotrade.py's watchdog force-closes any demo position held past one broker day
+("left over from an earlier day") plus its own fixed 21:30 day-end close - incompatible with a multi-day hold like
+G would have been, so G would have been wrongly closed early on the demo the day after opening. A-F all still close
+same-day (21:30 broker), so none of that applies to this build; autotrade.py itself is untouched.
 Called by run.py every minute, after the other markets. Each run: (1) a rolling ~95-day Capital.com HOUR-bar history
 (docs/brent_daily.json: per broker day h, l, and the 10:00->14:00 move for rule A's 60-day spread) is kept up to date,
-fetched once a day; (2) today's Capital.com minute bars (bid + spread) feed brent_engine.run_day() - 0 to 4 independent
-trades a day (rules A/B/C/D/E/F, same stop, same 21:30 exit); (3) docs/journal_brent.json (every paper trade) and
-docs/data.json -> markets.BRENT (the page). Source of truth: Archive Trading/BRENT/BRENT_v105_DASHBOARD_SPEC.txt."""
+fetched once a day; (2) today's Capital.com minute bars (bid + spread) feed brent_engine.run_day() - 0 to N
+independent trades a day (rules A-F, conflict-closed - an opposite signal closes an already-open trade and is
+itself skipped); (3) docs/journal_brent.json (every paper trade) and docs/data.json -> markets.BRENT (the page).
+Source of truth: Archive Trading/BRENT/BRENT_v106_DASHBOARD_SPEC.txt."""
 import os, json, time, requests, numpy as np, pandas as pd
 import feeds as F, brent_engine as E
 DEADLINE = time.time() + 240          # loop.py resets this every minute; Brent never holds up gold
@@ -17,11 +31,13 @@ JOUR = os.path.join(HERE, 'docs', 'journal_brent.json'); PORTAL = os.path.join(H
 HIST = os.path.join(HERE, 'docs', 'brent_daily.json'); HIST_KEEP = 150     # days kept (rule A's 60-day spread + headroom)
 EPIC = os.environ.get('CAPITAL_EPIC_BRENT', 'OIL_BRENT')                  # NOT yet confirmed live - see brent_run.fail() note
 MIN_SPREAD = 0.02                     # the paper result never uses less than 2 cents a barrel
-RULES = 'v1.05'
+RULES = 'v1.06'
 PASS = dict(pf=1.10, months=3)
 BACKTEST = dict(direction='—', days='~35% of days (~1.7/week)', perday='1.3', win='55% closed in profit', pf='1.47',
-                net='+$50,198 at 0.30 lot (max drawdown $7,979)',
-                source='MT4 BRENT_WED_HOL v1.05, his run 7 Nov 2026, 2018-01-02..2026-10-30, 911 trades, spread 8 ($0.08/bbl, RoboForex live spread); only losing year 2019 (-$2,598); new v1.05 legs E 45 trades +$3,843, F 112 trades +$1,653')
+                net='+$50,198 at 0.30 lot (max drawdown $7,979) - v1.05\'s A-F result (last MT4 number for A-F alone)',
+                source='MT4 BRENT_WED_HOL v1.05 (A-F only), his run 7 Nov 2026, 2018-01-02..2026-10-30, 911 trades, spread 8 ($0.08/bbl, RoboForex live spread); only losing year 2019 (-$2,598). '
+                       'The v1.06 MT4 run (same window) tested the FULL bundle incl. dropped rule G: 949 trades, +$58,856, DD $9,529 - by subtraction (not a separate run) G alone was ~38 trades / '
+                       '~$8,658 of that. This build\'s own v1.06 deltas (B/D entry 11:00, rule C from 09:00 with its own 2.0x stop, conflict-close) were only MT4-tested bundled with G, never alone.')
 
 class FeedError(RuntimeError):
     pass
@@ -117,14 +133,18 @@ def summary(J, day=None):
 def jdays(J): return J.get('days', [])[-30:][::-1]
 
 def base_card():
-    note = ('STOP 1.0 x 20-day average daily range, no target · exit 21:30 broker (Dubai: see the trade times) if not stopped first · '
-            'rules can fire together the same day (separate trades, same stop/exit): A) Wednesday - 10:00→14:00 move > 0.5x its own 60-day spread, trade that '
-            'direction at 14:00 · B) SELL 10:00 the first trading day after a US federal holiday · C) 20-day range break - price inside the range at 10:00, '
-            'first 1-min close beyond it 10:00-19:00, follow · D) BUY 10:00 on a UK bank holiday the market trades, SELL 10:00 the next trading day · '
-            'E) SELL 10:00 the 2nd trading day after a UK bank holiday · F) BUY 19:00 the trading day before a US federal or UK bank holiday')
+    note = ('STOP 1.0 x 20-day average daily range, no target (rule C: 2.0x) · exit 21:30 broker (Dubai: see the trade times) if not stopped first · '
+            'rules can fire together the same day (separate trades, same stop/exit) - an opposite signal closes an already-open trade and is itself skipped: '
+            'A) Wednesday - 10:00→14:00 move > 0.5x its own 60-day spread, trade that direction at 14:00 · B) SELL 11:00 the first trading day after a '
+            'US federal holiday · C) 20-day range break - price inside the range at 09:00, first 1-min close beyond it 09:00-19:00, follow (stop 2.0x) · '
+            'D) BUY 11:00 on a UK bank holiday the market trades, SELL 11:00 the next trading day · E) SELL 10:00 the 2nd trading day after a UK bank '
+            'holiday · F) BUY 19:00 the trading day before a US federal or UK bank holiday')
     return dict(code='BRENT', name='Brent Oil', symbol='BRENT · Capital.com Brent Oil Future', live=False, paper=True, status='Paper', version=RULES,
                 unit='usd', dp=2, stats=BACKTEST, pass_bar=PASS, day_note=note,
-                what_note='Tracks whether live Brent signals do as well as the v1.05 MT4 test. Copied to the Capital.com DEMO account by the auto-trader, same as Gold/USDJPY/Oil/Nasdaq/S&P (his 6 Nov go-ahead, reversing his earlier same-day "signals only" instruction). Decision after about 3 months.',
+                what_note='Tracks whether live Brent signals do as well as the v1.05 MT4 test (this build\'s own v1.06 B/D/C/conflict-close deltas were '
+                          'only MT4-tested bundled with the dropped rule G, never alone - see the backtest note). Copied to the Capital.com DEMO account '
+                          'by the auto-trader, same as Gold/USDJPY/Oil/Nasdaq/S&P500/GBPUSD (his 6 Nov go-ahead, reversing his earlier same-day "signals '
+                          'only" instruction). Decision after about 3 months.',
                 cost_note='Results are $ per barrel (0.30-lot backtest scale), from the signal price after the live Capital.com spread (at least 2 cents).',
                 net_label=f'Net $ per barrel ({RULES})')
 
@@ -164,12 +184,13 @@ def main(feed=None, get=None, getd=None, now=None):
     J['summary'] = summary(J, day); dumpj(J, JOUR, indent=1)
     last = float(b.c.iloc[-1]) if len(b) else None; first = float(b.o.iloc[0]) if len(b) else None
     rule_tags = [t['rule'] for t in trades]
+    exit_lbl = dubai(day + pd.Timedelta(minutes=E.EXIT_MIN))
     if not np.isfinite(A): state, msg = 'none', 'No trade: fewer than 20 days of price history for the average range yet.'
     elif rows:
         sides = ', '.join(f"{r['side']} ({r['rule']})" for r in rows)
         state = 'mixed' if len(set(r['side'] for r in rows)) > 1 else rows[0]['side'].lower()
-        msg = f"Today's signals: {sides}. Stop at 1.0 x the 20-day range, no target; closes at 9:30 pm Dubai winter (8:30 pm summer) if not stopped first."
-    elif dt['wed']: state, msg = 'waiting', "Wednesday - checking the 10:00→14:00 move against its 60-day spread at 2:00 pm broker."
+        msg = f"Today's signals: {sides}. Stop 1.0x the 20-day range (rule C: 2.0x), no target; closes {exit_lbl} Dubai if not stopped first."
+    elif dt['wed']: state, msg = 'waiting', "Wednesday - checking the 10:00→14:00 broker move against its 60-day spread (enters 14:00 broker if big enough)."
     else: state, msg = 'none', 'No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).'
     if dt.get('list_expiring'): msg += ' (A rule\'s holiday dates run out soon - the Brent chat needs to extend the EA\'s baked-in lists.)'
     spark = []

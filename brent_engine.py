@@ -1,35 +1,54 @@
-"""Brent Oil (BRENT) dashboard SIGNAL engine - BRENT v1.05 rules, source of truth EA BRENT_WED_HOL_v105.mq4
-(MT4-proven, his run 7 Nov 2026: 2018-01-01..2026-10-30, spread 8 (= $0.08/bbl, RoboForex live spread), 0.30 lot:
-911 trades, +$50,198, PF 1.47, max DD $7,979, 55% trades closed in profit; only losing year 2019 (-$2,598). v1.04
-same test: 754 trades, +$44,702, DD $8,162 - v1.05's new E/F rules add net trades (E 45/+$3,843, F 112/+$1,653).
-Pure functions, no I/O - used by brent_run.py (desk) only. SIGNALS ONLY, never auto-traded: his standing instruction
-6 Nov "don't focus on auto trading we are building this for trading dashboard not for auto trading the EA is only
-for back testing" - not wired into autotrade.py/autotrade_config.json.
+"""Brent Oil (BRENT) dashboard SIGNAL engine - BRENT v1.06 rules (A-F only; rule G and the conflict-close rule's
+interaction with it were part of the EA bundle but dropped from this port - his 8 Nov decision: "drop rule G
+completely... no changes to autotrade.py"), source of truth EA BRENT_WED_HOL_v106.mq4.
+(MT4 proof for the FULL v1.06 bundle including G, his run 7 Nov 2026: 2018-01-02..2026-10-30, spread 8 (= $0.08/bbl,
+RoboForex live spread), 0.30 lot: 949 trades, +$58,856, PF 1.46, max DD $9,529, 55.2% trades closed in profit, trades
+on 851 days (~1.9/week). That number is NOT what this A-F-only port will show live - G added real trades/profit to
+the MT4 run, so the live A-F-only journal will read somewhat lower than +$58,856. v1.05 same test (also A-F, no G):
+911 trades, +$50,198, DD $7,979 - that is the closer like-for-like comparison for this port. Only losing year in
+the full-bundle run was 2019 (-$2,245).)
+Pure functions, no I/O - used by brent_run.py (desk) only. Copied to the Capital.com DEMO account by autotrade.py
+(his 6 Nov go-ahead, given later the same day as his earlier "signals only, EA is backtest only" instruction - the
+go-ahead is what stands; see autotrade.py's own docstring and its MARKETS['BRENT'] entry, confirmed live 8 Nov).
 Clock: broker = New York + 7h (same convention as every other desk market; Dubai = broker + 2h winter / +1h summer).
-Common to every rule: STOP = 1.0 x average daily (high-low) range of the last 20 broker days. No target.
-EXIT = 21:30 broker if the stop is not hit first. Several rules can fire the same day (separate trades, same stop rule).
+Common to every rule: STOP = 1.0 x average daily (high-low) range of the last 20 broker days, EXCEPT rule C (2.0x,
+v1.06: was 1.0x, shared with the others). No target. EXIT = 21:30 broker if the stop is not hit first. Several
+rules can fire the same day (separate trades, same stop rule unless noted) - but if a new signal is OPPOSITE an
+already-open trade from earlier the same day, that open trade is closed at the new signal's price/time and the new
+signal is itself skipped (v1.06, new - see apply_conflict_close() below).
 RULE A - WEDNESDAY MOMENTUM: move = price(14:00 broker) - price(10:00 broker), computed every broker day. On Wednesday,
   if |move| > 0.5 x the standard deviation of the last 60 days' moves -> trade IN that direction at 14:00. (~29 trades/yr)
-RULE B - DAY AFTER A US FEDERAL HOLIDAY: SELL at 10:00 broker, the first trading day after a US federal holiday. (~8/yr)
-RULE C - 20-DAY RANGE BREAK: at 10:00 broker price must be inside the prior 20 broker days' high/low; the first 1-minute
-  CLOSE beyond that range between 10:00 and 19:00 broker -> enter at the next minute, in the break's direction. (~36/yr)
-RULE D - UK BANK HOLIDAY: BUY at 10:00 broker on a UK bank holiday the market trades (Christmas / New Year's Day /
-  Good Friday are full market closures, excluded from "a UK bank holiday the market trades"); SELL at 10:00 on the
-  next trading day (skipped when that next day is already a rule-B day, so the two rules never double up). (~8/yr)
-RULE E (v1.05) - 2ND TRADING DAY AFTER A UK BANK HOLIDAY: SELL at 10:00 broker. A separate, later date than rule D's
-  own "next trading day" sell - both can exist for the same holiday without colliding (different calendar dates).
-RULE F (v1.05) - DAY BEFORE A US FEDERAL OR UK BANK HOLIDAY: BUY at 19:00 broker (pre-holiday drift). Same stop/exit
-  as every other rule (1.0x 20-day range, 21:30 broker exit, so this is a ~2.5h hold unless stopped first).
-US/UK holiday dates are the EXACT baked-in lists from the proven EA (HOL_AFTER / UK_HOL_BUY / UK_HOL_SELL /
-UK_HOL_SELL2 / PRE_HOL_BUY in BRENT_WED_HOL_v105.mq4), copied verbatim - NOT recomputed from a calendar library. A
-first attempt to recompute Rule D from pandas + the `holidays` package matched Rule B exactly but did NOT match
-Rule D (e.g. the EA's UK_HOL_BUY skips a Boxing-Day-observed buy that a plain calendar would have added, and
-UK_HOL_SELL is not simply "the day after every UK_HOL_BUY date" - 86 buy dates vs 78 sell dates 2010-2027, not a
-1:1 pairing) - so the real, MT4-tested lists are used as-is rather than re-derived; same reasoning extends to E/F's
-own lists, each independently baked rather than computed as an offset of another list. These lists run out at
-2027.12.28/29 (B), 2028.01.03 (D), 2028.12.28 (E, UK_HOL_SELL2) and 2028.12.22 (F, PRE_HOL_BUY) - a future
-extension (new baked dates from the Brent chat) will be needed before then; until extended, each list simply
-stops firing past its own last listed date (same limitation already in the live EA)."""
+RULE B - DAY AFTER A US FEDERAL HOLIDAY: SELL at 11:00 broker, the first trading day after a US federal holiday.
+  (v1.06: was 10:00.) (~8/yr)
+RULE C - 20-DAY RANGE BREAK: at 09:00 broker price must be inside the prior 20 broker days' high/low (v1.06: watch
+  starts 09:00, was 10:00); the first 1-minute CLOSE beyond that range between 09:00 and 19:00 broker -> enter at
+  the next minute, in the break's direction; STOP 2.0x the range (v1.06: was 1.0x, shared with the other rules).
+  (~36/yr)
+RULE D - UK BANK HOLIDAY: BUY at 11:00 broker on a UK bank holiday the market trades (v1.06: was 10:00; Christmas /
+  New Year's Day / Good Friday are full market closures, excluded from "a UK bank holiday the market trades");
+  SELL at 11:00 on the next trading day (v1.06: was 10:00; skipped when that next day is already a rule-B day, so
+  the two rules never double up). (~8/yr)
+RULE E - 2ND TRADING DAY AFTER A UK BANK HOLIDAY: SELL at 10:00 broker (v1.06: unchanged - its own entry-time
+  setting, untouched by the B/D time change). A separate, later date than rule D's own "next trading day" sell -
+  both can exist for the same holiday without colliding (different calendar dates).
+RULE F - DAY BEFORE A US FEDERAL OR UK BANK HOLIDAY: BUY at 19:00 broker (pre-holiday drift, unchanged). Same
+  stop/exit as every other A/B/D/E rule (1.0x 20-day range, 21:30 broker exit, so this is a ~2.5h hold unless
+  stopped first).
+CONFLICT-CLOSE (v1.06, new): if a new signal is OPPOSITE an already-open trade from earlier the SAME day, that open
+  trade is closed at the new signal's price/time and the new signal is skipped entirely (no trade for it). Applied
+  inside run_day() via apply_conflict_close(), mirroring the EA's Open(): it loops every open order and closes any
+  opposite one before deciding whether to place the new one.
+US/UK holiday dates (HOL_AFTER / UK_HOL_BUY / UK_HOL_SELL / UK_HOL_SELL2 / PRE_HOL_BUY) are the EXACT baked-in lists
+from the proven EA (BRENT_WED_HOL_v106.mq4), copied verbatim - NOT recomputed from a calendar library (unchanged
+from v1.05 - only the entry TIMES for B/D/C moved in v1.06, not these lists). A first attempt (back in v1.05) to
+recompute Rule D from pandas + the `holidays` package matched Rule B exactly but did NOT match Rule D (e.g. the
+EA's UK_HOL_BUY skips a Boxing-Day-observed buy that a plain calendar would have added, and UK_HOL_SELL is not
+simply "the day after every UK_HOL_BUY date") - so the real, MT4-tested lists are used as-is rather than re-derived.
+These lists run out at 2027.12.28/29 (B), 2028.01.03 (D), 2028.12.28 (E, UK_HOL_SELL2) and 2028.12.22 (F,
+PRE_HOL_BUY) - a future extension (new baked dates from the Brent chat) will be needed before then; until extended,
+each list simply stops firing past its own last listed date (same limitation already in the live EA). Past journal
+days keep whichever rule version produced them (the `rules` tag written per day in docs/journal_brent.json) - the
+v1.05->v1.06 bump above changes nothing about how earlier days are scored."""
 import numpy as np, pandas as pd
 
 HOL_AFTER = ("2010.01.04,2010.01.19,2010.02.16,2010.06.01,2010.07.06,2010.09.07,2010.10.12,2010.11.12,2010.11.26,2010.12.27,"
@@ -105,17 +124,21 @@ PRE_HOL_BUY = (
 
 def _dateset(s): return frozenset(pd.Timestamp(d.replace('.', '-')) for d in s.split(','))
 RULE_B_DAYS, RULE_DBUY_DAYS, RULE_DSELL_DAYS = _dateset(HOL_AFTER), _dateset(UK_HOL_BUY), _dateset(UK_HOL_SELL)
-RULE_E_DAYS, RULE_F_DAYS = _dateset(UK_HOL_SELL2), _dateset(PRE_HOL_BUY)                                                 # v1.05
+RULE_E_DAYS, RULE_F_DAYS = _dateset(UK_HOL_SELL2), _dateset(PRE_HOL_BUY)
 LIST_LAST = dict(B=max(RULE_B_DAYS), Dbuy=max(RULE_DBUY_DAYS), Dsell=max(RULE_DSELL_DAYS), E=max(RULE_E_DAYS), F=max(RULE_F_DAYS))
 
 ADR_DAYS = 20                                          # stop size + rule C's channel
 MOVE_WIN = 60                                           # days of 10:00->14:00 moves behind rule A's std dev
 MOVE_Z = 0.5
-SIG_START_MIN, ENTRY_A_MIN = 10 * 60, 14 * 60           # rule A: move measured 10:00->14:00, entry at 14:00
-ENTRY_BD_MIN = 10 * 60                                  # rules B, D and E entry 10:00
-ENTRY_F_MIN = 19 * 60                                   # rule F (v1.05) entry 19:00 broker (pre-holiday drift)
-C_START_MIN, C_END_MIN = 10 * 60, 19 * 60               # rule C watch window for the break
+SIG_START_MIN, ENTRY_A_MIN = 10 * 60, 14 * 60           # rule A: move measured 10:00->14:00, entry at 14:00 (unchanged)
+ENTRY_BD_MIN = 11 * 60                                  # rules B and D entry 11:00 (v1.06: was 10:00)
+ENTRY_E_MIN = 10 * 60                                   # rule E entry 10:00 (unchanged - its own setting, untouched by B/D)
+ENTRY_F_MIN = 19 * 60                                   # rule F entry 19:00 broker (pre-holiday drift, unchanged)
+C_START_MIN, C_END_MIN = 9 * 60, 19 * 60                # rule C watch window for the break (v1.06: start 09:00, was 10:00)
 EXIT_MIN = 21 * 60 + 30                                 # common exit, every rule
+STOP_MULT = 1.0                                         # rules A,B,D,E,F stop = this x the 20-day range (unchanged)
+BREAK_STOP_MULT = 2.0                                   # rule C stop = this x the 20-day range (v1.06: was 1.0, shared with the others)
+USE_CONFLICT_CLOSE = True                               # v1.06, new: an opposite signal closes the open trade and skips itself
 ENTRY_LATE = 5                                          # a bar up to 5 min late still counts (same tolerance as gbp_engine)
 
 RULE_NAME = {'A': 'Rule A · Wednesday momentum', 'B': 'Rule B · day after US holiday',
@@ -171,17 +194,17 @@ def wed_signal(move, sd):
     return 1 if move > MOVE_Z * sd else -1 if move < -MOVE_Z * sd else 0
 
 # ---------------- trade construction ----------------
-def fixed_trade(b, day, entry_min, direction, A, rk, cost):
-    """A trade entered at a fixed broker-clock minute (first bar within ENTRY_LATE min), stop 1.0xA, exit EXIT_MIN
+def fixed_trade(b, day, entry_min, direction, A, rk, cost, mult=STOP_MULT):
+    """A trade entered at a fixed broker-clock minute (first bar within ENTRY_LATE min), stop mult*A, exit EXIT_MIN
     broker (or stopped first, checked low/high every minute). b: today's closed minute bars (idx broker time, o h l c)."""
     if direction == 0 or not np.isfinite(A) or A <= 0 or not len(b): return None
     day = pd.Timestamp(day).normalize(); t0 = day + pd.Timedelta(minutes=entry_min); te = day + pd.Timedelta(minutes=EXIT_MIN)
     a = int(b.index.searchsorted(t0))
     if a >= len(b) or b.index[a] - t0 > pd.Timedelta(minutes=ENTRY_LATE): return None
-    s = 1 if direction > 0 else -1; en = float(b.o.values[a]); st = en - s * A
+    s = 1 if direction > 0 else -1; en = float(b.o.values[a]); sd = mult * A; st = en - s * sd
     e = int(b.index.searchsorted(te))
     H, L = b.h.values[a:e], b.l.values[a:e]
-    out = dict(t=b.index[a], dir=s, rule=rk, name=RULE_NAME[rk], entry=en, stop=st, stop0=st, exit=None, exit_t=None, status='open', A=A)
+    out = dict(t=b.index[a], dir=s, rule=rk, name=RULE_NAME[rk], entry=en, stop=st, stop0=st, exit=None, exit_t=None, status='open', A=A, cost=cost)
     hit = None
     for j in range(len(H)):
         if (L[j] <= st) if s > 0 else (H[j] >= st): hit = ('stopped', st, j); break
@@ -190,14 +213,15 @@ def fixed_trade(b, day, entry_min, direction, A, rk, cost):
     if out['exit'] is not None: out['res'] = s * (out['exit'] - en) - cost
     return out
 
-def range_break_trade(b, day, hi, lo, A, cost):
-    """Rule C: price inside [lo,hi] at 10:00; first 1-min CLOSE beyond the range between 10:00 and 19:00 -> enter at
-    the NEXT minute, in the break's direction; stop 1.0xA; exit 21:30 or stopped first (same checks as fixed_trade)."""
+def range_break_trade(b, day, hi, lo, A, cost, mult=BREAK_STOP_MULT):
+    """Rule C: price inside [lo,hi] at C_START_MIN; first 1-min CLOSE beyond the range between C_START_MIN and
+    C_END_MIN -> enter at the NEXT minute, in the break's direction; stop mult*A (v1.06: 2.0x); exit 21:30 or
+    stopped first (same checks as fixed_trade)."""
     if not (np.isfinite(hi) and np.isfinite(lo) and np.isfinite(A) and A > 0) or not len(b): return None
     day = pd.Timestamp(day).normalize(); t0 = day + pd.Timedelta(minutes=C_START_MIN); t1 = day + pd.Timedelta(minutes=C_END_MIN)
     a0 = int(b.index.searchsorted(t0))
     if a0 >= len(b) or b.index[a0] - t0 > pd.Timedelta(minutes=ENTRY_LATE): return None
-    if not (lo <= b.c.values[a0] <= hi): return None           # already outside the range at 10:00 - rule C sits out today
+    if not (lo <= b.c.values[a0] <= hi): return None           # already outside the range at C_START_MIN - rule C sits out today
     win = b[(b.index >= t0) & (b.index < t1)]
     brk = None
     for j in range(1, len(win)):
@@ -207,10 +231,10 @@ def range_break_trade(b, day, hi, lo, A, cost):
     if brk is None: return None
     s, j = brk; a = int(b.index.searchsorted(win.index[j])) + 1
     if a >= len(b): return None
-    en = float(b.o.values[a]); st = en - s * A
+    en = float(b.o.values[a]); sd = mult * A; st = en - s * sd
     te = day + pd.Timedelta(minutes=EXIT_MIN); e = int(b.index.searchsorted(te))
     H, L = b.h.values[a:e], b.l.values[a:e]
-    out = dict(t=b.index[a], dir=s, rule='C', name=RULE_NAME['C'], entry=en, stop=st, stop0=st, exit=None, exit_t=None, status='open', A=A)
+    out = dict(t=b.index[a], dir=s, rule='C', name=RULE_NAME['C'], entry=en, stop=st, stop0=st, exit=None, exit_t=None, status='open', A=A, cost=cost)
     hit = None
     for k in range(len(H)):
         if (L[k] <= st) if s > 0 else (H[k] >= st): hit = ('stopped', st, k); break
@@ -219,9 +243,32 @@ def range_break_trade(b, day, hi, lo, A, cost):
     if out['exit'] is not None: out['res'] = s * (out['exit'] - en) - cost
     return out
 
+# ---------------- conflict-close (v1.06, new) ----------------
+def apply_conflict_close(trades):
+    """A new signal opposite an earlier-still-open trade from the SAME day closes that trade (at the new signal's
+    price/time) and is itself skipped. Mirrors the EA's Open(): it loops every open order and closes any opposite
+    one before deciding whether to place the new one. Walks today's trades in entry-time order; a trade is 'still
+    open' at time T if its own exit_t is None (never resolved) or later than T."""
+    if not USE_CONFLICT_CLOSE or len(trades) < 2: return trades
+    kept = []
+    for tr in sorted(trades, key=lambda t: t['t']):
+        hit = False
+        for k in kept:
+            if k.get('_closed'): continue
+            still_open = (k['exit_t'] is None) or (k['exit_t'] > tr['t'])
+            opposite = (tr['dir'] > 0 and k['dir'] < 0) or (tr['dir'] < 0 and k['dir'] > 0)
+            if still_open and opposite:
+                k['status'] = 'closed (conflict)'; k['exit'] = tr['entry']; k['exit_t'] = tr['t']
+                k['res'] = k['dir'] * (k['exit'] - k['entry']) - k.get('cost', 0)
+                k['_closed'] = True; hit = True
+        if hit: continue                                      # the new signal is skipped entirely
+        kept.append(tr)
+    for k in kept: k.pop('_closed', None)
+    return kept
+
 def run_day(b, day, dt, A, hi, lo, sd, cost=0.08):
     """b: today's closed minute bars. dt = day_type(...) for the day. A = ADR20; (hi,lo) = rule C's 20-day channel;
-    sd = rule A's 60-day move std. Returns the list of trade dicts that fired today (0-3, independent)."""
+    sd = rule A's 60-day move std. Returns the list of trade dicts that fired today (0-N, conflict-closed)."""
     trades = []
     if dt['ruleD_buy']:
         t = fixed_trade(b, day, ENTRY_BD_MIN, +1, A, 'Dbuy', cost)
@@ -232,8 +279,8 @@ def run_day(b, day, dt, A, hi, lo, sd, cost=0.08):
     if dt['ruleB']:
         t = fixed_trade(b, day, ENTRY_BD_MIN, -1, A, 'B', cost)
         if t: trades.append(t)
-    if dt['ruleE']:                                      # v1.05: 2nd trading day after a UK bank holiday - SELL 10:00
-        t = fixed_trade(b, day, ENTRY_BD_MIN, -1, A, 'E', cost)
+    if dt['ruleE']:
+        t = fixed_trade(b, day, ENTRY_E_MIN, -1, A, 'E', cost)
         if t: trades.append(t)
     if dt['wed']:
         side = wed_signal(today_move_10_14(b, day), sd)
@@ -242,7 +289,7 @@ def run_day(b, day, dt, A, hi, lo, sd, cost=0.08):
             if t: trades.append(t)
     tC = range_break_trade(b, day, hi, lo, A, cost)
     if tC: trades.append(tC)
-    if dt['ruleF']:                                      # v1.05: day before a US federal / UK bank holiday - BUY 19:00
+    if dt['ruleF']:
         t = fixed_trade(b, day, ENTRY_F_MIN, +1, A, 'F', cost)
         if t: trades.append(t)
-    return trades
+    return apply_conflict_close(trades)
