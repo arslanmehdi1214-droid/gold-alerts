@@ -1,5 +1,5 @@
 {
- "updated": "Mon 09 Nov \u00b7 3:29 am",
+ "updated": "Mon 09 Nov \u00b7 3:30 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 4067.86,
+   "price": 4067.84,
    "close_at": "12:50 am",
-   "change": 2.37,
+   "change": 2.35,
    "size": 0.1,
    "datr": 82.53,
    "open_now": 0,
@@ -58,7 +58,7 @@
     ],
     [
      "3:25 am",
-     4067.86,
+     4067.84,
      4069.09,
      4069.89,
      4066.86
@@ -1670,8 +1670,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 158.452,
-   "change_pips": -5.7,
+   "price": 158.442,
+   "change_pips": -6.7,
    "atr_pips": 91.1,
    "entries": [],
    "spark": [
@@ -1705,7 +1705,7 @@
     ],
     [
      "3:25 am",
-     158.452,
+     158.442,
      158.436,
      158.462,
      158.436
@@ -3318,7 +3318,7 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 89.41,
+   "price": 89.413,
    "change": -0.4,
    "entries": [],
    "spark": [
@@ -3361,7 +3361,7 @@
      "3:25 am",
      89.41,
      89.27,
-     89.43,
+     89.47,
      89.21
     ]
    ],
@@ -4520,8 +4520,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
    "message": "NIGHT BUY (high-fear night) at 3:01 am Dubai, stop 7224.2, closes at 7:00 pm Dubai (10:00 am New York). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7385.6,
-   "change": 29.0,
+   "price": 7385.2,
+   "change": 28.6,
    "entries": [
     {
      "time": "3:01 am",
@@ -4545,7 +4545,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 33.6,
+     "live": 33.2,
      "spread": 0.8
     }
    ],
@@ -4587,10 +4587,10 @@
     ],
     [
      "3:25 am",
-     7385.6,
+     7385.2,
      7389.3,
      7393.1,
-     7385.6
+     7384.4
     ]
    ],
    "journal": {
@@ -4657,7 +4657,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 33.6,
+       "live": 33.2,
        "spread": 0.8
       }
      ],
@@ -5413,8 +5413,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 27024.0,
-   "change": 201.7,
+   "price": 27025.6,
+   "change": 203.3,
    "entries": [],
    "spark": [
     [
@@ -5454,10 +5454,10 @@
     ],
     [
      "3:25 am",
-     27024.0,
+     27025.6,
      27052.9,
      27073.5,
-     27022.0
+     27015.8
     ]
    ],
    "journal": {
@@ -6401,8 +6401,8 @@
    "regime": 0.212,
    "gap": null,
    "message": "Today is a SELL day (euro hedge funds trend). The trade opens at 12:00 pm Dubai (10:00 broker).",
-   "price": 1.3356,
-   "change": 0.00175,
+   "price": 1.33558,
+   "change": 0.00173,
    "entries": [],
    "spark": [
     [
@@ -6526,10 +6526,10 @@
     ],
     [
      "3:25 am",
-     1.3356,
+     1.33558,
      1.33577,
      1.33577,
-     1.33559
+     1.33557
     ]
    ],
    "journal": {
@@ -7139,7 +7139,7 @@
    "live": false,
    "paper": true,
    "status": "Paper",
-   "version": "v1.06",
+   "version": "v1.07a",
    "unit": "usd",
    "dp": 2,
    "stats": {
@@ -7155,14 +7155,60 @@
     "pf": 1.1,
     "months": 3
    },
-   "day_note": "STOP 1.0 x 20-day average daily range, no target (rule C: 2.0x) \u00b7 exit 21:30 broker (Dubai: see the trade times) if not stopped first \u00b7 rules can fire together the same day (separate trades, same stop/exit) - an opposite signal closes an already-open trade and is itself skipped: A) Wednesday - 10:00\u219214:00 move > 0.5x its own 60-day spread, trade that direction at 14:00 \u00b7 B) SELL 11:00 the first trading day after a US federal holiday \u00b7 C) 20-day range break - price inside the range at 09:00, first 1-min close beyond it 09:00-19:00, follow (stop 2.0x) \u00b7 D) BUY 11:00 on a UK bank holiday the market trades, SELL 11:00 the next trading day \u00b7 E) SELL 10:00 the 2nd trading day after a UK bank holiday \u00b7 F) BUY 19:00 the trading day before a US federal or UK bank holiday",
-   "what_note": "Tracks whether live Brent signals do as well as the v1.05 MT4 test (this build's own v1.06 B/D/C/conflict-close deltas were only MT4-tested bundled with the dropped rule G, never alone - see the backtest note). Copied to the Capital.com DEMO account by the auto-trader, same as Gold/USDJPY/Oil/Nasdaq/S&P500/GBPUSD (his 6 Nov go-ahead, reversing his earlier same-day \"signals only\" instruction). Decision after about 3 months.",
+   "day_note": "STOP 1.0 x 20-day average daily range, no target (rule C: 2.0x) \u00b7 exit 21:30 broker (Dubai: see the trade times) if not stopped first \u00b7 rules can fire together the same day (separate trades, same stop/exit) - an opposite signal closes an already-open trade and is itself skipped: A) Wednesday - 10:00\u219214:00 move > 0.5x its own 60-day spread, trade that direction at 14:00 \u00b7 B) SELL 11:00 the first trading day after a US federal holiday \u00b7 C) 20-day range break - price inside the range at 09:00, first 1-min close beyond it 09:00-19:00, follow (stop 2.0x) \u00b7 D) BUY 11:00 on a UK bank holiday the market trades, SELL 11:00 the next trading day \u00b7 E) SELL 10:00 the 2nd trading day after a UK bank holiday \u00b7 F) BUY 19:00 the trading day before a US federal or UK bank holiday \u00b7 K+) NEW 9 Nov 2026, thin before 2026 - overextension fade: price 0.8x the 20-day range away from its own 09:00 or 10:00 broker price (first touch, before 18:00) -> fade back, stop 2.0x the range, exit 19:00 broker. Independent of A-F - its own position, never conflict-closed, skipped on Wednesday/calendar days or if rule C already opened today",
+   "what_note": "Tracks whether live Brent signals do as well as the v1.05 MT4 test (this build's own v1.06 B/D/C/conflict-close deltas were only MT4-tested bundled with the dropped rule G, never alone - see the backtest note). v1.07a (9 Nov 2026) adds rule K+ on top, unchanged A-F; K+ has its own isolated MT4 proof - new and thin before 2026, see the K+ panel. Copied to the Capital.com DEMO account by the auto-trader, same as Gold/USDJPY/Oil/Nasdaq/S&P500/GBPUSD (his 6 Nov go-ahead, reversing his earlier same-day \"signals only\" instruction). Decision after about 3 months.",
    "cost_note": "Results are $ per barrel (0.30-lot backtest scale), from the signal price after the live Capital.com spread (at least 2 cents).",
-   "net_label": "Net $ per barrel (v1.06)",
+   "net_label": "Net $ per barrel (v1.07a)",
+   "kfade": {
+    "trades": 285,
+    "stops": 0,
+    "win": 52,
+    "net": 7716,
+    "by_year": [
+     [
+      "2018",
+      -90
+     ],
+     [
+      "2019",
+      -798
+     ],
+     [
+      "2020",
+      -657
+     ],
+     [
+      "2021",
+      1578
+     ],
+     [
+      "2022",
+      -1581
+     ],
+     [
+      "2023",
+      1971
+     ],
+     [
+      "2024",
+      1254
+     ],
+     [
+      "2025",
+      -1017
+     ],
+     [
+      "2026",
+      7056
+     ]
+    ],
+    "note": "New, thin before 2026 - most of the edge is 2026; 2018-2025 net is -$324 (6 of 8 years negative).",
+    "source": "MT4 BRENT_WED_HOL_v107a.mq4, his run 9 Nov 2026, 2018.01.02-2026.10.30, spread 8 ($0.08/bbl), 0.30 lot - K+ alone: 285 trades, 0 stop hits, all closed 19:00 broker, 52% closed in profit, net +$7,716. Full v1.07a EA incl. K+: +$67,704, 1,241 trades (v1.06 full EA was +$58,856, 949). Python mirror predicted the same 285 trades."
+   },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 96.449,
-   "change": -0.71,
+   "price": 96.427,
+   "change": -0.73,
    "entries": [],
    "spark": [
     [
@@ -7202,9 +7248,9 @@
     ],
     [
      "3:25 am",
-     96.45,
+     96.43,
      96.26,
-     96.45,
+     96.46,
      96.21
     ]
    ],
@@ -7218,14 +7264,14 @@
     "win": null,
     "pf": null,
     "net": null,
-    "rules": "v1.06",
+    "rules": "v1.07a",
     "direction": null,
     "green": 0.0
    },
    "jdays": [
     {
      "date": "2026-11-09",
-     "rules": "v1.06",
+     "rules": "v1.07a",
      "label": "Mon 09 Nov",
      "side": null,
      "trades": [],
