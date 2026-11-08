@@ -15,8 +15,11 @@ S = dict(Signal_Stop_Target=0.5, Stop_Other=0.75, Signal_Last_Hour=19, Close_HHM
          N6_End=8, N6_Min_Range=0.6, N11_Calm=0.8, N11_Days=2, N11_From=9, N12_Pct=0.2, N12_Days=3, N12_From=10,
          Gate_N4N11_By_DayHad=True,  # v2.22 weak-tag gate (EA extern row 313, default true): N4 nr7 and N11 calm only
          # lose money when they are the day's FIRST trade - block them from opening until the day already has one.
-         G8_TTM_KC=2.3,  # v2.24 G8 decouple + DT227 (EA extern row 317, MT4-confirmed PASS 7 Nov: net +0.66%, maxDD 4.45%
-         # vs DT223's 4.57%, PF 1.32 vs 1.31): G8 ttmvsc's OWN TTM-squeeze kc, no longer the shared G7/G16 ttm2(kc=2.0) flag.
+         G8_TTM_KC=2.0,  # DT227 REVERTED 8 Nov: the banked "PASS" (+0.66%, maxDD 4.45%) turned out to be G8_TTM_KC=2.3
+         # contaminated by a carried-over Vol_High_Size=1.15 (DT225) from an earlier Tester load. Re-tested G8 alone
+         # (DT227B, clean .set): net DOWN -2.4% vs DT223 baseline - fails outright. Back to kc=2.0, same value as the
+         # shared G7/G16 ttm2 flag (gok[8] = gok[7]/gok[16] again in all but name) - the decouple machinery (ttm8 below,
+         # V227_FROM gate) stays in place, just inert, in case a different kc value is ever worth testing again.
          N13_ADX=15, N13_Days=2, N13_From=9, N15_Hour=6, N15_Pct=0.2, N15_Range_Hours=4, N15_Window_Hours=6,
          A15_ADX=15, A15_Days=2, A15_From=12, T15_KC=1.5, T15_Days=5, T15_From=9, N16_Min=3, N16_Days=5, N16b_Days=3,
          N16_From=12, S24_Hour=3, S24_Max=0.6, S24_Hours=24, G3_Box=1.0156,
@@ -56,9 +59,9 @@ OTHER = ("U2 ", "U8 ", "N1 ", "N2 ", "N3 ", "N4 ", "N5 ", "N6 ")
 V222_FROM = np.datetime64('2026-11-05')   # v2.22 Weak-tag gate (Gate_N4N11_By_DayHad) goes live dashboard-side from push day -
 # no MT4-confirmed go-live date given for this one (same situation as v2.20's V220_FROM in desk209.py), his call: live from push
 # day. Gated by date so past days already shown in the journal/Analytics history are never recomputed differently.
-V227_FROM = np.datetime64('2026-11-07')   # v2.24 G8 decouple + DT227 (G8_TTM_KC=2.3) goes live dashboard-side from push day -
-# same situation as v2.20/v2.22 above (no MT4-confirmed go-live date for the Python mirror), his call: live from push day.
-# Gated by date so past days already shown in the journal/Analytics history are never recomputed differently.
+V227_FROM = np.datetime64('2026-11-07')   # v2.24 G8 decouple machinery goes live dashboard-side from push day - DT227
+# (G8_TTM_KC=2.3) itself was REVERTED 8 Nov (confirmed FAIL once isolated, see G8_TTM_KC above); kc=2.0 from this date
+# on is numerically identical to the pre-decouple shared ttm2 behavior, so the gate stays here but is now a no-op.
 
 
 class Daily:
@@ -234,7 +237,7 @@ def run_day(day, D, Hh, m1, inp):
     a3 = D.rngavg(1, 3); calm = a5 > 0 and a20 > 0 and a5 / a20 < 0.8; c37 = a3 > 0 and a20 > 0 and a3 / a20 < 0.7
     ya = D.atr(1); ysmall = ya > 0 and D.rng(1) / ya < 0.7
     ttm2 = D.ttm(2.0); box3 = D.hi(1, 3) - D.lo(1, 3); adx18 = adxY < 18
-    ttm8 = D.ttm(S['G8_TTM_KC']) if V227 else ttm2   # v2.24 G8 decouple (DT227): G8's own kc=2.3 from V227_FROM; before that, and
+    ttm8 = D.ttm(S['G8_TTM_KC']) if V227 else ttm2   # v2.24 G8 decouple (DT227, now reverted to kc=2.0 - see S[] above): before V227_FROM, and
     # for G7/G16 always, the shared ttm2(kc=2.0) flag is unchanged
     nr4 = r1 > 0 and all(D.rng(k) > 0 and D.rng(k) >= r1 for k in range(2, 5))
     gok = [False, q >= 3, c37 and ysmall, 0 < box3 <= S['G3_Box'] * atr, q >= 3, q >= 3 and D.rng5rank() <= 0.2, calm and q >= 2,
