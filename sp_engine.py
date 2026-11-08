@@ -148,7 +148,7 @@ v1.15 (5 Nov 2026, "Night V10": his MT4 run SP500_DAYTRADE v1.15 Magic 500125 la
                 percentile of the 10-day % change in the BKLN/HYG ratio <= 0.15 - a duration-favoring/dovish credit
                 backdrop) AND the S&P E-mini futures leveraged-money positioning (CFTC Traders in Financial Futures,
                 "S&P 500 Consolidated", weekly, 3-day publication lag applied so nothing is look-ahead) was already
-                                net-long/bullish (52-week rolling percentile of the leveraged-money net position >= 0.70) at once -
+                net-long/bullish (52-week rolling percentile of the leveraged-money net position >= 0.70) at once -
                 a "credit and futures positioning both already leaning the same way" momentum signal, the first
                 round to pair COT data on the S&P's own contract (distinct from the parked Round 57 candidate,
                 which used VIX-futures COT positioning) with a credit-duration feature - same stop (1.0 x range)
@@ -298,7 +298,7 @@ def book_events(b, A, pH, pL):
                 if jj + 1 < n: E.append((jj + 1, -sd, f'S&P yesterday {"high" if sd > 0 else "low"} swept ({lab} scan), back inside -> reverse'))
                 break
     i = _first_bar(hm, 17 * 60)
-      if i >= 0 and abs(O[i] - O[0]) >= K4_X * A and i + 1 < n:                   # day move since the open at 17:00 -> follow (twice, as tested)
+    if i >= 0 and abs(O[i] - O[0]) >= K4_X * A and i + 1 < n:                   # day move since the open at 17:00 -> follow (twice, as tested)
         s = int(np.sign(O[i] - O[0]))
         E.append((i + 1, s, 'S&P big day move by 10 am New York -> follow')); E.append((i + 1, s, 'S&P big day move by 10 am New York -> follow (2nd leg)'))
     return E
