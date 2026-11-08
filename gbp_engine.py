@@ -17,7 +17,14 @@ v1.04 REGIME rules on crowd days (layers 1-3), regime = percentile of today's 14
 v1.05 (MT4 his run 7, 7 Nov 2026): EXTRA half-size SELL at 10:00 on the day after a UK or US holiday (POST_HOL), stop 1.5 x range, no target, close 23:45.
 v1.06 (MT4 his run 8, 7 Nov 2026: 4,176 trades, net $16,244.01, max DD $1,596.44, profit days 55.3%, every period up vs v1.05):
   EXTRA half-size BUY at 10:00 on FOMC statement days (FOMC_DAYS, federalreserve.gov), stop 1.0 x range, no target, close 20:55 broker
-  (before the 21:00 statement). Source: Mueller, Tahbaz-Salehi & Vedolin (2017) - the dollar weakens on FOMC days."""
+  (before the 21:00 statement). Source: Mueller, Tahbaz-Salehi & Vedolin (2017) - the dollar weakens on FOMC days.
+v1.08 (MT4 his run 9, 8 Nov 2026: 4,385 trades, net $19,717.63, max DD $1,517.42, net/DD 12.99, 62.6% closed in profit, profit days 63.4%,
+  trade on 98% of weekdays, every period up vs v1.06) = v1.06 + 4 upgrades:
+  a) calm days (layers 1-3): lock at +0.25 x stop (was 0.35) and NO target (close 23:45);
+  b) Tuesday (broker): any main trade locks at +0.2 x stop (stop -> entry + 5 pips), target unchanged;
+  c) layer 6 (desk code 8): else FOLLOW euro asset managers' 1-week change of net/OI (CFTC TFF 099741): 52-week percentile >= 0.7 -> BUY, <= 0.3 -> SELL;
+  d) layer 7 (desk code 9): else FADE GBP "other reportables" net/OI at a 52-week extreme (096742): percentile >= 0.9 -> SELL, <= 0.1 -> BUY.
+  Layers 6/7 use the plain rules (stop 1.0 x range, target 1.0 x stop). Source for c/d: Menkhoff, Sarno, Schmeling & Schrimpf (2016)."""
 import numpy as np, pandas as pd
 
 Q1, Q2, Q3 = 0.10, 0.20, 0.25
@@ -26,7 +33,7 @@ ENTRY_MIN, ENTRY_LATE, CLOSE_MIN = 10 * 60, 5, 23 * 60 + 45
 COST = 0.00015                                   # 1.5 pips (the research cost); the desk uses max(this, live spread)
 LAYER_NAME = {1: 'Layer 1 · hedge funds crowded', 2: 'Layer 2 · small traders crowded', 3: 'Layer 3 · small traders jumped in',
               4: 'Layer 4 · pound stretched vs euro', 5: 'Layer 5 · euro hedge funds trend', 6: 'Holiday sell · day after a UK/US holiday',
-              7: 'FOMC buy · Fed decision day'}
+              7: 'FOMC buy · Fed decision day', 8: 'Layer 6 · euro asset managers moving', 9: 'Layer 7 · pound corporates crowded'}
 Q5, EG_W, EG_Z = 0.25, 20, 1.5
 HOL_SIZE, HOL_STOP = 0.5, 1.5                    # v1.05 extra trade
 POST_HOL = frozenset([
@@ -89,7 +96,9 @@ def is_post_holiday(day):
     return str(pd.Timestamp(day).date()) in POST_HOL
 
 REG_W, REG_MIN, BUSY_Q, CALM_Q = 250, 120, 0.8, 0.5
-BUSY_STOP, BUSY_TGT, LOCK_AT, LOCK_PX, DIV_X = 1.25, 1.5, 0.35, 0.0005, 0.3
+BUSY_STOP, BUSY_TGT, LOCK_AT, LOCK_PX, DIV_X = 1.25, 1.5, 0.25, 0.0005, 0.3     # v1.08: calm lock 0.35 -> 0.25
+CALM_TGT, TUE_LOCK_AT = 0.0, 0.2                 # v1.08: calm days no target; Tuesday lock at +0.2 x stop (any main layer)
+Q6, Q7 = 0.3, 0.1                                # v1.08 layers 6 / 7 thresholds
 
 def rank_pct(v, win=52, minp=26):
     """rolling 52-week percentile of the newest value = pandas rolling(52, min_periods=26).rank(pct=True) (average ties)."""
@@ -122,6 +131,25 @@ def eur_codes(W):
     W = W.sort_index(); lev = (W.lev_l - W.lev_s) / W.oi; p = rank_pct(lev.values)
     return pd.DataFrame(dict(lev=lev, levp=p, code=np.where(p >= 1 - Q5, 1, np.where(p <= Q5, -1, 0))), index=W.index)
 
+def pct_strict(v, win=52, minp=40):
+    """v1.08 research percentile = pandas rolling(52, min_periods=40).apply(lambda w: (w < w[-1]).mean(), raw=True)."""
+    v = np.asarray(v, float); out = np.full(len(v), np.nan)
+    for i in range(len(v)):
+        w = v[max(0, i - win + 1):i + 1]
+        if np.isfinite(w).sum() < minp or not np.isfinite(v[i]): continue
+        out[i] = float(np.mean(w < v[i]))
+    return out
+
+def am_codes(W):
+    """v1.08 layer 6: W = weekly EURO FX rows (oi, am_l, am_s) by report date -> amcp + code +1 (asset managers added: BUY GBP/USD) / -1 / 0."""
+    W = W.sort_index(); am = (W.am_l - W.am_s) / W.oi; p = pct_strict(am.diff().values)
+    return pd.DataFrame(dict(am=am, amcp=p, code=np.where(p >= 1 - Q6, 1, np.where(p <= Q6, -1, 0))), index=W.index)
+
+def or_codes(W):
+    """v1.08 layer 7: W = weekly British Pound rows (oi, or_l, or_s) -> orp + code (FADE: top 10% -> -1 SELL, bottom 10% -> +1 BUY)."""
+    W = W.sort_index(); orr = (W.or_l - W.or_s) / W.oi; p = pct_strict(orr.values)
+    return pd.DataFrame(dict(orr=orr, orp=p, code=np.where(p >= 1 - Q7, -1, np.where(p <= Q7, 1, 0))), index=W.index)
+
 def eg_side(vals):
     """vals = EUR/GBP at 10:00 broker on the trading days BEFORE today, oldest first. Uses the newest 20 (= pandas rolling(20) z of
     yesterday's value). Returns (+1 BUY / -1 SELL / 0, z)."""
@@ -132,11 +160,14 @@ def eg_side(vals):
     z = (v[-1] - v.mean()) / sd
     return (1 if z > EG_Z else -1 if z < -EG_Z else 0), float(z)
 
-def decide(gcode, eg, ecode):
-    """v1.03 order: GBP layers 1-3, else layer 4 (EUR/GBP), else layer 5 (euro funds). Returns code +-1..+-5 or 0."""
+def decide(gcode, eg, ecode, amcode=0, orcode=0):
+    """v1.08 order: GBP layers 1-3, else layer 4 (EUR/GBP), else layer 5 (euro funds), else layer 6 (euro asset managers, desk code 8),
+    else layer 7 (GBP other reportables, desk code 9). Returns code +-1..+-5, +-8, +-9 or 0."""
     if gcode: return int(gcode)
     if eg: return 4 * int(eg)
-    return 5 * int(ecode)
+    if ecode: return 5 * int(ecode)
+    if amcode: return 8 * int(amcode)
+    return 9 * int(orcode)
 
 def range_hist(daily, day):
     """A (14-day average high-low of the days BEFORE each day) for every stored weekday up to and including `day` (oldest first)."""
@@ -163,8 +194,8 @@ def mode(code, pct, div):
     if code == 0 or lay > 3 or not np.isfinite(pct): return int(code), STOP_X, TGT_X, False, 'normal'
     if pct >= BUSY_Q: return int(code), BUSY_STOP, BUSY_TGT, False, 'busy'
     if pct < CALM_Q:
-        if np.isfinite(div) and abs(div) >= DIV_X: return (-1 if div > 0 else 1) * lay, STOP_X, TGT_X, True, 'calm_gap'
-        return int(code), STOP_X, TGT_X, True, 'calm'
+        if np.isfinite(div) and abs(div) >= DIV_X: return (-1 if div > 0 else 1) * lay, STOP_X, CALM_TGT, True, 'calm_gap'
+        return int(code), STOP_X, CALM_TGT, True, 'calm'
     return int(code), STOP_X, TGT_X, False, 'normal'
 
 def avg_range(daily, day):
@@ -173,7 +204,7 @@ def avg_range(daily, day):
     if len(d) < RANGE_DAYS: return np.nan
     return float((d.h - d.l).iloc[-RANGE_DAYS:].mean())
 
-def trade(b, day, code, A, now=None, cost=COST, k=STOP_X, tx=TGT_X, lock=False, close_min=CLOSE_MIN):
+def trade(b, day, code, A, now=None, cost=COST, k=STOP_X, tx=TGT_X, lock=False, close_min=CLOSE_MIN, lock_at=LOCK_AT):
     """b = the day's closed minute bars (index broker time, columns o h l c, bid). Returns a trade dict or None.
     status: open / target / stopped / eod (23:45 close) / close_now (day over, no 23:45 bar = catch-up close)."""
     if code == 0 or not np.isfinite(A) or A <= 0 or not len(b): return None
@@ -184,7 +215,7 @@ def trade(b, day, code, A, now=None, cost=COST, k=STOP_X, tx=TGT_X, lock=False, 
     st, tg = en - s * sd, (en + s * tx * sd if tx > 0 else None)   # v1.05: tx <= 0 = no target
     e = int(b.index.searchsorted(te))                                                      # first bar at/after 23:45 (exit at its open)
     H, L = b.h.values[a:e], b.l.values[a:e]
-    lk_px, lk_st = en + s * LOCK_AT * sd, en + s * LOCK_PX
+    lk_px, lk_st = en + s * lock_at * sd, en + s * LOCK_PX
     out = dict(t=b.index[a], dir=s, layer=abs(code), entry=en, sd=sd, A=A, stop=st, stop0=st, target=tg, exit=None, exit_t=None, status='open', pips=None,
                lock=bool(lock), lock_px=lk_px if lock else None, lock_stop=lk_st if lock else None, locked=False, locked_t=None)
     cur = st; hit = None
