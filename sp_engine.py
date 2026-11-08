@@ -148,7 +148,7 @@ v1.15 (5 Nov 2026, "Night V10": his MT4 run SP500_DAYTRADE v1.15 Magic 500125 la
                 percentile of the 10-day % change in the BKLN/HYG ratio <= 0.15 - a duration-favoring/dovish credit
                 backdrop) AND the S&P E-mini futures leveraged-money positioning (CFTC Traders in Financial Futures,
                 "S&P 500 Consolidated", weekly, 3-day publication lag applied so nothing is look-ahead) was already
-                net-long/bullish (52-week rolling percentile of the leveraged-money net position >= 0.70) at once -
+                                net-long/bullish (52-week rolling percentile of the leveraged-money net position >= 0.70) at once -
                 a "credit and futures positioning both already leaning the same way" momentum signal, the first
                 round to pair COT data on the S&P's own contract (distinct from the parked Round 57 candidate,
                 which used VIX-futures COT positioning) with a credit-duration feature - same stop (1.0 x range)
@@ -244,6 +244,11 @@ V13_MSCIEM_MIN = 0.85; V13_CM_MAX = 0.30                              # v1.17 Ni
 V14_BRLFX_MIN = 0.85; V14_UST2Y_MAX = 0.20                            # v1.18 Night V14: Brazilian-Real-futures leveraged-money COT 4-report-shift (52wk pctile, >=) / UST-2yr-futures leveraged-money COT 4-report-shift (52wk pctile, <=) thresholds
 V16_UST5Y_MAX = 0.15; V16_CQ_MAX = 0.30                               # v1.19 Night V16: UST-5yr-Note-futures leveraged-money COT 4-report-shift (52wk pctile, <=) / HYG-LQD ratio 10d change (252d pctile, <=) thresholds (Round 67 best, parked since; cq_chg10_pct is the SAME feature already fetched for V8 - see ust5y_cq_today() in sp_run.py)
 V18_MBTC_MAX = 0.30; V18_NG_MIN = 0.85                                # v1.19 Night V18: Micro-Bitcoin-futures leveraged-money COT 4-report-shift (52wk pctile, <=) / NG=F-CL=F ratio LEVEL percentile (252d pctile, >=) thresholds (Round 73 best)
+V19_ULTBOND_MIN = 0.85; V19_MSCIEM_MIN = 0.85                         # v1.23 Night V19: Ultra-T-Bond-futures leveraged-money LEVEL (52wk pctile, >=) / MSCI-EM-futures leveraged-money LEVEL (52wk pctile, >=, SAME feature already fetched for V13) thresholds (Round 74 best)
+V20_ESAM_MIN = 0.85; V20_CP_MAX = 0.20                                # v1.23 Night V20: E-mini-S&P Asset-Manager COT 4-report-shift (52wk pctile, >=) / XLP-SPY ratio 10d change (252d pctile, <=) thresholds (Round 75 best)
+V21_VIXFOTH_MIN = 0.85; V21_CHFFX_MAX = 0.20                          # v1.23 Night V21: VIX-futures Other-Reportables COT 4-report-shift (52wk pctile, >=) / Swiss-Franc-futures leveraged-money COT 4-report-shift (52wk pctile, <=) thresholds (Round 76 best)
+V22_UST2YNR_MAX = 0.15; V22_MSCIEMCHG_MAX = 0.20                      # v1.23 Night V22: UST-2yr-Note-futures Non-Reportables COT 4-report-shift (52wk pctile, <=) / MSCI-EM-futures leveraged-money COT 4-report-shift (52wk pctile, <=) thresholds (Round 78 best)
+V23_UTI2NR_MAX = 0.15; V23_TR_MAX = 0.20                              # v1.23 Night V23: E-mini-S&P-Utilities-sector Non-Reportables COT 4-report-shift (52wk pctile, <=) / XTN-SPY (transports) ratio 10d change (252d pctile, <=) thresholds (Round 81 best)
 
 def eod_minutes(day): return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
@@ -293,7 +298,7 @@ def book_events(b, A, pH, pL):
                 if jj + 1 < n: E.append((jj + 1, -sd, f'S&P yesterday {"high" if sd > 0 else "low"} swept ({lab} scan), back inside -> reverse'))
                 break
     i = _first_bar(hm, 17 * 60)
-    if i >= 0 and abs(O[i] - O[0]) >= K4_X * A and i + 1 < n:                   # day move since the open at 17:00 -> follow (twice, as tested)
+      if i >= 0 and abs(O[i] - O[0]) >= K4_X * A and i + 1 < n:                   # day move since the open at 17:00 -> follow (twice, as tested)
         s = int(np.sign(O[i] - O[0]))
         E.append((i + 1, s, 'S&P big day move by 10 am New York -> follow')); E.append((i + 1, s, 'S&P big day move by 10 am New York -> follow (2nd leg)'))
     return E
@@ -575,6 +580,102 @@ def v18_flag(M, day):
     if not (np.isfinite(row.mbtc_cot_chg4_pct) and np.isfinite(row.ng_lvl_pct)): return False, {}
     dd = dict(date=str(k.date()), mbtc_cot_chg4_pct=float(row.mbtc_cot_chg4_pct), ng_lvl_pct=float(row.ng_lvl_pct))
     return bool(row.mbtc_cot_chg4_pct <= V18_MBTC_MAX and row.ng_lvl_pct >= V18_NG_MIN), dd
+
+def v19_flag(U, day):
+    """v1.23 Night V19 trigger. U: DataFrame indexed by date (built by ultbond_msciem_today() in sp_run.py) with
+    columns ultbond_cot_pct (52-week rolling percentile of the leveraged-money net position LEVEL - not a 4-report
+    shift - in Ultra U.S. Treasury Bond futures, CFTC Feb-2022 rename concatenated, weekly data with a 3-day
+    publication lag already applied so nothing is look-ahead - high = already positioned extreme-long duration)
+    and msciem_cot_pct (the SAME MSCI-EM leveraged-money LEVEL feature already fetched for V13 - high = already
+    positioned extreme-long). The broker day `day`'s own NY-date row is day - 1 calendar day (same lag
+    relationship as V4-V18's lookup: d = ny_date + 1). Fires when both are extreme-long at once
+    (ultbond_cot_pct >= V19_ULTBOND_MIN AND msciem_cot_pct >= V19_MSCIEM_MIN) - Round 74's best, thinnest/most-
+    caveated of the V19-V23 stack (msciem reuse risk vs live V13, flagged honestly, still built per his
+    "stack and test all 5 together" call). Missing values (not enough rolling history yet, or no data that day)
+    mean it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if U is None or not len(U) or k not in U.index: return False, {}
+    row = U.loc[k]
+    if not (np.isfinite(row.ultbond_cot_pct) and np.isfinite(row.msciem_cot_pct)): return False, {}
+    dd = dict(date=str(k.date()), ultbond_cot_pct=float(row.ultbond_cot_pct), msciem_cot_pct=float(row.msciem_cot_pct))
+    return bool(row.ultbond_cot_pct >= V19_ULTBOND_MIN and row.msciem_cot_pct >= V19_MSCIEM_MIN), dd
+
+def v20_flag(E, day):
+    """v1.23 Night V20 trigger. E: DataFrame indexed by date (built by es_am_cp_today() in sp_run.py) with columns
+    es_am_chg4_pct (52-week rolling percentile of the 4-report SHIFT in the CFTC ASSET-MANAGER net position -
+    real-money/institutional, distinct cohort from the leveraged-money category used everywhere else - in the
+    S&P 500 E-mini futures, weekly data with a 3-day publication lag already applied so nothing is look-ahead -
+    high = real-money positioning shifting fast-bullish) and cp_chg10_pct (252-day rolling percentile of the
+    10-day % change in the XLP/SPY ratio - low = consumer staples underperforming the index, a risk-on rotation
+    signal). The broker day `day`'s own NY-date row is day - 1 calendar day (same lag relationship as V4-V19's
+    lookup: d = ny_date + 1). Fires when real-money ES positioning is shifting fast-bullish
+    (es_am_chg4_pct >= V20_ESAM_MIN) AND staples are underperforming (cp_chg10_pct <= V20_CP_MAX) at once -
+    Round 75's best, cleanest trim of the V19-V23 stack. Missing values (not enough rolling history yet, or no
+    data that day) mean it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if E is None or not len(E) or k not in E.index: return False, {}
+    row = E.loc[k]
+    if not (np.isfinite(row.es_am_chg4_pct) and np.isfinite(row.cp_chg10_pct)): return False, {}
+    dd = dict(date=str(k.date()), es_am_chg4_pct=float(row.es_am_chg4_pct), cp_chg10_pct=float(row.cp_chg10_pct))
+    return bool(row.es_am_chg4_pct >= V20_ESAM_MIN and row.cp_chg10_pct <= V20_CP_MAX), dd
+
+def v21_flag(X, day):
+    """v1.23 Night V21 trigger. X: DataFrame indexed by date (built by vixfoth_chffx_today() in sp_run.py) with
+    columns vixf_oth_chg4_pct (52-week rolling percentile of the 4-report SHIFT in the CFTC OTHER-REPORTABLES net
+    position - smaller reportable hedgers, distinct cohort from leveraged-money - in VIX futures, weekly data
+    with a 3-day publication lag already applied so nothing is look-ahead - high = this cohort shifting fast
+    toward net-long-vol) and chffx_cot_chg4_pct (52-week rolling percentile of the 4-report SHIFT in the Swiss-
+    Franc-futures LEVERAGED-MONEY net position - low = safe-haven-currency positioning shifting fast-bearish).
+    The broker day `day`'s own NY-date row is day - 1 calendar day (same lag relationship as V4-V20's lookup:
+    d = ny_date + 1). Fires when both shift fast in their respective directions at once
+    (vixf_oth_chg4_pct >= V21_VIXFOTH_MIN AND chffx_cot_chg4_pct <= V21_CHFFX_MAX) - Round 76's best, cleanest/
+    zero-overlap pick of the V19-V23 stack (no stress-gate overlap, no feature reuse). Missing values (not
+    enough rolling history yet, or no data that day) mean it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if X is None or not len(X) or k not in X.index: return False, {}
+    row = X.loc[k]
+    if not (np.isfinite(row.vixf_oth_chg4_pct) and np.isfinite(row.chffx_cot_chg4_pct)): return False, {}
+    dd = dict(date=str(k.date()), vixf_oth_chg4_pct=float(row.vixf_oth_chg4_pct), chffx_cot_chg4_pct=float(row.chffx_cot_chg4_pct))
+    return bool(row.vixf_oth_chg4_pct >= V21_VIXFOTH_MIN and row.chffx_cot_chg4_pct <= V21_CHFFX_MAX), dd
+
+def v22_flag(Y, day):
+    """v1.23 Night V22 trigger. Y: DataFrame indexed by date (built by ust2ynr_msciemchg_today() in sp_run.py)
+    with columns ust2y_nr_chg4_pct (52-week rolling percentile of the 4-report SHIFT in the CFTC NON-REPORTABLES
+    net position - small speculators/retail, distinct cohort from leveraged-money - in UST 2-Year Note futures,
+    CFTC Feb-2022 rename concatenated, weekly data with a 3-day publication lag already applied so nothing is
+    look-ahead - low = retail positioning falling fast) and msciem_cot_chg4_pct (52-week rolling percentile of
+    the 4-report SHIFT in the SAME MSCI-EM leveraged-money net position used (as a LEVEL) by V13/V19 - low =
+    positioning falling fast; this is the shift variant, a genuinely different transform of the same underlying
+    series, fetched independently here). The broker day `day`'s own NY-date row is day - 1 calendar day (same
+    lag relationship as V4-V21's lookup: d = ny_date + 1). Fires when both are falling fast at once
+    (ust2y_nr_chg4_pct <= V22_UST2YNR_MAX AND msciem_cot_chg4_pct <= V22_MSCIEMCHG_MAX) - Round 78's best, best
+    trim-robustness of the V19-V23 stack (3rd touch of MSCI-EM COT across the project - flagged honestly as an
+    instrument-concentration risk, built anyway per his "stack and test all 5" call). Missing values (not
+    enough rolling history yet, or no data that day) mean it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if Y is None or not len(Y) or k not in Y.index: return False, {}
+    row = Y.loc[k]
+    if not (np.isfinite(row.ust2y_nr_chg4_pct) and np.isfinite(row.msciem_cot_chg4_pct)): return False, {}
+    dd = dict(date=str(k.date()), ust2y_nr_chg4_pct=float(row.ust2y_nr_chg4_pct), msciem_cot_chg4_pct=float(row.msciem_cot_chg4_pct))
+    return bool(row.ust2y_nr_chg4_pct <= V22_UST2YNR_MAX and row.msciem_cot_chg4_pct <= V22_MSCIEMCHG_MAX), dd
+
+def v23_flag(Z, day):
+    """v1.23 Night V23 trigger. Z: DataFrame indexed by date (built by uti2nr_tr_today() in sp_run.py) with
+    columns uti2_nr_chg4_pct (52-week rolling percentile of the 4-report SHIFT in the CFTC NON-REPORTABLES net
+    position - small speculators/retail - in the E-mini S&P Utilities sector futures, weekly data with a 3-day
+    publication lag already applied so nothing is look-ahead - low = retail positioning in utilities falling
+    fast) and tr_chg10_pct (252-day rolling percentile of the 10-day % change in the XTN/SPY ratio - low =
+    transports underperforming the index). The broker day `day`'s own NY-date row is day - 1 calendar day (same
+    lag relationship as V4-V22's lookup: d = ny_date + 1). Fires when both are weak at once
+    (uti2_nr_chg4_pct <= V23_UTI2NR_MAX AND tr_chg10_pct <= V23_TR_MAX) - Round 81's best, cleanest-hardened pick
+    of the whole V19-V23 stack (zero feature reuse with any other leg, all 7 years present, not clustered).
+    Missing values (not enough rolling history yet, or no data that day) mean it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if Z is None or not len(Z) or k not in Z.index: return False, {}
+    row = Z.loc[k]
+    if not (np.isfinite(row.uti2_nr_chg4_pct) and np.isfinite(row.tr_chg10_pct)): return False, {}
+    dd = dict(date=str(k.date()), uti2_nr_chg4_pct=float(row.uti2_nr_chg4_pct), tr_chg10_pct=float(row.tr_chg10_pct))
+    return bool(row.uti2_nr_chg4_pct <= V23_UTI2NR_MAX and row.tr_chg10_pct <= V23_TR_MAX), dd
 
 def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_done=False,
               name='Night long (high-fear night: VIX / VVIX)', src=1):
