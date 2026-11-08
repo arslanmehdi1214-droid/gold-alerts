@@ -276,6 +276,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
   <div class="cards" id="cards"></div>
   <div class="idle" id="idle"></div>
   <div class="closed" id="closedbox"></div>
+  <div class="dim" id="fomcbox" style="margin-top:8px"></div>
   <div class="hist" id="histbox"></div>
  </section>
  <aside class="rail rr pane p-nw">
@@ -473,6 +474,12 @@ function render(){
  const idle=MK.filter(m=>!T.some(o=>o.m===m&&!done(o.e)));
  idle.innerHTML=idle.length?idle.map(m=>`<span data-c="${m.c}"><b>${m.n}</b> ${dirOf(M[m.c])==='NONE'?'waiting for first signal':'no open trade'}</span>`).join(' &nbsp; '):'';
  closedbox.innerHTML=cl.length?`<h3 id="clhdr">Closed today · ${cl.length}</h3><table>${cl.map(c=>`<tr data-c="${c.o.m.c}"><td>${c.o.m.n}</td><td class="${c.o.e.side==='BUY'?'pos':'neg'}">${c.o.e.side}</td><td class="num dim">${c.o.e.time}</td><td class="r num ${c.mv>=0?'pos':'neg'}">${sg(c.R)}R</td><td class="r num ${c.pl>=0?'pos':'neg'}">${sg(c.pl*AED)} AED</td></tr>`).join('')}</table>`:'';
+ try{const fo=(M.US100||{}).fomc;                    /* 8 Nov: FOMC-overnight (own journal, independent of the v1.02 card above) */
+  if(!fo)fomcbox.innerHTML='';
+  else if(fo.state==='open'){const dp=(MK.find(x=>x.c==='US100')||{}).dp??1;
+   fomcbox.innerHTML=`<b>FOMC overnight</b> · long from ${fo.entry_time} @ ${f(fo.entry,dp)} · stop ${f(fo.stop,dp)} / target ${f(fo.target,dp)} (R=${f(fo.r,dp)})${fo.live!=null?` · <b class="${fo.live>=0?'pos':'neg'}">${sg(fo.live,dp)} pts</b>`:''} · decision ${fo.decision_date}`}
+  else fomcbox.innerHTML=`<b>FOMC overnight</b> · ${fo.note}`
+ }catch(e){}
  const now=new Date();
  const DKeys=[...new Set(G.map(g=>dkey(g.t)))].sort();
  if(!DKeys.length)DKeys.push(dkey(now));
