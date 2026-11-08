@@ -242,6 +242,8 @@ V10_BK_MAX = 0.15; V10_ES_MIN = 0.70                                  # v1.15 Ni
 V12_DJIA_MIN = 0.70; V12_CR_MAX = 0.20                                # v1.16 Night V12: DJIA leveraged-money COT 4-report-shift (52wk pctile, >=) / ETH-USD/BTC-USD ratio 10d change (252d pctile, <=) thresholds
 V13_MSCIEM_MIN = 0.85; V13_CM_MAX = 0.30                              # v1.17 Night V13: MSCI-EM-futures leveraged-money LEVEL (52wk pctile, >=) / XLC-SPY ratio 10d change (252d pctile, <=) thresholds
 V14_BRLFX_MIN = 0.85; V14_UST2Y_MAX = 0.20                            # v1.18 Night V14: Brazilian-Real-futures leveraged-money COT 4-report-shift (52wk pctile, >=) / UST-2yr-futures leveraged-money COT 4-report-shift (52wk pctile, <=) thresholds
+V16_UST5Y_MAX = 0.15; V16_CQ_MAX = 0.30                               # v1.19 Night V16: UST-5yr-Note-futures leveraged-money COT 4-report-shift (52wk pctile, <=) / HYG-LQD ratio 10d change (252d pctile, <=) thresholds (Round 67 best, parked since; cq_chg10_pct is the SAME feature already fetched for V8 - see ust5y_cq_today() in sp_run.py)
+V18_MBTC_MAX = 0.30; V18_NG_MIN = 0.85                                # v1.19 Night V18: Micro-Bitcoin-futures leveraged-money COT 4-report-shift (52wk pctile, <=) / NG=F-CL=F ratio LEVEL percentile (252d pctile, >=) thresholds (Round 73 best)
 
 def eod_minutes(day): return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
@@ -535,6 +537,44 @@ def v14_flag(T, day):
     if not (np.isfinite(row.brlfx_cot_chg4_pct) and np.isfinite(row.ust2y_cot_chg4_pct)): return False, {}
     dd = dict(date=str(k.date()), brlfx_cot_chg4_pct=float(row.brlfx_cot_chg4_pct), ust2y_cot_chg4_pct=float(row.ust2y_cot_chg4_pct))
     return bool(row.brlfx_cot_chg4_pct >= V14_BRLFX_MIN and row.ust2y_cot_chg4_pct <= V14_UST2Y_MAX), dd
+
+def v16_flag(U, day):
+    """v1.19 Night V16 trigger. U: DataFrame indexed by date (built by ust5y_cq_today() in sp_run.py) with columns
+    ust5y_cot_chg4_pct (52-week rolling percentile of the 4-report SHIFT in the CFTC leveraged-money net position -
+    long minus short, normalized by open interest - in UST 5-Year Note futures, CFTC Feb-2022 rename concatenated,
+    weekly data with a 3-day publication lag already applied so nothing is look-ahead - low = 5yr-note positioning
+    falling fast) and cq_chg10_pct (252-day rolling percentile of the 10-day % change in the HYG/LQD ratio - low =
+    junk bonds underperforming investment-grade, i.e. credit markets de-risking - the SAME feature already used by
+    v8_flag() above). The broker day `day`'s own NY-date row is day - 1 calendar day (same lag relationship as
+    V4-V14's lookup: d = ny_date + 1). Fires when UST 5yr-note COT positioning is falling fast
+    (ust5y_cot_chg4_pct <= V16_UST5Y_MAX) AND credit is de-risking (cq_chg10_pct <= V16_CQ_MAX) at once - Round 67's
+    best (parked since that round, built alongside V17/V18 per his "all 3"). Missing values (not enough rolling
+    history yet, or no data that day) mean it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if U is None or not len(U) or k not in U.index: return False, {}
+    row = U.loc[k]
+    if not (np.isfinite(row.ust5y_cot_chg4_pct) and np.isfinite(row.cq_chg10_pct)): return False, {}
+    dd = dict(date=str(k.date()), ust5y_cot_chg4_pct=float(row.ust5y_cot_chg4_pct), cq_chg10_pct=float(row.cq_chg10_pct))
+    return bool(row.ust5y_cot_chg4_pct <= V16_UST5Y_MAX and row.cq_chg10_pct <= V16_CQ_MAX), dd
+
+def v18_flag(M, day):
+    """v1.19 Night V18 trigger. M: DataFrame indexed by date (built by mbtc_ng_today() in sp_run.py) with columns
+    mbtc_cot_chg4_pct (52-week rolling percentile of the 4-report SHIFT in the CFTC leveraged-money net position -
+    long minus short, normalized by open interest - in Micro Bitcoin futures, weekly data with a 3-day publication
+    lag already applied so nothing is look-ahead - low = micro-Bitcoin positioning shifting slow/bearish) and
+    ng_lvl_pct (252-day rolling percentile of the NG=F/CL=F ratio LEVEL - high = natural gas relatively strong vs
+    WTI, an energy-complex divergence). The broker day `day`'s own NY-date row is day - 1 calendar day (same lag
+    relationship as V4-V16's lookup: d = ny_date + 1). Fires when micro-Bitcoin COT positioning is shifting slow
+    (mbtc_cot_chg4_pct <= V18_MBTC_MAX) AND the energy complex is diverging (ng_lvl_pct >= V18_NG_MIN) at once -
+    Round 73's best (micro-sized retail crypto contract, distinct trader base from the full-size Bitcoin/Ether COT
+    already used in V12's cr_chg10 pairing). Missing values (not enough rolling history yet, or no data that day)
+    mean it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if M is None or not len(M) or k not in M.index: return False, {}
+    row = M.loc[k]
+    if not (np.isfinite(row.mbtc_cot_chg4_pct) and np.isfinite(row.ng_lvl_pct)): return False, {}
+    dd = dict(date=str(k.date()), mbtc_cot_chg4_pct=float(row.mbtc_cot_chg4_pct), ng_lvl_pct=float(row.ng_lvl_pct))
+    return bool(row.mbtc_cot_chg4_pct <= V18_MBTC_MAX and row.ng_lvl_pct >= V18_NG_MIN), dd
 
 def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_done=False,
               name='Night long (high-fear night: VIX / VVIX)', src=1):
