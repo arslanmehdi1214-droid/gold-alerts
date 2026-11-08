@@ -131,6 +131,123 @@ def engine_first(m, day):
 def eod_minutes(day):
     return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
+# ---------------- CPI-overnight / Turnaround Tuesday / Big Up Continuation (8 Nov 2026 port, leads
+# #13/#402, #12/#386, #14/#410 from the Nasdaq chat's research hunt - same session as FOMC-overnight,
+# Python-confirmed then MT4-confirmed). Same independent-additive-module pattern as FOMC-overnight:
+# own journal file each, long only, never counted against v1.02's 2-trades-a-day cap, never touched by
+# manage_v102, shown alongside the existing US100 card as mk['US100']['cpi']/['tuesday']/['bigup'].
+# All three use the EXACT SAME stop/target sizing as FOMC (StopSizeATRMultiplier=0.35, TargetRMultiple=1.0 -
+# each EA's own header: "identical ComputeR() to the FOMC EA") - so FOMC_R_MULT/FOMC_TP_MULT and fomc_r()
+# are reused as-is below, not renamed, to keep this diff minimal.
+
+# -- CPI-overnight: same exit mechanic as FOMC (fixed future deadline = RTH open on a known release day) --
+# Release dates 2010-2027 copied verbatim from the Nasdaq chat's MT4-confirmed EA (NASDAQ_CPI_OVERNIGHT_v1.00.mq4):
+# deduped to one release per calendar month; note the real Oct/Nov 2025 gap (no separate Nov 2025 release -
+# US govt shutdown data delay, the real BLS record, not a data error); 2026.11.10 onward = BLS's own published
+# schedule (bls.gov/schedule/news_release/cpi.htm), confirmed through Dec 2027; update every Oct/Nov.
+CPI_RELEASES = [
+    '2010.01.15', '2010.02.17', '2010.03.18', '2010.04.14', '2010.05.19', '2010.06.17', '2010.07.16', '2010.08.13',
+    '2010.09.17', '2010.10.15', '2010.11.17', '2010.12.15', '2011.01.14', '2011.02.15', '2011.03.17', '2011.04.15',
+    '2011.05.13', '2011.06.15', '2011.07.15', '2011.08.18', '2011.09.15', '2011.10.19', '2011.11.16', '2011.12.16',
+    '2012.01.19', '2012.02.15', '2012.03.16', '2012.04.13', '2012.05.15', '2012.06.14', '2012.07.17', '2012.08.15',
+    '2012.09.14', '2012.10.16', '2012.11.15', '2012.12.14', '2013.01.16', '2013.02.19', '2013.03.15', '2013.04.16',
+    '2013.05.16', '2013.06.18', '2013.07.16', '2013.08.15', '2013.09.17', '2013.10.30', '2013.11.20', '2013.12.17',
+    '2014.01.16', '2014.02.18', '2014.03.18', '2014.04.15', '2014.05.15', '2014.06.17', '2014.07.22', '2014.08.19',
+    '2014.09.17', '2014.10.22', '2014.11.20', '2014.12.17', '2015.01.16', '2015.02.20', '2015.03.24', '2015.04.17',
+    '2015.05.22', '2015.06.18', '2015.07.17', '2015.08.19', '2015.09.16', '2015.10.15', '2015.11.17', '2015.12.15',
+    '2016.01.20', '2016.02.19', '2016.03.16', '2016.04.14', '2016.05.17', '2016.06.16', '2016.07.15', '2016.08.16',
+    '2016.09.16', '2016.10.18', '2016.11.17', '2016.12.15', '2017.01.18', '2017.02.13', '2017.03.15', '2017.04.14',
+    '2017.05.12', '2017.06.14', '2017.07.14', '2017.08.11', '2017.09.14', '2017.10.13', '2017.11.15', '2017.12.13',
+    '2018.01.12', '2018.02.14', '2018.03.13', '2018.04.11', '2018.05.10', '2018.06.12', '2018.07.12', '2018.08.10',
+    '2018.09.13', '2018.10.11', '2018.11.14', '2018.12.12', '2019.01.11', '2019.02.11', '2019.03.12', '2019.04.10',
+    '2019.05.10', '2019.06.12', '2019.07.11', '2019.08.13', '2019.09.12', '2019.10.10', '2019.11.13', '2019.12.11',
+    '2020.01.14', '2020.02.11', '2020.03.11', '2020.04.10', '2020.05.12', '2020.06.10', '2020.07.14', '2020.08.12',
+    '2020.09.11', '2020.10.13', '2020.11.12', '2020.12.10', '2021.01.13', '2021.02.08', '2021.03.10', '2021.04.13',
+    '2021.05.12', '2021.06.10', '2021.07.13', '2021.08.11', '2021.09.14', '2021.10.13', '2021.11.10', '2021.12.10',
+    '2022.01.12', '2022.02.08', '2022.03.10', '2022.04.12', '2022.05.11', '2022.06.10', '2022.07.13', '2022.08.10',
+    '2022.09.13', '2022.10.13', '2022.11.10', '2022.12.13', '2023.01.12', '2023.02.10', '2023.03.14', '2023.04.12',
+    '2023.05.10', '2023.06.13', '2023.07.12', '2023.08.10', '2023.09.13', '2023.10.12', '2023.11.14', '2023.12.12',
+    '2024.01.11', '2024.02.09', '2024.03.12', '2024.04.10', '2024.05.15', '2024.06.12', '2024.07.11', '2024.08.14',
+    '2024.09.11', '2024.10.10', '2024.11.13', '2024.12.11', '2025.01.15', '2025.02.12', '2025.03.12', '2025.04.10',
+    '2025.05.13', '2025.06.11', '2025.07.15', '2025.08.12', '2025.09.11', '2025.10.24', '2025.12.18', '2026.01.13',
+    '2026.02.13', '2026.03.11', '2026.04.10', '2026.05.12', '2026.06.10', '2026.07.14', '2026.08.12', '2026.09.11',
+    '2026.10.14', '2026.11.10', '2026.12.10', '2027.01.13', '2027.02.11', '2027.03.10', '2027.04.13', '2027.05.12',
+    '2027.06.10', '2027.07.14', '2027.08.11', '2027.09.14', '2027.10.14', '2027.11.10', '2027.12.10',
+]
+CPI_FROM = pd.Timestamp('2026-11-08')             # push day - the already-past 10 Nov entry day is never retroactively traded
+
+def cpi_release_dates():
+    return sorted(pd.Timestamp(d.replace('.', '-')) for d in CPI_RELEASES)
+
+def cpi_entry_map():
+    """{entry-day date string: release day Timestamp}, entry days on/after CPI_FROM only (same rule as fomc_entry_map)."""
+    out = {}
+    for dday in cpi_release_dates():
+        back = 3 if dday.dayofweek == 0 else 1          # Monday release -> back to Friday (never occurs in this list, kept for safety)
+        eday = dday - pd.Timedelta(days=back)
+        if eday >= CPI_FROM: out[str(eday.date())] = dday
+    return out
+
+# -- shared raw-range helper for Turnaround Tuesday's R and Big Up Continuation's trigger + R (both read the
+# SAME raw 14-day avg range, lagged 2 trading days before day - identical window/lag to fomc_r, before FOMC_R_MULT) --
+def lagged_avg_range(DB, day):
+    d = pd.Timestamp(day)
+    if d not in DB.index: return None
+    pos = DB.index.get_loc(d)
+    if pos < 1: return None
+    v = DB['atr'].iloc[pos - 1]
+    return None if not np.isfinite(v) or v <= 0 else float(v)
+
+# -- Turnaround Tuesday: today is Tuesday, the prior trading day (Monday) closed down. Entry = Tuesday's own
+# RTH close (NOT Monday's - verified against the EA's own header: "do not 'fix' this to enter on Monday"). --
+TUESDAY_FROM = pd.Timestamp('2026-11-08')         # push day - no retroactive trading of already-past Tuesdays
+
+def turnaround_tuesday_signal(DB, day):
+    d = pd.Timestamp(day)
+    if d.dayofweek != 1 or d not in DB.index: return False      # pandas Tuesday = 1
+    pos = DB.index.get_loc(d)
+    if pos < 1: return False
+    y = DB.index[pos - 1]
+    if pd.Timestamp(y).dayofweek != 0: return False              # prior trading day must be Monday
+    return float(DB['c'].iloc[pos - 1]) < float(DB['o'].iloc[pos - 1])
+
+# -- Big Up Continuation: today's full day (Close-Open) > BIGUP_MULT x the raw lagged avg range -> long
+# continuation at today's own RTH close. Trigger threshold uses the RAW range (BIGUP_MULT=1.5); the stop still
+# uses FOMC_R_MULT=0.35 x the SAME raw range (two independently-set multipliers on one underlying number, per
+# the EA's own header). --
+BIGUP_MULT = 1.5
+BIGUP_FROM = pd.Timestamp('2026-11-08')           # push day - no retroactive trading of already-past big-up days
+
+def bigup_continuation_signal(DB, day, mult=BIGUP_MULT):
+    d = pd.Timestamp(day)
+    if d not in DB.index: return False
+    avg = lagged_avg_range(DB, d)
+    if avg is None: return False
+    ret = float(DB['c'].loc[d]) - float(DB['o'].loc[d])
+    return ret > 0 and ret > mult * avg
+
+# -- shared exit check for Turnaround Tuesday / Big Up Continuation: unlike FOMC/CPI (fixed future deadline =
+# a known calendar date), their force-close deadline is "the RTH CLOSE of the next trading day after entry" -
+# not knowable in advance (weekends/holidays), so it's detected live: exit_day is simply the first `day` this
+# is called with that is later than entry_day (weekends are already never passed in, since main() skips them
+# entirely - so the first later `day` IS the next trading day, exactly like the EA's D1-bar-shift method). --
+def hold_day_check_exit(m, entry_time, entry, sl, tp, exit_day, now):
+    """Long-only scan of minute bars after entry_time up to now for stop/target (same precedence as
+    fomc_check_exit); once exit_day's own RTH-close deadline has passed, force-closes at the last known
+    CLOSE price (a close, not an open - matching exit_j = close_bar[day+1] in each EA's Python source).
+    Returns (status, exit_px, exit_time); 'open' means still running."""
+    bars = m[(m.index > pd.Timestamp(entry_time)) & (m.index <= now)]
+    for t, r in bars.iterrows():
+        o, h, l = float(r.o), float(r.h), float(r.l)
+        if o <= sl: return 'stopped', o, t
+        if l <= sl: return 'stopped', sl, t
+        if o >= tp: return 'target', o, t
+        if h >= tp: return 'target', tp, t
+    deadline = pd.Timestamp(exit_day).normalize() + pd.Timedelta(minutes=eod_minutes(exit_day))
+    if now >= deadline and len(bars):
+        return 'eod', float(bars.c.iloc[-1]), bars.index[-1]
+    return 'open', None, None
+
 def build_base(m, out, eng=None, open_last=False):
     """m: minute bars (index = broker time, columns o h l c), weekdays, sorted. Same layout as the research base (build_base_n.py).
     open_last (22 Oct fix): the last day is still running - until a bar at/after its close time exists, its latest closed bar is not

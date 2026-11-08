@@ -15,6 +15,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 MIN = os.path.join(HERE, 'docs', 'nq_min'); JOUR = os.path.join(HERE, 'docs', 'journal_nq.json')
 PORTAL = os.path.join(HERE, 'docs', 'data.json'); STATE = os.path.join(HERE, 'docs', 'nq_state.json')   # data-check memory (22 Oct)
 FOMC_JOUR = os.path.join(HERE, 'docs', 'journal_nq_fomc.json')   # 8 Nov: FOMC-overnight's own small journal, separate from v1.02's
+CPI_JOUR = os.path.join(HERE, 'docs', 'journal_nq_cpi.json')         # 8 Nov: CPI-overnight's own small journal
+TUESDAY_JOUR = os.path.join(HERE, 'docs', 'journal_nq_tuesday.json') # 8 Nov: Turnaround Tuesday's own small journal
+BIGUP_JOUR = os.path.join(HERE, 'docs', 'journal_nq_bigup.json')     # 8 Nov: Big Up Continuation's own small journal
 EPIC = os.environ.get('CAPITAL_EPIC_NQ', 'US100')
 MIN_SPREAD = 1.8                      # 22 Oct fix: the paper levels and results use exactly 1.8 index points (as the MT4 v1.02 test);
                                       # the live Capital.com spread is shown only (spread_live)
@@ -260,6 +263,149 @@ def fomc_card(J):
                      note=f"FOMC overnight ({c['decision_date']}): {why}, {c['pts']:+.1f} pts.")
     return None
 
+# ---------------- CPI-overnight / Turnaround Tuesday / Big Up Continuation (8 Nov 2026 port) ----------------
+# Same independent-additive pattern as FOMC above: each kept entirely separate from v1.02 (own journal, own
+# entry/exit check, never touches journal_nq.json's RULES='v1.02' days or the card's pass-bar summary). Shown
+# as mk['US100']['cpi']/['tuesday']/['bigup'] alongside the existing card, not merged into entries[].
+
+def cpi_run(hist, day, now, b, spread_live):
+    """Same exit mechanic as fomc_run (fixed future deadline = RTH open on a known release day) - reuses
+    N.fomc_check_exit and N.fomc_r as-is, only the entry-day source (N.cpi_entry_map) differs."""
+    J = loadj(CPI_JOUR, dict(open=None, closed=[])); changed = False
+    allm = pd.concat([hist[hist.index < day], b]) if len(b) else hist[hist.index < day]
+    if J['open']:
+        o = J['open']
+        status, ex, ext = N.fomc_check_exit(allm, o['entry_time'], o['entry'], o['sl'], o['tp'], o['decision_date'], now)
+        if status == 'open':
+            o['live'] = None if not len(allm) else round(float(allm.c.iloc[-1]) - o['entry'], 1)
+        else:
+            closed = dict(o, status=status, exit=round(ex, 1), exit_time=str(ext), pts=round(ex - o['entry'], 1))
+            J['closed'] = ([closed] + J['closed'])[:20]; J['open'] = None; changed = True
+    elif now >= day + pd.Timedelta(minutes=N.eod_minutes(day)):
+        emap = N.cpi_entry_map(); key = str(day.date())
+        if key in emap and not any(c.get('entry_day') == key for c in J['closed']):
+            eod_bar = b[b.index < day + pd.Timedelta(minutes=N.eod_minutes(day))]
+            if len(eod_bar):
+                DB = N.daily_range_atr(pd.concat([hist[hist.index < day], eod_bar]))
+                R = N.fomc_r(DB, day)
+                if R:
+                    entry = round(float(eod_bar.c.iloc[-1]) + spread_live, 1)
+                    J['open'] = dict(entry_day=key, decision_date=str(emap[key].date()), entry_time=str(eod_bar.index[-1]),
+                                      entry=entry, sl=round(entry - R, 1), tp=round(entry + N.FOMC_TP_MULT * R, 1), r=R, live=0.0)
+                    changed = True
+    if changed: dumpj(J, CPI_JOUR, indent=1)
+    return J
+
+def cpi_card(J):
+    o = J.get('open')
+    if o:
+        return dict(state='open', decision_date=o['decision_date'], entry_time=o['entry_time'], entry=o['entry'],
+                     stop=o['sl'], target=o['tp'], r=o['r'], live=o.get('live'),
+                     note=f"CPI overnight: long from {o['entry_time']}, stop {o['sl']} / target {o['tp']} (R={o['r']}), "
+                          f"force-closes at the {o['decision_date']} RTH open if neither hits first.")
+    c = J['closed'][0] if J.get('closed') else None
+    if c:
+        why = {'target': 'hit target', 'stopped': 'hit stop', 'eod': 'force-closed at the RTH open'}.get(c['status'], c['status'])
+        return dict(state='closed', decision_date=c['decision_date'], entry_time=c['entry_time'], entry=c['entry'],
+                     exit=c['exit'], exit_time=c['exit_time'], pts=c['pts'], r=c['r'],
+                     note=f"CPI overnight ({c['decision_date']}): {why}, {c['pts']:+.1f} pts.")
+    return None
+
+def tuesday_run(hist, day, now, b, spread_live):
+    """Exit deadline is dynamic (next trading day's RTH close, not a known future date) - uses
+    N.hold_day_check_exit; entry checked only on a Tuesday whose prior trading day (Monday) closed down."""
+    J = loadj(TUESDAY_JOUR, dict(open=None, closed=[])); changed = False
+    allm = pd.concat([hist[hist.index < day], b]) if len(b) else hist[hist.index < day]
+    if J['open']:
+        o = J['open']; entry_day = pd.Timestamp(o['entry_day'])
+        if day > entry_day:
+            status, ex, ext = N.hold_day_check_exit(allm, o['entry_time'], o['entry'], o['sl'], o['tp'], day, now)
+            if status == 'open':
+                o['live'] = None if not len(allm) else round(float(allm.c.iloc[-1]) - o['entry'], 1)
+            else:
+                closed = dict(o, status=status, exit=round(ex, 1), exit_time=str(ext), pts=round(ex - o['entry'], 1))
+                J['closed'] = ([closed] + J['closed'])[:20]; J['open'] = None; changed = True
+        else:
+            o['live'] = None if not len(allm) else round(float(allm.c.iloc[-1]) - o['entry'], 1)
+    elif now >= day + pd.Timedelta(minutes=N.eod_minutes(day)) and day >= N.TUESDAY_FROM:
+        key = str(day.date())
+        if not any(c.get('entry_day') == key for c in J['closed']):
+            eod_bar = b[b.index < day + pd.Timedelta(minutes=N.eod_minutes(day))]
+            if len(eod_bar):
+                DB = N.daily_range_atr(pd.concat([hist[hist.index < day], eod_bar]))
+                if N.turnaround_tuesday_signal(DB, day):
+                    R = N.fomc_r(DB, day)
+                    if R:
+                        entry = round(float(eod_bar.c.iloc[-1]) + spread_live, 1)
+                        J['open'] = dict(entry_day=key, entry_time=str(eod_bar.index[-1]), entry=entry,
+                                          sl=round(entry - R, 1), tp=round(entry + N.FOMC_TP_MULT * R, 1), r=R, live=0.0)
+                        changed = True
+    if changed: dumpj(J, TUESDAY_JOUR, indent=1)
+    return J
+
+def tuesday_card(J):
+    o = J.get('open')
+    if o:
+        return dict(state='open', entry_day=o['entry_day'], entry_time=o['entry_time'], entry=o['entry'],
+                     stop=o['sl'], target=o['tp'], r=o['r'], live=o.get('live'),
+                     note=f"Turnaround Tuesday: long from {o['entry_time']}, stop {o['sl']} / target {o['tp']} (R={o['r']}), "
+                          f"force-closes at the next trading day's RTH close if neither hits first.")
+    c = J['closed'][0] if J.get('closed') else None
+    if c:
+        why = {'target': 'hit target', 'stopped': 'hit stop', 'eod': 'force-closed at next-day close'}.get(c['status'], c['status'])
+        return dict(state='closed', entry_day=c['entry_day'], entry_time=c['entry_time'], entry=c['entry'],
+                     exit=c['exit'], exit_time=c['exit_time'], pts=c['pts'], r=c['r'],
+                     note=f"Turnaround Tuesday ({c['entry_day']}): {why}, {c['pts']:+.1f} pts.")
+    return None
+
+def bigup_run(hist, day, now, b, spread_live):
+    """Same dynamic-deadline exit as Turnaround Tuesday; entry checked every day (today's own full-day
+    Close-Open > BIGUP_MULT x the raw lagged avg range)."""
+    J = loadj(BIGUP_JOUR, dict(open=None, closed=[])); changed = False
+    allm = pd.concat([hist[hist.index < day], b]) if len(b) else hist[hist.index < day]
+    if J['open']:
+        o = J['open']; entry_day = pd.Timestamp(o['entry_day'])
+        if day > entry_day:
+            status, ex, ext = N.hold_day_check_exit(allm, o['entry_time'], o['entry'], o['sl'], o['tp'], day, now)
+            if status == 'open':
+                o['live'] = None if not len(allm) else round(float(allm.c.iloc[-1]) - o['entry'], 1)
+            else:
+                closed = dict(o, status=status, exit=round(ex, 1), exit_time=str(ext), pts=round(ex - o['entry'], 1))
+                J['closed'] = ([closed] + J['closed'])[:20]; J['open'] = None; changed = True
+        else:
+            o['live'] = None if not len(allm) else round(float(allm.c.iloc[-1]) - o['entry'], 1)
+    elif now >= day + pd.Timedelta(minutes=N.eod_minutes(day)) and day >= N.BIGUP_FROM:
+        key = str(day.date())
+        if not any(c.get('entry_day') == key for c in J['closed']):
+            eod_bar = b[b.index < day + pd.Timedelta(minutes=N.eod_minutes(day))]
+            if len(eod_bar):
+                DB = N.daily_range_atr(pd.concat([hist[hist.index < day], eod_bar]))
+                if N.bigup_continuation_signal(DB, day):
+                    avg = N.lagged_avg_range(DB, day)
+                    R = round(N.FOMC_R_MULT * avg, 2) if avg else None
+                    if R:
+                        entry = round(float(eod_bar.c.iloc[-1]) + spread_live, 1)
+                        J['open'] = dict(entry_day=key, entry_time=str(eod_bar.index[-1]), entry=entry,
+                                          sl=round(entry - R, 1), tp=round(entry + N.FOMC_TP_MULT * R, 1), r=R, live=0.0)
+                        changed = True
+    if changed: dumpj(J, BIGUP_JOUR, indent=1)
+    return J
+
+def bigup_card(J):
+    o = J.get('open')
+    if o:
+        return dict(state='open', entry_day=o['entry_day'], entry_time=o['entry_time'], entry=o['entry'],
+                     stop=o['sl'], target=o['tp'], r=o['r'], live=o.get('live'),
+                     note=f"Big Up Continuation: long from {o['entry_time']}, stop {o['sl']} / target {o['tp']} (R={o['r']}), "
+                          f"force-closes at the next trading day's RTH close if neither hits first.")
+    c = J['closed'][0] if J.get('closed') else None
+    if c:
+        why = {'target': 'hit target', 'stopped': 'hit stop', 'eod': 'force-closed at next-day close'}.get(c['status'], c['status'])
+        return dict(state='closed', entry_day=c['entry_day'], entry_time=c['entry_time'], entry=c['entry'],
+                     exit=c['exit'], exit_time=c['exit_time'], pts=c['pts'], r=c['r'],
+                     note=f"Big Up Continuation ({c['entry_day']}): {why}, {c['pts']:+.1f} pts.")
+    return None
+
 def base_card(A=None, V=None):
     V = V or VARIANTS[0]
     note = ('14-day range ' + ('—' if A is None else f'{A:,.0f} pts') + ' · stop: buys 0.4 x range, sells ¼ range · sells ⅓ size · at +0.5 x risk close 25% (buys) / 15% (sells), '
@@ -314,6 +460,18 @@ def main(feed=None, get=None, now=None):
         if 'US100' in mk: mk['US100']['fomc'] = fomc_card(fomc_run(hist, day, now, b, MIN_SPREAD))
     except Exception as e:
         print('Nasdaq FOMC-overnight check failed (non-fatal):', type(e).__name__, str(e)[:160])
+    try:                                           # CPI-overnight (8 Nov): same non-fatal isolation
+        if 'US100' in mk: mk['US100']['cpi'] = cpi_card(cpi_run(hist, day, now, b, MIN_SPREAD))
+    except Exception as e:
+        print('Nasdaq CPI-overnight check failed (non-fatal):', type(e).__name__, str(e)[:160])
+    try:                                           # Turnaround Tuesday (8 Nov): same non-fatal isolation
+        if 'US100' in mk: mk['US100']['tuesday'] = tuesday_card(tuesday_run(hist, day, now, b, MIN_SPREAD))
+    except Exception as e:
+        print('Nasdaq Turnaround-Tuesday check failed (non-fatal):', type(e).__name__, str(e)[:160])
+    try:                                           # Big Up Continuation (8 Nov): same non-fatal isolation
+        if 'US100' in mk: mk['US100']['bigup'] = bigup_card(bigup_run(hist, day, now, b, MIN_SPREAD))
+    except Exception as e:
+        print('Nasdaq BigUp-Continuation check failed (non-fatal):', type(e).__name__, str(e)[:160])
     dumpj(old, PORTAL, indent=1)
     print(f'Nasdaq paper: {now} broker | bars {len(b)} | history to {hist.index[-1].date()} | added {added} | finished {fin} | failed {[V["code"] for V, _ in errs]}')
 
