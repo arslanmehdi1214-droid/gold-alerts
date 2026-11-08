@@ -138,7 +138,7 @@ BACKTEST_118 = dict(direction='—', days='—', perday='—', win='75.0% of the
                        '32-34/35-37/38-40/41-43/44-46/50-52/53-55) PLUS Night V14 (rows 56-58): a 12th night trigger (row 47-49 "Night V11" MT4-confirmed '
                        '5 Nov but PARKED by his call, never pushed here - V14 is built straight on top of V13), no weekday restriction, on Brazilian Real '
                        'futures leveraged-money positioning (CFTC Traders in Financial Futures) shifting bullish fast (52-week percentile of the 4-report '
-                                           'SHIFT in the net position, 3-day publication lag applied, >= 0.85) combined with UST 2-Year Note futures leveraged-money '
+                       'SHIFT in the net position, 3-day publication lag applied, >= 0.85) combined with UST 2-Year Note futures leveraged-money '
                        'positioning (same 4-report-shift method, CFTC Feb-2022 rename concatenated) falling fast (<= 0.20) - isolating the 32 new legs '
                        'alone: net +$292.71, DD unchanged vs 500132, 75.0% closed in profit (above Python\'s 69.0% pool-level estimate). Round 71\'s best - '
                        'cleanest screen-to-pass ratio of the project, but thinner $/trade ($9.15) than V12/V13 and misses 3 of its 8 covered years '
@@ -278,7 +278,7 @@ def dxyrs_today(day):
         spy = pd.Series([np.nan if x is None else x for x in c['spy']], index=idx)
     else:
         try:
-                      dxy = _yahoo_daily_close('DX-Y.NYB'); rsp = _yahoo_daily_close('RSP'); spy = _yahoo_daily_close('SPY')
+            dxy = _yahoo_daily_close('DX-Y.NYB'); rsp = _yahoo_daily_close('RSP'); spy = _yahoo_daily_close('SPY')
             idx = dxy.index.union(rsp.index).union(spy.index); dxy = dxy.reindex(idx); rsp = rsp.reindex(idx); spy = spy.reindex(idx)
             c = dict(day=str(day.date()), dates=[str(t.date()) for t in idx],
                      dxy=[None if pd.isna(x) else float(x) for x in dxy], rsp=[None if pd.isna(x) else float(x) for x in rsp],
@@ -418,7 +418,7 @@ def bk_es_today(day):
     look-ahead: each weekly reading only becomes usable from its real publish date, forward-filled onto the daily
     index until the next report publishes. Returns a DataFrame indexed by date with bk_chg10_pct (252-day rolling
     percentile of the 10-day % change in the BKLN/HYG ratio - low = bank loans weakening fast vs high-yield bonds, a
-        duration-favoring/dovish credit backdrop) and es_cot_pct (52-week rolling percentile of the leveraged-money net
+    duration-favoring/dovish credit backdrop) and es_cot_pct (52-week rolling percentile of the leveraged-money net
     position - long minus short - in the S&P E-mini futures, as of its publish date - high = already net-long/
     bullish positioning) for v10_flag() in sp_engine.py, or None on a fetch failure (Night V10 then simply does not
     fire that night - same fail-safe shape as the other night-trigger fetches)."""
@@ -558,7 +558,7 @@ def brlfx_ust2y_today(day):
         ust_dates = pd.to_datetime(c['ust_dates']); ust_net4 = pd.Series([float(x) for x in c['ust_net']], index=ust_dates)
     else:
         try:
-                      idx = _yahoo_daily_close('SPY').index
+            idx = _yahoo_daily_close('SPY').index
             r1 = requests.get(COT_URL, params={
                 '$select': 'report_date_as_yyyy_mm_dd,lev_money_positions_long,lev_money_positions_short,open_interest_all',
                 '$where': f"market_and_exchange_names='{BRL_MKT}'",
@@ -698,7 +698,7 @@ def ultbond_msciem_today(day):
             ub_dates = pd.to_datetime([x['report_date_as_yyyy_mm_dd'] for x in uj])
             ub_net = pd.Series([(float(x['lev_money_positions_long']) - float(x['lev_money_positions_short'])) / float(x['open_interest_all']) for x in uj], index=ub_dates)
             ub_net = ub_net.sort_index(); ub_pct = ub_net.rolling(52, min_periods=26).rank(pct=True)
-                      r2 = requests.get(COT_URL, params={
+            r2 = requests.get(COT_URL, params={
                 '$select': 'report_date_as_yyyy_mm_dd,lev_money_positions_long,lev_money_positions_short,open_interest_all',
                 '$where': "market_and_exchange_names in ('" + "','".join(MSCIEM_MKT) + "')",
                 '$order': 'report_date_as_yyyy_mm_dd ASC', '$limit': 5000}, timeout=20)
@@ -838,7 +838,7 @@ def ust2ynr_msciemchg_today(day):
                 '$order': 'report_date_as_yyyy_mm_dd ASC', '$limit': 5000}, timeout=20)
             r1.raise_for_status(); uj = r1.json()
             u2_dates = pd.to_datetime([x['report_date_as_yyyy_mm_dd'] for x in uj])
-                      u2_net = pd.Series([(float(x['nonrept_positions_long_all']) - float(x['nonrept_positions_short_all'])) / float(x['open_interest_all']) for x in uj], index=u2_dates)
+            u2_net = pd.Series([(float(x['nonrept_positions_long_all']) - float(x['nonrept_positions_short_all'])) / float(x['open_interest_all']) for x in uj], index=u2_dates)
             u2_net = u2_net.sort_index(); u2_net4 = u2_net.diff(4)
             r2 = requests.get(COT_URL, params={
                 '$select': 'report_date_as_yyyy_mm_dd,lev_money_positions_long,lev_money_positions_short,open_interest_all',
@@ -1118,7 +1118,7 @@ def row(t, b, now, sp):
     live = None
     if st == 'open' and len(b):
         pxn = float(b.c.values[-1]); live = round(t['dir'] * (pxn - t['entry']) - sp, 1)
-          return dict(time=dubai(t['t']), side='BUY' if t['dir'] == 1 else 'SELL', name=t['name'], src='Night' if nite else ('TOM' if t['src'] == 2 else ('Nasdaq' if t['src'] == 0 else 'S&P')), leg=t['leg'], night=nite,
+    return dict(time=dubai(t['t']), side='BUY' if t['dir'] == 1 else 'SELL', name=t['name'], src='Night' if nite else ('TOM' if t['src'] == 2 else ('Nasdaq' if t['src'] == 0 else 'S&P')), leg=t['leg'], night=nite,
                 price=round(t['entry'], 1), entry=round(t['entry'], 1), stop=round(t['stop'], 1), stop0=round(t['stop0'], 1), stop_pts=round(t['sd'], 1),
                 half_px=None, half=False, size='full', status=st,
                 exit=None if t['exit'] is None else round(t['exit'], 1), exit_time=None if t['exit_t'] is None else dubai(t['exit_t']),
@@ -1258,7 +1258,7 @@ def compute(hist, b, day, now, picks, sp, jd):
     elif jd.get('v19'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.23 Night V19: Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long night (gated below) -
                                             name='Night long (Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long)', src=19) + trades  # never with the other fourteen: only fires when stress, V3-V10, V12-V14, V16, V18 above did NOT
     elif jd.get('v20'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.23 Night V20: ES-asset-manager-COT-fast-bullish + staples-weak night (gated below) -
-                                                                                         name='Night long (ES-asset-manager-COT-fast-bullish + staples-weak)', src=20) + trades  # never with the other fifteen: only fires when stress, V3-V10, V12-V14, V16, V18-V19 above did NOT
+                                            name='Night long (ES-asset-manager-COT-fast-bullish + staples-weak)', src=20) + trades  # never with the other fifteen: only fires when stress, V3-V10, V12-V14, V16, V18-V19 above did NOT
     elif jd.get('v21'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.23 Night V21: VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish night (gated below) -
                                             name='Night long (VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish)', src=21) + trades  # never with the other sixteen: only fires when stress, V3-V10, V12-V14, V16, V18-V20 above did NOT
     elif jd.get('v22'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.23 Night V22: UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast night (gated below) -
@@ -1398,7 +1398,7 @@ def main(feed=None, get=None, now=None):
         ok_time = now.hour * 60 + now.minute <= S.NIGHT_IN + 5
         Qdf = None if (jd['stress'] or jd['v3'] or jd['v4'] or jd['v5'] or jd['v6'] or jd['v7'] or jd['v8'] or jd['v9'] or jd['v10']) else djia_cr_today(day)
         fired, qinfo = S.v12_flag(Qdf, day) if Qdf is not None else (False, {})
-              jd['v12'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10']
+        jd['v12'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10']
         if qinfo: jd['v12_detail'] = qinfo
         if Qdf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10']:
             jd['v12_note'] = 'DJIA COT/crypto data unavailable this run - no Night V12 check'
