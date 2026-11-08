@@ -277,6 +277,9 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
   <div class="idle" id="idle"></div>
   <div class="closed" id="closedbox"></div>
   <div class="dim" id="fomcbox" style="margin-top:8px"></div>
+  <div class="dim" id="cpibox" style="margin-top:8px"></div>
+  <div class="dim" id="tuesdaybox" style="margin-top:8px"></div>
+  <div class="dim" id="bigupbox" style="margin-top:8px"></div>
   <div class="hist" id="histbox"></div>
  </section>
  <aside class="rail rr pane p-nw">
@@ -479,6 +482,24 @@ function render(){
   else if(fo.state==='open'){const dp=(MK.find(x=>x.c==='US100')||{}).dp??1;
    fomcbox.innerHTML=`<b>FOMC overnight</b> · long from ${fo.entry_time} @ ${f(fo.entry,dp)} · stop ${f(fo.stop,dp)} / target ${f(fo.target,dp)} (R=${f(fo.r,dp)})${fo.live!=null?` · <b class="${fo.live>=0?'pos':'neg'}">${sg(fo.live,dp)} pts</b>`:''} · decision ${fo.decision_date}`}
   else fomcbox.innerHTML=`<b>FOMC overnight</b> · ${fo.note}`
+ }catch(e){}
+ try{const cp=(M.US100||{}).cpi;                    /* 8 Nov: CPI-overnight (own journal, independent of the v1.02 card above) */
+  if(!cp)cpibox.innerHTML='';
+  else if(cp.state==='open'){const dp=(MK.find(x=>x.c==='US100')||{}).dp??1;
+   cpibox.innerHTML=`<b>CPI overnight</b> · long from ${cp.entry_time} @ ${f(cp.entry,dp)} · stop ${f(cp.stop,dp)} / target ${f(cp.target,dp)} (R=${f(cp.r,dp)})${cp.live!=null?` · <b class="${cp.live>=0?'pos':'neg'}">${sg(cp.live,dp)} pts</b>`:''} · release ${cp.decision_date}`}
+  else cpibox.innerHTML=`<b>CPI overnight</b> · ${cp.note}`
+ }catch(e){}
+ try{const tu=(M.US100||{}).tuesday;                 /* 8 Nov: Turnaround Tuesday (own journal, independent of the v1.02 card above) */
+  if(!tu)tuesdaybox.innerHTML='';
+  else if(tu.state==='open'){const dp=(MK.find(x=>x.c==='US100')||{}).dp??1;
+   tuesdaybox.innerHTML=`<b>Turnaround Tuesday</b> · long from ${tu.entry_time} @ ${f(tu.entry,dp)} · stop ${f(tu.stop,dp)} / target ${f(tu.target,dp)} (R=${f(tu.r,dp)})${tu.live!=null?` · <b class="${tu.live>=0?'pos':'neg'}">${sg(tu.live,dp)} pts</b>`:''}`}
+  else tuesdaybox.innerHTML=`<b>Turnaround Tuesday</b> · ${tu.note}`
+ }catch(e){}
+ try{const bu=(M.US100||{}).bigup;                   /* 8 Nov: Big Up Continuation (own journal, independent of the v1.02 card above) */
+  if(!bu)bigupbox.innerHTML='';
+  else if(bu.state==='open'){const dp=(MK.find(x=>x.c==='US100')||{}).dp??1;
+   bigupbox.innerHTML=`<b>Big Up Continuation</b> · long from ${bu.entry_time} @ ${f(bu.entry,dp)} · stop ${f(bu.stop,dp)} / target ${f(bu.target,dp)} (R=${f(bu.r,dp)})${bu.live!=null?` · <b class="${bu.live>=0?'pos':'neg'}">${sg(bu.live,dp)} pts</b>`:''}`}
+  else bigupbox.innerHTML=`<b>Big Up Continuation</b> · ${bu.note}`
  }catch(e){}
  const now=new Date();
  const DKeys=[...new Set(G.map(g=>dkey(g.t)))].sort();
