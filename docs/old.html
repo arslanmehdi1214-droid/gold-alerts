@@ -223,6 +223,13 @@ function yrow(e,n){const res=e.pips==null?'<div class="cx hide-m"><span>Target</
  return`<div class="row2 ${e.side} num"><em>#${n}</em><div class="c1"><b>${e.side} ${f3(e.price)}</b><small>${esc(e.time)} · ${esc(e.name)}</small></div>
  <div class="cx"><span>Stop</span><b>${f3(e.stop)}</b></div><div class="cx"><span>Stop size</span><b>${esc(e.stop_pips)} pips</b></div>${res}
  <span class="st st-${e.status==='close_now'?'eod':e.status}">${esc(YST[e.status]||e.status)}</span></div>`}
+function kfadeBlock(m){try{const k=m.kfade;if(!k)return'';
+ const yr=(k.by_year||[]).map(([y,v])=>`<div class="cx"><span>${esc(y)}</span><b class="${v>=0?'pos':'neg'}">${usd(v)}</b></div>`).join('');
+ return`<div class="sec"><h2>Rule K+ · overextension fade — own backtest (new, thin before 2026)</h2><span>${esc(k.note||'')}</span></div>
+ <div class="bt num"><div><b>${k.trades}</b><span>Trades</span></div><div><b>${k.stops}</b><span>Stop hits</span></div>
+ <div><b>${k.win}%</b><span>Closed in profit</span></div><div><b class="${k.net>=0?'pos':'neg'}">${usd(k.net)}</b><span>Net ($ per barrel, 0.30 lot)</span></div></div>
+ <section class="card" style="margin-top:12px;padding:12px 16px"><div class="bt num" style="grid-template-columns:repeat(9,minmax(0,1fr))">${yr}</div>
+ <div class="note">${esc(k.source||'')}</div></section>`}catch(e){return''}}
 function paper(m){const U=m.unit==='usd',P=m.unit==='pts',dp=m.dp??3,fP=v=>v==null?'—':Number(v).toFixed(dp),E=m.entries||[],s=m.journal||{},pb=m.pass_bar||{},bt=m.stats||{};
  const rv=v=>U?usd(v):P?pts(v):pips(v),ch=(U||P)?m.change:m.change_pips,chc=ch==null?'':ch>=0?'up':'dn';
  const rres=x=>U?x.res_sized:P?x.res:x.pips;
@@ -254,7 +261,8 @@ function paper(m){const U=m.unit==='usd',P=m.unit==='pts',dp=m.dp??3,fP=v=>v==nu
   <div><b>${net==null?'—':rv(net)}</b><span>${esc(netl)}${!U&&!P&&s.net_usd!=null?' · '+usd(s.net_usd)+' at 0.10 lots':''}</span></div>
   <div><b>${s.perday==null?'—':esc(s.perday)}</b><span>Trades per weekday · days with trades ${s.days==null?'—':esc(s.days)+'%'}</span></div></div>
   <section class="card" style="margin-top:12px;padding:12px 16px"><table class="jt"><colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup><tr><th>Day</th><th>Trades</th><th>Right way</th><th>Result</th></tr>${rows||'<tr><td colspan="4" class="jempty">The paper journal starts with the first live day.</td></tr>'}</table>
-  <div class="note">Backtest (${esc(bt.source)}): right way first ${esc(bt.direction)} · profit factor ${esc(bt.pf)} · ${esc(bt.perday)} trades per weekday · win ${esc(bt.win)} · ${esc(bt.net)}. ${esc(cost)} ${esc(m.history_note||'')}</div></section>`}
+  <div class="note">Backtest (${esc(bt.source)}): right way first ${esc(bt.direction)} · profit factor ${esc(bt.pf)} · ${esc(bt.perday)} trades per weekday · win ${esc(bt.win)} · ${esc(bt.net)}. ${esc(cost)} ${esc(m.history_note||'')}</div></section>
+  ${kfadeBlock(m)}`}
 
 // ---------- HOME: every new and running trade of every market, newest first ----------
 const dmin=t=>{const m=/^(\d+):(\d+)\s*(am|pm)$/i.exec(String(t||'').trim());if(!m)return -1;let h=+m[1]%12+(m[3].toLowerCase()==='pm'?12:0);let v=h*60+ +m[2];if(v<120)v+=1440;return v};
