@@ -25,6 +25,90 @@ ENG_SET = dict(U2_Step=100.0, N2_Step=200.0, G3_Step=40.0, Spread=0.6)   # same 
 NEUTRAL = dict(d5=0, d1=0, vix=0, tnx=0, regime=lambda t: 0, attn=0)
 LAST_PICKS = {}                                   # 22 Oct: the day's picks (before the exits) for the S&P page (sp_run copies them)
 
+# ---------------- FOMC-overnight (8 Nov 2026 port, lead #10/#384 from the Nasdaq chat's research hunt) ----------------
+# Its OWN low-frequency signal, long only, ~8x/year - never counted against v1.02's 2-trades-a-day cap, never
+# touched by manage_v102 (separate position, separate journal docs/journal_nq_fomc.json, shown alongside the
+# existing US100 card, not folded into its v1.02-tagged journal/summary). Rule (exactly as MT4-confirmed, his run
+# 8 Nov, window 2018.01.02-2026.10.30, spread 18, 0.01 lot: 56 trades, PF 2.55, maxDD 4.83 (0.00%), 20/56=35.7%
+# hit target, 38/56=67.9% closed in profit): go long at the RTH close (23:00 broker Mon-Thu, 22:50 Fri) on the
+# trading day immediately before a scheduled FOMC rate-decision day; stop = entry - R, R = FOMC_R_MULT x the
+# 14-day average D1 range, lagged 2 trading days before the entry day; target = entry + FOMC_TP_MULT x R; force-
+# close at the RTH open (16:30 broker) on the decision day if neither hit. Decision dates 2010-2027 = the real,
+# ALFRED/FOMC.gov-verified FOMC release history (2027 = the Fed's own published tentative schedule) - copied
+# verbatim from the Nasdaq chat's MT4-confirmed EA (NASDAQ_FOMC_OVERNIGHT_v1.00.mq4); none fall on a Monday in
+# this list (all Tue/Wed), so the entry day is always 1 calendar day back; update every December.
+FOMC_DECISIONS = [
+    '2010.01.27', '2010.03.16', '2010.04.28', '2010.06.23', '2010.08.10', '2010.09.21', '2010.11.03', '2010.12.14',
+    '2011.01.26', '2011.03.15', '2011.04.27', '2011.06.22', '2011.08.09', '2011.09.21', '2011.11.02', '2011.12.13',
+    '2012.01.25', '2012.03.13', '2012.04.25', '2012.06.20', '2012.08.01', '2012.09.13', '2012.10.24', '2012.12.12',
+    '2013.01.30', '2013.03.20', '2013.05.01', '2013.06.19', '2013.07.31', '2013.09.18', '2013.10.30', '2013.12.18',
+    '2014.01.29', '2014.03.19', '2014.04.30', '2014.06.18', '2014.07.30', '2014.09.17', '2014.10.29', '2014.12.17',
+    '2015.01.28', '2015.03.18', '2015.04.29', '2015.06.17', '2015.07.29', '2015.09.17', '2015.10.28', '2015.12.16',
+    '2016.01.27', '2016.03.16', '2016.04.27', '2016.06.15', '2016.07.27', '2016.09.21', '2016.11.02', '2016.12.14',
+    '2017.02.01', '2017.03.15', '2017.05.03', '2017.06.14', '2017.07.26', '2017.09.20', '2017.11.01', '2017.12.13',
+    '2018.01.31', '2018.03.21', '2018.05.02', '2018.06.13', '2018.08.01', '2018.09.26', '2018.11.08', '2018.12.19',
+    '2019.01.30', '2019.03.20', '2019.05.01', '2019.06.19', '2019.07.31', '2019.09.18', '2019.10.30', '2019.12.11',
+    '2020.01.29', '2020.03.15', '2020.04.29', '2020.06.10', '2020.07.29', '2020.09.16', '2020.11.05', '2020.12.16',
+    '2021.01.27', '2021.03.17', '2021.04.28', '2021.06.16', '2021.07.28', '2021.09.22', '2021.11.03', '2021.12.15',
+    '2022.01.26', '2022.03.16', '2022.05.04', '2022.06.15', '2022.07.27', '2022.09.21', '2022.11.02', '2022.12.14',
+    '2023.02.01', '2023.03.22', '2023.05.03', '2023.06.14', '2023.07.26', '2023.09.20', '2023.11.01', '2023.12.13',
+    '2024.01.31', '2024.03.20', '2024.05.01', '2024.06.12', '2024.07.31', '2024.09.18', '2024.11.07', '2024.12.18',
+    '2025.01.29', '2025.03.19', '2025.05.07', '2025.06.18', '2025.07.30', '2025.09.17', '2025.10.29', '2025.12.10',
+    '2026.01.28', '2026.03.18', '2026.04.29', '2026.06.17', '2026.07.29', '2026.09.16', '2026.10.28', '2026.12.09',
+    '2027.01.27', '2027.03.17', '2027.04.28', '2027.06.09', '2027.07.28', '2027.09.15', '2027.10.27', '2027.12.08',
+]
+FOMC_R_MULT, FOMC_TP_MULT = 0.35, 1.0
+FOMC_EXIT_HM = 16 * 60 + 30                       # RTH open deadline, broker time, on the decision day
+FOMC_FROM = pd.Timestamp('2026-11-08')            # push day - the already-past 27 Oct entry day is never retroactively traded
+
+def fomc_decision_dates():
+    return sorted(pd.Timestamp(d.replace('.', '-')) for d in FOMC_DECISIONS)
+
+def fomc_entry_map():
+    """{entry-day date string: decision day Timestamp}, entry days on/after FOMC_FROM only (so past days never recompute)."""
+    out = {}
+    for dday in fomc_decision_dates():
+        back = 3 if dday.dayofweek == 0 else 1          # Monday decision -> back to Friday (never occurs in this list, kept for safety)
+        eday = dday - pd.Timedelta(days=back)
+        if eday >= FOMC_FROM: out[str(eday.date())] = dday
+    return out
+
+def daily_range_atr(m):
+    """Daily O/H/L/C + 14-day avg(H-L) lagged 1 trading day (same construction as build_base's own internal DB), from minute bars m."""
+    day = m.index.normalize(); g = m.groupby(day)
+    DB = pd.DataFrame({'o': g.o.first(), 'h': g.h.max(), 'l': g.l.min(), 'c': g.c.last()})
+    DB['rng'] = DB.h - DB.l; DB['atr'] = DB.rng.rolling(14).mean().shift(1)
+    return DB
+
+def fomc_r(DB, entry_day):
+    """R = FOMC_R_MULT x the 14-day avg range, lagged 2 trading days before entry_day - taking DB['atr'] (already
+    lag-1) from the trading day BEFORE entry_day's own row gives exactly that second day of lag (matches the EA's
+    ComputeR: avg(H-L) over the 14 D1 bars ending 2 bars before entry's own bar)."""
+    ed = pd.Timestamp(entry_day)
+    if ed not in DB.index: return None
+    pos = DB.index.get_loc(ed)
+    if pos < 1: return None
+    v = DB['atr'].iloc[pos - 1]
+    return None if not np.isfinite(v) or v <= 0 else round(FOMC_R_MULT * float(v), 2)
+
+def fomc_check_exit(m, entry_time, entry, sl, tp, decision_day, now):
+    """Scan minute bars after entry_time for stop/target (long only; stop checked before target each minute, same
+    precedence as every other signal's exit logic), else force-close at the decision day's RTH-open deadline.
+    Returns (status, exit_px, exit_time); status 'open' means still running (nothing to report yet)."""
+    deadline = pd.Timestamp(decision_day).normalize() + pd.Timedelta(minutes=FOMC_EXIT_HM)
+    bars = m[(m.index > pd.Timestamp(entry_time)) & (m.index <= now)]
+    for t, r in bars.iterrows():
+        if t >= deadline: return 'eod', float(r.o), t
+        o, h, l = float(r.o), float(r.h), float(r.l)
+        if o <= sl: return 'stopped', o, t
+        if l <= sl: return 'stopped', sl, t
+        if o >= tp: return 'target', o, t
+        if h >= tp: return 'target', tp, t
+    if now >= deadline and len(m[m.index <= now]):
+        last = m[m.index <= now]
+        return 'eod', float(last.c.iloc[-1]), last.index[-1]        # deadline passed with a data gap right at it - close at the last known price
+    return 'open', None, None
+
 def engine_first(m, day):
     """Gold v2.06 signal engine replayed on today's Nasdaq minutes (outside inputs neutral, as in the research):
     returns (direction, entry time) of its first trade today so far, or (0, None)."""

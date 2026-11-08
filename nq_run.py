@@ -14,6 +14,7 @@ DEADLINE = time.time() + 240          # loop.py resets this every minute; the Na
 HERE = os.path.dirname(os.path.abspath(__file__))
 MIN = os.path.join(HERE, 'docs', 'nq_min'); JOUR = os.path.join(HERE, 'docs', 'journal_nq.json')
 PORTAL = os.path.join(HERE, 'docs', 'data.json'); STATE = os.path.join(HERE, 'docs', 'nq_state.json')   # data-check memory (22 Oct)
+FOMC_JOUR = os.path.join(HERE, 'docs', 'journal_nq_fomc.json')   # 8 Nov: FOMC-overnight's own small journal, separate from v1.02's
 EPIC = os.environ.get('CAPITAL_EPIC_NQ', 'US100')
 MIN_SPREAD = 1.8                      # 22 Oct fix: the paper levels and results use exactly 1.8 index points (as the MT4 v1.02 test);
                                       # the live Capital.com spread is shown only (spread_live)
@@ -211,6 +212,54 @@ def summary(J, day=None):
 
 def jdays(J): return J.get('days', [])[-30:][::-1]
 
+# ---------------- FOMC-overnight (8 Nov 2026 port) ----------------
+# Its own low-frequency signal (~8x/year), kept entirely separate from v1.02: own journal file (FOMC_JOUR), own
+# entry/exit check (nq_engine.fomc_r/fomc_check_exit), never touches journal_nq.json's RULES='v1.02' days or the
+# card's pass-bar summary. Shown as mk['US100']['fomc'] alongside the existing card, not merged into entries[].
+def fomc_run(hist, day, now, b, spread_live):
+    """Check/advance the FOMC-overnight position (if any) and look for a new entry; returns the small journal dict."""
+    J = loadj(FOMC_JOUR, dict(open=None, closed=[])); changed = False
+    allm = pd.concat([hist[hist.index < day], b]) if len(b) else hist[hist.index < day]
+    if J['open']:
+        o = J['open']
+        status, ex, ext = N.fomc_check_exit(allm, o['entry_time'], o['entry'], o['sl'], o['tp'], o['decision_date'], now)
+        if status == 'open':
+            o['live'] = None if not len(allm) else round(float(allm.c.iloc[-1]) - o['entry'], 1)
+        else:
+            closed = dict(o, status=status, exit=round(ex, 1), exit_time=str(ext), pts=round(ex - o['entry'], 1))
+            J['closed'] = ([closed] + J['closed'])[:20]; J['open'] = None; changed = True
+    elif now >= day + pd.Timedelta(minutes=N.eod_minutes(day)):           # only once today's own EOD bar has actually printed
+        emap = N.fomc_entry_map(); key = str(day.date())
+        if key in emap and not any(c.get('entry_day') == key for c in J['closed']):
+            eod_bar = b[b.index < day + pd.Timedelta(minutes=N.eod_minutes(day))]
+            if len(eod_bar):
+                DB = N.daily_range_atr(pd.concat([hist[hist.index < day], eod_bar]))
+                R = N.fomc_r(DB, day)
+                if R:
+                    entry = round(float(eod_bar.c.iloc[-1]) + spread_live, 1)        # buy: pays the ask (close + spread), same as manage_v102's buy entries
+                    J['open'] = dict(entry_day=key, decision_date=str(emap[key].date()), entry_time=str(eod_bar.index[-1]),
+                                      entry=entry, sl=round(entry - R, 1), tp=round(entry + N.FOMC_TP_MULT * R, 1), r=R, live=0.0)
+                    changed = True
+    if changed: dumpj(J, FOMC_JOUR, indent=1)
+    return J
+
+def fomc_card(J):
+    """None when there is nothing to show (the overwhelming majority of runs - fires ~8x/year); otherwise a small
+    note for the US100 card: the open position, or today's just-closed one (so a same-day close isn't missed)."""
+    o = J.get('open')
+    if o:
+        return dict(state='open', decision_date=o['decision_date'], entry_time=o['entry_time'], entry=o['entry'],
+                     stop=o['sl'], target=o['tp'], r=o['r'], live=o.get('live'),
+                     note=f"FOMC overnight: long from {o['entry_time']}, stop {o['sl']} / target {o['tp']} (R={o['r']}), "
+                          f"force-closes at the {o['decision_date']} RTH open if neither hits first.")
+    c = J['closed'][0] if J.get('closed') else None
+    if c:
+        why = {'target': 'hit target', 'stopped': 'hit stop', 'eod': 'force-closed at the RTH open'}.get(c['status'], c['status'])
+        return dict(state='closed', decision_date=c['decision_date'], entry_time=c['entry_time'], entry=c['entry'],
+                     exit=c['exit'], exit_time=c['exit_time'], pts=c['pts'], r=c['r'],
+                     note=f"FOMC overnight ({c['decision_date']}): {why}, {c['pts']:+.1f} pts.")
+    return None
+
 def base_card(A=None, V=None):
     V = V or VARIANTS[0]
     note = ('14-day range ' + ('—' if A is None else f'{A:,.0f} pts') + ' · stop: buys 0.4 x range, sells ¼ range · sells ⅓ size · at +0.5 x risk close 25% (buys) / 15% (sells), '
@@ -261,6 +310,10 @@ def main(feed=None, get=None, now=None):
         except Exception as e:
             errs.append((V, e))
     for V, e in errs: mark_failed(mk, V, e)
+    try:                                           # FOMC-overnight (8 Nov): its own check, never allowed to break the v1.02 card above
+        if 'US100' in mk: mk['US100']['fomc'] = fomc_card(fomc_run(hist, day, now, b, MIN_SPREAD))
+    except Exception as e:
+        print('Nasdaq FOMC-overnight check failed (non-fatal):', type(e).__name__, str(e)[:160])
     dumpj(old, PORTAL, indent=1)
     print(f'Nasdaq paper: {now} broker | bars {len(b)} | history to {hist.index[-1].date()} | added {added} | finished {fin} | failed {[V["code"] for V, _ in errs]}')
 
