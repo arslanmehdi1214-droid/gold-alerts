@@ -1,14 +1,20 @@
-"""Brent Oil PAPER signals for the page - BRENT v1.06 rules, A-F only (brent_engine.py; rule G dropped - his 8 Nov
-decision: "drop rule G completely... push v1.06 with rules A-F only... no changes to autotrade.py"). MT4 proof for
-the FULL v1.06 bundle (A-F + G), his run 7 Nov 2026: 949 trades 2018-01..2026-10 on 851 days (~1.9/week), +$58,856
-at 0.30 lot, PF 1.46, max DD $9,529, 55.2% closed in profit, spread 8 = $0.08/bbl. That number is NOT this build's
-(G added real trades/profit) - the closer like-for-like reference is v1.05's own A-F result: 911 trades, +$50,198,
-DD $7,979, PF 1.47, 55% closed in profit (same window, same spread; only losing year 2019 -$2,598). By simple
-subtraction (not a separate MT4 run) G alone accounted for ~38 trades / ~$8,658 of the v1.06 bundle total. The
-v1.06 changes THIS build does carry - B/D entry 11:00 broker (was 10:00), rule C watching from 09:00 broker (was
-10:00) with its own 2.0x stop (was 1.0x, shared with the others), and the new conflict-close rule - were only ever
-MT4-tested bundled together with G, never in isolation; the live paper journal below is the first real read of
-them alone.
+"""Brent Oil PAPER signals for the page - BRENT v1.07a rules: live v1.06 A-F unchanged (brent_engine.py; rule G
+dropped - his 8 Nov decision: "drop rule G completely... push v1.06 with rules A-F only... no changes to
+autotrade.py") PLUS new rule K+ added 9 Nov 2026 on top, his explicit request ("keep A-F exactly as they are").
+MT4 proof for the FULL v1.06 bundle (A-F + G), his run 7 Nov 2026: 949 trades 2018-01..2026-10 on 851 days
+(~1.9/week), +$58,856 at 0.30 lot, PF 1.46, max DD $9,529, 55.2% closed in profit, spread 8 = $0.08/bbl. That
+number is NOT this build's (G added real trades/profit) - the closer like-for-like reference is v1.05's own A-F
+result: 911 trades, +$50,198, DD $7,979, PF 1.47, 55% closed in profit (same window, same spread; only losing year
+2019 -$2,598). By simple subtraction (not a separate MT4 run) G alone accounted for ~38 trades / ~$8,658 of the
+v1.06 bundle total. The v1.06 changes THIS build does carry - B/D entry 11:00 broker (was 10:00), rule C watching
+from 09:00 broker (was 10:00) with its own 2.0x stop (was 1.0x, shared with the others), and the new conflict-close
+rule - were only ever MT4-tested bundled together with G, never in isolation; the live paper journal is the first
+real read of them alone. Rule K+ (v1.07a, new): own MT4 run, isolated - 9 Nov 2026, 2018.01.02-2026.10.30, spread 8,
+0.30 lot: 285 trades, 0 stop hits, 52% closed in profit, net +$7,716 (full v1.07a EA incl. K+: +$67,704, 1,241
+trades vs v1.06 full EA +$58,856/949). K+ by year ($): 2018 -90, 2019 -798, 2020 -657, 2021 +1578, 2022 -1581,
+2023 +1971, 2024 +1254, 2025 -1017, 2026 +7056 - most of the edge is 2026: shown on the card as "new, thin before
+2026", see KPLUS_BACKTEST/kfade_card() below. Source: BRENT_v107a_DASHBOARD_SPEC.txt + BRENT_WED_HOL_v107a.mq4
+(K+ block lines 423-441), Archive Trading/BRENT.
 Copied to the Capital.com DEMO account by autotrade.py (his 6 Nov go-ahead, given later the same day as his earlier
 "signals only, EA is backtest only" instruction - the go-ahead is what stands; autotrade.py's own MARKETS['BRENT']
 entry confirms it, verified against live main 8 Nov when this v1.06 port was built). Dropping rule G avoided a real
@@ -31,13 +37,23 @@ JOUR = os.path.join(HERE, 'docs', 'journal_brent.json'); PORTAL = os.path.join(H
 HIST = os.path.join(HERE, 'docs', 'brent_daily.json'); HIST_KEEP = 150     # days kept (rule A's 60-day spread + headroom)
 EPIC = os.environ.get('CAPITAL_EPIC_BRENT', 'OIL_BRENT')                  # NOT yet confirmed live - see brent_run.fail() note
 MIN_SPREAD = 0.02                     # the paper result never uses less than 2 cents a barrel
-RULES = 'v1.06'
+RULES = 'v1.07a'
 PASS = dict(pf=1.10, months=3)
 BACKTEST = dict(direction='—', days='~35% of days (~1.7/week)', perday='1.3', win='55% closed in profit', pf='1.47',
                 net='+$50,198 at 0.30 lot (max drawdown $7,979) - v1.05\'s A-F result (last MT4 number for A-F alone)',
                 source='MT4 BRENT_WED_HOL v1.05 (A-F only), his run 7 Nov 2026, 2018-01-02..2026-10-30, 911 trades, spread 8 ($0.08/bbl, RoboForex live spread); only losing year 2019 (-$2,598). '
                        'The v1.06 MT4 run (same window) tested the FULL bundle incl. dropped rule G: 949 trades, +$58,856, DD $9,529 - by subtraction (not a separate run) G alone was ~38 trades / '
                        '~$8,658 of that. This build\'s own v1.06 deltas (B/D entry 11:00, rule C from 09:00 with its own 2.0x stop, conflict-close) were only MT4-tested bundled with G, never alone.')
+# v1.07a, new 9 Nov 2026: rule K+ (overextension fade) added on top of the live A-F build above (A-F unchanged).
+# Its own isolated MT4 proof - shown on the card as "new, thin before 2026" per his explicit instruction, since
+# almost all of the net comes from 2026 and six of the eight prior years are flat-to-negative.
+KPLUS_BACKTEST = dict(trades=285, stops=0, win=52, net=7716,
+                      by_year=[['2018', -90], ['2019', -798], ['2020', -657], ['2021', 1578], ['2022', -1581],
+                               ['2023', 1971], ['2024', 1254], ['2025', -1017], ['2026', 7056]],
+                      note='New, thin before 2026 - most of the edge is 2026; 2018-2025 net is -$324 (6 of 8 years negative).',
+                      source='MT4 BRENT_WED_HOL_v107a.mq4, his run 9 Nov 2026, 2018.01.02-2026.10.30, spread 8 ($0.08/bbl), 0.30 lot - K+ alone: 285 trades, '
+                             '0 stop hits, all closed 19:00 broker, 52% closed in profit, net +$7,716. Full v1.07a EA incl. K+: +$67,704, 1,241 trades (v1.06 full EA was +$58,856, 949). '
+                             'Python mirror predicted the same 285 trades.')
 
 class FeedError(RuntimeError):
     pass
@@ -112,7 +128,7 @@ def feed_check(b, now):
 
 # ---------------- page rows / journal ----------------
 def row(t):
-    return dict(time=dubai(t['t']), side='BUY' if t['dir'] == 1 else 'SELL', name=t['name'], rule=t['rule'],
+    return dict(time=dubai(t['t']), side='BUY' if t['dir'] == 1 else 'SELL', name=t['name'], rule=t['rule'], tag=t.get('tag'),
                 price=round(t['entry'], 2), entry=round(t['entry'], 2), stop=round(t['stop'], 2), stop0=round(t.get('stop0', t['stop']), 2),
                 stop_usd=round(abs(t['entry'] - t.get('stop0', t['stop'])), 2), status=t['status'], size='full', part=1.0, half=False,
                 exit=None if t['exit'] is None else round(t['exit'], 2), exit_time=None if t['exit_t'] is None else dubai(t['exit_t']),
@@ -138,15 +154,20 @@ def base_card():
             'A) Wednesday - 10:00→14:00 move > 0.5x its own 60-day spread, trade that direction at 14:00 · B) SELL 11:00 the first trading day after a '
             'US federal holiday · C) 20-day range break - price inside the range at 09:00, first 1-min close beyond it 09:00-19:00, follow (stop 2.0x) · '
             'D) BUY 11:00 on a UK bank holiday the market trades, SELL 11:00 the next trading day · E) SELL 10:00 the 2nd trading day after a UK bank '
-            'holiday · F) BUY 19:00 the trading day before a US federal or UK bank holiday')
+            'holiday · F) BUY 19:00 the trading day before a US federal or UK bank holiday · '
+            'K+) NEW 9 Nov 2026, thin before 2026 - overextension fade: price 0.8x the 20-day range away from its own 09:00 or 10:00 broker price (first '
+            'touch, before 18:00) -> fade back, stop 2.0x the range, exit 19:00 broker. Independent of A-F - its own position, never conflict-closed, '
+            'skipped on Wednesday/calendar days or if rule C already opened today')
     return dict(code='BRENT', name='Brent Oil', symbol='BRENT · Capital.com Brent Oil Future', live=False, paper=True, status='Paper', version=RULES,
                 unit='usd', dp=2, stats=BACKTEST, pass_bar=PASS, day_note=note,
                 what_note='Tracks whether live Brent signals do as well as the v1.05 MT4 test (this build\'s own v1.06 B/D/C/conflict-close deltas were '
-                          'only MT4-tested bundled with the dropped rule G, never alone - see the backtest note). Copied to the Capital.com DEMO account '
-                          'by the auto-trader, same as Gold/USDJPY/Oil/Nasdaq/S&P500/GBPUSD (his 6 Nov go-ahead, reversing his earlier same-day "signals '
-                          'only" instruction). Decision after about 3 months.',
+                          'only MT4-tested bundled with the dropped rule G, never alone - see the backtest note). v1.07a (9 Nov 2026) adds rule K+ on top, '
+                          'unchanged A-F; K+ has its own isolated MT4 proof - new and thin before 2026, see the K+ panel. Copied to the Capital.com DEMO '
+                          'account by the auto-trader, same as Gold/USDJPY/Oil/Nasdaq/S&P500/GBPUSD (his 6 Nov go-ahead, reversing his earlier same-day '
+                          '"signals only" instruction). Decision after about 3 months.',
                 cost_note='Results are $ per barrel (0.30-lot backtest scale), from the signal price after the live Capital.com spread (at least 2 cents).',
-                net_label=f'Net $ per barrel ({RULES})')
+                net_label=f'Net $ per barrel ({RULES})',
+                kfade=dict(KPLUS_BACKTEST))
 
 def main(feed=None, get=None, getd=None, now=None):
     global DEADLINE; DEADLINE = time.time() + 75           # own 75s time budget per market

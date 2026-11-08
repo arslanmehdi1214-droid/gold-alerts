@@ -1,6 +1,8 @@
-"""Brent Oil (BRENT) dashboard SIGNAL engine - BRENT v1.06 rules (A-F only; rule G and the conflict-close rule's
-interaction with it were part of the EA bundle but dropped from this port - his 8 Nov decision: "drop rule G
-completely... no changes to autotrade.py"), source of truth EA BRENT_WED_HOL_v106.mq4.
+"""Brent Oil (BRENT) dashboard SIGNAL engine - BRENT v1.07a rules (A-F unchanged + new rule K+ added 9 Nov 2026 on
+top of the live v1.06 A-F build, his explicit request - "keep A-F exactly as they are"; rule G and the
+conflict-close rule's interaction with it were part of the EA bundle but dropped from this port - his 8 Nov
+decision: "drop rule G completely... no changes to autotrade.py"), source of truth EA BRENT_WED_HOL_v106.mq4 for
+A-F, BRENT_WED_HOL_v107a.mq4 (K+ block, lines 423-441) for K+.
 (MT4 proof for the FULL v1.06 bundle including G, his run 7 Nov 2026: 2018-01-02..2026-10-30, spread 8 (= $0.08/bbl,
 RoboForex live spread), 0.30 lot: 949 trades, +$58,856, PF 1.46, max DD $9,529, 55.2% trades closed in profit, trades
 on 851 days (~1.9/week). That number is NOT what this A-F-only port will show live - G added real trades/profit to
@@ -38,6 +40,24 @@ CONFLICT-CLOSE (v1.06, new): if a new signal is OPPOSITE an already-open trade f
   trade is closed at the new signal's price/time and the new signal is skipped entirely (no trade for it). Applied
   inside run_day() via apply_conflict_close(), mirroring the EA's Open(): it loops every open order and closes any
   opposite one before deciding whether to place the new one.
+RULE K+ - OVEREXTENSION FADE (v1.07a, new 9 Nov 2026, added on top of live A-F per his request; EA block lines
+  423-441, BRENT_WED_HOL_v107a.mq4; MT4 proof 9 Nov: 285 trades, 0 stop hits, 52% closed in profit, net +$7,716,
+  2018-2026 - by year: 2018 -90, 2019 -798, 2020 -657, 2021 +1578, 2022 -1581, 2023 +1971, 2024 +1254, 2025 -1017,
+  2026 +7056 - most of the edge is 2026, shown on the card as "new, thin before 2026"): ref1 = price at 09:00
+  broker, ref2 = price at 10:00 broker (same bar-open convention as every other rule, ENTRY_LATE tolerance). A =
+  the same 20-day average range the other rules use for their 1.0x stops. th = 0.8 x A. Walk every closed 1-minute
+  bar from 09:01 to 17:59 broker: once past 09:00, HIGH >= ref1+th -> SELL, LOW <= ref1-th -> BUY (fade back toward
+  the reference); once past 10:00, if nothing has fired yet, same test vs ref2. First touch only - at most one K+
+  trade/day. Enter at the NEXT bar's open. Stop = 2.0 x A (not the shared 1.0x). Exit 19:00 broker if not stopped
+  first (the common 21:30 EXIT_MIN below is the unconditional backstop). Skipped entirely (no K+ today) on
+  Wednesday, on any day already in the B/D/E/F calendar lists below, or if rule C has already opened its own trade
+  by the moment K+'s signal would fire (a C trade AFTER that moment does not cancel K+). Fully independent of A-F:
+  own trade/position (own "KFADE" tag), does NOT take part in conflict-close in either direction - it is appended
+  to the day's trades AFTER apply_conflict_close() runs on A-F+C, never passed through it. No day-start-bug
+  exposure (the MT4 v1.07->v1.07a class of bug, where a stale bar from an earlier calendar day wrongly looked like
+  "already past today's cutoff"): this Python port has no persisted cross-day flag at all - kfade_trade() is a
+  pure function of `day`'s OWN closed bars only (brent_run.main() already slices `b` to [day, now) before calling
+  run_day()), so there is nothing analogous to mis-handle.
 US/UK holiday dates (HOL_AFTER / UK_HOL_BUY / UK_HOL_SELL / UK_HOL_SELL2 / PRE_HOL_BUY) are the EXACT baked-in lists
 from the proven EA (BRENT_WED_HOL_v106.mq4), copied verbatim - NOT recomputed from a calendar library (unchanged
 from v1.05 - only the entry TIMES for B/D/C moved in v1.06, not these lists). A first attempt (back in v1.05) to
@@ -141,9 +161,16 @@ BREAK_STOP_MULT = 2.0                                   # rule C stop = this x t
 USE_CONFLICT_CLOSE = True                               # v1.06, new: an opposite signal closes the open trade and skips itself
 ENTRY_LATE = 5                                          # a bar up to 5 min late still counts (same tolerance as gbp_engine)
 
+K_REF1_MIN, K_REF2_MIN = 9 * 60, 10 * 60                # v1.07a rule K+: reference prices at 09:00/10:00 broker (EA K_Ref1_HHMM/K_Ref2_HHMM)
+K_LAST_SIGNAL_MIN = 18 * 60                             # last bar checked starts < 18:00 broker (EA K_Last_Entry_HHMM=1800)
+K_CLOSE_MIN = 19 * 60                                   # K+'s own exit, 19:00 broker (EA K_Close_HHMM) - EXIT_MIN (21:30) below is the unconditional backstop
+K_TH_MULT = 0.8                                         # signal threshold = this x A (EA K_Move_x_Range)
+K_STOP_MULT = 2.0                                       # K+ stop = this x A (EA K_Stop_x_Range) - NOT the shared 1.0x used by A/B/D/E/F
+
 RULE_NAME = {'A': 'Rule A · Wednesday momentum', 'B': 'Rule B · day after US holiday',
              'C': 'Rule C · 20-day range break', 'Dbuy': 'Rule D · UK bank holiday (buy)', 'Dsell': 'Rule D · UK bank holiday (sell next day)',
-             'E': 'Rule E · 2nd day after UK holiday (sell)', 'F': 'Rule F · day before holiday (buy)'}
+             'E': 'Rule E · 2nd day after UK holiday (sell)', 'F': 'Rule F · day before holiday (buy)',
+             'K': 'Rule K+ · overextension fade (new 9 Nov 2026 - thin before 2026)'}
 
 # ---------------- calendar lookups (exact EA lists above) ----------------
 def rule_flags(day):
@@ -243,6 +270,49 @@ def range_break_trade(b, day, hi, lo, A, cost, mult=BREAK_STOP_MULT):
     if out['exit'] is not None: out['res'] = s * (out['exit'] - en) - cost
     return out
 
+# ---------------- rule K+ (v1.07a, new 9 Nov 2026 - independent of A-F/C, see module docstring) ----------------
+def kfade_trade(b, day, dt, A, c_entry_t, cost, mult=K_STOP_MULT, th_mult=K_TH_MULT):
+    """Rule K+ overextension fade. b: today's closed minute bars. dt = day_type(...) for the day (Wednesday/calendar
+    flags). A = the same ADR20 the other rules use. c_entry_t = rule C's own entry time today if it fired, else
+    None (used only to check whether C already opened BEFORE the moment K+'s signal would fire - a C trade after
+    that moment does not cancel K+, per spec). Returns one trade dict or None - at most one K+ trade/day (first
+    touch only), own 'K' rule tag and 'KFADE' position tag so autotrade.py tracks it as a separate position from
+    any same-day A-F/C trade (autotrade keys each position by market+day+time+side+tag-or-name, already supports
+    N simultaneous positions per market - no autotrade.py change needed, see autotrade.py's key_of())."""
+    if dt['wed'] or dt['ruleB'] or dt['ruleD_buy'] or dt['ruleD_sell'] or dt['ruleE'] or dt['ruleF']: return None    # skip the day entirely
+    if not (np.isfinite(A) and A > 0) or not len(b): return None
+    day = pd.Timestamp(day).normalize()
+    ref1, ref2 = bar_open_at(b, day, K_REF1_MIN), bar_open_at(b, day, K_REF2_MIN)
+    if not (np.isfinite(ref1) or np.isfinite(ref2)): return None
+    th = th_mult * A
+    t0, t1 = day + pd.Timedelta(minutes=K_REF1_MIN + 1), day + pd.Timedelta(minutes=K_LAST_SIGNAL_MIN)
+    win = b[(b.index >= t0) & (b.index < t1)]                  # every closed bar from 09:01 up to (not incl.) 18:00
+    sig, j = 0, None
+    for i in range(len(win)):
+        tt = win.index[i]; h, l = win.h.values[i], win.l.values[i]
+        if np.isfinite(ref1):
+            if h >= ref1 + th: sig, j = -1, i; break
+            if l <= ref1 - th: sig, j = 1, i; break
+        if (tt.hour * 60 + tt.minute > K_REF2_MIN) and np.isfinite(ref2):
+            if h >= ref2 + th: sig, j = -1, i; break
+            if l <= ref2 - th: sig, j = 1, i; break
+    if sig == 0: return None
+    if c_entry_t is not None and c_entry_t <= win.index[j]: return None       # rule C already opened by the moment K+ would signal -> skip K+ today
+    a = int(b.index.searchsorted(win.index[j])) + 1
+    if a >= len(b): return None
+    en = float(b.o.values[a]); sd = mult * A; st = en - sig * sd
+    te = day + pd.Timedelta(minutes=K_CLOSE_MIN); e = int(b.index.searchsorted(te))
+    H, L = b.h.values[a:e], b.l.values[a:e]
+    out = dict(t=b.index[a], dir=sig, rule='K', name=RULE_NAME['K'], entry=en, stop=st, stop0=st, exit=None, exit_t=None,
+               status='open', A=A, cost=cost, tag='KFADE')
+    hit = None
+    for k in range(len(H)):
+        if (L[k] <= st) if sig > 0 else (H[k] >= st): hit = ('stopped', st, k); break
+    if hit: out.update(status=hit[0], exit=hit[1], exit_t=b.index[a + hit[2]])
+    elif e < len(b): out.update(status='exit', exit=float(b.o.values[e]), exit_t=b.index[e])
+    if out['exit'] is not None: out['res'] = sig * (out['exit'] - en) - cost
+    return out
+
 # ---------------- conflict-close (v1.06, new) ----------------
 def apply_conflict_close(trades):
     """A new signal opposite an earlier-still-open trade from the SAME day closes that trade (at the new signal's
@@ -268,7 +338,8 @@ def apply_conflict_close(trades):
 
 def run_day(b, day, dt, A, hi, lo, sd, cost=0.08):
     """b: today's closed minute bars. dt = day_type(...) for the day. A = ADR20; (hi,lo) = rule C's 20-day channel;
-    sd = rule A's 60-day move std. Returns the list of trade dicts that fired today (0-N, conflict-closed)."""
+    sd = rule A's 60-day move std. Returns the list of trade dicts that fired today (0-N; A-F+C conflict-closed,
+    K+ (v1.07a) appended after - independent, never conflict-closed, see kfade_trade())."""
     trades = []
     if dt['ruleD_buy']:
         t = fixed_trade(b, day, ENTRY_BD_MIN, +1, A, 'Dbuy', cost)
@@ -292,4 +363,7 @@ def run_day(b, day, dt, A, hi, lo, sd, cost=0.08):
     if dt['ruleF']:
         t = fixed_trade(b, day, ENTRY_F_MIN, +1, A, 'F', cost)
         if t: trades.append(t)
-    return apply_conflict_close(trades)
+    kept = apply_conflict_close(trades)
+    tK = kfade_trade(b, day, dt, A, tC['t'] if tC else None, cost)
+    if tK: kept.append(tK)
+    return kept
