@@ -154,7 +154,7 @@ def day_end(code, bnow, winter):
     fri = bnow.weekday() == 4
     hm = {'GOLD': (22, 50) if (fri or winter) else (23, 0),             # Mon-Thu 22:50 in US winter (from 2 Nov), Fri 22:50
           'USDJPY': (14, 0) if fri else (18, 0),
-          'OIL': (20, 0),
+          'OIL': (21, 0) if bnow.strftime('%Y-%m-%d') >= '2026-11-09' else (20, 0),   # 8 Nov: oil v1.16 (stack5) closes at 21:00 broker from Mon 9 Nov (rows 34/35 = 2100)
           'US100': (22, 50) if fri else (23, 0),
           'US500': (22, 30),
           'GBPUSD': (23, 45),                                            # 26 Oct: GBP/USD v1.04 closes everything at 23:45 broker
