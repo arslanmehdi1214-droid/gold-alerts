@@ -249,6 +249,10 @@ V20_ESAM_MIN = 0.85; V20_CP_MAX = 0.20                                # v1.23 Ni
 V21_VIXFOTH_MIN = 0.85; V21_CHFFX_MAX = 0.20                          # v1.23 Night V21: VIX-futures Other-Reportables COT 4-report-shift (52wk pctile, >=) / Swiss-Franc-futures leveraged-money COT 4-report-shift (52wk pctile, <=) thresholds (Round 76 best)
 V22_UST2YNR_MAX = 0.15; V22_MSCIEMCHG_MAX = 0.20                      # v1.23 Night V22: UST-2yr-Note-futures Non-Reportables COT 4-report-shift (52wk pctile, <=) / MSCI-EM-futures leveraged-money COT 4-report-shift (52wk pctile, <=) thresholds (Round 78 best)
 V23_UTI2NR_MAX = 0.15; V23_TR_MAX = 0.20                              # v1.23 Night V23: E-mini-S&P-Utilities-sector Non-Reportables COT 4-report-shift (52wk pctile, <=) / XTN-SPY (transports) ratio 10d change (252d pctile, <=) thresholds (Round 81 best)
+V25_SGOTH_MIN = 0.70; V25_FY_MAX = 0.20                               # v1.24 Night V25: Sugar-No.11 Disaggregated Other-Reportables COT LEVEL (52wk pctile, >=) / XLF-SPY (financials) ratio 10d change (252d pctile, <=) thresholds (Round 83 best; V24, Round 82, built+MT4-tested but net-negative, not ported)
+V26_FCSW_MIN = 0.70; V26_CQ_MAX = 0.20                                # v1.24 Night V26: Feeder-Cattle Disaggregated Swap-Dealer COT 4-report-shift (52wk pctile, >=) / HYG-LQD (credit quality) ratio 10d change (252d pctile, <=) thresholds (Round 84 best)
+V27_VIXLCOMM_MIN = 0.85; V27_DXYFNR_MIN = 0.70                        # v1.24 Night V27: VIX-futures Legacy Commercial COT 4-report-shift (52wk pctile, >=) / US-Dollar-Index-futures Legacy Non-Reportables COT 4-report-shift (52wk pctile, >=) thresholds (Round 85 best)
+V28_EURJPYNCOMM_MAX = 0.30; V28_BT_MIN = 0.70                         # v1.24 Night V28: EUR/JPY-cross-futures Legacy Non-Commercial COT 4-report-shift (52wk pctile, <=) / Bitcoin own 10d change (252d pctile, >=) thresholds (Round 86 best)
 
 def eod_minutes(day): return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
@@ -676,6 +680,82 @@ def v23_flag(Z, day):
     if not (np.isfinite(row.uti2_nr_chg4_pct) and np.isfinite(row.tr_chg10_pct)): return False, {}
     dd = dict(date=str(k.date()), uti2_nr_chg4_pct=float(row.uti2_nr_chg4_pct), tr_chg10_pct=float(row.tr_chg10_pct))
     return bool(row.uti2_nr_chg4_pct <= V23_UTI2NR_MAX and row.tr_chg10_pct <= V23_TR_MAX), dd
+
+def v25_flag(S, day):
+    """v1.24 Night V25 trigger. S: DataFrame indexed by date (built by sgoth_fy_today() in sp_run.py) with
+    columns sg_oth_pct (52-week rolling percentile of the Sugar No.11-futures Disaggregated OTHER-REPORTABLES
+    net position LEVEL, normalized by open interest, weekly data with a 3-day publication lag already applied
+    so nothing is look-ahead - high = this cohort already positioned net-long sugar) and fy_chg10_pct
+    (252-day rolling percentile of the 10-day % change in the XLF/SPY ratio - low = financials underperforming
+    the index). The broker day `day`'s own NY-date row is day - 1 calendar day (same lag relationship as
+    V4-V23's lookup: d = ny_date + 1). Fires when both clear at once (sg_oth_pct >= V25_SGOTH_MIN AND
+    fy_chg10_pct <= V25_FY_MAX) - Round 83's best, n=81 baked nights fire (fy_chg10 reused from the parked
+    Round 57 candidate, never built/live before - no live-leg overlap). V24 (same batch, Round 82) was built
+    and MT4-tested alongside this one but found net-negative, so it is not ported here - the mutual-exclusion
+    chain goes straight from V23 to V25. Missing values (not enough rolling history yet, or no data that day)
+    mean it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if S is None or not len(S) or k not in S.index: return False, {}
+    row = S.loc[k]
+    if not (np.isfinite(row.sg_oth_pct) and np.isfinite(row.fy_chg10_pct)): return False, {}
+    dd = dict(date=str(k.date()), sg_oth_pct=float(row.sg_oth_pct), fy_chg10_pct=float(row.fy_chg10_pct))
+    return bool(row.sg_oth_pct >= V25_SGOTH_MIN and row.fy_chg10_pct <= V25_FY_MAX), dd
+
+def v26_flag(F, day):
+    """v1.24 Night V26 trigger. F: DataFrame indexed by date (built by fcsw_cq_today() in sp_run.py) with
+    columns fc_sw_chg4_pct (52-week rolling percentile of the 4-report SHIFT in the Feeder-Cattle-futures
+    Disaggregated SWAP-DEALER net position, weekly data with a 3-day publication lag already applied so
+    nothing is look-ahead - high = this cohort's positioning rising fast) and cq_chg10_pct (the SAME HYG/LQD
+    credit-quality feature already used by V8/V16 - low = credit de-risking). The broker day `day`'s own
+    NY-date row is day - 1 calendar day (same lag relationship as V4-V25's lookup: d = ny_date + 1). Fires
+    when both clear at once (fc_sw_chg4_pct >= V26_FCSW_MIN AND cq_chg10_pct <= V26_CQ_MAX) - Round 84's best,
+    n=86 baked nights fire (cq_chg10 is also half of live V8's trigger - FLAGGED, rehash risk disclosed not
+    hidden). Missing values (not enough rolling history yet, or no data that day) mean it simply never fires
+    that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if F is None or not len(F) or k not in F.index: return False, {}
+    row = F.loc[k]
+    if not (np.isfinite(row.fc_sw_chg4_pct) and np.isfinite(row.cq_chg10_pct)): return False, {}
+    dd = dict(date=str(k.date()), fc_sw_chg4_pct=float(row.fc_sw_chg4_pct), cq_chg10_pct=float(row.cq_chg10_pct))
+    return bool(row.fc_sw_chg4_pct >= V26_FCSW_MIN and row.cq_chg10_pct <= V26_CQ_MAX), dd
+
+def v27_flag(L, day):
+    """v1.24 Night V27 trigger. L: DataFrame indexed by date (built by vixlcomm_dxyfnr_today() in sp_run.py)
+    with columns vixl_comm_chg4_pct (52-week rolling percentile of the 4-report SHIFT in the VIX-futures
+    LEGACY COMMERCIAL net position - a category only in the Legacy report, distinct from V21's Other-
+    Reportables cohort on the same contract - weekly data with a 3-day publication lag already applied so
+    nothing is look-ahead - high = commercial hedgers shifting fast toward net-long-vol) and dxyf_nr_chg4_pct
+    (52-week rolling percentile of the 4-report SHIFT in the US-Dollar-Index-futures LEGACY NON-REPORTABLES
+    net position, CFTC Feb-2022 rename concatenated - high = retail positioning shifting fast-bullish). The
+    broker day `day`'s own NY-date row is day - 1 calendar day (same lag relationship as V4-V26's lookup:
+    d = ny_date + 1). Fires when both shift fast at once (vixl_comm_chg4_pct >= V27_VIXLCOMM_MIN AND
+    dxyf_nr_chg4_pct >= V27_DXYFNR_MIN) - Round 85's best, n=60 baked nights fire (first use of the CFTC
+    Legacy COT report in this project - no feature reuse). Missing values (not enough rolling history yet, or
+    no data that day) mean it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if L is None or not len(L) or k not in L.index: return False, {}
+    row = L.loc[k]
+    if not (np.isfinite(row.vixl_comm_chg4_pct) and np.isfinite(row.dxyf_nr_chg4_pct)): return False, {}
+    dd = dict(date=str(k.date()), vixl_comm_chg4_pct=float(row.vixl_comm_chg4_pct), dxyf_nr_chg4_pct=float(row.dxyf_nr_chg4_pct))
+    return bool(row.vixl_comm_chg4_pct >= V27_VIXLCOMM_MIN and row.dxyf_nr_chg4_pct >= V27_DXYFNR_MIN), dd
+
+def v28_flag(J, day):
+    """v1.24 Night V28 trigger. J: DataFrame indexed by date (built by eurjpyncomm_bt_today() in sp_run.py)
+    with columns eurjpyl_ncomm_chg4_pct (52-week rolling percentile of the 4-report SHIFT in the EUR/JPY-
+    cross-rate-futures LEGACY NON-COMMERCIAL net position - a category only in the Legacy report, first-ever
+    cross-rate futures contract via COT in this project - weekly data with a 3-day publication lag already
+    applied so nothing is look-ahead - low = speculative positioning falling fast) and bt_chg10_pct (252-day
+    rolling percentile of Bitcoin's own 10-day % change - high = Bitcoin rising fast). The broker day `day`'s
+    own NY-date row is day - 1 calendar day (same lag relationship as V4-V27's lookup: d = ny_date + 1). Fires
+    when both clear at once (eurjpyl_ncomm_chg4_pct <= V28_EURJPYNCOMM_MAX AND bt_chg10_pct >= V28_BT_MIN) -
+    Round 86's best, biggest sample of this stack, n=88 baked nights fire (no feature reuse). Missing values
+    (not enough rolling history yet, or no data that day) mean it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if J is None or not len(J) or k not in J.index: return False, {}
+    row = J.loc[k]
+    if not (np.isfinite(row.eurjpyl_ncomm_chg4_pct) and np.isfinite(row.bt_chg10_pct)): return False, {}
+    dd = dict(date=str(k.date()), eurjpyl_ncomm_chg4_pct=float(row.eurjpyl_ncomm_chg4_pct), bt_chg10_pct=float(row.bt_chg10_pct))
+    return bool(row.eurjpyl_ncomm_chg4_pct <= V28_EURJPYNCOMM_MAX and row.bt_chg10_pct >= V28_BT_MIN), dd
 
 def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_done=False,
               name='Night long (high-fear night: VIX / VVIX)', src=1):

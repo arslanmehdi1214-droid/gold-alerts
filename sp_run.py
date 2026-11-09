@@ -217,6 +217,16 @@ CHF_MKT = 'SWISS FRANC - CHICAGO MERCANTILE EXCHANGE'
 UST2YNRMSCIEMCHG = os.path.join(HERE, 'docs', 'ust2ynrmsciemchg_sp.json')  # v1.23: cached CFTC COT UST-2yr-Note NON-REPORTABLES net position + MSCI-EM leveraged-money net position (both 4-report SHIFT) for the Night V22 trigger
 UTI2NRTR = os.path.join(HERE, 'docs', 'uti2nrtr_sp.json')      # v1.23: cached CFTC COT E-mini-S&P-Utilities NON-REPORTABLES net position (4-report SHIFT) + XTN/SPY daily closes for the Night V23 trigger
 UTI2_MKT = 'E-MINI S&P UTILITIES INDEX - CHICAGO MERCANTILE EXCHANGE'
+DISAGG_URL = 'https://publicreporting.cftc.gov/resource/72hh-3qpy.json'  # CFTC Socrata API, "Commitments of Traders - Disaggregated Futures Only", free, no key needed (Other-Reportables/Swap-Dealer categories, absent from the Traders-in-Financial-Futures dataset used above)
+LEGACY_URL = 'https://publicreporting.cftc.gov/resource/6dca-aqww.json'  # CFTC Socrata API, "Commitments of Traders - Legacy, Futures Only", free, no key needed (Commercial/Non-Commercial categories, absent from both datasets above)
+SUGAR_MKT = 'SUGAR NO. 11 - ICE FUTURES U.S.'
+FC_MKT = 'FEEDER CATTLE - CHICAGO MERCANTILE EXCHANGE'
+DXYF_MKT = ('U.S. DOLLAR INDEX - ICE FUTURES U.S.', 'USD INDEX - ICE FUTURES U.S.')  # CFTC Feb-2022 rename, concatenated
+EURJPYL_MKT = 'EURO FX/JAPANESE YEN XRATE - CHICAGO MERCANTILE EXCHANGE'
+SGOTHFY = os.path.join(HERE, 'docs', 'sgothfy_sp.json')        # v1.24: cached CFTC COT Sugar-No.11 (Disaggregated, OTHER-REPORTABLES net position, LEVEL) + XLF/SPY daily closes for the Night V25 trigger
+FCSWCQ = os.path.join(HERE, 'docs', 'fcswcq_sp.json')          # v1.24: cached CFTC COT Feeder-Cattle (Disaggregated, SWAP-DEALER net position, 4-report SHIFT) + HYG/LQD daily closes for the Night V26 trigger
+VIXLCOMMDXYFNR = os.path.join(HERE, 'docs', 'vixlcommdxyfnr_sp.json')  # v1.24: cached CFTC COT VIX-futures (Legacy, COMMERCIAL net position) + USD-Index-futures (Legacy, NON-REPORTABLES net position), both 4-report SHIFT, for the Night V27 trigger
+EURJPYNCOMMBT = os.path.join(HERE, 'docs', 'eurjpyncommbt_sp.json')  # v1.24: cached CFTC COT EUR/JPY-cross-futures (Legacy, NON-COMMERCIAL net position, 4-report SHIFT) + BTC-USD daily closes for the Night V28 trigger
 FRED_URL = 'https://fred.stlouisfed.org/graph/fredgraph.csv?id={}'   # free, no API key needed
 
 def _cboe_series(sym, col):
@@ -904,6 +914,178 @@ def uti2nr_tr_today(day):
     uti2_nr_chg4_pct = cot_avail.reindex(idx, method='ffill')
     return pd.DataFrame(dict(uti2_nr_chg4_pct=uti2_nr_chg4_pct, tr_chg10_pct=tr_chg10_pct))
 
+def sgoth_fy_today(day):
+    """v1.24 Night V25: CFTC's weekly Disaggregated Commitments of Traders report for Sugar No. 11 futures
+    (OTHER-REPORTABLES net position LEVEL, normalized by open interest - a category that only exists in the
+    Disaggregated report, not the Traders-in-Financial-Futures dataset used by every prior COT leg) PLUS the
+    XLF (financials sector) + SPY daily closes (cached in docs/sgothfy_sp.json, refreshed once per broker day
+    - same once-a-day shape as uti2nr_tr_today()). A 3-day publication lag is applied to the COT data (report
+    Tuesday, published the following Friday - same method as every prior COT leg) so nothing is look-ahead.
+    Returns a DataFrame indexed by date with sg_oth_pct (52-week rolling percentile of the Sugar Other-
+    Reportables net position LEVEL - high = this cohort already positioned net-long sugar) and fy_chg10_pct
+    (252-day rolling percentile of the 10-day % change in the XLF/SPY ratio - low = financials underperforming
+    the index) for v25_flag() in sp_engine.py, or None on a fetch failure (Night V25 then simply does not
+    fire that night - same fail-safe shape as the other night-trigger fetches)."""
+    c = loadj(SGOTHFY, {})
+    if c.get('day') == str(day.date()) and 'dates' in c:
+        idx = pd.to_datetime(c['dates'])
+        xlf = pd.Series([np.nan if x is None else x for x in c['xlf']], index=idx)
+        spy = pd.Series([np.nan if x is None else x for x in c['spy']], index=idx)
+        cot_dates = pd.to_datetime(c['cot_dates']); cot_net = pd.Series([np.nan if x is None else float(x) for x in c['cot_net']], index=cot_dates)
+    else:
+        try:
+            xlf = _yahoo_daily_close('XLF'); spy = _yahoo_daily_close('SPY')
+            idx = xlf.index.union(spy.index); xlf = xlf.reindex(idx); spy = spy.reindex(idx)
+            r = requests.get(DISAGG_URL, params={
+                '$select': 'report_date_as_yyyy_mm_dd,other_rept_positions_long,other_rept_positions_short,open_interest_all',
+                '$where': f"market_and_exchange_names='{SUGAR_MKT}'",
+                '$order': 'report_date_as_yyyy_mm_dd ASC', '$limit': 5000}, timeout=20)
+            r.raise_for_status(); cj = r.json()
+            cot_dates = pd.to_datetime([x['report_date_as_yyyy_mm_dd'] for x in cj])
+            cot_net = pd.Series([(float(x['other_rept_positions_long']) - float(x['other_rept_positions_short'])) / float(x['open_interest_all']) for x in cj], index=cot_dates)
+            cot_net = cot_net.sort_index()
+            c = dict(day=str(day.date()), dates=[str(t.date()) for t in idx],
+                     xlf=[None if pd.isna(x) else float(x) for x in xlf], spy=[None if pd.isna(x) else float(x) for x in spy],
+                     cot_dates=[str(t.date()) for t in cot_net.index], cot_net=[None if pd.isna(x) else float(x) for x in cot_net], at=str(pd.Timestamp.utcnow()))
+            dumpj(c, SGOTHFY, indent=1)
+        except Exception:
+            return None
+    fy_ratio = xlf / spy
+    fy_chg10_pct = fy_ratio.pct_change(10).rolling(252, min_periods=120).rank(pct=True)
+    cot_pct = cot_net.rolling(52, min_periods=26).rank(pct=True)
+    cot_avail = cot_pct.copy(); cot_avail.index = cot_avail.index + pd.Timedelta(days=3)
+    sg_oth_pct = cot_avail.reindex(idx, method='ffill')
+    return pd.DataFrame(dict(sg_oth_pct=sg_oth_pct, fy_chg10_pct=fy_chg10_pct))
+
+def fcsw_cq_today(day):
+    """v1.24 Night V26: CFTC's weekly Disaggregated Commitments of Traders report for Feeder Cattle futures
+    (SWAP-DEALER net position, 4-report SHIFT, normalized by open interest - a category that only exists in
+    the Disaggregated report) PLUS the SAME HYG/LQD credit-quality fetch already used for Night V8/V16
+    (cq_in_today() above) - cached in docs/fcswcq_sp.json, refreshed once per broker day (same once-a-day
+    shape as ust5y_cq_today()). A 3-day publication lag is applied to the COT data (report Tuesday, published
+    the following Friday - same method as every prior COT leg) so nothing is look-ahead. Returns a DataFrame
+    indexed by date with fc_sw_chg4_pct (52-week rolling percentile of the 4-report SHIFT in the Feeder-Cattle
+    Swap-Dealer net position - high = positioning rising fast) and cq_chg10_pct (252-day rolling percentile of
+    the 10-day % change in the HYG/LQD ratio - low = credit de-risking, reused straight from cq_in_today()
+    rather than re-fetched) for v26_flag() in sp_engine.py, or None on a fetch failure (Night V26 then simply
+    does not fire that night - same fail-safe shape as the other night-trigger fetches)."""
+    cqdf = cq_in_today(day)
+    if cqdf is None: return None
+    c = loadj(FCSWCQ, {})
+    if c.get('day') == str(day.date()) and 'cot_dates' in c:
+        cot_dates = pd.to_datetime(c['cot_dates']); cot_net4 = pd.Series([np.nan if x is None else float(x) for x in c['cot_net']], index=cot_dates)
+    else:
+        try:
+            r = requests.get(DISAGG_URL, params={
+                '$select': 'report_date_as_yyyy_mm_dd,swap_positions_long_all,swap__positions_short_all,open_interest_all',
+                '$where': f"market_and_exchange_names='{FC_MKT}'",
+                '$order': 'report_date_as_yyyy_mm_dd ASC', '$limit': 5000}, timeout=20)
+            r.raise_for_status(); cj = r.json()
+            cot_dates = pd.to_datetime([x['report_date_as_yyyy_mm_dd'] for x in cj])
+            cot_net = pd.Series([(float(x['swap_positions_long_all']) - float(x['swap__positions_short_all'])) / float(x['open_interest_all']) for x in cj], index=cot_dates)
+            cot_net = cot_net.sort_index(); cot_net4 = cot_net.diff(4)
+            c = dict(day=str(day.date()), cot_dates=[str(t.date()) for t in cot_net4.index],
+                     cot_net=[None if pd.isna(x) else float(x) for x in cot_net4], at=str(pd.Timestamp.utcnow()))
+            dumpj(c, FCSWCQ, indent=1)
+        except Exception:
+            return None
+    cot_net4_pct = cot_net4.rolling(52, min_periods=26).rank(pct=True)
+    cot_avail = cot_net4_pct.copy(); cot_avail.index = cot_avail.index + pd.Timedelta(days=3)
+    fc_sw_chg4_pct = cot_avail.reindex(cqdf.index, method='ffill')
+    return pd.DataFrame(dict(fc_sw_chg4_pct=fc_sw_chg4_pct, cq_chg10_pct=cqdf.cq_chg10_pct))
+
+def vixlcomm_dxyfnr_today(day):
+    """v1.24 Night V27: CFTC's weekly LEGACY Commitments of Traders report for VIX futures (COMMERCIAL net
+    position, 4-report SHIFT - a category that only exists in the Legacy report, not the Traders-in-
+    Financial-Futures dataset used by V21's vixfoth_chffx_today()) AND the US-Dollar-Index futures
+    (NON-REPORTABLES net position, same 4-report-shift method, CFTC rename Feb-2022 concatenated) - both
+    COT-only, no price-ratio leg needed (same shape as brlfx_ust2y_today() above). Cached in
+    docs/vixlcommdxyfnr_sp.json, refreshed once per broker day. A 3-day publication lag is applied to both
+    series (report Tuesday, published the following Friday - same method as every prior COT leg) so nothing
+    is look-ahead. The daily index is borrowed from SPY's trading calendar (no price values used, just the
+    calendar) so both series land on real trading days. Returns a DataFrame indexed by date with
+    vixl_comm_chg4_pct (high = VIX-futures commercial hedgers shifting fast toward net-long-vol) and
+    dxyf_nr_chg4_pct (high = Dollar-Index retail positioning shifting fast-bullish) for v27_flag() in
+    sp_engine.py, or None on a fetch failure (Night V27 then simply does not fire that night - same fail-safe
+    shape as the other night-trigger fetches)."""
+    c = loadj(VIXLCOMMDXYFNR, {})
+    if c.get('day') == str(day.date()) and 'dates' in c:
+        idx = pd.to_datetime(c['dates'])
+        vl_dates = pd.to_datetime(c['vl_dates']); vl_net4 = pd.Series([np.nan if x is None else float(x) for x in c['vl_net']], index=vl_dates)
+        dx_dates = pd.to_datetime(c['dx_dates']); dx_net4 = pd.Series([np.nan if x is None else float(x) for x in c['dx_net']], index=dx_dates)
+    else:
+        try:
+            idx = _yahoo_daily_close('SPY').index
+            r1 = requests.get(LEGACY_URL, params={
+                '$select': 'report_date_as_yyyy_mm_dd,comm_positions_long_all,comm_positions_short_all,open_interest_all',
+                '$where': f"market_and_exchange_names='{VIXF_MKT}'",
+                '$order': 'report_date_as_yyyy_mm_dd ASC', '$limit': 5000}, timeout=20)
+            r1.raise_for_status(); vj = r1.json()
+            vl_dates = pd.to_datetime([x['report_date_as_yyyy_mm_dd'] for x in vj])
+            vl_net = pd.Series([(float(x['comm_positions_long_all']) - float(x['comm_positions_short_all'])) / float(x['open_interest_all']) for x in vj], index=vl_dates)
+            vl_net = vl_net.sort_index(); vl_net4 = vl_net.diff(4)
+            r2 = requests.get(LEGACY_URL, params={
+                '$select': 'report_date_as_yyyy_mm_dd,nonrept_positions_long_all,nonrept_positions_short_all,open_interest_all',
+                '$where': "market_and_exchange_names in ('" + "','".join(DXYF_MKT) + "')",
+                '$order': 'report_date_as_yyyy_mm_dd ASC', '$limit': 5000}, timeout=20)
+            r2.raise_for_status(); dj = r2.json()
+            dx_dates = pd.to_datetime([x['report_date_as_yyyy_mm_dd'] for x in dj])
+            dx_net = pd.Series([(float(x['nonrept_positions_long_all']) - float(x['nonrept_positions_short_all'])) / float(x['open_interest_all']) for x in dj], index=dx_dates)
+            dx_net = dx_net.sort_index(); dx_net4 = dx_net.diff(4)
+            c = dict(day=str(day.date()), dates=[str(t.date()) for t in idx],
+                     vl_dates=[str(t.date()) for t in vl_net4.index], vl_net=[None if pd.isna(x) else float(x) for x in vl_net4],
+                     dx_dates=[str(t.date()) for t in dx_net4.index], dx_net=[None if pd.isna(x) else float(x) for x in dx_net4], at=str(pd.Timestamp.utcnow()))
+            dumpj(c, VIXLCOMMDXYFNR, indent=1)
+        except Exception:
+            return None
+    vl_net4_pct = vl_net4.rolling(52, min_periods=26).rank(pct=True)
+    vl_avail = vl_net4_pct.copy(); vl_avail.index = vl_avail.index + pd.Timedelta(days=3)
+    vixl_comm_chg4_pct = vl_avail.reindex(idx, method='ffill')
+    dx_net4_pct = dx_net4.rolling(52, min_periods=26).rank(pct=True)
+    dx_avail = dx_net4_pct.copy(); dx_avail.index = dx_avail.index + pd.Timedelta(days=3)
+    dxyf_nr_chg4_pct = dx_avail.reindex(idx, method='ffill')
+    return pd.DataFrame(dict(vixl_comm_chg4_pct=vixl_comm_chg4_pct, dxyf_nr_chg4_pct=dxyf_nr_chg4_pct))
+
+def eurjpyncomm_bt_today(day):
+    """v1.24 Night V28: CFTC's weekly LEGACY Commitments of Traders report for EUR/JPY cross-rate futures
+    (NON-COMMERCIAL net position, 4-report SHIFT - a category that only exists in the Legacy report) PLUS
+    Bitcoin (BTC-USD) daily closes (cached in docs/eurjpyncommbt_sp.json, refreshed once per broker day - same
+    once-a-day shape as uti2nr_tr_today(), except the second leg is a standalone price series, not a ratio).
+    A 3-day publication lag is applied to the COT data (report Tuesday, published the following Friday - same
+    method as every prior COT leg) so nothing is look-ahead. Returns a DataFrame indexed by date with
+    eurjpyl_ncomm_chg4_pct (52-week rolling percentile of the 4-report SHIFT in the EUR/JPY-cross
+    Non-Commercial net position - low = speculative positioning falling fast) and bt_chg10_pct (252-day
+    rolling percentile of Bitcoin's own 10-day % change - high = Bitcoin rising fast) for v28_flag() in
+    sp_engine.py, or None on a fetch failure (Night V28 then simply does not fire that night - same fail-safe
+    shape as the other night-trigger fetches)."""
+    c = loadj(EURJPYNCOMMBT, {})
+    if c.get('day') == str(day.date()) and 'dates' in c:
+        idx = pd.to_datetime(c['dates'])
+        bt = pd.Series([np.nan if x is None else x for x in c['bt']], index=idx)
+        cot_dates = pd.to_datetime(c['cot_dates']); cot_net4 = pd.Series([np.nan if x is None else float(x) for x in c['cot_net']], index=cot_dates)
+    else:
+        try:
+            bt = _yahoo_daily_close('BTC-USD'); idx = bt.index
+            r = requests.get(LEGACY_URL, params={
+                '$select': 'report_date_as_yyyy_mm_dd,noncomm_positions_long_all,noncomm_positions_short_all,open_interest_all',
+                '$where': f"market_and_exchange_names='{EURJPYL_MKT}'",
+                '$order': 'report_date_as_yyyy_mm_dd ASC', '$limit': 5000}, timeout=20)
+            r.raise_for_status(); cj = r.json()
+            cot_dates = pd.to_datetime([x['report_date_as_yyyy_mm_dd'] for x in cj])
+            cot_net = pd.Series([(float(x['noncomm_positions_long_all']) - float(x['noncomm_positions_short_all'])) / float(x['open_interest_all']) for x in cj], index=cot_dates)
+            cot_net = cot_net.sort_index(); cot_net4 = cot_net.diff(4)
+            c = dict(day=str(day.date()), dates=[str(t.date()) for t in idx],
+                     bt=[None if pd.isna(x) else float(x) for x in bt],
+                     cot_dates=[str(t.date()) for t in cot_net4.index], cot_net=[None if pd.isna(x) else float(x) for x in cot_net4], at=str(pd.Timestamp.utcnow()))
+            dumpj(c, EURJPYNCOMMBT, indent=1)
+        except Exception:
+            return None
+    bt_chg10_pct = bt.pct_change(10).rolling(252, min_periods=120).rank(pct=True)
+    cot_net4_pct = cot_net4.rolling(52, min_periods=26).rank(pct=True)
+    cot_avail = cot_net4_pct.copy(); cot_avail.index = cot_avail.index + pd.Timedelta(days=3)
+    eurjpyl_ncomm_chg4_pct = cot_avail.reindex(idx, method='ffill')
+    return pd.DataFrame(dict(eurjpyl_ncomm_chg4_pct=eurjpyl_ncomm_chg4_pct, bt_chg10_pct=bt_chg10_pct))
+
 def lasthour_stats(b):
     """v1.09 Night V4: b = one finished broker day's minute bars (o h l c v). Returns (ret, vol) for the 22:00-23:00 broker window
     (= 15:00-16:00 NY, the same window the backtest's lh_pct/lhvol_z were built from), or (None, None) if that window has no bars.
@@ -1265,6 +1447,14 @@ def compute(hist, b, day, now, picks, sp, jd):
                                             name='Night long (UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast)', src=22) + trades  # never with the other seventeen: only fires when stress, V3-V10, V12-V14, V16, V18-V21 above did NOT
     elif jd.get('v23'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.23 Night V23: Utilities-retail-COT-falling-fast + transports-weak night (gated below) -
                                             name='Night long (Utilities-retail-COT-falling-fast + transports-weak)', src=23) + trades  # never with the other eighteen: only fires when stress, V3-V10, V12-V14, V16, V18-V22 above did NOT
+    elif jd.get('v25'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.24 Night V25: Sugar-COT-net-long + financials-weak night (gated below; V24 skipped - net-negative, not ported) -
+                                            name='Night long (Sugar-COT-net-long + financials-weak)', src=25) + trades    # never with the other nineteen: only fires when stress, V3-V10, V12-V14, V16, V18-V23 above did NOT
+    elif jd.get('v26'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.24 Night V26: Feeder-Cattle-COT-rising-fast + credit-de-risking night (gated below) -
+                                            name='Night long (Feeder-Cattle-COT-rising-fast + credit-de-risking)', src=26) + trades  # never with the other twenty: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25 above did NOT
+    elif jd.get('v27'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.24 Night V27: VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish night (gated below) -
+                                            name='Night long (VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish)', src=27) + trades  # never with the other twenty-one: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25-V26 above did NOT
+    elif jd.get('v28'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.24 Night V28: EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast night (gated below) -
+                                            name='Night long (EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast)', src=28) + trades  # never with the other twenty-two: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25-V27 above did NOT
     if not trades and S.tom_window(day) and np.isfinite(A) and now.hour * 60 + now.minute >= S.TOM_DECIDE:
         trades = S.tom_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod)) + trades                        # v1.07 row20: only once no other S&P leg has fired by 17:00 broker
     for t in trades:                                     # past the close time but no bar there yet: close at the last price
@@ -1474,6 +1664,41 @@ def main(feed=None, get=None, now=None):
         if zinfo: jd['v23_detail'] = zinfo
         if Zdf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22']:
             jd['v23_note'] = 'Utilities-retail-COT/transports data unavailable this run - no Night V23 check'
+    # v1.24: Night V24 (gold-Swap-Dealer + eurfx-Asset-Mgr) was built, MT4-tested, and FOUND NET-NEGATIVE vs
+    # Control (-$51.93 over 32 trades, 9 Nov) - deliberately NOT ported here. V25-V28 (tested net-positive)
+    # pick up the v22/v23 chain directly, so V24's slot in the mutual-exclusion ordering is simply skipped.
+    if 'v25' not in jd and 'v23' in jd:                     # v1.24 Night V25: decided once per day, only once stress+v3-v10+v12-v14+v16+v18-v23 are already known (V24 skipped - net-negative, not ported)
+        ok_time = now.hour * 60 + now.minute <= S.NIGHT_IN + 5
+        Sdf = None if (jd['stress'] or jd['v3'] or jd['v4'] or jd['v5'] or jd['v6'] or jd['v7'] or jd['v8'] or jd['v9'] or jd['v10'] or jd['v12'] or jd['v13'] or jd['v14'] or jd['v16'] or jd['v18'] or jd['v19'] or jd['v20'] or jd['v21'] or jd['v22'] or jd['v23']) else sgoth_fy_today(day)
+        fired, sinfo = S.v25_flag(Sdf, day) if Sdf is not None else (False, {})
+        jd['v25'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23']
+        if sinfo: jd['v25_detail'] = sinfo
+        if Sdf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23']:
+            jd['v25_note'] = 'Sugar-COT/financials data unavailable this run - no Night V25 check'
+    if 'v26' not in jd and 'v25' in jd:                     # v1.24 Night V26: decided once per day, only once stress+v3-v10+v12-v14+v16+v18-v23+v25 are already known
+        ok_time = now.hour * 60 + now.minute <= S.NIGHT_IN + 5
+        Fdf = None if (jd['stress'] or jd['v3'] or jd['v4'] or jd['v5'] or jd['v6'] or jd['v7'] or jd['v8'] or jd['v9'] or jd['v10'] or jd['v12'] or jd['v13'] or jd['v14'] or jd['v16'] or jd['v18'] or jd['v19'] or jd['v20'] or jd['v21'] or jd['v22'] or jd['v23'] or jd['v25']) else fcsw_cq_today(day)
+        fired, finfo = S.v26_flag(Fdf, day) if Fdf is not None else (False, {})
+        jd['v26'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25']
+        if finfo: jd['v26_detail'] = finfo
+        if Fdf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25']:
+            jd['v26_note'] = 'Feeder-cattle-COT/credit data unavailable this run - no Night V26 check'
+    if 'v27' not in jd and 'v26' in jd:                     # v1.24 Night V27: decided once per day, only once stress+v3-v10+v12-v14+v16+v18-v23+v25-v26 are already known
+        ok_time = now.hour * 60 + now.minute <= S.NIGHT_IN + 5
+        Ldf = None if (jd['stress'] or jd['v3'] or jd['v4'] or jd['v5'] or jd['v6'] or jd['v7'] or jd['v8'] or jd['v9'] or jd['v10'] or jd['v12'] or jd['v13'] or jd['v14'] or jd['v16'] or jd['v18'] or jd['v19'] or jd['v20'] or jd['v21'] or jd['v22'] or jd['v23'] or jd['v25'] or jd['v26']) else vixlcomm_dxyfnr_today(day)
+        fired, linfo = S.v27_flag(Ldf, day) if Ldf is not None else (False, {})
+        jd['v27'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26']
+        if linfo: jd['v27_detail'] = linfo
+        if Ldf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26']:
+            jd['v27_note'] = 'VIX-Legacy-commercial-COT/Dollar-Index-COT data unavailable this run - no Night V27 check'
+    if 'v28' not in jd and 'v27' in jd:                     # v1.24 Night V28: decided once per day, only once stress+v3-v10+v12-v14+v16+v18-v23+v25-v27 are already known
+        ok_time = now.hour * 60 + now.minute <= S.NIGHT_IN + 5
+        Jdf = None if (jd['stress'] or jd['v3'] or jd['v4'] or jd['v5'] or jd['v6'] or jd['v7'] or jd['v8'] or jd['v9'] or jd['v10'] or jd['v12'] or jd['v13'] or jd['v14'] or jd['v16'] or jd['v18'] or jd['v19'] or jd['v20'] or jd['v21'] or jd['v22'] or jd['v23'] or jd['v25'] or jd['v26'] or jd['v27']) else eurjpyncomm_bt_today(day)
+        fired, jinfo = S.v28_flag(Jdf, day) if Jdf is not None else (False, {})
+        jd['v28'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27']
+        if jinfo: jd['v28_detail'] = jinfo
+        if Jdf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27']:
+            jd['v28_note'] = 'EURJPY-Legacy-noncommercial-COT/Bitcoin data unavailable this run - no Night V28 check'
     trades = compute(hist, b, day, now, picks, sp, jd)
     freeze_legs(jd, trades)
     rows = [row(t, b, now, sp) for t in trades]; drows = [r for r in rows if not r.get('night')]; nrow = [r for r in rows if r.get('night')]
@@ -1498,12 +1723,12 @@ def main(feed=None, get=None, now=None):
     else: state, msg = 'waiting', (f'Waiting for the first day signal (from {dubai(day + pd.Timedelta(minutes=16 * 60 + 40))} Dubai: 9:40 am New York move, '
                                    'Nasdaq signals; earlier: yesterday high/low sweep).')
     if nrow:                                             # v1.04 night leg (v1.08: or Night V3 - jd['v3']; v1.09: or Night V4 - jd['v4']; v1.10: or Night V5 - jd['v5']; v1.11: or Night V6 - jd['v6']; v1.12: or Night V7 - jd['v7']; v1.13: or Night V8 - jd['v8']; v1.14: or Night V9 - jd['v9']; v1.15: or Night V10 - jd['v10']; v1.16: or Night V12 - jd['v12']; v1.17: or Night V13 - jd['v13']; v1.18: or Night V14 - jd['v14']; v1.19: or Night V16 - jd['v16']; or Night V18 - jd['v18'])
-        n_ = nrow[0]; label = ('Utilities-retail-COT-falling-fast + transports-weak' if jd.get('v23') else ('UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast' if jd.get('v22') else ('VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish' if jd.get('v21') else ('ES-asset-manager-COT-fast-bullish + staples-weak' if jd.get('v20') else ('Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long' if jd.get('v19') else ('Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence' if jd.get('v18') else ('UST5yr-COT-falling-fast + credit-de-risking' if jd.get('v16') else ('Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast' if jd.get('v14') else ('MSCI-EM-COT-extreme-long + communications-weak' if jd.get('v13') else ('DJIA-COT-bullish-fast + crypto-risk-off' if jd.get('v12') else ('bank-loan-weak + E-mini COT net-long' if jd.get('v10') else ('duration-curve-steepening + tech-weak' if jd.get('v9') else ('credit-de-risking + industrials-weak' if jd.get('v8') else ('materials-weak + communications-rally' if jd.get('v7') else ('dollar-basket-weak + Europe-shock' if jd.get('v6') else ('dollar-weak + breadth-narrow' if jd.get('v5') else ('weak-close + volume-spike' if jd.get('v4') else ('gold+WTI shock' if jd.get('v3') else 'high-fear night'))))))))))))))))))
+        n_ = nrow[0]; label = ('EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast' if jd.get('v28') else ('VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish' if jd.get('v27') else ('Feeder-Cattle-COT-rising-fast + credit-de-risking' if jd.get('v26') else ('Sugar-COT-net-long + financials-weak' if jd.get('v25') else ('Utilities-retail-COT-falling-fast + transports-weak' if jd.get('v23') else ('UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast' if jd.get('v22') else ('VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish' if jd.get('v21') else ('ES-asset-manager-COT-fast-bullish + staples-weak' if jd.get('v20') else ('Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long' if jd.get('v19') else ('Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence' if jd.get('v18') else ('UST5yr-COT-falling-fast + credit-de-risking' if jd.get('v16') else ('Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast' if jd.get('v14') else ('MSCI-EM-COT-extreme-long + communications-weak' if jd.get('v13') else ('DJIA-COT-bullish-fast + crypto-risk-off' if jd.get('v12') else ('bank-loan-weak + E-mini COT net-long' if jd.get('v10') else ('duration-curve-steepening + tech-weak' if jd.get('v9') else ('credit-de-risking + industrials-weak' if jd.get('v8') else ('materials-weak + communications-rally' if jd.get('v7') else ('dollar-basket-weak + Europe-shock' if jd.get('v6') else ('dollar-weak + breadth-narrow' if jd.get('v5') else ('weak-close + volume-spike' if jd.get('v4') else ('gold+WTI shock' if jd.get('v3') else 'high-fear night'))))))))))))))))))))))
         msg = (f"NIGHT BUY ({label}) at {n_['time']} Dubai, stop {n_['stop']}, " +
                (f"closes at {dubai(day + pd.Timedelta(minutes=S.NIGHT_OUT))} Dubai (10:00 am New York). " if n_['status'] == 'open' else f"closed ({n_['status']}). ") + msg)
         if state in ('none', 'waiting') and n_['status'] == 'open': state = 'buy'
     elif jd.get('stress_note'): msg += ' (' + jd['stress_note'] + '.)'
-    elif jd.get('stress') is False and jd.get('v3') is False and jd.get('v4') is False and jd.get('v5') is False and jd.get('v6') is False and jd.get('v7') is False and jd.get('v8') is False and jd.get('v9') is False and jd.get('v10') is False and jd.get('v12') is False and jd.get('v13') is False and jd.get('v14') is False and jd.get('v16') is False and jd.get('v18') is False and jd.get('v19') is False and jd.get('v20') is False and jd.get('v21') is False and jd.get('v22') is False and jd.get('v23') is False: msg += ' No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak, no duration-curve-steepening + tech-weak, no bank-loan-weak + E-mini COT net-long, no DJIA-COT-bullish-fast + crypto-risk-off, no MSCI-EM-COT-extreme-long + communications-weak, no Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast, no UST5yr-COT-falling-fast + credit-de-risking, no Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence, no Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long, no ES-asset-manager-COT-fast-bullish + staples-weak, no VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish, no UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast, no Utilities-retail-COT-falling-fast + transports-weak).'
+    elif jd.get('stress') is False and jd.get('v3') is False and jd.get('v4') is False and jd.get('v5') is False and jd.get('v6') is False and jd.get('v7') is False and jd.get('v8') is False and jd.get('v9') is False and jd.get('v10') is False and jd.get('v12') is False and jd.get('v13') is False and jd.get('v14') is False and jd.get('v16') is False and jd.get('v18') is False and jd.get('v19') is False and jd.get('v20') is False and jd.get('v21') is False and jd.get('v22') is False and jd.get('v23') is False and jd.get('v25') is False and jd.get('v26') is False and jd.get('v27') is False and jd.get('v28') is False: msg += ' No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak, no duration-curve-steepening + tech-weak, no bank-loan-weak + E-mini COT net-long, no DJIA-COT-bullish-fast + crypto-risk-off, no MSCI-EM-COT-extreme-long + communications-weak, no Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast, no UST5yr-COT-falling-fast + credit-de-risking, no Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence, no Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long, no ES-asset-manager-COT-fast-bullish + staples-weak, no VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish, no UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast, no Utilities-retail-COT-falling-fast + transports-weak, no Sugar-COT-net-long + financials-weak, no Feeder-Cattle-COT-rising-fast + credit-de-risking, no VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish, no EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast).'
     elif jd.get('v3_note'): msg += ' (' + jd['v3_note'] + '.)'
     elif jd.get('v4_note'): msg += ' (' + jd['v4_note'] + '.)'
     elif jd.get('v5_note'): msg += ' (' + jd['v5_note'] + '.)'
@@ -1522,6 +1747,10 @@ def main(feed=None, get=None, now=None):
     elif jd.get('v21_note'): msg += ' (' + jd['v21_note'] + '.)'
     elif jd.get('v22_note'): msg += ' (' + jd['v22_note'] + '.)'
     elif jd.get('v23_note'): msg += ' (' + jd['v23_note'] + '.)'
+    elif jd.get('v25_note'): msg += ' (' + jd['v25_note'] + '.)'
+    elif jd.get('v26_note'): msg += ' (' + jd['v26_note'] + '.)'
+    elif jd.get('v27_note'): msg += ' (' + jd['v27_note'] + '.)'
+    elif jd.get('v28_note'): msg += ' (' + jd['v28_note'] + '.)'
     elif stress is None: msg += f" (Night-trade check: Cboe data not available - {cinfo.get('error', '')}.)"
     if pnote and now.hour * 60 + now.minute >= S.US_LO: msg += f' ({pnote}.)'
     mk['US500'] = dict(base_card(A if A == A else None), state=state, message=msg, price=last, change=(None if last is None or first is None else round(last - first, 1)),
