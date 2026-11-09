@@ -230,11 +230,18 @@ function kfadeBlock(m){try{const k=m.kfade;if(!k)return'';
  <div><b>${k.win}%</b><span>Closed in profit</span></div><div><b class="${k.net>=0?'pos':'neg'}">${usd(k.net)}</b><span>Net ($ per barrel, 0.30 lot)</span></div></div>
  <section class="card" style="margin-top:12px;padding:12px 16px"><div class="bt num" style="grid-template-columns:repeat(9,minmax(0,1fr))">${yr}</div>
  <div class="note">${esc(k.source||'')}</div></section>`}catch(e){return''}}
+function awk2Block(m){try{const k=m.awk2;if(!k)return'';
+ const yr=(k.by_year||[]).map(([y,v])=>`<div class="cx"><span>${esc(y)}</span><b class="${v>=0?'pos':'neg'}">${usd(v)}</b></div>`).join('');
+ return`<div class="sec"><h2>Rules AW + K2 · Wednesday re-entry &amp; K+ add-on — own backtest (new, 2022-heavy)</h2><span>${esc(k.note||'')}</span></div>
+ <div class="bt num" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div><b>${k.trades}</b><span>Trades (AW ${k.aw_trades} · K2 ${k.k2_trades})</span></div>
+ <div><b class="${k.net>=0?'pos':'neg'}">${usd(k.net)}</b><span>Net ($ per barrel, AW 0.30 lot · K2 0.15 lot)</span></div></div>
+ <section class="card" style="margin-top:12px;padding:12px 16px"><div class="bt num" style="grid-template-columns:repeat(9,minmax(0,1fr))">${yr}</div>
+ <div class="note">${esc(k.source||'')}</div></section>`}catch(e){return''}}
 function paper(m){const U=m.unit==='usd',P=m.unit==='pts',dp=m.dp??3,fP=v=>v==null?'—':Number(v).toFixed(dp),E=m.entries||[],s=m.journal||{},pb=m.pass_bar||{},bt=m.stats||{};
  const rv=v=>U?usd(v):P?pts(v):pips(v),ch=(U||P)?m.change:m.change_pips,chc=ch==null?'':ch>=0?'up':'dn';
  const rres=x=>U?x.res_sized:P?x.res:x.pips;
  const prow=(e,n)=>{const r=rres(e),run=e.status==='open'||e.status==='close_now',dir=e.side==='BUY'?1:-1;const lv=!run||m.price==null?null:P?(e.live??(m.price-e.price)*dir):U?(m.price-e.price)*dir:(m.price-e.price)*dir*100;const res=run&&m.price!=null?`<div class="cx"><span>Now</span><b>${fP(m.price)}</b><small class="${lv>=0?'pos':'neg'}">${rv(lv)}</small></div>`:r==null?'<div class="cx hide-m"><span>Target</span><b>None</b></div>':`<div class="cx"><span>Result${U?' /bbl':''}</span><b class="${r>=0?'pos':'neg'}">${rv(r)}</b></div>`;
-  return`<div class="row2 ${e.side} num"><em>#${n}</em><div class="c1"><b>${e.side} ${fP(e.price)}</b><small>${esc(e.time)} · ${esc(e.name)}${U?' · size '+esc(e.size==='full'?'full':'⅓'):''}</small></div>
+  return`<div class="row2 ${e.side} num"><em>#${n}</em><div class="c1"><b>${e.side} ${fP(e.price)}</b><small>${esc(e.time)} · ${esc(e.name)}${U?' · size '+esc(e.size==='full'?'full':e.size===0.5?'half':'⅓'):''}</small></div>
   <div class="cx"><span>Stop</span><b>${fP(e.stop)}</b></div><div class="cx"><span>Stop size</span><b>${U?'$'+Number(e.stop_usd).toFixed(2):P?Number(e.stop_pts).toFixed(1)+' pts':esc(e.stop_pips)+' pips'}</b></div>${res}
   <span class="st st-${e.status==='close_now'?'eod':e.status}">${esc(YST[e.status]||e.status)}</span></div>`};
  const ents=E.map((e,i)=>prow(e,i+1)).reverse().join('');
@@ -242,7 +249,7 @@ function paper(m){const U=m.unit==='usd',P=m.unit==='pts',dp=m.dp??3,fP=v=>v==nu
  const net=(U||P)?s.net:s.net_pips;
  const rows=(m.jdays||[]).map(d=>{const t=d.trades||[],dec=t.filter(x=>x.rwf!=null),ok=dec.filter(x=>x.rwf===1).length,hp=t.some(x=>rres(x)!=null),p=t.reduce((a,x)=>a+(rres(x)||0),0),k=m.code+d.date;
   const head=`<tr class="jd num" onclick="openDay=openDay==='${k}'?null:'${k}';render()"><td><b>${esc(d.label)}</b></td><td>${t.length?`<span class="tag ${d.side==='BUY'?'buy':'sell'}">${esc(d.side)}</span> × ${t.length}`:'<span class="tag no">No trade</span>'}</td><td>${dec.length?ok+' of '+dec.length:'—'}</td><td class="${p>=0?'pos':'neg'}">${hp?rv(p):'—'}</td></tr>`;
-  const sub=openDay===k?t.map(x=>`<tr class="jsub num"><td>${esc(x.time)}</td><td>${esc(x.side)} ${fP(x.price)} · ${esc(x.name)} · stop ${fP(x.stop)}${U?' · '+(x.size==='full'?'full':'⅓'):''}</td><td>${x.rwf==null?'—':x.rwf===1?'right way':'wrong way'}</td><td class="${(rres(x)??0)>=0?'pos':'neg'}">${esc(YST[x.status]||x.status)} ${rres(x)==null?'':rv(rres(x))}</td></tr>`).join(''):'';
+  const sub=openDay===k?t.map(x=>`<tr class="jsub num"><td>${esc(x.time)}</td><td>${esc(x.side)} ${fP(x.price)} · ${esc(x.name)} · stop ${fP(x.stop)}${U?' · '+(x.size==='full'?'full':x.size===0.5?'half':'⅓'):''}</td><td>${x.rwf==null?'—':x.rwf===1?'right way':'wrong way'}</td><td class="${(rres(x)??0)>=0?'pos':'neg'}">${esc(YST[x.status]||x.status)} ${rres(x)==null?'':rv(rres(x))}</td></tr>`).join(''):'';
   return head+sub}).join('');
  const what=m.what_note||`This page tracks whether live USDJPY signals do as well as the backtest. Decision after about ${pb.months} months.`;
  const dayn=m.day_note||`14-day range ${m.atr_pips} pips · stop ¼ range · close 6:00 pm broker = 7:00 pm Dubai (8:00 pm in winter)`;
@@ -262,7 +269,7 @@ function paper(m){const U=m.unit==='usd',P=m.unit==='pts',dp=m.dp??3,fP=v=>v==nu
   <div><b>${s.perday==null?'—':esc(s.perday)}</b><span>Trades per weekday · days with trades ${s.days==null?'—':esc(s.days)+'%'}</span></div></div>
   <section class="card" style="margin-top:12px;padding:12px 16px"><table class="jt"><colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup><tr><th>Day</th><th>Trades</th><th>Right way</th><th>Result</th></tr>${rows||'<tr><td colspan="4" class="jempty">The paper journal starts with the first live day.</td></tr>'}</table>
   <div class="note">Backtest (${esc(bt.source)}): right way first ${esc(bt.direction)} · profit factor ${esc(bt.pf)} · ${esc(bt.perday)} trades per weekday · win ${esc(bt.win)} · ${esc(bt.net)}. ${esc(cost)} ${esc(m.history_note||'')}</div></section>
-  ${kfadeBlock(m)}`}
+  ${kfadeBlock(m)}${awk2Block(m)}`}
 
 // ---------- HOME: every new and running trade of every market, newest first ----------
 const dmin=t=>{const m=/^(\d+):(\d+)\s*(am|pm)$/i.exec(String(t||'').trim());if(!m)return -1;let h=+m[1]%12+(m[3].toLowerCase()==='pm'?12:0);let v=h*60+ +m[2];if(v<120)v+=1440;return v};
