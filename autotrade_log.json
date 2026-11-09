@@ -1,20 +1,6 @@
 [
  {
   "action": "stop moved",
-  "detail": "US100|2026-10-21|1:15 pm|SELL|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm to 29736.5",
-  "market": "US100",
-  "ok": true,
-  "t": "Wed 21 Oct 3:26 PM"
- },
- {
-  "action": "stop moved",
-  "detail": "US100|2026-10-21|1:15 pm|SELL|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm to 29736.9",
-  "market": "US100",
-  "ok": true,
-  "t": "Wed 21 Oct 3:27 PM"
- },
- {
-  "action": "stop moved",
   "detail": "US100|2026-10-21|1:15 pm|SELL|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm to 29736.6",
   "market": "US100",
   "ok": true,
@@ -2798,5 +2784,19 @@
   "market": "US500",
   "ok": true,
   "t": "Mon 9 Nov 3:02 AM"
+ },
+ {
+  "action": "OPEN BUY part",
+  "detail": "USDJPY|2026-11-09|8:00 am|BUY|Heikin-Ashi 7am size 600.0 at 158.301 stop 157.594 target 158.308 | trade risk 9.51 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Mon 9 Nov 8:01 AM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "USDJPY|2026-11-09|8:00 am|BUY|Heikin-Ashi 7am 158.308 -> 158.332 ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Mon 9 Nov 8:01 AM"
  }
 ]
