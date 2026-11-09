@@ -427,7 +427,7 @@ def bk_es_today(day):
         idx = pd.to_datetime(c['dates'])
         bkln = pd.Series([np.nan if x is None else x for x in c['bkln']], index=idx)
         hyg = pd.Series([np.nan if x is None else x for x in c['hyg']], index=idx)
-        cot_dates = pd.to_datetime(c['cot_dates']); cot_net = pd.Series([float(x) for x in c['cot_net']], index=cot_dates)
+        cot_dates = pd.to_datetime(c['cot_dates']); cot_net = pd.Series([np.nan if x is None else float(x) for x in c['cot_net']], index=cot_dates)
     else:
         try:
             bkln = _yahoo_daily_close('BKLN'); hyg = _yahoo_daily_close('HYG')
@@ -441,7 +441,7 @@ def bk_es_today(day):
             cot_net = pd.Series([float(x['lev_money_positions_long']) - float(x['lev_money_positions_short']) for x in cj], index=cot_dates)
             c = dict(day=str(day.date()), dates=[str(t.date()) for t in idx],
                      bkln=[None if pd.isna(x) else float(x) for x in bkln], hyg=[None if pd.isna(x) else float(x) for x in hyg],
-                     cot_dates=[str(t.date()) for t in cot_dates], cot_net=[float(x) for x in cot_net], at=str(pd.Timestamp.utcnow()))
+                     cot_dates=[str(t.date()) for t in cot_dates], cot_net=[None if pd.isna(x) else float(x) for x in cot_net], at=str(pd.Timestamp.utcnow()))
             dumpj(c, BKES, indent=1)
         except Exception:
             return None
@@ -469,7 +469,7 @@ def djia_cr_today(day):
         idx = pd.to_datetime(c['dates'])
         eth = pd.Series([np.nan if x is None else x for x in c['eth']], index=idx)
         btc = pd.Series([np.nan if x is None else x for x in c['btc']], index=idx)
-        cot_dates = pd.to_datetime(c['cot_dates']); cot_net4 = pd.Series([float(x) for x in c['cot_net']], index=cot_dates)
+        cot_dates = pd.to_datetime(c['cot_dates']); cot_net4 = pd.Series([np.nan if x is None else float(x) for x in c['cot_net']], index=cot_dates)
     else:
         try:
             eth = _yahoo_daily_close('ETH-USD'); btc = _yahoo_daily_close('BTC-USD')
@@ -512,7 +512,7 @@ def msciem_cm_today(day):
         idx = pd.to_datetime(c['dates'])
         xlc = pd.Series([np.nan if x is None else x for x in c['xlc']], index=idx)
         spy = pd.Series([np.nan if x is None else x for x in c['spy']], index=idx)
-        cot_dates = pd.to_datetime(c['cot_dates']); cot_net = pd.Series([float(x) for x in c['cot_net']], index=cot_dates)
+        cot_dates = pd.to_datetime(c['cot_dates']); cot_net = pd.Series([np.nan if x is None else float(x) for x in c['cot_net']], index=cot_dates)
     else:
         try:
             xlc = _yahoo_daily_close('XLC'); spy = _yahoo_daily_close('SPY')
@@ -527,7 +527,7 @@ def msciem_cm_today(day):
             cot_net = cot_net.sort_index()
             c = dict(day=str(day.date()), dates=[str(t.date()) for t in idx],
                      xlc=[None if pd.isna(x) else float(x) for x in xlc], spy=[None if pd.isna(x) else float(x) for x in spy],
-                     cot_dates=[str(t.date()) for t in cot_dates], cot_net=[float(x) for x in cot_net], at=str(pd.Timestamp.utcnow()))
+                     cot_dates=[str(t.date()) for t in cot_dates], cot_net=[None if pd.isna(x) else float(x) for x in cot_net], at=str(pd.Timestamp.utcnow()))
             dumpj(c, MSCIEMCM, indent=1)
         except Exception:
             return None
@@ -554,8 +554,8 @@ def brlfx_ust2y_today(day):
     c = loadj(BRLUST2Y, {})
     if c.get('day') == str(day.date()) and 'dates' in c:
         idx = pd.to_datetime(c['dates'])
-        brl_dates = pd.to_datetime(c['brl_dates']); brl_net4 = pd.Series([float(x) for x in c['brl_net']], index=brl_dates)
-        ust_dates = pd.to_datetime(c['ust_dates']); ust_net4 = pd.Series([float(x) for x in c['ust_net']], index=ust_dates)
+        brl_dates = pd.to_datetime(c['brl_dates']); brl_net4 = pd.Series([np.nan if x is None else float(x) for x in c['brl_net']], index=brl_dates)
+        ust_dates = pd.to_datetime(c['ust_dates']); ust_net4 = pd.Series([np.nan if x is None else float(x) for x in c['ust_net']], index=ust_dates)
     else:
         try:
             idx = _yahoo_daily_close('SPY').index
