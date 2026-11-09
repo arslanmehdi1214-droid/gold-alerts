@@ -1,5 +1,5 @@
 {
- "updated": "Mon 09 Nov \u00b7 7:10 pm",
+ "updated": "Mon 09 Nov \u00b7 7:11 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4114.98,
+   "price": 4115.42,
    "close_at": "12:50 am",
-   "change": 49.49,
+   "change": 49.93,
    "size": 0.1,
    "datr": 82.53,
    "open_now": 1,
@@ -1404,10 +1404,17 @@
     ],
     [
      "7:05 pm",
-     4114.98,
+     4115.03,
      4116.21,
      4117.39,
      4113.42
+    ],
+    [
+     "7:10 pm",
+     4115.42,
+     4115.05,
+     4116.3,
+     4115.05
     ]
    ],
    "history": [
@@ -3016,8 +3023,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 158.147,
-   "change_pips": -36.2,
+   "price": 158.165,
+   "change_pips": -34.4,
    "atr_pips": 91.1,
    "entries": [
     {
@@ -4401,6 +4408,13 @@
      158.138,
      158.155,
      158.121
+    ],
+    [
+     "7:10 pm",
+     158.165,
+     158.148,
+     158.167,
+     158.148
     ]
    ],
    "journal": {
@@ -7468,6 +7482,13 @@
      86.53,
      86.69,
      86.47
+    ],
+    [
+     "7:10 pm",
+     86.67,
+     86.67,
+     86.75,
+     86.66
     ]
    ],
    "journal": {
@@ -8659,7 +8680,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.04,
+   "live_spread": 0.053,
    "history_note": "history to 2026-11-08 (60 days)"
   },
   "US500": {
@@ -8692,8 +8713,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
    "message": "NIGHT BUY (high-fear night) at 3:01 am Dubai, stop 7224.2, closed (eod). PAPER BUY day: 3 trades today (3 running). Only BUY signals count today (max 3; no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop). Each trade keeps its stop, no half-close; everything closes at 12:30 am Dubai (3:30 pm New York).",
-   "price": 7505.7,
-   "change": 149.1,
+   "price": 7512.7,
+   "change": 156.1,
    "entries": [
     {
      "time": "3:01 am",
@@ -8742,7 +8763,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 33.1,
+     "live": 40.1,
      "spread": 0.8
     },
     {
@@ -8767,7 +8788,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 6.1,
+     "live": 13.1,
      "spread": 0.8
     },
     {
@@ -8792,7 +8813,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 6.1,
+     "live": 13.1,
      "spread": 0.8
     }
    ],
@@ -10154,6 +10175,13 @@
      7508.6,
      7510.8,
      7499.1
+    ],
+    [
+     "7:10 pm",
+     7512.7,
+     7504.6,
+     7512.7,
+     7504.0
     ]
    ],
    "journal": {
@@ -10275,7 +10303,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 33.1,
+       "live": 40.1,
        "spread": 0.8
       },
       {
@@ -10300,7 +10328,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 6.1,
+       "live": 13.1,
        "spread": 0.8
       },
       {
@@ -10325,7 +10353,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 6.1,
+       "live": 13.1,
        "spread": 0.8
       }
      ],
@@ -11081,8 +11109,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 27654.2,
-   "change": 831.9,
+   "price": 27706.0,
+   "change": 883.7,
    "entries": [
     {
      "time": "5:07 pm",
@@ -12471,6 +12499,13 @@
      27659.4,
      27666.7,
      27588.3
+    ],
+    [
+     "7:10 pm",
+     27706.0,
+     27652.5,
+     27706.0,
+     27646.1
     ]
    ],
    "journal": {
@@ -13443,8 +13478,8 @@
    "regime": 0.212,
    "gap": null,
    "message": "PAPER SELL at 1.33911 (12:00 pm Dubai). Stop 1.34605, target 1.33217 - close the WHOLE trade at the target; otherwise it closes at 1:45 am Dubai.",
-   "price": 1.3406,
-   "change": 0.00675,
+   "price": 1.34052,
+   "change": 0.00667,
    "entries": [
     {
      "time": "12:00 pm",
@@ -13470,7 +13505,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": -16.4,
+     "live": -15.6,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.34605 \u00b7 target 1.33217 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
     }
@@ -14917,6 +14952,13 @@
      1.34117,
      1.34123,
      1.34056
+    ],
+    [
+     "7:10 pm",
+     1.34052,
+     1.34061,
+     1.34063,
+     1.34048
     ]
    ],
    "journal": {
@@ -14965,7 +15007,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": -16.4,
+       "live": -15.6,
        "spread": 1.5,
        "next": "Hold \u00b7 stop 1.34605 \u00b7 target 1.33217 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
       }
@@ -15678,8 +15720,8 @@
    },
    "state": "sell",
    "message": "Today's signals: SELL (C). Stop 1.0x the 20-day range (rule C: 2.0x), no target; closes 11:30 pm Dubai if not stopped first.",
-   "price": 93.212,
-   "change": -3.95,
+   "price": 93.197,
+   "change": -3.97,
    "entries": [
     {
      "time": "5:01 pm",
@@ -17060,6 +17102,13 @@
      93.07,
      93.23,
      93.01
+    ],
+    [
+     "7:10 pm",
+     93.2,
+     93.21,
+     93.29,
+     93.19
     ]
    ],
    "journal": {
