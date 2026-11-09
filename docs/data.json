@@ -1,5 +1,5 @@
 {
- "updated": "Mon 09 Nov \u00b7 11:59 am",
+ "updated": "Mon 09 Nov \u00b7 12:00 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 4085.09,
+   "price": 4086.34,
    "close_at": "12:50 am",
-   "change": 19.6,
+   "change": 20.85,
    "size": 0.1,
    "datr": 82.53,
    "open_now": 0,
@@ -772,7 +772,7 @@
     ],
     [
      "11:55 am",
-     4085.09,
+     4086.34,
      4086.57,
      4088.47,
      4084.29
@@ -2384,8 +2384,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 157.959,
-   "change_pips": -55.0,
+   "price": 157.955,
+   "change_pips": -55.4,
    "atr_pips": 91.1,
    "entries": [
     {
@@ -3163,10 +3163,10 @@
     ],
     [
      "11:55 am",
-     157.959,
+     157.955,
      157.974,
      158.009,
-     157.956
+     157.945
     ]
    ],
    "journal": {
@@ -4806,8 +4806,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 89.21,
-   "change": -0.6,
+   "price": 89.195,
+   "change": -0.62,
    "entries": [],
    "spark": [
     [
@@ -5561,7 +5561,7 @@
     ],
     [
      "11:55 am",
-     89.21,
+     89.19,
      88.89,
      89.28,
      88.75
@@ -6689,7 +6689,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.04,
+   "live_spread": 0.043,
    "history_note": "history to 2026-11-08 (60 days)"
   },
   "US500": {
@@ -6722,8 +6722,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
    "message": "NIGHT BUY (high-fear night) at 3:01 am Dubai, stop 7224.2, closes at 7:00 pm Dubai (10:00 am New York). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7366.7,
-   "change": 10.1,
+   "price": 7368.4,
+   "change": 11.8,
    "entries": [
     {
      "time": "3:01 am",
@@ -6747,7 +6747,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 14.7,
+     "live": 16.4,
      "spread": 0.8
     }
    ],
@@ -7503,7 +7503,7 @@
     ],
     [
      "11:55 am",
-     7366.7,
+     7368.4,
      7369.2,
      7372.2,
      7364.8
@@ -7573,7 +7573,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 14.7,
+       "live": 16.4,
        "spread": 0.8
       }
      ],
@@ -8329,8 +8329,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 26694.8,
-   "change": -127.5,
+   "price": 26718.5,
+   "change": -103.8,
    "entries": [],
    "spark": [
     [
@@ -9084,7 +9084,7 @@
     ],
     [
      "11:55 am",
-     26694.8,
+     26718.5,
      26713.1,
      26738.8,
      26680.3
@@ -10026,13 +10026,13 @@
    "what_note": "Tracks whether live GBP/USD signals do as well as the v1.08 MT4 test. The auto-trader places each trade on the Capital.com demo (from 27 Oct). Decision after about 3 months.",
    "cost_note": "Results are pips per trade after the spread (at least 1.5 pips). 0.01 lot = 1,000 units = $0.10 per pip.",
    "net_label": "Net pips (v1.08 rules, holiday sell / FOMC buy at half size)",
-   "state": "waiting",
+   "state": "none",
    "mode": "normal",
    "regime": 0.212,
    "gap": null,
-   "message": "Today is a SELL day (euro hedge funds trend). The trade opens at 12:00 pm Dubai (10:00 broker).",
-   "price": 1.33922,
-   "change": 0.00537,
+   "message": "No trade today: no price bar between 12:00 pm and 12:05 pm Dubai.",
+   "price": 1.33909,
+   "change": 0.00524,
    "entries": [],
    "spark": [
     [
@@ -10870,7 +10870,7 @@
     ],
     [
      "11:55 am",
-     1.33922,
+     1.33909,
      1.33905,
      1.33935,
      1.33905
