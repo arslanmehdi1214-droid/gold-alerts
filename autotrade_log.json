@@ -1,26 +1,5 @@
 [
  {
-  "action": "stop moved",
-  "detail": "USDJPY|2026-10-21|3:06 pm|SELL|Hourly squeeze 3pm to 158.001",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Wed 21 Oct 4:00 PM"
- },
- {
-  "action": "close rest",
-  "detail": "USDJPY|2026-10-21|3:06 pm|SELL|Hourly squeeze 3pm (desk: be) ",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Wed 21 Oct 5:15 PM"
- },
- {
-  "action": "part closed on demo",
-  "detail": "US100|2026-10-21|1:15 pm|SELL|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm",
-  "market": "US100",
-  "ok": true,
-  "t": "Wed 21 Oct 6:03 PM"
- },
- {
   "action": "rest closed on demo",
   "detail": "US100|2026-10-21|1:15 pm|SELL|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm",
   "market": "US100",
@@ -2798,5 +2777,26 @@
   "market": "GOLD",
   "ok": true,
   "t": "Tue 10 Nov 12:15 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "US500|2026-11-09|6:40 pm|BUY|S&P 9:40 am New York opening move (desk: eod) ",
+  "market": "US500",
+  "ok": true,
+  "t": "Tue 10 Nov 12:31 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "US500|2026-11-09|7:01 pm|BUY|S&P big day move by 10 am New York -> follow (desk: eod) ",
+  "market": "US500",
+  "ok": true,
+  "t": "Tue 10 Nov 12:31 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "US500|2026-11-09|7:01 pm|BUY|S&P big day move by 10 am New York -> follow (2nd leg) (desk: eod) ",
+  "market": "US500",
+  "ok": true,
+  "t": "Tue 10 Nov 12:31 AM"
  }
 ]
