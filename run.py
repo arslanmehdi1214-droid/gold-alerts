@@ -438,6 +438,19 @@ def write_pages(now, day, m1, rows, skipped, inp, reg, src, eod, datr, acts=(), 
     old = loadj(PORTAL, {}); others = {k: v for k, v in (old.get('markets') or {}).items() if k != 'GOLD'}
     V211 = np.datetime64(day.date(), 'D') >= DK.V211_FROM               # v2.11 rules (no half-close) from the switch day
     V215 = np.datetime64(day.date(), 'D') >= DK.V215_FROM               # v2.15 rules from their switch day
+    # 9 Nov 2026 badge fix: the version string/stats badge below was stuck at 'v2.15' forever - it never checked the
+    # later date-gates added since (desk209.V220_FROM; engine206.V222_FROM/V227_FROM; this module's own V225_FROM).
+    # Purely cosmetic - the real trading logic in engine206.py/desk209.py already runs every one of these gates
+    # correctly and already live; nothing about actual trades changes here, only what the badge displays. The
+    # message/stats ternaries below already key off V215 alone (V215_FROM is the EARLIEST of all these gates, so
+    # V215 reads True on every day any of V220/V222/V225/V227 would also read True) - their text describes the
+    # position-count/day-lock/half-close mechanics, none of which these later gates touch, so no change needed
+    # there. V225_FROM and V227_FROM both land on the same broker day (7 Nov) - two separate pushes that day - so
+    # there is no day where one is true and the other isn't; the version string shows the single highest version
+    # number live that day rather than trying to order them against each other.
+    V220 = np.datetime64(day.date(), 'D') >= DK.V220_FROM                # v2.20: FILL leg gets a take-profit target
+    V222 = np.datetime64(day.date(), 'D') >= E.V222_FROM                 # v2.22: N4/N11 weak-tag gate (Gate_N4N11_By_DayHad)
+    V227 = np.datetime64(day.date(), 'D') >= E.V227_FROM                 # v2.24: G8 decouple (DT227) - same day as this module's V225_FROM (v2.21 DT225 sizing)
     last_sig = now >= day + pd.Timedelta(hours=E.S['Signal_Last_Hour'])
     sig_end = dubai(day + pd.Timedelta(hours=E.S['Signal_Last_Hour']))          # 8:00 pm Dubai in US summer time, 9:00 pm in US winter
     wait = (f" Inputs missing - waiting ({', '.join(missing)} not loaded yet, re-tried every 30 min): no NEW gold trade until they "
@@ -465,7 +478,9 @@ def write_pages(now, day, m1, rows, skipped, inp, reg, src, eod, datr, acts=(), 
                          running=sum(t['status'] == 'open' for t in tr), rw=sum(1 for t in tr if t.get('rwf') == 1),
                          rd=sum(1 for t in tr if t.get('rwf') is not None),
                          pnl=(round(sum(t['pnl'] for t in tr if t.get('pnl') is not None), 2) if any(t.get('pnl') is not None for t in tr) else None)))
-    gold = dict(code='GOLD', name='Gold', symbol='XAU/USD', live=True, version=('v2.15' if V215 else 'v2.11' if V211 else 'v2.10'), actions=act_rows(acts), actions_day=str(day.date()), feed_error=False, state=state, message=msg, price=last, close_at=dubai(eod),
+    gold = dict(code='GOLD', name='Gold', symbol='XAU/USD', live=True,
+                version=('v2.24' if V227 else 'v2.22' if V222 else 'v2.20' if V220 else 'v2.15' if V215 else 'v2.11' if V211 else 'v2.10'),
+                actions=act_rows(acts), actions_day=str(day.date()), feed_error=False, state=state, message=msg, price=last, close_at=dubai(eod),
                 change=(None if last is None or first is None else round(last - first, 2)), size=SIZE, datr=round(datr, 2),
                 open_now=sum(r['status'] in ('open', 'close_now') for r in page_rows), entries=page_rows, spark=spark, history=hist,
                 inputs=dict(dollar_1d=inp.get('dollar_1d'), dollar_5d=inp.get('dollar_5d'), vix_5d=inp.get('vix_5d'), tnx_5d=inp.get('tnx_5d'),

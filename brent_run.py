@@ -1,6 +1,14 @@
-"""Brent Oil PAPER signals for the page - BRENT v1.07a rules: live v1.06 A-F unchanged (brent_engine.py; rule G
+"""Brent Oil PAPER signals for the page - BRENT v1.10 rules: live v1.07a (A-F unchanged, brent_engine.py; rule G
 dropped - his 8 Nov decision: "drop rule G completely... push v1.06 with rules A-F only... no changes to
-autotrade.py") PLUS new rule K+ added 9 Nov 2026 on top, his explicit request ("keep A-F exactly as they are").
+autotrade.py" - PLUS rule K+ added 9 Nov 2026 on top) PLUS two more new rules added 9 Nov 2026 on top of THAT, his
+explicit request ("keep A-F and K+ exactly as they are"): AW (Wednesday re-entry) and K2 (K+ add-on fade at HALF
+size). Source: BRENT_v110_DASHBOARD_SPEC.txt + BRENT_WED_HOL_v110.mq4 (AW lines 508-516, K2 lines 482-488),
+Archive Trading/BRENT. MT4 proof 9 Nov, full v1.10 EA: net +$81,158, PF 1.43, max drawdown $10,241, 1,492 trades
+(v1.07a baseline +$67,704, DD $9,199, 1,241 trades, PF 1.43 - net per $1 of drawdown 7.92 vs 7.36, at equal
+drawdown ~+7.7% net; v1.10 technically misses the strict $10,000 max-DD cap by $241 but wins on the equal-drawdown
+rule, his go-ahead 9 Nov 2026). AW+K2 add 251 trades (AW 210 at full size, K2 41 at half size) = +$13,453, shown on
+the card as "new, 2022-heavy" (see AWK2_BACKTEST / awk2Block() below) - A-F and K+ themselves are UNCHANGED; see
+their own backtest numbers below, carried over as-is.
 MT4 proof for the FULL v1.06 bundle (A-F + G), his run 7 Nov 2026: 949 trades 2018-01..2026-10 on 851 days
 (~1.9/week), +$58,856 at 0.30 lot, PF 1.46, max DD $9,529, 55.2% closed in profit, spread 8 = $0.08/bbl. That
 number is NOT this build's (G added real trades/profit) - the closer like-for-like reference is v1.05's own A-F
@@ -37,7 +45,7 @@ JOUR = os.path.join(HERE, 'docs', 'journal_brent.json'); PORTAL = os.path.join(H
 HIST = os.path.join(HERE, 'docs', 'brent_daily.json'); HIST_KEEP = 150     # days kept (rule A's 60-day spread + headroom)
 EPIC = os.environ.get('CAPITAL_EPIC_BRENT', 'OIL_BRENT')                  # NOT yet confirmed live - see brent_run.fail() note
 MIN_SPREAD = 0.02                     # the paper result never uses less than 2 cents a barrel
-RULES = 'v1.07a'
+RULES = 'v1.10'
 PASS = dict(pf=1.10, months=3)
 BACKTEST = dict(direction='—', days='~35% of days (~1.7/week)', perday='1.3', win='55% closed in profit', pf='1.47',
                 net='+$50,198 at 0.30 lot (max drawdown $7,979) - v1.05\'s A-F result (last MT4 number for A-F alone)',
@@ -54,6 +62,20 @@ KPLUS_BACKTEST = dict(trades=285, stops=0, win=52, net=7716,
                       source='MT4 BRENT_WED_HOL_v107a.mq4, his run 9 Nov 2026, 2018.01.02-2026.10.30, spread 8 ($0.08/bbl), 0.30 lot - K+ alone: 285 trades, '
                              '0 stop hits, all closed 19:00 broker, 52% closed in profit, net +$7,716. Full v1.07a EA incl. K+: +$67,704, 1,241 trades (v1.06 full EA was +$58,856, 949). '
                              'Python mirror predicted the same 285 trades.')
+# v1.10, new 9 Nov 2026: rules AW (Wednesday re-entry) + K2 (K+ add-on fade at HALF size) added on top of the live
+# v1.07a build above (A-F and K+ themselves unchanged - see BACKTEST/KPLUS_BACKTEST above, carried over as-is).
+# Shown together on the card as "new, 2022-heavy" per his explicit instruction, since $5,596 of the combined
+# $13,453 extra (42%) is 2022 alone. No separate win%/stop-hit count was given for the combined pair, so none is
+# shown here (never guess a number that wasn't MT4-confirmed).
+AWK2_BACKTEST = dict(trades=251, aw_trades=210, k2_trades=41, net=13453,
+                     by_year=[['2018', 1863], ['2019', -860], ['2020', 2999], ['2021', 753], ['2022', 5596],
+                              ['2023', -632], ['2024', 1071], ['2025', -551], ['2026', 3213]],
+                     note='New, 2022-heavy - $5,596 of the $13,453 extra (42%) is 2022 alone; 6 of 9 years positive.',
+                     source='MT4 BRENT_WED_HOL_v110.mq4, his run 9 Nov 2026, 2018.01.02-2026.10.30, spread 8 ($0.08/bbl) - AW+K2 together: 251 trades '
+                            '(AW 210 at full 0.30 lot, K2 41 at half 0.15 lot), net +$13,453. Full v1.10 EA (A-F+K++AW+K2): +$81,158, PF 1.43, max '
+                            'drawdown $10,241, 1,492 trades vs the v1.07a baseline +$67,704, DD $9,199, 1,241 trades, PF 1.43 (net per $1 of drawdown '
+                            '7.92 vs 7.36 - at equal drawdown ~+7.7% net). v1.10 technically misses the strict $10,000 max-DD cap by $241 but wins on '
+                            'the equal-drawdown rule - his go-ahead 9 Nov 2026.')
 
 class FeedError(RuntimeError):
     pass
@@ -128,9 +150,13 @@ def feed_check(b, now):
 
 # ---------------- page rows / journal ----------------
 def row(t):
+    # v1.10: K2 trades carry a NUMERIC size (E.K2_LOT_X = 0.5, half a normal trade) instead of the string 'full' -
+    # autotrade.py's weight() reads a numeric size literally as the risk multiplier, so this is what actually
+    # halves K2's real lot size/risk on the demo account (the stop distance itself is unchanged, see k2_trade()).
     return dict(time=dubai(t['t']), side='BUY' if t['dir'] == 1 else 'SELL', name=t['name'], rule=t['rule'], tag=t.get('tag'),
                 price=round(t['entry'], 2), entry=round(t['entry'], 2), stop=round(t['stop'], 2), stop0=round(t.get('stop0', t['stop']), 2),
-                stop_usd=round(abs(t['entry'] - t.get('stop0', t['stop'])), 2), status=t['status'], size='full', part=1.0, half=False,
+                stop_usd=round(abs(t['entry'] - t.get('stop0', t['stop'])), 2), status=t['status'],
+                size=(E.K2_LOT_X if t.get('tag') == 'K2' else 'full'), part=1.0, half=False,
                 exit=None if t['exit'] is None else round(t['exit'], 2), exit_time=None if t['exit_t'] is None else dubai(t['exit_t']),
                 res=None if t.get('res') is None else round(t['res'], 3), res_sized=None if t.get('res') is None else round(t['res'], 3))
 
@@ -157,17 +183,27 @@ def base_card():
             'holiday · F) BUY 19:00 the trading day before a US federal or UK bank holiday · '
             'K+) NEW 9 Nov 2026, thin before 2026 - overextension fade: price 0.8x the 20-day range away from its own 09:00 or 10:00 broker price (first '
             'touch, before 18:00) -> fade back, stop 2.0x the range, exit 19:00 broker. Independent of A-F - its own position, never conflict-closed, '
-            'skipped on Wednesday/calendar days or if rule C already opened today')
+            'skipped on Wednesday/calendar days or if rule C already opened today · '
+            'AW) NEW 9 Nov 2026, 2022-heavy - Wednesday re-entry: only on rule A\'s own signal days; if price closes back through the 14:00 price within '
+            '30 min AGAINST rule A\'s direction -> a 2nd trade IN rule A\'s direction, stop 2.0x the range, exit 21:30 broker · '
+            'K2) NEW 9 Nov 2026, 2022-heavy - K+ add-on at HALF size: only after a K+ trade; if price runs a further 0.5x the range beyond K+\'s own '
+            'trigger price in the same direction as the original stretch -> a 2nd fade, same direction as K+, HALF the normal size, stop 2.0x the range, '
+            'exit 21:30 broker (not K+\'s own 19:00). AW and K2 are each independent of A-F/K+/each other - own position, never conflict-closed, skipped '
+            'on calendar days (K2 also skips on Wednesday or if rule C already traded today)')
     return dict(code='BRENT', name='Brent Oil', symbol='BRENT · Capital.com Brent Oil Future', live=False, paper=True, status='Paper', version=RULES,
                 unit='usd', dp=2, stats=BACKTEST, pass_bar=PASS, day_note=note,
                 what_note='Tracks whether live Brent signals do as well as the v1.05 MT4 test (this build\'s own v1.06 B/D/C/conflict-close deltas were '
-                          'only MT4-tested bundled with the dropped rule G, never alone - see the backtest note). v1.07a (9 Nov 2026) adds rule K+ on top, '
-                          'unchanged A-F; K+ has its own isolated MT4 proof - new and thin before 2026, see the K+ panel. Copied to the Capital.com DEMO '
-                          'account by the auto-trader, same as Gold/USDJPY/Oil/Nasdaq/S&P500/GBPUSD (his 6 Nov go-ahead, reversing his earlier same-day '
-                          '"signals only" instruction). Decision after about 3 months.',
-                cost_note='Results are $ per barrel (0.30-lot backtest scale), from the signal price after the live Capital.com spread (at least 2 cents).',
+                          'only MT4-tested bundled with the dropped rule G, never alone - see the backtest note). v1.07a (9 Nov 2026) added rule K+ on '
+                          'top, unchanged A-F; K+ has its own isolated MT4 proof - new and thin before 2026, see the K+ panel. v1.10 (9 Nov 2026) adds '
+                          'rules AW + K2 on top of THAT, A-F and K+ themselves unchanged - their own isolated MT4 proof is new and 2022-heavy, see the '
+                          'AW+K2 panel (v1.10 technically misses the strict $10,000 max-drawdown cap by $241 but wins on the equal-drawdown rule - his '
+                          'go-ahead 9 Nov 2026). Copied to the Capital.com DEMO account by the auto-trader, same as Gold/USDJPY/Oil/Nasdaq/S&P500/GBPUSD '
+                          '(his 6 Nov go-ahead, reversing his earlier same-day "signals only" instruction); up to 3 Brent positions can be open at once '
+                          '(e.g. A-F + K+ + K2, or A + C + AW) - autotrade.py\'s own per-trade keying already supports it, no autotrade.py change needed. '
+                          'Decision after about 3 months.',
+                cost_note='Results are $ per barrel (0.30-lot backtest scale, K2 at half that - 0.15 lot), from the signal price after the live Capital.com spread (at least 2 cents).',
                 net_label=f'Net $ per barrel ({RULES})',
-                kfade=dict(KPLUS_BACKTEST))
+                kfade=dict(KPLUS_BACKTEST), awk2=dict(AWK2_BACKTEST))
 
 def main(feed=None, get=None, getd=None, now=None):
     global DEADLINE; DEADLINE = time.time() + 75           # own 75s time budget per market
