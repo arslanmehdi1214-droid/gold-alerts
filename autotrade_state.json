@@ -1,15 +1,15 @@
 {
- "balance": 1225.5,
+ "balance": 1230.08,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-09",
-  "pl": 6.44,
+  "pl": 15.6,
   "start_balance": 1222.14,
   "start_equity": 1222.14,
   "stopped": false
  },
- "open_positions": 4,
- "open_risk_aed": 113.88,
+ "open_positions": 5,
+ "open_risk_aed": 142.94,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-11-05|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -192,6 +192,25 @@
    "side": "SELL",
    "state": "open",
    "stop": 91.5
+  },
+  "OIL|2026-11-09|3:17 pm|SELL|Open \u00b1 0.7 range": {
+   "desk_price": 87.37,
+   "market": "OIL",
+   "opened_at": "Mon 9 Nov 3:18 PM",
+   "part_x": 0.0,
+   "px_adj": 0.04,
+   "rest": {
+    "id": "00000000-7206-2cf5-0495-7fc60004511e",
+    "level": 86.77,
+    "open": true,
+    "size": 2.3,
+    "tp": null
+   },
+   "risk_aed": 29.06,
+   "risk_usd": 8.17,
+   "side": "SELL",
+   "state": "open",
+   "stop": 90.81
   },
   "US100|2026-11-05|4:43 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am": {
    "desk_price": 28200.0,
