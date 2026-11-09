@@ -1,15 +1,15 @@
 {
- "balance": 1284.96,
+ "balance": 1288.6,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-09",
-  "pl": 104.12,
+  "pl": 111.4,
   "start_balance": 1222.14,
   "start_equity": 1222.14,
   "stopped": false
  },
- "open_positions": 9,
- "open_risk_aed": 261.97,
+ "open_positions": 6,
+ "open_risk_aed": 174.79,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-09|5:01 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -200,16 +200,17 @@
    "part_x": 0.0,
    "px_adj": 0.04,
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-71b8-61b7-0495-7fc60004511e",
     "level": 88.065,
-    "open": true,
+    "open": false,
     "size": 2.3,
     "tp": null
    },
    "risk_aed": 29.06,
    "risk_usd": 8.17,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 91.5
   },
   "OIL|2026-11-09|3:17 pm|SELL|Open \u00b1 0.7 range": {
@@ -219,16 +220,17 @@
    "part_x": 0.0,
    "px_adj": 0.04,
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-7206-2cf5-0495-7fc60004511e",
     "level": 86.77,
-    "open": true,
+    "open": false,
     "size": 2.3,
     "tp": null
    },
    "risk_aed": 29.06,
    "risk_usd": 8.17,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 90.81
   },
   "OIL|2026-11-09|4:50 pm|SELL|Open \u00b1 1 range": {
@@ -238,16 +240,17 @@
    "part_x": 0.0,
    "px_adj": 0.04,
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-7206-d924-0495-7fc60004511e",
     "level": 86.61,
-    "open": true,
+    "open": false,
     "size": 2.3,
     "tp": null
    },
    "risk_aed": 29.06,
    "risk_usd": 8.17,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 89.77
   },
   "US100|2026-11-05|4:43 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am": {
