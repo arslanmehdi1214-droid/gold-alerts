@@ -1,5 +1,5 @@
 {
- "updated": "Mon 09 Nov \u00b7 5:55 pm",
+ "updated": "Mon 09 Nov \u00b7 5:56 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4126.87,
+   "price": 4126.15,
    "close_at": "12:50 am",
-   "change": 61.38,
+   "change": 60.66,
    "size": 0.1,
    "datr": 82.53,
    "open_now": 1,
@@ -1303,6 +1303,13 @@
      4120.56,
      4127.47,
      4120.56
+    ],
+    [
+     "5:55 pm",
+     4126.15,
+     4126.89,
+     4127.66,
+     4125.79
     ]
    ],
    "history": [
@@ -2911,8 +2918,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 157.873,
-   "change_pips": -63.6,
+   "price": 157.876,
+   "change_pips": -63.3,
    "atr_pips": 91.1,
    "entries": [
     {
@@ -4191,6 +4198,13 @@
      157.898,
      157.913,
      157.866
+    ],
+    [
+     "5:55 pm",
+     157.876,
+     157.874,
+     157.878,
+     157.864
     ]
    ],
    "journal": {
@@ -5830,8 +5844,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Supply day: hold the whole sell (no part-close), the stop stays where it is; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 85.725,
-   "change": -4.09,
+   "price": 85.703,
+   "change": -4.11,
    "entries": [
     {
      "time": "3:11 pm",
@@ -7153,6 +7167,13 @@
      86.12,
      86.13,
      85.66
+    ],
+    [
+     "5:55 pm",
+     85.7,
+     85.71,
+     85.73,
+     85.56
     ]
    ],
    "journal": {
@@ -8344,7 +8365,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.04,
+   "live_spread": 0.048,
    "history_note": "history to 2026-11-08 (60 days)"
   },
   "US500": {
@@ -8377,8 +8398,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
    "message": "NIGHT BUY (high-fear night) at 3:01 am Dubai, stop 7224.2, closes at 7:00 pm Dubai (10:00 am New York). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7447.7,
-   "change": 91.1,
+   "price": 7447.3,
+   "change": 90.7,
    "entries": [
     {
      "time": "3:01 am",
@@ -8402,7 +8423,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 95.7,
+     "live": 95.3,
      "spread": 0.8
     }
    ],
@@ -9659,6 +9680,13 @@
      7444.9,
      7451.4,
      7444.9
+    ],
+    [
+     "5:55 pm",
+     7447.3,
+     7447.9,
+     7449.7,
+     7446.7
     ]
    ],
    "journal": {
@@ -9727,7 +9755,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 95.7,
+       "live": 95.3,
        "spread": 0.8
       }
      ],
@@ -10483,8 +10511,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 27246.9,
-   "change": 424.6,
+   "price": 27244.4,
+   "change": 422.1,
    "entries": [
     {
      "time": "5:07 pm",
@@ -10509,7 +10537,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -16.2,
+     "live": -15.4,
      "rwf": null,
      "spread": 1.8,
      "spread_live": 1.8
@@ -11768,6 +11796,13 @@
      27231.4,
      27265.0,
      27231.4
+    ],
+    [
+     "5:55 pm",
+     27244.4,
+     27246.6,
+     27256.6,
+     27242.2
     ]
    ],
    "journal": {
@@ -11815,7 +11850,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -16.2,
+       "live": -15.4,
        "rwf": null,
        "spread": 1.8,
        "spread_live": 1.8
@@ -12740,8 +12775,8 @@
    "regime": 0.212,
    "gap": null,
    "message": "PAPER SELL at 1.33911 (12:00 pm Dubai). Stop 1.34605, target 1.33217 - close the WHOLE trade at the target; otherwise it closes at 1:45 am Dubai.",
-   "price": 1.34175,
-   "change": 0.0079,
+   "price": 1.34181,
+   "change": 0.00796,
    "entries": [
     {
      "time": "12:00 pm",
@@ -12767,7 +12802,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": -27.9,
+     "live": -28.5,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.34605 \u00b7 target 1.33217 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
     }
@@ -14109,6 +14144,13 @@
      1.34098,
      1.34179,
      1.34098
+    ],
+    [
+     "5:55 pm",
+     1.34181,
+     1.34176,
+     1.34197,
+     1.34175
     ]
    ],
    "journal": {
@@ -14157,7 +14199,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": -27.9,
+       "live": -28.5,
        "spread": 1.5,
        "next": "Hold \u00b7 stop 1.34605 \u00b7 target 1.33217 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
       }
@@ -14824,8 +14866,8 @@
    },
    "state": "sell",
    "message": "Today's signals: SELL (C). Stop 1.0x the 20-day range (rule C: 2.0x), no target; closes 11:30 pm Dubai if not stopped first.",
-   "price": 92.457,
-   "change": -4.71,
+   "price": 92.407,
+   "change": -4.76,
    "entries": [
     {
      "time": "5:01 pm",
@@ -16101,6 +16143,13 @@
      92.96,
      92.96,
      92.41
+    ],
+    [
+     "5:55 pm",
+     92.41,
+     92.45,
+     92.46,
+     92.29
     ]
    ],
    "journal": {
