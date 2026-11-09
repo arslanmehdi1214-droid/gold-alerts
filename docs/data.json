@@ -1,5 +1,5 @@
 {
- "updated": "Mon 09 Nov \u00b7 7:01 pm",
+ "updated": "Mon 09 Nov \u00b7 7:02 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4118.52,
+   "price": 4119.02,
    "close_at": "12:50 am",
-   "change": 53.03,
+   "change": 53.53,
    "size": 0.1,
    "datr": 82.53,
    "open_now": 1,
@@ -1397,10 +1397,10 @@
     ],
     [
      "7:00 pm",
-     4118.52,
+     4119.02,
      4120.6,
      4122.02,
-     4117.98
+     4117.13
     ]
    ],
    "history": [
@@ -3009,8 +3009,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 158.127,
-   "change_pips": -38.2,
+   "price": 158.1,
+   "change_pips": -40.9,
    "atr_pips": 91.1,
    "entries": [
     {
@@ -4383,9 +4383,9 @@
     ],
     [
      "7:00 pm",
-     158.127,
+     158.1,
      158.085,
-     158.128,
+     158.129,
      158.07
     ]
    ],
@@ -6026,8 +6026,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Supply day: hold the whole sell (no part-close), the stop stays where it is; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 86.605,
-   "change": -3.21,
+   "price": 86.58,
+   "change": -3.23,
    "entries": [
     {
      "time": "3:11 pm",
@@ -7443,7 +7443,7 @@
     ],
     [
      "7:00 pm",
-     86.61,
+     86.58,
      86.58,
      86.67,
      86.44
@@ -8638,7 +8638,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.04,
+   "live_spread": 0.02,
    "history_note": "history to 2026-11-08 (60 days)"
   },
   "US500": {
@@ -8670,9 +8670,9 @@
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
-   "message": "NIGHT BUY (high-fear night) at 3:01 am Dubai, stop 7224.2, closed (eod). PAPER BUY day: 1 trade today (1 running). Only BUY signals count today (max 3; no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop). Each trade keeps its stop, no half-close; everything closes at 12:30 am Dubai (3:30 pm New York).",
-   "price": 7498.6,
-   "change": 142.0,
+   "message": "NIGHT BUY (high-fear night) at 3:01 am Dubai, stop 7224.2, closed (eod). PAPER BUY day: 3 trades today (3 running). Only BUY signals count today (max 3; no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop). Each trade keeps its stop, no half-close; everything closes at 12:30 am Dubai (3:30 pm New York).",
+   "price": 7504.1,
+   "change": 147.5,
    "entries": [
     {
      "time": "3:01 am",
@@ -8721,7 +8721,57 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 26.0,
+     "live": 31.5,
+     "spread": 0.8
+    },
+    {
+     "time": "7:01 pm",
+     "side": "BUY",
+     "name": "S&P big day move by 10 am New York -> follow",
+     "src": "S&P",
+     "leg": 2,
+     "night": false,
+     "price": 7498.8,
+     "entry": 7498.8,
+     "stop": 7403.6,
+     "stop0": 7403.6,
+     "stop_pts": 95.2,
+     "half_px": null,
+     "half": false,
+     "size": "full",
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "r": null,
+     "r_sized": null,
+     "live": 4.5,
+     "spread": 0.8
+    },
+    {
+     "time": "7:01 pm",
+     "side": "BUY",
+     "name": "S&P big day move by 10 am New York -> follow (2nd leg)",
+     "src": "S&P",
+     "leg": 3,
+     "night": false,
+     "price": 7498.8,
+     "entry": 7498.8,
+     "stop": 7403.6,
+     "stop0": 7403.6,
+     "stop_pts": 95.2,
+     "half_px": null,
+     "half": false,
+     "size": "full",
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "r": null,
+     "r_sized": null,
+     "live": 4.5,
      "spread": 0.8
     }
    ],
@@ -10072,18 +10122,18 @@
     ],
     [
      "7:00 pm",
-     7498.6,
+     7504.1,
      7501.3,
-     7502.6,
-     7497.8
+     7505.1,
+     7497.6
     ]
    ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 1,
-    "trades": 2,
+    "trades": 4,
     "days": 100.0,
-    "perday": 2.0,
+    "perday": 4.0,
     "closed": 1,
     "win": 100.0,
     "pf": null,
@@ -10105,6 +10155,24 @@
        "name": "S&P 9:40 am New York opening move",
        "leg": 1,
        "entry": 7471.8,
+       "sd": 95.22321428571428
+      },
+      {
+       "t": "2026-11-09 17:01:00",
+       "dir": 1,
+       "src": 1,
+       "name": "S&P big day move by 10 am New York -> follow",
+       "leg": 2,
+       "entry": 7498.8,
+       "sd": 95.22321428571428
+      },
+      {
+       "t": "2026-11-09 17:01:00",
+       "dir": 1,
+       "src": 1,
+       "name": "S&P big day move by 10 am New York -> follow (2nd leg)",
+       "leg": 3,
+       "entry": 7498.8,
        "sd": 95.22321428571428
       }
      ],
@@ -10179,7 +10247,57 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 26.0,
+       "live": 31.5,
+       "spread": 0.8
+      },
+      {
+       "time": "7:01 pm",
+       "side": "BUY",
+       "name": "S&P big day move by 10 am New York -> follow",
+       "src": "S&P",
+       "leg": 2,
+       "night": false,
+       "price": 7498.8,
+       "entry": 7498.8,
+       "stop": 7403.6,
+       "stop0": 7403.6,
+       "stop_pts": 95.2,
+       "half_px": null,
+       "half": false,
+       "size": "full",
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "res_sized": null,
+       "r": null,
+       "r_sized": null,
+       "live": 4.5,
+       "spread": 0.8
+      },
+      {
+       "time": "7:01 pm",
+       "side": "BUY",
+       "name": "S&P big day move by 10 am New York -> follow (2nd leg)",
+       "src": "S&P",
+       "leg": 3,
+       "night": false,
+       "price": 7498.8,
+       "entry": 7498.8,
+       "stop": 7403.6,
+       "stop0": 7403.6,
+       "stop_pts": 95.2,
+       "half_px": null,
+       "half": false,
+       "size": "full",
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "res_sized": null,
+       "r": null,
+       "r_sized": null,
+       "live": 4.5,
        "spread": 0.8
       }
      ],
@@ -10935,8 +11053,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 27643.3,
-   "change": 821.0,
+   "price": 27656.3,
+   "change": 834.0,
    "entries": [
     {
      "time": "5:07 pm",
@@ -12314,10 +12432,10 @@
     ],
     [
      "7:00 pm",
-     27643.3,
+     27656.3,
      27682.9,
      27686.3,
-     27641.5
+     27628.5
     ]
    ],
    "journal": {
@@ -13290,8 +13408,8 @@
    "regime": 0.212,
    "gap": null,
    "message": "PAPER SELL at 1.33911 (12:00 pm Dubai). Stop 1.34605, target 1.33217 - close the WHOLE trade at the target; otherwise it closes at 1:45 am Dubai.",
-   "price": 1.34078,
-   "change": 0.00693,
+   "price": 1.3409,
+   "change": 0.00705,
    "entries": [
     {
      "time": "12:00 pm",
@@ -13317,7 +13435,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": -18.2,
+     "live": -19.4,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.34605 \u00b7 target 1.33217 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
     }
@@ -14753,7 +14871,7 @@
     ],
     [
      "7:00 pm",
-     1.34078,
+     1.3409,
      1.34089,
      1.34101,
      1.34071
@@ -14805,7 +14923,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": -18.2,
+       "live": -19.4,
        "spread": 1.5,
        "next": "Hold \u00b7 stop 1.34605 \u00b7 target 1.33217 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
       }
@@ -15518,8 +15636,8 @@
    },
    "state": "sell",
    "message": "Today's signals: SELL (C). Stop 1.0x the 20-day range (rule C: 2.0x), no target; closes 11:30 pm Dubai if not stopped first.",
-   "price": 93.057,
-   "change": -4.11,
+   "price": 93.017,
+   "change": -4.15,
    "entries": [
     {
      "time": "5:01 pm",
@@ -16889,7 +17007,7 @@
     ],
     [
      "7:00 pm",
-     93.06,
+     93.02,
      93.04,
      93.12,
      92.94
