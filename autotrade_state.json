@@ -1,15 +1,15 @@
 {
- "balance": 1373.22,
+ "balance": 1374.16,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-10",
-  "pl": 141.07,
+  "pl": 142.95,
   "start_balance": 1277.25,
   "start_equity": 1277.25,
   "stopped": false
  },
- "open_positions": 3,
- "open_risk_aed": 84.03,
+ "open_positions": 5,
+ "open_risk_aed": 113.11,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-09|5:01 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -351,6 +351,32 @@
    "side": "SELL",
    "state": "closed",
    "stop": 27401.6
+  },
+  "US100|2026-11-10|10:54 pm|BUY|US+10 H1 U2 only when vol high (>1.1)": {
+   "desk_price": 27605.2,
+   "market": "US100",
+   "opened_at": "Tue 10 Nov 10:55 PM",
+   "part": {
+    "id": "00000000-7253-0134-0495-7fc60004511e",
+    "level": 27609.6,
+    "open": true,
+    "size": 0.005,
+    "tp": 27780.0
+   },
+   "part_x": 0.25,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-7253-0143-0495-7fc60004511e",
+    "level": 27609.6,
+    "open": true,
+    "size": 0.018,
+    "tp": null
+   },
+   "risk_aed": 29.08,
+   "risk_usd": 8.17,
+   "side": "BUY",
+   "state": "open",
+   "stop": 27260.9
   },
   "US100|2026-11-10|4:33 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am": {
    "desk_price": 27800.0,
