@@ -1,19 +1,5 @@
 [
  {
-  "action": "close part",
-  "detail": "USDJPY|2026-10-22|7:09 am|SELL|Week-so-far break (desk: part close) ",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Thu 22 Oct 7:36 AM"
- },
- {
-  "action": "stop moved",
-  "detail": "USDJPY|2026-10-22|7:09 am|SELL|Week-so-far break to 157.696",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Thu 22 Oct 7:36 AM"
- },
- {
   "action": "OPEN SELL rest",
   "detail": "GOLD|2026-10-22|7:37 am|SELL|G8 ttmvsc size 0.9 at 4092.76 stop 4125.85 | trade risk 112.31 AED",
   "market": "GOLD",
@@ -2798,5 +2784,19 @@
   "market": "USDJPY",
   "ok": true,
   "t": "Tue 10 Nov 5:31 PM"
+ },
+ {
+  "action": "part closed on demo",
+  "detail": "USDJPY|2026-11-10|5:30 pm|BUY|Squeeze 4pm",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Tue 10 Nov 5:32 PM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "USDJPY|2026-11-10|5:30 pm|BUY|Squeeze 4pm to 158.257 (stop to entry: each position at its own fill price)",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Tue 10 Nov 5:32 PM"
  }
 ]
