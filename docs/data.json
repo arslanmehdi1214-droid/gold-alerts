@@ -1,5 +1,5 @@
 {
- "updated": "Wed 11 Nov \u00b7 2:00 am",
+ "updated": "Wed 11 Nov \u00b7 2:12 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -1627,7 +1627,7 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
+   "price": 158.707,
    "change_pips": null,
    "atr_pips": 94.7,
    "entries": [],
@@ -3365,8 +3365,8 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": null,
-   "history_note": "history to 2026-11-10 (300 days) \u00b7 added 2026-11-10"
+   "live_spread_pips": 9.0,
+   "history_note": "history to 2026-11-10 (300 days)"
   },
   "DE40": {
    "code": "DE40",
@@ -4641,7 +4641,7 @@
    "feed_error": false,
    "epic": "OIL_CRUDE",
    "live_spread": null,
-   "history_note": "history to 2026-11-10 (60 days) \u00b7 added 2026-11-10"
+   "history_note": "history to 2026-11-10 (60 days)"
   },
   "US500": {
    "code": "US500",
@@ -4673,10 +4673,25 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak, no duration-curve-steepening + tech-weak, no bank-loan-weak + E-mini COT net-long, no DJIA-COT-bullish-fast + crypto-risk-off, no MSCI-EM-COT-extreme-long + communications-weak, no Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast, no UST5yr-COT-falling-fast + credit-de-risking, no Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence, no Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long, no ES-asset-manager-COT-fast-bullish + staples-weak, no VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish, no UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast, no Utilities-retail-COT-falling-fast + transports-weak, no Sugar-COT-net-long + financials-weak, no Feeder-Cattle-COT-rising-fast + credit-de-risking, no VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish, no EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast).",
-   "price": null,
-   "change": null,
+   "price": 7531.2,
+   "change": -0.9,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     7531.2,
+     7532.1,
+     7532.1,
+     7530.8
+    ],
+    [
+     "2:10 am",
+     7531.2,
+     7530.9,
+     7531.8,
+     7530.9
+    ]
+   ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 3,
@@ -5820,7 +5835,7 @@
    "picks_stale": false,
    "epic": "US500",
    "close_at": "12:30 am",
-   "history_note": "history to 2026-11-10 (34 days) \u00b7 added 2026-11-10"
+   "history_note": "history to 2026-11-10 (34 days)"
   },
   "US100": {
    "code": "US100",
@@ -5852,10 +5867,25 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 27799.1,
+   "change": -2.6,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     27801.4,
+     27801.7,
+     27801.7,
+     27799.9
+    ],
+    [
+     "2:10 am",
+     27799.1,
+     27801.8,
+     27801.8,
+     27799.1
+    ]
+   ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 18,
@@ -6861,7 +6891,7 @@
    "feed_error": false,
    "epic": "US100",
    "close_at": "1:00 am",
-   "history_note": "history to 2026-11-10 (374 days) \u00b7 added 2026-11-10",
+   "history_note": "history to 2026-11-10 (374 days)",
    "fomc": null,
    "cpi": {
     "state": "closed",
@@ -6909,10 +6939,25 @@
    "regime": 0.46,
    "gap": null,
    "message": "Today is a SELL day (euro hedge funds trend). The trade opens at 12:00 pm Dubai (10:00 broker).",
-   "price": null,
-   "change": null,
+   "price": 1.33349,
+   "change": 0.00066,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     1.33343,
+     1.33283,
+     1.33347,
+     1.33282
+    ],
+    [
+     "2:10 am",
+     1.33349,
+     1.33347,
+     1.33394,
+     1.33307
+    ]
+   ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 3,
@@ -7738,15 +7783,22 @@
    },
    "state": "waiting",
    "message": "Wednesday - checking the 10:00\u219214:00 broker move against its 60-day spread (enters 14:00 broker if big enough).",
-   "price": 91.171,
-   "change": 0.03,
+   "price": 91.151,
+   "change": 0.0,
    "entries": [],
    "spark": [
     [
      "2:00 am",
-     91.17,
+     91.18,
      91.15,
-     91.17,
+     91.18,
+     91.15
+    ],
+    [
+     "2:10 am",
+     91.15,
+     91.18,
+     91.18,
      91.15
     ]
    ],
