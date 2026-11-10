@@ -1,5 +1,5 @@
 {
- "updated": "Tue 10 Nov \u00b7 8:19 am",
+ "updated": "Tue 10 Nov \u00b7 8:20 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4111.93,
+   "price": 4114.77,
    "close_at": "12:50 am",
-   "change": -25.96,
+   "change": -23.12,
    "size": 0.1,
    "datr": 86.15,
    "open_now": 1,
@@ -494,9 +494,9 @@
     ],
     [
      "8:15 am",
-     4111.93,
+     4114.77,
      4111.06,
-     4112.0,
+     4114.82,
      4110.01
     ]
    ],
@@ -2106,8 +2106,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 157.972,
-   "change_pips": 4.1,
+   "price": 157.976,
+   "change_pips": 4.5,
    "atr_pips": 91.7,
    "entries": [
     {
@@ -2135,7 +2135,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.0393,
+     "r_now": -0.0451,
      "rwf": null,
      "spread": 1.0
     }
@@ -2577,9 +2577,9 @@
     ],
     [
      "8:15 am",
-     157.972,
+     157.976,
      157.945,
-     157.975,
+     157.98,
      157.93
     ]
    ],
@@ -2634,7 +2634,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.0393,
+       "r_now": -0.0451,
        "rwf": null,
        "spread": 1.0
       }
@@ -4220,7 +4220,7 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 1.2,
+   "live_spread_pips": 1.4,
    "history_note": "history to 2026-11-09 (300 days)"
   },
   "DE40": {
@@ -5990,8 +5990,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
    "message": "NIGHT BUY (UST5yr-COT-falling-fast + credit-de-risking) at 3:01 am Dubai, stop 7417.8, closes at 7:00 pm Dubai (10:00 am New York). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7552.8,
-   "change": -2.1,
+   "price": 7554.1,
+   "change": -0.8,
    "entries": [
     {
      "time": "3:01 am",
@@ -6015,7 +6015,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -2.8,
+     "live": -1.5,
      "spread": 0.8
     }
    ],
@@ -6540,9 +6540,9 @@
     ],
     [
      "8:15 am",
-     7552.8,
+     7554.1,
      7550.6,
-     7553.3,
+     7554.2,
      7549.1
     ]
    ],
@@ -6656,7 +6656,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -2.8,
+       "live": -1.5,
        "spread": 0.8
       }
      ],
@@ -7572,8 +7572,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 27802.3,
-   "change": -145.3,
+   "price": 27817.0,
+   "change": -130.6,
    "entries": [],
    "spark": [
     [
@@ -8096,9 +8096,9 @@
     ],
     [
      "8:15 am",
-     27802.3,
+     27817.0,
      27782.8,
-     27802.8,
+     27818.3,
      27772.6
     ]
    ],
@@ -9052,7 +9052,7 @@
     "stop": 27629.8,
     "target": 28170.2,
     "r": 270.2,
-    "live": -97.7,
+    "live": -83.0,
     "note": "CPI overnight: long from 2026-11-09 22:59:00, stop 27629.8 / target 28170.2 (R=270.2), force-closes at the 2026-11-10 RTH open if neither hits first."
    },
    "tuesday": null,
@@ -9090,8 +9090,8 @@
    "regime": 0.204,
    "gap": null,
    "message": "Today is a SELL day (euro hedge funds trend). The trade opens at 12:00 pm Dubai (10:00 broker). TUESDAY: stop moves to entry + 5 pips once +0.2 x stop in profit.",
-   "price": 1.34438,
-   "change": 0.00172,
+   "price": 1.34437,
+   "change": 0.00171,
    "entries": [],
    "spark": [
     [
@@ -9614,7 +9614,7 @@
     ],
     [
      "8:15 am",
-     1.34438,
+     1.34437,
      1.34437,
      1.34448,
      1.34432
