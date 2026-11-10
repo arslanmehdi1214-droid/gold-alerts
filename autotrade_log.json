@@ -1,26 +1,5 @@
 [
  {
-  "action": "close rest",
-  "detail": "GOLD|2026-10-21|7:31 am|BUY|N15 hsq (desk: close_now) ",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Thu 22 Oct 12:00 AM"
- },
- {
-  "action": "OPEN SELL part",
-  "detail": "USDJPY|2026-10-22|7:00 am|SELL|Heikin-Ashi 7am size 600.0 at 157.867 stop 158.468 target 157.822 | trade risk 16.39 AED",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Thu 22 Oct 7:01 AM"
- },
- {
-  "action": "OPEN SELL rest",
-  "detail": "USDJPY|2026-10-22|7:00 am|SELL|Heikin-Ashi 7am size 600.0 at 157.868 stop 158.468 | trade risk 16.39 AED",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Thu 22 Oct 7:01 AM"
- },
- {
   "action": "part closed on demo",
   "detail": "USDJPY|2026-10-22|7:00 am|SELL|Heikin-Ashi 7am",
   "market": "USDJPY",
@@ -2798,5 +2777,26 @@
   "market": "OIL",
   "ok": false,
   "t": "Tue 10 Nov 5:01 AM"
+ },
+ {
+  "action": "OPEN SELL rest",
+  "detail": "GOLD|2026-11-10|8:00 am|SELL|N2 near100 size 0.18 at 4110.08 stop 4154.48 | trade risk 28.8 AED",
+  "market": "GOLD",
+  "ok": true,
+  "t": "Tue 10 Nov 8:01 AM"
+ },
+ {
+  "action": "OPEN SELL part",
+  "detail": "USDJPY|2026-11-10|8:00 am|SELL|Heikin-Ashi 7am size 600.0 at 157.952 stop 158.653 target 157.934 | trade risk 9.74 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Tue 10 Nov 8:01 AM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "USDJPY|2026-11-10|8:00 am|SELL|Heikin-Ashi 7am 157.934 -> 157.931 ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Tue 10 Nov 8:01 AM"
  }
 ]

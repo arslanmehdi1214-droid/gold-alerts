@@ -964,19 +964,42 @@
   {
    "date": "2026-11-10",
    "label": "Tue 10 Nov",
-   "side": null,
-   "trades": [],
+   "side": "SELL",
+   "trades": [
+    {
+     "time": "8:00 am",
+     "side": "SELL",
+     "tag": "N2 near100",
+     "price": 4110.91,
+     "stop": 4154.48,
+     "stop0": 4154.48,
+     "half_px": null,
+     "half": false,
+     "half_time": null,
+     "size": 0.1,
+     "status": "open",
+     "first": true,
+     "exit": null,
+     "exit_time": null,
+     "pnl": null,
+     "pnl_oz": null,
+     "size_x": 1.0,
+     "rwf": null,
+     "next": "Hold to the stop 4154.48 or the day-end close \u00b7 no half-close",
+     "late": false
+    }
+   ],
    "skipped": 0,
    "final": false
   }
  ],
  "summary": {
   "since": "03 Oct 2026",
-  "trades": 40,
+  "trades": 41,
   "direction": 37.5,
   "decided": 16,
-  "days": 92.6,
-  "perday": 1.48,
+  "days": 96.3,
+  "perday": 1.52,
   "avg_pnl": -5.79,
   "closed": 40,
   "total_pnl_01": -23.15

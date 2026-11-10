@@ -1,5 +1,5 @@
 {
- "updated": "Tue 10 Nov \u00b7 8:00 am",
+ "updated": "Tue 10 Nov \u00b7 8:01 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -8,18 +8,48 @@
    "symbol": "XAU/USD",
    "live": true,
    "version": "v2.24",
-   "actions": [],
+   "actions": [
+    {
+     "time": "8:00 am",
+     "kind": "OPEN",
+     "side": "SELL",
+     "text": "OPEN SELL now ~4110.91 | stop 4154.48 (43.6 away) | no half-close: hold to the stop or the day-end close | signal N2 near100"
+    }
+   ],
    "actions_day": "2026-11-10",
    "feed_error": false,
-   "state": "waiting",
-   "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 4110.97,
+   "state": "sell",
+   "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
+   "price": 4109.81,
    "close_at": "12:50 am",
-   "change": -26.92,
+   "change": -28.08,
    "size": 0.1,
    "datr": 86.15,
-   "open_now": 0,
-   "entries": [],
+   "open_now": 1,
+   "entries": [
+    {
+     "time": "8:00 am",
+     "side": "SELL",
+     "tag": "N2 near100",
+     "price": 4110.91,
+     "stop": 4154.48,
+     "stop0": 4154.48,
+     "half_px": null,
+     "half": false,
+     "half_time": null,
+     "size": 0.1,
+     "status": "open",
+     "first": true,
+     "exit": null,
+     "exit_time": null,
+     "pnl": null,
+     "pnl_oz": null,
+     "size_x": 1.0,
+     "rwf": null,
+     "next": "Hold to the stop 4154.48 or the day-end close \u00b7 no half-close",
+     "late": false
+    }
+   ],
    "spark": [
     [
      "3:00 am",
@@ -436,21 +466,28 @@
     ],
     [
      "7:55 am",
-     4110.97,
+     4110.9,
      4112.22,
      4112.22,
      4110.3
+    ],
+    [
+     "8:00 am",
+     4109.81,
+     4110.91,
+     4111.04,
+     4109.48
     ]
    ],
    "history": [
     {
      "date": "2026-11-10",
      "label": "Tue 10 Nov",
-     "state": "none",
-     "entries": 0,
+     "state": "sell",
+     "entries": 1,
      "stopped": 0,
      "eod": 0,
-     "running": 0,
+     "running": 1,
      "rw": 0,
      "rd": 0,
      "pnl": null
@@ -645,11 +682,11 @@
    },
    "journal": {
     "since": "03 Oct 2026",
-    "trades": 40,
+    "trades": 41,
     "direction": 37.5,
     "decided": 16,
-    "days": 92.6,
-    "perday": 1.48,
+    "days": 96.3,
+    "perday": 1.52,
     "avg_pnl": -5.79,
     "closed": 40,
     "total_pnl_01": -23.15
@@ -2046,12 +2083,42 @@
    "what_note": "This page tracks whether live USD/JPY signals do as well as the v1.07 backtest. Decision after about 3 months.",
    "cost_note": "Pips are for the whole trade (\u2153-size trades count one third), after a fixed 1.0-pip spread (as in the MT4 test; fixed so shown levels never change). $ = at $100 risk per full-size trade, like the MT4 test.",
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
-   "state": "waiting",
-   "message": "Waiting for the first signal.",
-   "price": 157.957,
-   "change_pips": 2.6,
+   "state": "sell",
+   "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
+   "price": 157.959,
+   "change_pips": 2.8,
    "atr_pips": 91.7,
-   "entries": [],
+   "entries": [
+    {
+     "time": "8:00 am",
+     "side": "SELL",
+     "sig": "J13",
+     "name": "Heikin-Ashi 7am",
+     "price": 157.955,
+     "entry": 157.955,
+     "stop": 158.653,
+     "stop0": 158.653,
+     "stop_pips": 69.8,
+     "half_px": 157.934,
+     "half": false,
+     "part": 1.0,
+     "half_time": null,
+     "size": "third",
+     "quiet": false,
+     "first": true,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "pips": null,
+     "usd": null,
+     "r": null,
+     "r_sized": null,
+     "usd_risk": null,
+     "r_now": -0.0204,
+     "rwf": null,
+     "spread": 1.0
+    }
+   ],
    "spark": [
     [
      "3:05 am",
@@ -2465,16 +2532,23 @@
      157.947,
      157.957,
      157.94
+    ],
+    [
+     "8:00 am",
+     157.959,
+     157.955,
+     157.967,
+     157.955
     ]
    ],
    "journal": {
     "since": "05 Nov 2026",
     "weekdays": 4,
-    "trades": 6,
+    "trades": 7,
     "decided": 5,
     "direction": 20.0,
-    "days": 75.0,
-    "perday": 1.5,
+    "days": 100.0,
+    "perday": 1.75,
     "closed": 6,
     "win": 66.7,
     "pf": 0.32,
@@ -2491,8 +2565,38 @@
      "date": "2026-11-10",
      "rules": "v1.07",
      "label": "Tue 10 Nov",
-     "side": null,
-     "trades": [],
+     "side": "SELL",
+     "trades": [
+      {
+       "time": "8:00 am",
+       "side": "SELL",
+       "sig": "J13",
+       "name": "Heikin-Ashi 7am",
+       "price": 157.955,
+       "entry": 157.955,
+       "stop": 158.653,
+       "stop0": 158.653,
+       "stop_pips": 69.8,
+       "half_px": 157.934,
+       "half": false,
+       "part": 1.0,
+       "half_time": null,
+       "size": "third",
+       "quiet": false,
+       "first": true,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "pips": null,
+       "usd": null,
+       "r": null,
+       "r_sized": null,
+       "usd_risk": null,
+       "r_now": -0.0204,
+       "rwf": null,
+       "spread": 1.0
+      }
+     ],
      "atr_pips": 91.7,
      "final": false
     },
@@ -4113,8 +4217,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 84.902,
-   "change": -0.56,
+   "price": 84.987,
+   "change": -0.48,
    "entries": [
     {
      "time": "5:00 am",
@@ -4559,6 +4663,13 @@
      84.78,
      84.97,
      84.78
+    ],
+    [
+     "8:00 am",
+     84.99,
+     84.89,
+     85.01,
+     84.89
     ]
    ],
    "journal": {
@@ -6342,6 +6453,13 @@
      7551.4,
      7551.7,
      7549.3
+    ],
+    [
+     "8:00 am",
+     7551.6,
+     7551.7,
+     7552.1,
+     7551.1
     ]
    ],
    "journal": {
@@ -7370,8 +7488,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 27806.6,
-   "change": -141.0,
+   "price": 27807.3,
+   "change": -140.3,
    "entries": [],
    "spark": [
     [
@@ -7870,6 +7988,13 @@
      27807.5,
      27809.8,
      27789.3
+    ],
+    [
+     "8:00 am",
+     27807.3,
+     27806.7,
+     27809.5,
+     27803.8
     ]
    ],
    "journal": {
@@ -8822,7 +8947,7 @@
     "stop": 27629.8,
     "target": 28170.2,
     "r": 270.2,
-    "live": -93.4,
+    "live": -92.7,
     "note": "CPI overnight: long from 2026-11-09 22:59:00, stop 27629.8 / target 28170.2 (R=270.2), force-closes at the 2026-11-10 RTH open if neither hits first."
    },
    "tuesday": null,
@@ -8860,8 +8985,8 @@
    "regime": 0.204,
    "gap": null,
    "message": "Today is a SELL day (euro hedge funds trend). The trade opens at 12:00 pm Dubai (10:00 broker). TUESDAY: stop moves to entry + 5 pips once +0.2 x stop in profit.",
-   "price": 1.34436,
-   "change": 0.0017,
+   "price": 1.34427,
+   "change": 0.00161,
    "entries": [],
    "spark": [
     [
@@ -9360,6 +9485,13 @@
      1.34436,
      1.3444,
      1.34432
+    ],
+    [
+     "8:00 am",
+     1.34427,
+     1.34435,
+     1.34436,
+     1.34426
     ]
    ],
    "journal": {
@@ -10135,8 +10267,8 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 90.751,
-   "change": -0.37,
+   "price": 90.823,
+   "change": -0.3,
    "entries": [],
    "spark": [
     [
@@ -10474,6 +10606,13 @@
      90.62,
      90.79,
      90.62
+    ],
+    [
+     "8:00 am",
+     90.82,
+     90.74,
+     90.85,
+     90.73
     ]
    ],
    "journal": {
