@@ -1,5 +1,5 @@
 {
- "updated": "Tue 10 Nov \u00b7 5:27 pm",
+ "updated": "Tue 10 Nov \u00b7 5:28 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4069.27,
+   "price": 4069.73,
    "close_at": "12:50 am",
-   "change": -68.62,
+   "change": -68.16,
    "size": 0.1,
    "datr": 86.15,
    "open_now": 1,
@@ -1264,9 +1264,9 @@
     ],
     [
      "5:25 pm",
-     4069.27,
+     4069.73,
      4069.9,
-     4069.96,
+     4070.69,
      4067.89
     ]
    ],
@@ -2876,8 +2876,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 158.186,
-   "change_pips": 25.5,
+   "price": 158.168,
+   "change_pips": 23.7,
    "atr_pips": 91.7,
    "entries": [
     {
@@ -4146,10 +4146,10 @@
     ],
     [
      "5:25 pm",
-     158.186,
+     158.168,
      158.213,
      158.215,
-     158.185
+     158.168
     ]
    ],
    "journal": {
@@ -5857,8 +5857,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 84.062,
-   "change": -1.41,
+   "price": 84.092,
+   "change": -1.38,
    "entries": [
     {
      "time": "5:00 am",
@@ -7097,9 +7097,9 @@
     ],
     [
      "5:25 pm",
-     84.06,
+     84.09,
      83.83,
-     84.07,
+     84.14,
      83.83
     ]
    ],
@@ -8358,8 +8358,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
    "message": "NIGHT BUY (UST5yr-COT-falling-fast + credit-de-risking) at 3:01 am Dubai, stop 7417.8, closes at 7:00 pm Dubai (10:00 am New York). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7553.3,
-   "change": -1.6,
+   "price": 7554.9,
+   "change": 0.0,
    "entries": [
     {
      "time": "3:01 am",
@@ -8383,7 +8383,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -2.3,
+     "live": -0.7,
      "spread": 0.8
     }
    ],
@@ -9678,9 +9678,9 @@
     ],
     [
      "5:25 pm",
-     7553.3,
-     7553.8,
      7554.9,
+     7553.8,
+     7555.3,
      7551.8
     ]
    ],
@@ -9796,7 +9796,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -2.3,
+       "live": -0.7,
        "spread": 0.8
       }
      ],
@@ -10712,8 +10712,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 27808.8,
-   "change": -138.8,
+   "price": 27812.9,
+   "change": -134.7,
    "entries": [
     {
      "time": "4:33 pm",
@@ -10738,7 +10738,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 7.0,
+     "live": 11.1,
      "rwf": null,
      "spread": 1.8,
      "spread_live": 1.8
@@ -12035,7 +12035,7 @@
     ],
     [
      "5:25 pm",
-     27808.8,
+     27812.9,
      27815.4,
      27820.3,
      27797.5
@@ -12086,7 +12086,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 7.0,
+       "live": 11.1,
        "rwf": null,
        "spread": 1.8,
        "spread_live": 1.8
@@ -13020,7 +13020,7 @@
     "stop": 27629.8,
     "target": 28170.2,
     "r": 270.2,
-    "live": -91.2,
+    "live": -87.1,
     "note": "CPI overnight: long from 2026-11-09 22:59:00, stop 27629.8 / target 28170.2 (R=270.2), force-closes at the 2026-11-10 RTH open if neither hits first."
    },
    "tuesday": null,
@@ -13058,8 +13058,8 @@
    "regime": 0.204,
    "gap": null,
    "message": "PAPER SELL at 1.34522 (12:00 pm Dubai). Stop 1.34472, target 1.33834 - close the WHOLE trade at the target; otherwise it closes at 1:45 am Dubai. Stop now locked at 1.34472 (entry + 5 pips) since 1:00 pm Dubai.",
-   "price": 1.34218,
-   "change": -0.00048,
+   "price": 1.34226,
+   "change": -0.0004,
    "entries": [
     {
      "time": "12:00 pm",
@@ -13085,7 +13085,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": 28.9,
+     "live": 28.1,
      "spread": 1.5,
      "next": "Hold \u00b7 stop MOVED to 1.34472 (entry + 5 pips, locked) \u00b7 target 1.33834 (close the WHOLE trade there) \u00b7 closes at 1:45 am Dubai"
     }
@@ -14381,9 +14381,9 @@
     ],
     [
      "5:25 pm",
-     1.34218,
-     1.3421,
      1.34226,
+     1.3421,
+     1.34227,
      1.34209
     ]
    ],
@@ -14433,7 +14433,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": 28.9,
+       "live": 28.1,
        "spread": 1.5,
        "next": "Hold \u00b7 stop MOVED to 1.34472 (entry + 5 pips, locked) \u00b7 target 1.33834 (close the WHOLE trade there) \u00b7 closes at 1:45 am Dubai"
       }
@@ -15198,8 +15198,8 @@
    },
    "state": "sell",
    "message": "Today's signals: SELL (C). Stop 1.0x the 20-day range (rule C: 2.0x), no target; closes 11:30 pm Dubai if not stopped first.",
-   "price": 89.256,
-   "change": -1.87,
+   "price": 89.291,
+   "change": -1.83,
    "entries": [
     {
      "time": "12:33 pm",
@@ -16352,9 +16352,9 @@
     ],
     [
      "5:25 pm",
-     89.26,
+     89.29,
      89.01,
-     89.26,
+     89.34,
      89.01
     ]
    ],
