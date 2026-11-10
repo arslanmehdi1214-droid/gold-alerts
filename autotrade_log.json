@@ -1,19 +1,5 @@
 [
  {
-  "action": "rest closed on demo",
-  "detail": "US500|2026-10-22|5:40 pm|BUY|S&P 9:40 am New York opening move",
-  "market": "US500",
-  "ok": true,
-  "t": "Thu 22 Oct 10:05 PM"
- },
- {
-  "action": "OPEN SELL part",
-  "detail": "USDJPY|2026-10-23|2:33 am|SELL|Week-so-far break size 1000.0 at 156.646 stop 157.285 target 156.624 | trade risk 29.58 AED",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Fri 23 Oct 2:35 AM"
- },
- {
   "action": "OPEN SELL rest",
   "detail": "USDJPY|2026-10-23|2:33 am|SELL|Week-so-far break size 1100.0 at 156.646 stop 157.285 | trade risk 29.58 AED",
   "market": "USDJPY",
@@ -2798,5 +2784,19 @@
   "market": "GOLD",
   "ok": true,
   "t": "Wed 11 Nov 12:50 AM"
+ },
+ {
+  "action": "part closed on demo",
+  "detail": "US100|2026-11-10|10:54 pm|BUY|US+10 H1 U2 only when vol high (>1.1)",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 11 Nov 12:52 AM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "US100|2026-11-10|10:54 pm|BUY|US+10 H1 U2 only when vol high (>1.1) to 27607.0 (stop to entry: each position at its own fill price)",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 11 Nov 12:52 AM"
  }
 ]
