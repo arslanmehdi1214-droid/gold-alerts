@@ -1,5 +1,5 @@
 {
- "updated": "Tue 10 Nov \u00b7 5:00 am",
+ "updated": "Tue 10 Nov \u00b7 5:01 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 4122.71,
+   "price": 4126.35,
    "close_at": "12:50 am",
-   "change": -15.18,
+   "change": -11.54,
    "size": 0.1,
    "datr": 86.15,
    "open_now": 0,
@@ -184,10 +184,17 @@
     ],
     [
      "4:55 am",
-     4122.71,
+     4122.94,
      4122.96,
      4123.85,
      4121.52
+    ],
+    [
+     "5:00 am",
+     4126.35,
+     4122.98,
+     4126.55,
+     4121.71
     ]
    ],
    "history": [
@@ -1796,8 +1803,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 158.049,
-   "change_pips": 11.8,
+   "price": 158.054,
+   "change_pips": 12.3,
    "atr_pips": 91.7,
    "entries": [],
    "spark": [
@@ -1957,10 +1964,17 @@
     ],
     [
      "4:55 am",
-     158.049,
+     158.054,
      158.095,
      158.095,
-     158.049
+     158.047
+    ],
+    [
+     "5:00 am",
+     158.054,
+     158.053,
+     158.083,
+     158.053
     ]
    ],
    "journal": {
@@ -3607,11 +3621,34 @@
    "what_note": "This page tracks whether live WTI signals do as well as the backtest. Decision after about 3 months.",
    "cost_note": "Results are $ per barrel (sizes: full or \u2153), from the signal price with the backtest's slip, after a fixed 4-cent spread (the MT4 test's spread and Capital.com's usual; fixed so shown levels never change).",
    "net_label": "Net $ per barrel (v1.16)",
-   "state": "waiting",
-   "message": "Waiting for the first signal.",
-   "price": 85.762,
-   "change": 0.3,
-   "entries": [],
+   "state": "buy",
+   "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
+   "price": 85.725,
+   "change": 0.26,
+   "entries": [
+    {
+     "time": "5:00 am",
+     "side": "BUY",
+     "name": "Last week's high/low",
+     "price": 86.03,
+     "stop": 81.42,
+     "stop0": 81.42,
+     "half_px": 86.21,
+     "half": false,
+     "part": 0.25,
+     "late": false,
+     "stop_usd": 4.61,
+     "size": "1/3",
+     "first": true,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "rwf": null,
+     "spread": 0.04
+    }
+   ],
    "spark": [
     [
      "3:00 am",
@@ -3780,16 +3817,23 @@
      85.7,
      85.79,
      85.69
+    ],
+    [
+     "5:00 am",
+     85.72,
+     85.77,
+     86.02,
+     85.72
     ]
    ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 2,
-    "trades": 3,
+    "trades": 4,
     "decided": 2,
     "direction": 100.0,
-    "days": 50.0,
-    "perday": 1.5,
+    "days": 100.0,
+    "perday": 2.0,
     "closed": 3,
     "win": 66.7,
     "pf": 4.97,
@@ -3802,8 +3846,31 @@
      "date": "2026-11-10",
      "rules": "v1.16",
      "label": "Tue 10 Nov",
-     "side": null,
-     "trades": [],
+     "side": "BUY",
+     "trades": [
+      {
+       "time": "5:00 am",
+       "side": "BUY",
+       "name": "Last week's high/low",
+       "price": 86.03,
+       "stop": 81.42,
+       "stop0": 81.42,
+       "half_px": 86.21,
+       "half": false,
+       "part": 0.25,
+       "late": false,
+       "stop_usd": 4.61,
+       "size": "1/3",
+       "first": true,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "res_sized": null,
+       "rwf": null,
+       "spread": 0.04
+      }
+     ],
      "range_usd": 4.61,
      "traded": true,
      "final": false
@@ -5014,8 +5081,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
    "message": "NIGHT BUY (UST5yr-COT-falling-fast + credit-de-risking) at 3:01 am Dubai, stop 7417.8, closes at 7:00 pm Dubai (10:00 am New York). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7547.9,
-   "change": -7.0,
+   "price": 7554.1,
+   "change": -0.8,
    "entries": [
     {
      "time": "3:01 am",
@@ -5039,7 +5106,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -7.7,
+     "live": -1.5,
      "spread": 0.8
     }
    ],
@@ -5288,6 +5355,13 @@
      7547.7,
      7548.6,
      7546.1
+    ],
+    [
+     "5:00 am",
+     7554.1,
+     7548.1,
+     7554.6,
+     7547.6
     ]
    ],
    "journal": {
@@ -5400,7 +5474,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -7.7,
+       "live": -1.5,
        "spread": 0.8
       }
      ],
@@ -6316,8 +6390,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 27881.7,
-   "change": -65.9,
+   "price": 27908.0,
+   "change": -39.6,
    "entries": [],
    "spark": [
     [
@@ -6564,6 +6638,13 @@
      27877.3,
      27886.8,
      27864.0
+    ],
+    [
+     "5:00 am",
+     27908.0,
+     27882.3,
+     27927.0,
+     27879.6
     ]
    ],
    "journal": {
@@ -7516,7 +7597,7 @@
     "stop": 27629.8,
     "target": 28170.2,
     "r": 270.2,
-    "live": -18.3,
+    "live": 8.0,
     "note": "CPI overnight: long from 2026-11-09 22:59:00, stop 27629.8 / target 28170.2 (R=270.2), force-closes at the 2026-11-10 RTH open if neither hits first."
    },
    "tuesday": null,
@@ -7554,8 +7635,8 @@
    "regime": 0.204,
    "gap": null,
    "message": "Today is a SELL day (euro hedge funds trend). The trade opens at 12:00 pm Dubai (10:00 broker). TUESDAY: stop moves to entry + 5 pips once +0.2 x stop in profit.",
-   "price": 1.34358,
-   "change": 0.00092,
+   "price": 1.34378,
+   "change": 0.00112,
    "entries": [],
    "spark": [
     [
@@ -7802,6 +7883,13 @@
      1.34361,
      1.34365,
      1.34349
+    ],
+    [
+     "5:00 am",
+     1.34378,
+     1.34357,
+     1.34378,
+     1.34356
     ]
    ],
    "journal": {
@@ -8576,9 +8664,9 @@
     "source": "MT4 BRENT_WED_HOL_v110.mq4, his run 9 Nov 2026, 2018.01.02-2026.10.30, spread 8 ($0.08/bbl) - AW+K2 together: 251 trades (AW 210 at full 0.30 lot, K2 41 at half 0.15 lot), net +$13,453. Full v1.10 EA (A-F+K++AW+K2): +$81,158, PF 1.43, max drawdown $10,241, 1,492 trades vs the v1.07a baseline +$67,704, DD $9,199, 1,241 trades, PF 1.43 (net per $1 of drawdown 7.92 vs 7.36 - at equal drawdown ~+7.7% net). v1.10 technically misses the strict $10,000 max-DD cap by $241 but wins on the equal-drawdown rule - his go-ahead 9 Nov 2026."
    },
    "state": "none",
-   "message": "Brent paper update failed at 5:00 am Dubai (FeedError: newest closed price bar (2:59 am Dubai) is 120 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
-   "price": 91.276,
-   "change": 0.15,
+   "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
+   "price": 91.643,
+   "change": 0.52,
    "entries": [],
    "spark": [
     [
@@ -8664,6 +8752,13 @@
      91.3,
      91.4,
      91.22
+    ],
+    [
+     "5:00 am",
+     91.64,
+     91.6,
+     91.95,
+     91.6
     ]
    ],
    "journal": {
@@ -8743,7 +8838,7 @@
      "wed": false
     }
    ],
-   "feed_error": true,
+   "feed_error": false,
    "epic": "OIL_BRENT",
    "range_usd": 4.78,
    "rule_today": {

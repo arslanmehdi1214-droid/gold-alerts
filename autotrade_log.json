@@ -1,13 +1,6 @@
 [
  {
   "action": "close rest",
-  "detail": "OIL|2026-10-21|2:14 pm|BUY|Whole dollar (desk: close_now) ",
-  "market": "OIL",
-  "ok": true,
-  "t": "Wed 21 Oct 9:00 PM"
- },
- {
-  "action": "close rest",
   "detail": "GOLD|2026-10-21|7:31 am|BUY|N15 hsq (desk: close_now) ",
   "market": "GOLD",
   "ok": true,
@@ -2798,5 +2791,12 @@
   "market": "US500",
   "ok": true,
   "t": "Tue 10 Nov 3:02 AM"
+ },
+ {
+  "action": "skip",
+  "detail": "OIL|2026-11-10|5:00 am|BUY|Last week's high/low: real risk 16.93 AED after lot rounding > 1.4x target 10.0 AED",
+  "market": "OIL",
+  "ok": false,
+  "t": "Tue 10 Nov 5:01 AM"
  }
 ]
