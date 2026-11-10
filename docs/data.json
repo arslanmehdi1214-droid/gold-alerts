@@ -1,5 +1,5 @@
 {
- "updated": "Tue 10 Nov \u00b7 11:15 am",
+ "updated": "Tue 10 Nov \u00b7 11:16 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4118.39,
+   "price": 4117.53,
    "close_at": "12:50 am",
-   "change": -19.5,
+   "change": -20.36,
    "size": 0.1,
    "datr": 86.15,
    "open_now": 1,
@@ -739,10 +739,17 @@
     ],
     [
      "11:10 am",
-     4118.39,
+     4118.5,
      4120.0,
      4120.25,
      4117.11
+    ],
+    [
+     "11:15 am",
+     4117.53,
+     4118.52,
+     4118.52,
+     4116.81
     ]
    ],
    "history": [
@@ -2351,8 +2358,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 157.962,
-   "change_pips": 3.1,
+   "price": 157.956,
+   "change_pips": 2.5,
    "atr_pips": 91.7,
    "entries": [
     {
@@ -3099,6 +3106,13 @@
      157.962,
      157.975,
      157.987,
+     157.953
+    ],
+    [
+     "11:15 am",
+     157.956,
+     157.963,
+     157.963,
      157.953
     ]
    ],
@@ -4807,8 +4821,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 84.737,
-   "change": -0.73,
+   "price": 84.702,
+   "change": -0.77,
    "entries": [
     {
      "time": "5:00 am",
@@ -5526,6 +5540,13 @@
      84.74,
      84.78,
      84.58
+    ],
+    [
+     "11:15 am",
+     84.7,
+     84.73,
+     84.75,
+     84.69
     ]
    ],
    "journal": {
@@ -7582,6 +7603,13 @@
      7562.7,
      7562.8,
      7559.8
+    ],
+    [
+     "11:15 am",
+     7560.8,
+     7560.6,
+     7561.1,
+     7560.3
     ]
    ],
    "journal": {
@@ -8610,8 +8638,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 27832.6,
-   "change": -115.0,
+   "price": 27830.8,
+   "change": -116.8,
    "entries": [],
    "spark": [
     [
@@ -9383,6 +9411,13 @@
      27842.0,
      27842.0,
      27825.3
+    ],
+    [
+     "11:15 am",
+     27830.8,
+     27832.5,
+     27832.8,
+     27827.7
     ]
    ],
    "journal": {
@@ -10335,7 +10370,7 @@
     "stop": 27629.8,
     "target": 28170.2,
     "r": 270.2,
-    "live": -67.4,
+    "live": -69.2,
     "note": "CPI overnight: long from 2026-11-09 22:59:00, stop 27629.8 / target 28170.2 (R=270.2), force-closes at the 2026-11-10 RTH open if neither hits first."
    },
    "tuesday": null,
@@ -10373,8 +10408,8 @@
    "regime": 0.204,
    "gap": null,
    "message": "Today is a SELL day (euro hedge funds trend). The trade opens at 12:00 pm Dubai (10:00 broker). TUESDAY: stop moves to entry + 5 pips once +0.2 x stop in profit.",
-   "price": 1.34501,
-   "change": 0.00235,
+   "price": 1.34507,
+   "change": 0.00241,
    "entries": [],
    "spark": [
     [
@@ -11146,6 +11181,13 @@
      1.34479,
      1.34508,
      1.34477
+    ],
+    [
+     "11:15 am",
+     1.34507,
+     1.345,
+     1.34508,
+     1.34499
     ]
    ],
    "journal": {
@@ -11921,8 +11963,8 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 90.541,
-   "change": -0.58,
+   "price": 90.511,
+   "change": -0.61,
    "entries": [],
    "spark": [
     [
@@ -12533,6 +12575,13 @@
      90.55,
      90.58,
      90.37
+    ],
+    [
+     "11:15 am",
+     90.51,
+     90.53,
+     90.56,
+     90.49
     ]
    ],
    "journal": {
