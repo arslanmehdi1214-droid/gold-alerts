@@ -1,5 +1,5 @@
 {
- "updated": "Tue 10 Nov \u00b7 9:46 am",
+ "updated": "Tue 10 Nov \u00b7 9:47 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 4124.4,
+   "price": 4123.56,
    "close_at": "12:50 am",
-   "change": -13.49,
+   "change": -14.33,
    "size": 0.1,
    "datr": 86.15,
    "open_now": 1,
@@ -620,10 +620,10 @@
     ],
     [
      "9:45 am",
-     4124.4,
+     4123.56,
      4125.55,
      4126.6,
-     4124.39
+     4123.56
     ]
    ],
    "history": [
@@ -2232,8 +2232,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 158.028,
-   "change_pips": 9.7,
+   "price": 158.024,
+   "change_pips": 9.3,
    "atr_pips": 91.7,
    "entries": [
     {
@@ -2858,10 +2858,10 @@
     ],
     [
      "9:45 am",
-     158.028,
+     158.024,
      158.025,
      158.038,
-     158.024
+     158.022
     ]
    ],
    "journal": {
@@ -4569,8 +4569,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 85.207,
-   "change": -0.26,
+   "price": 85.197,
+   "change": -0.27,
    "entries": [
     {
      "time": "5:00 am",
@@ -5165,9 +5165,9 @@
     ],
     [
      "9:45 am",
-     85.21,
+     85.2,
      85.23,
-     85.25,
+     85.26,
      85.15
     ]
    ],
@@ -6393,7 +6393,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.04,
+   "live_spread": 0.031,
    "history_note": "history to 2026-11-09 (60 days)"
   },
   "US500": {
@@ -7105,7 +7105,7 @@
      7568.1,
      7568.4,
      7569.3,
-     7568.1
+     7567.3
     ]
    ],
    "journal": {
@@ -8134,8 +8134,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 27930.2,
-   "change": -17.4,
+   "price": 27933.7,
+   "change": -13.9,
    "entries": [],
    "spark": [
     [
@@ -8784,10 +8784,10 @@
     ],
     [
      "9:45 am",
-     27930.2,
+     27933.7,
      27935.7,
      27940.5,
-     27930.0
+     27925.8
     ]
    ],
    "journal": {
@@ -9740,7 +9740,7 @@
     "stop": 27629.8,
     "target": 28170.2,
     "r": 270.2,
-    "live": 30.2,
+    "live": 33.7,
     "note": "CPI overnight: long from 2026-11-09 22:59:00, stop 27629.8 / target 28170.2 (R=270.2), force-closes at the 2026-11-10 RTH open if neither hits first."
    },
    "tuesday": null,
@@ -9778,8 +9778,8 @@
    "regime": 0.204,
    "gap": null,
    "message": "Today is a SELL day (euro hedge funds trend). The trade opens at 12:00 pm Dubai (10:00 broker). TUESDAY: stop moves to entry + 5 pips once +0.2 x stop in profit.",
-   "price": 1.34448,
-   "change": 0.00182,
+   "price": 1.3445,
+   "change": 0.00184,
    "entries": [],
    "spark": [
     [
@@ -10428,7 +10428,7 @@
     ],
     [
      "9:45 am",
-     1.34448,
+     1.3445,
      1.34454,
      1.34455,
      1.34446
@@ -11207,8 +11207,8 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 90.981,
-   "change": -0.14,
+   "price": 90.961,
+   "change": -0.16,
    "entries": [],
    "spark": [
     [
@@ -11696,9 +11696,9 @@
     ],
     [
      "9:45 am",
-     90.98,
+     90.96,
      91.0,
-     91.03,
+     91.04,
      90.91
     ]
    ],
