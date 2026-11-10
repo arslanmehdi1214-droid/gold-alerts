@@ -1,15 +1,15 @@
 {
- "balance": 1399.22,
+ "balance": 1392.36,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-10",
-  "pl": 207.86,
+  "pl": 193.53,
   "start_balance": 1277.25,
   "start_equity": 1277.25,
   "stopped": false
  },
- "open_positions": 7,
- "open_risk_aed": 119.42,
+ "open_positions": 6,
+ "open_risk_aed": 90.34,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-09|5:01 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -337,9 +337,10 @@
    "market": "US100",
    "opened_at": "Tue 10 Nov 4:34 PM",
    "part": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-7211-e189-0495-7fc60004511e",
     "level": 27801.4,
-    "open": true,
+    "open": false,
     "size": 0.005,
     "tp": 27974.8
    },
@@ -356,7 +357,7 @@
    "risk_usd": 8.17,
    "side": "BUY",
    "state": "open",
-   "stop": 27455.7
+   "stop": 27801.8
   },
   "US500|2026-11-06|3:01 am|BUY|Night long (gold+WTI overnight shock)": {
    "desk_price": 7333.5,

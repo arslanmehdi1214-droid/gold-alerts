@@ -1,19 +1,5 @@
 [
  {
-  "action": "close rest",
-  "detail": "GOLD|2026-10-22|7:37 am|SELL|G8 ttmvsc (desk: lock) ",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Thu 22 Oct 10:09 AM"
- },
- {
-  "action": "OPEN BUY rest",
-  "detail": "OIL|2026-10-22|11:44 am|BUY|Open \u00b1 \u00bd range size 1.1 at 99.463 stop 95.61 | trade risk 15.67 AED",
-  "market": "OIL",
-  "ok": true,
-  "t": "Thu 22 Oct 11:45 AM"
- },
- {
   "action": "stop moved",
   "detail": "OIL|2026-10-22|11:44 am|BUY|Open \u00b1 \u00bd range to 99.54",
   "market": "OIL",
@@ -2798,5 +2784,19 @@
   "market": "US500",
   "ok": true,
   "t": "Tue 10 Nov 7:01 PM"
+ },
+ {
+  "action": "part closed on demo",
+  "detail": "US100|2026-11-10|4:33 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am",
+  "market": "US100",
+  "ok": true,
+  "t": "Tue 10 Nov 7:02 PM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "US100|2026-11-10|4:33 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am to 27801.8 (stop to entry: each position at its own fill price)",
+  "market": "US100",
+  "ok": true,
+  "t": "Tue 10 Nov 7:02 PM"
  }
 ]
