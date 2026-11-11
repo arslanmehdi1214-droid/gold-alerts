@@ -1,13 +1,6 @@
 [
  {
   "action": "skip",
-  "detail": "OIL|2026-10-23|5:53 am|BUY|Open \u00b1 \u00bd range: real risk 13.51 AED after lot rounding > 1.3x target 10.0 AED",
-  "market": "OIL",
-  "ok": false,
-  "t": "Fri 23 Oct 5:54 AM"
- },
- {
-  "action": "skip",
   "detail": "OIL|2026-10-23|6:01 am|BUY|Open \u00b1 0.7 range: real risk 13.51 AED after lot rounding > 1.3x target 10.0 AED",
   "market": "OIL",
   "ok": false,
@@ -2798,5 +2791,12 @@
   "market": "USDJPY",
   "ok": true,
   "t": "Wed 11 Nov 5:15 AM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "USDJPY|2026-11-11|4:54 am|BUY|Week-so-far break to 158.854 (stop to entry: each position at its own fill price)",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Wed 11 Nov 5:16 AM"
  }
 ]
