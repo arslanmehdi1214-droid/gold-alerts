@@ -1,19 +1,5 @@
 [
  {
-  "action": "part closed on demo",
-  "detail": "USDJPY|2026-10-23|7:00 am|SELL|Last-week break",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Fri 23 Oct 7:03 AM"
- },
- {
-  "action": "stop moved",
-  "detail": "USDJPY|2026-10-23|7:00 am|SELL|Last-week break to 157.027 (stop to entry: each position at its own fill price)",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Fri 23 Oct 7:04 AM"
- },
- {
   "action": "skip",
   "detail": "OIL|2026-10-23|8:45 am|BUY|Yesterday's high/low: real risk 13.51 AED after lot rounding > 1.3x target 10.0 AED",
   "market": "OIL",
@@ -2798,5 +2784,19 @@
   "market": "USDJPY",
   "ok": true,
   "t": "Wed 11 Nov 11:29 AM"
+ },
+ {
+  "action": "OPEN SELL part",
+  "detail": "GBPUSD|2026-11-11|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend size 1000.0 at 1.33285 stop 1.34062 target 1.32532 | trade risk 28.09 AED",
+  "market": "GBPUSD",
+  "ok": true,
+  "t": "Wed 11 Nov 12:01 PM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "GBPUSD|2026-11-11|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend 1.32532 -> 1.3252 ",
+  "market": "GBPUSD",
+  "ok": true,
+  "t": "Wed 11 Nov 12:01 PM"
  }
 ]
