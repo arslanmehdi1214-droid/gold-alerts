@@ -1,14 +1,14 @@
 {
- "balance": 1521.02,
+ "balance": 1525.24,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-11",
-  "pl": 175.22,
+  "pl": 183.36,
   "start_balance": 1380.6,
   "start_equity": 1380.6,
   "stopped": false
  },
- "open_positions": 3,
+ "open_positions": 1,
  "open_risk_aed": 28.09,
  "risk_usd": 8.168822328114365,
  "trades": {
@@ -388,16 +388,17 @@
    "part_x": 0.25,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: eod",
     "id": "00000000-7259-58f5-0495-7fc60004511e",
     "level": 28220.3,
-    "open": true,
+    "open": false,
     "size": 0.018,
     "tp": null
    },
    "risk_aed": 29.55,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 28220.2
   },
   "US100|2026-11-11|6:33 pm|BUY|J30 U8 only when vol high (>1.1)": {
@@ -415,16 +416,17 @@
    "part_x": 0.25,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: eod",
     "id": "00000000-729f-43ca-0495-7fc60004511e",
     "level": 28279.2,
-    "open": true,
+    "open": false,
     "size": 0.018,
     "tp": null
    },
    "risk_aed": 29.55,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 28322.3
   },
   "US500|2026-11-09|3:01 am|BUY|Night long (high-fear night: VIX / VVIX)": {
