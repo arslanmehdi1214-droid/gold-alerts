@@ -1,19 +1,5 @@
 [
  {
-  "action": "OPEN SELL rest",
-  "detail": "GOLD|2026-10-23|10:00 am|SELL|T15 ttm size 0.52 at 4019.4 stop 4054.93 | trade risk 66.51 AED",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Fri 23 Oct 10:01 AM"
- },
- {
-  "action": "OPEN SELL rest",
-  "detail": "GOLD|2026-10-23|11:00 am|SELL|N12 squeeze size 0.35 at 4014.44 stop 4047.49 | trade risk 44.78 AED",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Fri 23 Oct 11:01 AM"
- },
- {
   "action": "OPEN BUY rest",
   "detail": "OIL|2026-10-23|4:07 pm|BUY|Whole dollar size 1.0 at 101.218 stop 97.34 | trade risk 13.51 AED",
   "market": "OIL",
@@ -2798,5 +2784,19 @@
   "market": "OIL",
   "ok": false,
   "t": "Wed 11 Nov 1:19 PM"
+ },
+ {
+  "action": "OPEN BUY part",
+  "detail": "US100|2026-11-11|2:00 pm|BUY|REV J5 yesterday hi/lo \u00b10.25ATR first touch from 1pm fade size 0.005 at 28220.3 stop 27868.6 target 28396.0 | trade risk 29.55 AED",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 11 Nov 2:01 PM"
+ },
+ {
+  "action": "OPEN BUY rest",
+  "detail": "US100|2026-11-11|2:00 pm|BUY|REV J5 yesterday hi/lo \u00b10.25ATR first touch from 1pm fade size 0.018 at 28220.3 stop 27868.6 | trade risk 29.55 AED",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 11 Nov 2:01 PM"
  }
 ]
