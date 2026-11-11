@@ -1,5 +1,5 @@
 {
- "updated": "Thu 12 Nov \u00b7 3:49 am",
+ "updated": "Thu 12 Nov \u00b7 3:50 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 3978.49,
+   "price": 3978.21,
    "close_at": "12:50 am",
-   "change": -10.12,
+   "change": -10.4,
    "size": 0.1,
    "datr": 90.05,
    "open_now": 0,
@@ -86,10 +86,10 @@
     ],
     [
      "3:45 am",
-     3978.49,
+     3978.21,
      3981.49,
      3982.34,
-     3978.47
+     3978.16
     ]
    ],
    "history": [
@@ -1698,8 +1698,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 159.706,
-   "change_pips": 7.8,
+   "price": 159.694,
+   "change_pips": 6.6,
    "atr_pips": 92.6,
    "entries": [],
    "spark": [
@@ -1761,7 +1761,7 @@
     ],
     [
      "3:45 am",
-     159.706,
+     159.694,
      159.69,
      159.728,
      159.682
@@ -5009,8 +5009,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
    "message": "NIGHT BUY (UST5yr-COT-falling-fast + credit-de-risking) at 3:01 am Dubai, stop 7453.9, closes at 7:00 pm Dubai (10:00 am New York). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7587.1,
-   "change": -28.8,
+   "price": 7585.3,
+   "change": -30.6,
    "entries": [
     {
      "time": "3:01 am",
@@ -5034,7 +5034,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -8.6,
+     "live": -10.4,
      "spread": 1.5
     }
    ],
@@ -5181,7 +5181,7 @@
     ],
     [
      "3:45 am",
-     7587.1,
+     7585.3,
      7585.3,
      7587.7,
      7584.8
@@ -5303,7 +5303,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -8.6,
+       "live": -10.4,
        "spread": 1.5
       }
      ],
@@ -6508,8 +6508,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 28116.8,
-   "change": -204.7,
+   "price": 28103.5,
+   "change": -218.0,
    "entries": [],
    "spark": [
     [
@@ -6654,9 +6654,9 @@
     ],
     [
      "3:45 am",
-     28116.8,
+     28103.5,
      28099.8,
-     28121.4,
+     28126.3,
      28099.3
     ]
    ],
@@ -7778,8 +7778,8 @@
    "regime": 0.516,
    "gap": null,
    "message": "Today is a SELL day (euro hedge funds trend). The trade opens at 12:00 pm Dubai (10:00 broker). Day after a UK/US holiday: an extra HALF-size SELL opens at 12:00 pm Dubai.",
-   "price": 1.32785,
-   "change": 0.00052,
+   "price": 1.32787,
+   "change": 0.00054,
    "entries": [],
    "spark": [
     [
@@ -7924,7 +7924,7 @@
     ],
     [
      "3:45 am",
-     1.32785,
+     1.32787,
      1.32783,
      1.32795,
      1.32777
@@ -8806,7 +8806,7 @@
     "source": "MT4 BRENT_WED_HOL_v110.mq4, his run 9 Nov 2026, 2018.01.02-2026.10.30, spread 8 ($0.08/bbl) - AW+K2 together: 251 trades (AW 210 at full 0.30 lot, K2 41 at half 0.15 lot), net +$13,453. Full v1.10 EA (A-F+K++AW+K2): +$81,158, PF 1.43, max drawdown $10,241, 1,492 trades vs the v1.07a baseline +$67,704, DD $9,199, 1,241 trades, PF 1.43 (net per $1 of drawdown 7.92 vs 7.36 - at equal drawdown ~+7.7% net). v1.10 technically misses the strict $10,000 max-DD cap by $241 but wins on the equal-drawdown rule - his go-ahead 9 Nov 2026."
    },
    "state": "none",
-   "message": "Brent paper update failed at 3:49 am Dubai (FeedError: newest closed price bar (2:59 am Dubai) is 49 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
+   "message": "Brent paper update failed at 3:50 am Dubai (FeedError: newest closed price bar (2:59 am Dubai) is 50 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
    "price": 91.424,
    "change": -0.25,
    "entries": [],
