@@ -1,19 +1,5 @@
 [
  {
-  "action": "OPEN BUY rest",
-  "detail": "OIL|2026-10-23|4:08 pm|BUY|Open \u00b1 1 range size 1.0 at 101.223 stop 97.51 | trade risk 13.51 AED",
-  "market": "OIL",
-  "ok": true,
-  "t": "Fri 23 Oct 4:09 PM"
- },
- {
-  "action": "stop moved",
-  "detail": "OIL|2026-10-23|4:07 pm|BUY|Whole dollar to 101.06 (stop to entry: each position at its own fill price)",
-  "market": "OIL",
-  "ok": true,
-  "t": "Fri 23 Oct 5:16 PM"
- },
- {
   "action": "rest closed on demo",
   "detail": "OIL|2026-10-23|4:07 pm|BUY|Whole dollar",
   "market": "OIL",
@@ -2798,5 +2784,19 @@
   "market": "BRENT",
   "ok": true,
   "t": "Wed 11 Nov 4:01 PM"
+ },
+ {
+  "action": "OPEN BUY part",
+  "detail": "USDJPY|2026-11-11|5:04 pm|BUY|Squeeze 4pm size 2700.0 at 159.203 stop 158.957 target 159.327 | trade risk 29.52 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Wed 11 Nov 5:05 PM"
+ },
+ {
+  "action": "OPEN BUY rest",
+  "detail": "USDJPY|2026-11-11|5:04 pm|BUY|Squeeze 4pm size 2700.0 at 159.203 stop 158.957 | trade risk 29.52 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Wed 11 Nov 5:05 PM"
  }
 ]
