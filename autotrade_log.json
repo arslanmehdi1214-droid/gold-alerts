@@ -1,19 +1,5 @@
 [
  {
-  "action": "rest closed on demo",
-  "detail": "US100|2026-10-23|6:00 pm|BUY|REV H2 round $200 touch then close back -> reverse, from 4pm",
-  "market": "US100",
-  "ok": true,
-  "t": "Fri 23 Oct 9:11 PM"
- },
- {
-  "action": "close rest",
-  "detail": "US500|2026-10-23|5:40 pm|SELL|S&P 9:40 am New York opening move (desk: eod) ",
-  "market": "US500",
-  "ok": true,
-  "t": "Fri 23 Oct 11:31 PM"
- },
- {
   "action": "close rest",
   "detail": "GOLD|2026-10-23|10:00 am|SELL|T15 ttm (desk: close_now) ",
   "market": "GOLD",
@@ -2798,5 +2784,19 @@
   "market": "USDJPY",
   "ok": true,
   "t": "Wed 11 Nov 8:00 PM"
+ },
+ {
+  "action": "part closed on demo",
+  "detail": "US100|2026-11-11|6:33 pm|BUY|J30 U8 only when vol high (>1.1)",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 11 Nov 8:54 PM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "US100|2026-11-11|6:33 pm|BUY|J30 U8 only when vol high (>1.1) to 28322.3 (stop to entry: each position at its own fill price)",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 11 Nov 8:54 PM"
  }
 ]
