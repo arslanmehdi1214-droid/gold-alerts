@@ -1,15 +1,15 @@
 {
- "balance": 1525.29,
+ "balance": 1526.65,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-11",
-  "pl": 233.3,
+  "pl": 236.02,
   "start_balance": 1380.6,
   "start_equity": 1380.6,
   "stopped": false
  },
- "open_positions": 5,
- "open_risk_aed": 84.45,
+ "open_positions": 4,
+ "open_risk_aed": 57.43,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-09|5:01 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -553,16 +553,17 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: eod",
     "id": "00000000-729f-49ff-0495-7fc60004511e",
     "level": 7583.8,
-    "open": true,
+    "open": false,
     "size": 0.07,
     "tp": null
    },
    "risk_aed": 27.02,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 7493.5
   },
   "USDJPY|2026-11-09|8:00 am|BUY|Heikin-Ashi 7am": {

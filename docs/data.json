@@ -1,5 +1,5 @@
 {
- "updated": "Thu 12 Nov \u00b7 12:30 am",
+ "updated": "Thu 12 Nov \u00b7 12:31 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 3985.85,
+   "price": 3985.02,
    "close_at": "12:50 am",
-   "change": -48.56,
+   "change": -49.39,
    "size": 0.1,
    "datr": 92.98,
    "open_now": 1,
@@ -1856,6 +1856,13 @@
      3986.73,
      3988.28,
      3985.76
+    ],
+    [
+     "12:30 am",
+     3985.02,
+     3985.82,
+     3986.13,
+     3984.9
     ]
    ],
    "history": [
@@ -3464,8 +3471,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 159.86,
-   "change_pips": 115.7,
+   "price": 159.847,
+   "change_pips": 114.4,
    "atr_pips": 94.7,
    "entries": [
     {
@@ -5355,6 +5362,13 @@
      159.855,
      159.861,
      159.851
+    ],
+    [
+     "12:30 am",
+     159.847,
+     159.861,
+     159.861,
+     159.846
     ]
    ],
    "journal": {
@@ -7217,8 +7231,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 85.344,
-   "change": -0.07,
+   "price": 85.334,
+   "change": -0.08,
    "entries": [
     {
      "time": "1:18 pm",
@@ -9049,6 +9063,13 @@
      85.29,
      85.39,
      85.28
+    ],
+    [
+     "12:30 am",
+     85.33,
+     85.34,
+     85.34,
+     85.31
     ]
    ],
    "journal": {
@@ -10338,9 +10359,9 @@
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
-   "message": "PAPER BUY day: 1 trade today (1 running). Only BUY signals count today (max 3; no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop). Each trade keeps its stop, no half-close; everything closes at 12:30 am Dubai (3:30 pm New York). No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak, no duration-curve-steepening + tech-weak, no bank-loan-weak + E-mini COT net-long, no DJIA-COT-bullish-fast + crypto-risk-off, no MSCI-EM-COT-extreme-long + communications-weak, no Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast, no UST5yr-COT-falling-fast + credit-de-risking, no Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence, no Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long, no ES-asset-manager-COT-fast-bullish + staples-weak, no VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish, no UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast, no Utilities-retail-COT-falling-fast + transports-weak, no Sugar-COT-net-long + financials-weak, no Feeder-Cattle-COT-rising-fast + credit-de-risking, no VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish, no EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast).",
-   "price": 7623.7,
-   "change": 91.6,
+   "message": "PAPER BUY day: 1 trade today (0 running). Only BUY signals count today (max 3; no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop). Each trade keeps its stop, no half-close; everything closes at 12:30 am Dubai (3:30 pm New York). No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak, no duration-curve-steepening + tech-weak, no bank-loan-weak + E-mini COT net-long, no DJIA-COT-bullish-fast + crypto-risk-off, no MSCI-EM-COT-extreme-long + communications-weak, no Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast, no UST5yr-COT-falling-fast + credit-de-risking, no Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence, no Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long, no ES-asset-manager-COT-fast-bullish + staples-weak, no VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish, no UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast, no Utilities-retail-COT-falling-fast + transports-weak, no Sugar-COT-net-long + financials-weak, no Feeder-Cattle-COT-rising-fast + credit-de-risking, no VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish, no EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast).",
+   "price": 7622.6,
+   "change": 90.5,
    "entries": [
     {
      "time": "6:34 pm",
@@ -10357,14 +10378,14 @@
      "half_px": null,
      "half": false,
      "size": "full",
-     "status": "open",
-     "exit": null,
-     "exit_time": null,
-     "res": null,
-     "res_sized": null,
-     "r": null,
-     "r_sized": null,
-     "live": 24.3,
+     "status": "eod",
+     "exit": 7623.8,
+     "exit_time": "12:30 am",
+     "res": 24.4,
+     "res_sized": 24.4,
+     "r": 0.232,
+     "r_sized": 0.232,
+     "live": null,
      "spread": 0.8
     }
    ],
@@ -12251,6 +12272,13 @@
      7623.0,
      7625.5,
      7622.5
+    ],
+    [
+     "12:30 am",
+     7622.6,
+     7623.8,
+     7624.3,
+     7622.3
     ]
    ],
    "journal": {
@@ -12259,13 +12287,13 @@
     "trades": 7,
     "days": 100.0,
     "perday": 2.33,
-    "closed": 6,
-    "win": 83.3,
-    "pf": 15.77,
-    "net": 378.0,
+    "closed": 7,
+    "win": 85.7,
+    "pf": 16.72,
+    "net": 402.4,
     "rules": "v1.23",
     "direction": null,
-    "green": 33.3
+    "green": 66.7
    },
    "jdays": [
     {
@@ -12405,14 +12433,14 @@
        "half_px": null,
        "half": false,
        "size": "full",
-       "status": "open",
-       "exit": null,
-       "exit_time": null,
-       "res": null,
-       "res_sized": null,
-       "r": null,
-       "r_sized": null,
-       "live": 24.3,
+       "status": "eod",
+       "exit": 7623.8,
+       "exit_time": "12:30 am",
+       "res": 24.4,
+       "res_sized": 24.4,
+       "r": 0.232,
+       "r_sized": 0.232,
+       "live": null,
        "spread": 0.8
       }
      ],
@@ -13467,8 +13495,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "2 paper trades today (2 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 28412.1,
-   "change": 610.4,
+   "price": 28401.4,
+   "change": 599.7,
    "entries": [
     {
      "time": "2:00 pm",
@@ -13493,7 +13521,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 187.9,
+     "live": 179.8,
      "rwf": 1,
      "spread": 1.8,
      "spread_live": 1.8
@@ -13521,7 +13549,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 111.3,
+     "live": 103.3,
      "rwf": 1,
      "spread": 1.8,
      "spread_live": 1.8
@@ -15410,6 +15438,13 @@
      28407.8,
      28427.1,
      28405.2
+    ],
+    [
+     "12:30 am",
+     28401.4,
+     28412.9,
+     28414.8,
+     28398.8
     ]
    ],
    "journal": {
@@ -15457,7 +15492,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 187.9,
+       "live": 179.8,
        "rwf": 1,
        "spread": 1.8,
        "spread_live": 1.8
@@ -15485,7 +15520,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 111.3,
+       "live": 103.3,
        "rwf": 1,
        "spread": 1.8,
        "spread_live": 1.8
@@ -18437,6 +18472,13 @@
      1.3277,
      1.32788,
      1.3277
+    ],
+    [
+     "12:30 am",
+     1.3278,
+     1.32781,
+     1.32781,
+     1.3278
     ]
    ],
    "journal": {
@@ -21034,6 +21076,13 @@
      91.46,
      91.56,
      91.46
+    ],
+    [
+     "12:30 am",
+     91.53,
+     91.52,
+     91.53,
+     91.5
     ]
    ],
    "journal": {

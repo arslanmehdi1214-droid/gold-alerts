@@ -1,12 +1,5 @@
 [
  {
-  "action": "close rest",
-  "detail": "GOLD|2026-10-23|11:00 am|SELL|N12 squeeze (desk: close_now) ",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Fri 23 Oct 11:50 PM"
- },
- {
   "action": "error",
   "detail": "HTTPError: 429 Client Error:  for url: https://demo-api-capital.backend-capital.com/api/v1/session",
   "market": "ALL",
@@ -2798,5 +2791,12 @@
   "market": "BRENT",
   "ok": true,
   "t": "Wed 11 Nov 11:31 PM"
+ },
+ {
+  "action": "close rest",
+  "detail": "US500|2026-11-11|6:34 pm|BUY|Nasdaq signal copied (desk: eod) ",
+  "market": "US500",
+  "ok": true,
+  "t": "Thu 12 Nov 12:31 AM"
  }
 ]
