@@ -1018,7 +1018,17 @@
     "2026-11-11 12:00:00|1": "2026-11-11 12:01:10.387736",
     "2026-11-11 16:33:00|1": "2026-11-11 16:34:14.473287"
    },
-   "legs_frozen": [],
+   "legs_frozen": [
+    {
+     "t": "2026-11-11 16:34:00",
+     "dir": 1,
+     "src": 0,
+     "name": "Nasdaq signal copied",
+     "leg": 1,
+     "entry": 7598.6,
+     "sd": 105.12321428571431
+    }
+   ],
    "stress": false,
    "v3": false,
    "v3_detail": {
@@ -1123,17 +1133,43 @@
    "date": "2026-11-11",
    "rules": "v1.23",
    "label": "Wed 11 Nov",
-   "side": null,
-   "trades": [],
+   "side": "BUY",
+   "trades": [
+    {
+     "time": "6:34 pm",
+     "side": "BUY",
+     "name": "Nasdaq signal copied",
+     "src": "Nasdaq",
+     "leg": 1,
+     "night": false,
+     "price": 7598.6,
+     "entry": 7598.6,
+     "stop": 7493.5,
+     "stop0": 7493.5,
+     "stop_pts": 105.1,
+     "half_px": null,
+     "half": false,
+     "size": "full",
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "r": null,
+     "r_sized": null,
+     "live": -10.3,
+     "spread": 0.8
+    }
+   ],
    "final": false
   }
  ],
  "summary": {
   "since": "09 Nov 2026",
   "weekdays": 3,
-  "trades": 6,
-  "days": 66.7,
-  "perday": 2.0,
+  "trades": 7,
+  "days": 100.0,
+  "perday": 2.33,
   "closed": 6,
   "win": 83.3,
   "pf": 15.77,
