@@ -1,5 +1,5 @@
 {
- "updated": "Thu 12 Nov \u00b7 2:00 am",
+ "updated": "Thu 12 Nov \u00b7 2:11 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -1627,7 +1627,7 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
+   "price": 159.704,
    "change_pips": null,
    "atr_pips": 92.6,
    "entries": [],
@@ -3462,8 +3462,8 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": null,
-   "history_note": "history to 2026-11-11 (300 days) \u00b7 added 2026-11-11"
+   "live_spread_pips": 9.0,
+   "history_note": "history to 2026-11-11 (300 days)"
   },
   "DE40": {
    "code": "DE40",
@@ -4771,7 +4771,7 @@
    "feed_error": false,
    "epic": "OIL_CRUDE",
    "live_spread": null,
-   "history_note": "history to 2026-11-11 (60 days) \u00b7 added 2026-11-11"
+   "history_note": "history to 2026-11-11 (60 days)"
   },
   "US500": {
    "code": "US500",
@@ -4803,10 +4803,25 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": null,
-   "change": null,
+   "price": 7616.2,
+   "change": 0.3,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     7618.2,
+     7615.9,
+     7618.2,
+     7614.7
+    ],
+    [
+     "2:10 am",
+     7616.2,
+     7617.9,
+     7617.9,
+     7616.2
+    ]
+   ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 4,
@@ -6070,7 +6085,7 @@
    "picks_stale": false,
    "epic": "US500",
    "close_at": "12:30 am",
-   "history_note": "history to 2026-11-11 (35 days) \u00b7 added 2026-11-11"
+   "history_note": "history to 2026-11-11 (35 days)"
   },
   "US100": {
    "code": "US100",
@@ -6102,10 +6117,25 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 28332.4,
+   "change": 10.9,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     28329.3,
+     28321.5,
+     28333.0,
+     28308.3
+    ],
+    [
+     "2:10 am",
+     28332.4,
+     28328.6,
+     28332.5,
+     28326.6
+    ]
+   ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 19,
@@ -7176,7 +7206,7 @@
    "feed_error": false,
    "epic": "US100",
    "close_at": "1:00 am",
-   "history_note": "history to 2026-11-11 (375 days) \u00b7 added 2026-11-11",
+   "history_note": "history to 2026-11-11 (375 days)",
    "fomc": null,
    "cpi": {
     "state": "closed",
@@ -7224,10 +7254,25 @@
    "regime": 0.516,
    "gap": null,
    "message": "Today is a SELL day (euro hedge funds trend). The trade opens at 12:00 pm Dubai (10:00 broker). Day after a UK/US holiday: an extra HALF-size SELL opens at 12:00 pm Dubai.",
-   "price": null,
-   "change": null,
+   "price": 1.32709,
+   "change": -0.00024,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     1.32698,
+     1.32733,
+     1.32733,
+     1.32692
+    ],
+    [
+     "2:10 am",
+     1.32709,
+     1.327,
+     1.32716,
+     1.32686
+    ]
+   ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 4,
@@ -8105,10 +8150,25 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": null,
-   "change": null,
+   "price": 91.699,
+   "change": 0.02,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:00 am",
+     91.67,
+     91.68,
+     91.69,
+     91.66
+    ],
+    [
+     "2:05 am",
+     91.7,
+     91.7,
+     91.7,
+     91.7
+    ]
+   ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 4,
