@@ -1,5 +1,5 @@
 {
- "updated": "Thu 12 Nov \u00b7 3:18 am",
+ "updated": "Thu 12 Nov \u00b7 3:19 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 3982.2,
+   "price": 3982.61,
    "close_at": "12:50 am",
-   "change": -6.41,
+   "change": -6.0,
    "size": 0.1,
    "datr": 90.05,
    "open_now": 0,
@@ -44,10 +44,10 @@
     ],
     [
      "3:15 am",
-     3982.2,
+     3982.61,
      3984.28,
      3985.14,
-     3981.88
+     3981.83
     ]
    ],
    "history": [
@@ -1656,8 +1656,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 159.57,
-   "change_pips": -5.8,
+   "price": 159.56,
+   "change_pips": -6.8,
    "atr_pips": 92.6,
    "entries": [],
    "spark": [
@@ -1677,10 +1677,10 @@
     ],
     [
      "3:15 am",
-     159.57,
+     159.56,
      159.583,
      159.601,
-     159.57
+     159.556
     ]
    ],
    "journal": {
@@ -3552,8 +3552,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 85.258,
-   "change": -0.31,
+   "price": 85.298,
+   "change": -0.27,
    "entries": [],
    "spark": [
     [
@@ -3579,9 +3579,9 @@
     ],
     [
      "3:15 am",
+     85.3,
      85.26,
-     85.26,
-     85.28,
+     85.3,
      85.23
     ]
    ],
@@ -4883,8 +4883,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
    "message": "NIGHT BUY (UST5yr-COT-falling-fast + credit-de-risking) at 3:01 am Dubai, stop 7453.9, closes at 7:00 pm Dubai (10:00 am New York). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7581.8,
-   "change": -34.1,
+   "price": 7582.8,
+   "change": -33.1,
    "entries": [
     {
      "time": "3:01 am",
@@ -4908,7 +4908,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -13.9,
+     "live": -12.9,
      "spread": 1.5
     }
    ],
@@ -5013,7 +5013,7 @@
     ],
     [
      "3:15 am",
-     7581.8,
+     7582.8,
      7579.1,
      7584.8,
      7577.8
@@ -5135,7 +5135,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -13.9,
+       "live": -12.9,
        "spread": 1.5
       }
      ],
@@ -6340,8 +6340,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 28056.2,
-   "change": -265.3,
+   "price": 28067.2,
+   "change": -254.3,
    "entries": [],
    "spark": [
     [
@@ -6444,7 +6444,7 @@
     ],
     [
      "3:15 am",
-     28056.2,
+     28067.2,
      28037.3,
      28081.9,
      28028.2
@@ -8554,7 +8554,7 @@
     "source": "MT4 BRENT_WED_HOL_v110.mq4, his run 9 Nov 2026, 2018.01.02-2026.10.30, spread 8 ($0.08/bbl) - AW+K2 together: 251 trades (AW 210 at full 0.30 lot, K2 41 at half 0.15 lot), net +$13,453. Full v1.10 EA (A-F+K++AW+K2): +$81,158, PF 1.43, max drawdown $10,241, 1,492 trades vs the v1.07a baseline +$67,704, DD $9,199, 1,241 trades, PF 1.43 (net per $1 of drawdown 7.92 vs 7.36 - at equal drawdown ~+7.7% net). v1.10 technically misses the strict $10,000 max-DD cap by $241 but wins on the equal-drawdown rule - his go-ahead 9 Nov 2026."
    },
    "state": "none",
-   "message": "Brent paper update failed at 3:18 am Dubai (FeedError: newest closed price bar (2:59 am Dubai) is 18 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
+   "message": "Brent paper update failed at 3:19 am Dubai (FeedError: newest closed price bar (2:59 am Dubai) is 19 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
    "price": 91.424,
    "change": -0.25,
    "entries": [],
