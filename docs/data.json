@@ -1,5 +1,5 @@
 {
- "updated": "Thu 12 Nov \u00b7 2:55 am",
+ "updated": "Thu 12 Nov \u00b7 3:02 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,14 +13,22 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": null,
+   "price": 3993.24,
    "close_at": "12:50 am",
-   "change": null,
+   "change": 4.63,
    "size": 0.1,
    "datr": 90.05,
    "open_now": 0,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "3:00 am",
+     3993.24,
+     3988.61,
+     3994.35,
+     3988.61
+    ]
+   ],
    "history": [
     {
      "date": "2026-11-12",
@@ -208,8 +216,8 @@
     "dollar_5d": "rose",
     "vix_5d": "rose",
     "tnx_5d": "rose",
-    "dollar_driven": null,
-    "corr": null,
+    "dollar_driven": false,
+    "corr": -0.479,
     "low_attention": false,
     "missing": [],
     "notes": []
@@ -1627,7 +1635,7 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 159.698,
+   "price": 159.661,
    "change_pips": null,
    "atr_pips": 92.6,
    "entries": [],
@@ -3501,10 +3509,18 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 85.483,
+   "change": -0.09,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "3:00 am",
+     85.48,
+     85.57,
+     85.57,
+     85.38
+    ]
+   ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 4,
@@ -4770,7 +4786,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": null,
+   "live_spread": 0.067,
    "history_note": "history to 2026-11-11 (60 days)"
   },
   "US500": {
@@ -4801,11 +4817,37 @@
    "what_note": "Tracks whether live S&P signals do as well as the v1.12 MT4 test (500109 + Night V3 + Night V4 + Night V5 + Night V6 + Night V7). Decision after about 3 months.",
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.12 rules)",
-   "state": "waiting",
-   "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7587.0,
-   "change": -28.9,
-   "entries": [],
+   "state": "buy",
+   "message": "NIGHT BUY (UST5yr-COT-falling-fast + credit-de-risking) at 3:01 am Dubai, stop 7453.9, closes at 7:00 pm Dubai (10:00 am New York). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
+   "price": 7599.1,
+   "change": -16.8,
+   "entries": [
+    {
+     "time": "3:01 am",
+     "side": "BUY",
+     "name": "Night long (UST5yr-COT-falling-fast + credit-de-risking)",
+     "src": "Night",
+     "leg": 0,
+     "night": true,
+     "price": 7594.2,
+     "entry": 7594.2,
+     "stop": 7453.9,
+     "stop0": 7453.9,
+     "stop_pts": 140.3,
+     "half_px": null,
+     "half": false,
+     "size": "full",
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "r": null,
+     "r_sized": null,
+     "live": 3.4,
+     "spread": 1.5
+    }
+   ],
    "spark": [
     [
      "2:05 am",
@@ -4876,14 +4918,28 @@
      7585.9,
      7588.5,
      7584.8
+    ],
+    [
+     "2:55 am",
+     7588.7,
+     7586.8,
+     7589.7,
+     7585.7
+    ],
+    [
+     "3:00 am",
+     7599.1,
+     7591.1,
+     7600.5,
+     7584.6
     ]
    ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 4,
-    "trades": 7,
-    "days": 75.0,
-    "perday": 1.75,
+    "trades": 8,
+    "days": 100.0,
+    "perday": 2.0,
     "closed": 7,
     "win": 85.7,
     "pf": 16.72,
@@ -4971,7 +5027,33 @@
      "rules": "v1.23",
      "label": "Thu 12 Nov",
      "side": null,
-     "trades": [],
+     "trades": [
+      {
+       "time": "3:01 am",
+       "side": "BUY",
+       "name": "Night long (UST5yr-COT-falling-fast + credit-de-risking)",
+       "src": "Night",
+       "leg": 0,
+       "night": true,
+       "price": 7594.2,
+       "entry": 7594.2,
+       "stop": 7453.9,
+       "stop0": 7453.9,
+       "stop_pts": 140.3,
+       "half_px": null,
+       "half": false,
+       "size": "full",
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "res_sized": null,
+       "r": null,
+       "r_sized": null,
+       "live": 3.4,
+       "spread": 1.5
+      }
+     ],
      "final": false
     },
     {
@@ -6173,8 +6255,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 28116.8,
-   "change": -204.7,
+   "price": 28163.4,
+   "change": -158.1,
    "entries": [],
    "spark": [
     [
@@ -6246,6 +6328,20 @@
      28137.1,
      28152.1,
      28116.8
+    ],
+    [
+     "2:55 am",
+     28135.1,
+     28116.6,
+     28143.5,
+     28108.9
+    ],
+    [
+     "3:00 am",
+     28163.4,
+     28130.4,
+     28176.7,
+     28052.7
     ]
    ],
    "journal": {
@@ -7366,8 +7462,8 @@
    "regime": 0.516,
    "gap": null,
    "message": "Today is a SELL day (euro hedge funds trend). The trade opens at 12:00 pm Dubai (10:00 broker). Day after a UK/US holiday: an extra HALF-size SELL opens at 12:00 pm Dubai.",
-   "price": 1.32745,
-   "change": 0.00012,
+   "price": 1.32799,
+   "change": 0.00066,
    "entries": [],
    "spark": [
     [
@@ -7439,6 +7535,20 @@
      1.32716,
      1.32767,
      1.32706
+    ],
+    [
+     "2:55 am",
+     1.32739,
+     1.32744,
+     1.32761,
+     1.32732
+    ],
+    [
+     "3:00 am",
+     1.32799,
+     1.32736,
+     1.32799,
+     1.32736
     ]
    ],
    "journal": {
@@ -8318,8 +8428,8 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 91.649,
-   "change": -0.03,
+   "price": 91.424,
+   "change": -0.25,
    "entries": [],
    "spark": [
     [
@@ -8391,6 +8501,13 @@
      91.63,
      91.66,
      91.63
+    ],
+    [
+     "2:55 am",
+     91.42,
+     91.64,
+     91.64,
+     91.42
     ]
    ],
    "journal": {

@@ -8,8 +8,8 @@
   "start_equity": 1525.26,
   "stopped": false
  },
- "open_positions": 0,
- "open_risk_aed": 0,
+ "open_positions": 1,
+ "open_risk_aed": 25.76,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-09|5:01 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -569,6 +569,25 @@
    "side": "BUY",
    "state": "closed",
    "stop": 7493.5
+  },
+  "US500|2026-11-12|3:01 am|BUY|Night long (UST5yr-COT-falling-fast + credit-de-risking)": {
+   "desk_price": 7594.2,
+   "market": "US500",
+   "opened_at": "Thu 12 Nov 3:02 AM",
+   "part_x": 0.0,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-72a4-439c-0495-7fc60004511e",
+    "level": 7601.1,
+    "open": true,
+    "size": 0.05,
+    "tp": null
+   },
+   "risk_aed": 25.76,
+   "risk_usd": 8.17,
+   "side": "BUY",
+   "state": "open",
+   "stop": 7453.9
   },
   "USDJPY|2026-11-09|8:00 am|BUY|Heikin-Ashi 7am": {
    "desk_price": 158.277,
