@@ -1,12 +1,5 @@
 [
  {
-  "action": "rest closed on demo",
-  "detail": "USDJPY|2026-10-23|7:00 am|SELL|Last-week break",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Fri 23 Oct 8:47 AM"
- },
- {
   "action": "OPEN SELL rest",
   "detail": "GOLD|2026-10-23|10:00 am|SELL|T15 ttm size 0.52 at 4019.4 stop 4054.93 | trade risk 66.51 AED",
   "market": "GOLD",
@@ -2798,5 +2791,12 @@
   "market": "GOLD",
   "ok": true,
   "t": "Wed 11 Nov 1:17 PM"
+ },
+ {
+  "action": "skip",
+  "detail": "OIL|2026-11-11|1:18 pm|BUY|Morning high (buy): real risk 16.67 AED after lot rounding > 1.4x target 10.0 AED",
+  "market": "OIL",
+  "ok": false,
+  "t": "Wed 11 Nov 1:19 PM"
  }
 ]
