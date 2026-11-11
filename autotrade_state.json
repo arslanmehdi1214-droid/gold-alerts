@@ -1,15 +1,15 @@
 {
- "balance": 1515.88,
+ "balance": 1521.29,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-11",
-  "pl": 259.65,
+  "pl": 267.24,
   "start_balance": 1380.6,
   "start_equity": 1380.6,
   "stopped": false
  },
- "open_positions": 9,
- "open_risk_aed": 172.05,
+ "open_positions": 8,
+ "open_risk_aed": 142.5,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-09|5:01 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -382,9 +382,10 @@
    "market": "US100",
    "opened_at": "Wed 11 Nov 2:01 PM",
    "part": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-7259-58e6-0495-7fc60004511e",
     "level": 28220.3,
-    "open": true,
+    "open": false,
     "size": 0.005,
     "tp": 28396.0
    },
@@ -401,7 +402,7 @@
    "risk_usd": 8.17,
    "side": "BUY",
    "state": "open",
-   "stop": 27868.6
+   "stop": 28220.2
   },
   "US100|2026-11-11|6:33 pm|BUY|J30 U8 only when vol high (>1.1)": {
    "desk_price": 28320.5,

@@ -1,19 +1,5 @@
 [
  {
-  "action": "OPEN BUY rest",
-  "detail": "US100|2026-10-23|6:00 pm|BUY|REV H2 round $200 touch then close back -> reverse, from 4pm size 0.027 at 28991.3 stop 28744.8 | trade risk 29.27 AED",
-  "market": "US100",
-  "ok": true,
-  "t": "Fri 23 Oct 6:01 PM"
- },
- {
-  "action": "part closed on demo",
-  "detail": "US100|2026-10-23|6:00 pm|BUY|REV H2 round $200 touch then close back -> reverse, from 4pm",
-  "market": "US100",
-  "ok": true,
-  "t": "Fri 23 Oct 6:41 PM"
- },
- {
   "action": "stop moved",
   "detail": "US100|2026-10-23|6:00 pm|BUY|REV H2 round $200 touch then close back -> reverse, from 4pm to 28968.0 (stop to entry: each position at its own fill price)",
   "market": "US100",
@@ -2798,5 +2784,19 @@
   "market": "US500",
   "ok": true,
   "t": "Wed 11 Nov 6:35 PM"
+ },
+ {
+  "action": "part closed on demo",
+  "detail": "US100|2026-11-11|2:00 pm|BUY|REV J5 yesterday hi/lo \u00b10.25ATR first touch from 1pm fade",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 11 Nov 7:52 PM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "US100|2026-11-11|2:00 pm|BUY|REV J5 yesterday hi/lo \u00b10.25ATR first touch from 1pm fade to 28220.2 (stop to entry: each position at its own fill price)",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 11 Nov 7:52 PM"
  }
 ]
