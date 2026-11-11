@@ -1,20 +1,6 @@
 [
  {
   "action": "rest closed on demo",
-  "detail": "OIL|2026-10-23|4:07 pm|BUY|Whole dollar",
-  "market": "OIL",
-  "ok": true,
-  "t": "Fri 23 Oct 5:18 PM"
- },
- {
-  "action": "stop moved",
-  "detail": "OIL|2026-10-23|4:08 pm|BUY|Open \u00b1 1 range to 101.23 (stop to entry: each position at its own fill price)",
-  "market": "OIL",
-  "ok": true,
-  "t": "Fri 23 Oct 5:18 PM"
- },
- {
-  "action": "rest closed on demo",
   "detail": "OIL|2026-10-23|4:08 pm|BUY|Open \u00b1 1 range",
   "market": "OIL",
   "ok": true,
@@ -2798,5 +2784,19 @@
   "market": "USDJPY",
   "ok": true,
   "t": "Wed 11 Nov 5:05 PM"
+ },
+ {
+  "action": "part closed on demo",
+  "detail": "USDJPY|2026-11-11|5:04 pm|BUY|Squeeze 4pm",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Wed 11 Nov 5:18 PM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "USDJPY|2026-11-11|5:04 pm|BUY|Squeeze 4pm to 159.204 (stop to entry: each position at its own fill price)",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Wed 11 Nov 5:18 PM"
  }
 ]
