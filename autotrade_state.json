@@ -1,15 +1,15 @@
 {
- "balance": 1515.04,
+ "balance": 1516.64,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-12",
-  "pl": -8.33,
+  "pl": 16.29,
   "start_balance": 1525.26,
   "start_equity": 1525.26,
   "stopped": false
  },
- "open_positions": 9,
- "open_risk_aed": 191.33,
+ "open_positions": 7,
+ "open_risk_aed": 161.81,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-09|5:01 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -948,25 +948,27 @@
    "market": "USDJPY",
    "opened_at": "Thu 12 Nov 5:08 PM",
    "part": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-72a9-d996-0495-7fc60004511e",
     "level": 159.625,
-    "open": true,
+    "open": false,
     "size": 2600.0,
     "tp": 159.439
    },
    "part_x": 0.5,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-72a9-d9b3-0495-7fc60004511e",
     "level": 159.629,
-    "open": true,
+    "open": false,
     "size": 2700.0,
     "tp": null
    },
    "risk_aed": 29.52,
    "risk_usd": 8.17,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 159.802
   },
   "USDJPY|2026-11-12|8:00 am|BUY|Heikin-Ashi 7am": {
