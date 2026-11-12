@@ -1,9 +1,9 @@
 {
- "balance": 1523.42,
+ "balance": 1523.6,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-12",
-  "pl": -3.68,
+  "pl": -3.32,
   "start_balance": 1525.26,
   "start_equity": 1525.26,
   "stopped": false
@@ -289,6 +289,12 @@
    "market": "OIL",
    "state": "not entered",
    "why": "real risk 16.67 AED after lot rounding > 1.4x target 10.0 AED"
+  },
+  "OIL|2026-11-12|9:00 am|SELL|Side sell (weak close)": {
+   "at": "Thu 12 Nov 9:01 AM",
+   "market": "OIL",
+   "state": "not entered",
+   "why": "real risk 12.6 AED after lot rounding > 1.4x target 7.5 AED"
   },
   "US100|2026-11-09|5:07 pm|SELL|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm": {
    "desk_price": 27200.0,

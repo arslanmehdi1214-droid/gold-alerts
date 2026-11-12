@@ -1,12 +1,5 @@
 [
  {
-  "action": "part closed on demo",
-  "detail": "US100|2026-10-26|2:18 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am",
-  "market": "US100",
-  "ok": true,
-  "t": "Mon 26 Oct 3:54 PM"
- },
- {
   "action": "stop moved",
   "detail": "US100|2026-10-26|2:18 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am to 29001.8 (stop to entry: each position at its own fill price)",
   "market": "US100",
@@ -2798,5 +2791,12 @@
   "market": "USDJPY",
   "ok": true,
   "t": "Thu 12 Nov 8:01 AM"
+ },
+ {
+  "action": "skip",
+  "detail": "OIL|2026-11-12|9:00 am|SELL|Side sell (weak close): real risk 12.6 AED after lot rounding > 1.4x target 7.5 AED",
+  "market": "OIL",
+  "ok": false,
+  "t": "Thu 12 Nov 9:01 AM"
  }
 ]
