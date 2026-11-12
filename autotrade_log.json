@@ -1,33 +1,5 @@
 [
  {
-  "action": "close rest",
-  "detail": "US100|2026-10-26|2:18 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) ",
-  "market": "US100",
-  "ok": true,
-  "t": "Tue 27 Oct 12:00 AM"
- },
- {
-  "action": "OPEN SELL rest",
-  "detail": "GOLD|2026-10-27|7:00 am|SELL|N2 near100 size 0.23 at 4008.72 stop 4043.79 | trade risk 28.9 AED",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Tue 27 Oct 7:01 AM"
- },
- {
-  "action": "OPEN BUY part",
-  "detail": "USDJPY|2026-10-27|7:00 am|BUY|Heikin-Ashi 7am size 600.0 at 157.718 stop 157.067 target 157.727 | trade risk 8.82 AED",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Tue 27 Oct 7:01 AM"
- },
- {
-  "action": "target moved to fill + desk distance",
-  "detail": "USDJPY|2026-10-27|7:00 am|BUY|Heikin-Ashi 7am 157.727 -> 157.747 ",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Tue 27 Oct 7:01 AM"
- },
- {
   "action": "close part",
   "detail": "USDJPY|2026-10-27|7:00 am|BUY|Heikin-Ashi 7am (desk: target) ",
   "market": "USDJPY",
@@ -2798,5 +2770,33 @@
   "market": "US100",
   "ok": true,
   "t": "Thu 12 Nov 4:39 PM"
+ },
+ {
+  "action": "close part",
+  "detail": "USDJPY|2026-11-12|11:27 am|BUY|Week-so-far break (desk: reversed) ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Thu 12 Nov 5:08 PM"
+ },
+ {
+  "action": "close rest",
+  "detail": "USDJPY|2026-11-12|11:27 am|BUY|Week-so-far break (desk: reversed) ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Thu 12 Nov 5:08 PM"
+ },
+ {
+  "action": "OPEN SELL part",
+  "detail": "USDJPY|2026-11-12|5:07 pm|SELL|Squeeze 4pm size 2600.0 at 159.625 stop 159.802 target 159.439 | trade risk 29.52 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Thu 12 Nov 5:08 PM"
+ },
+ {
+  "action": "OPEN SELL rest",
+  "detail": "USDJPY|2026-11-12|5:07 pm|SELL|Squeeze 4pm size 2700.0 at 159.629 stop 159.802 | trade risk 29.52 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Thu 12 Nov 5:08 PM"
  }
 ]
