@@ -1,19 +1,5 @@
 [
  {
-  "action": "part closed on demo",
-  "detail": "USDJPY|2026-10-28|7:00 am|BUY|Heikin-Ashi 7am",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Wed 28 Oct 7:18 AM"
- },
- {
-  "action": "OPEN BUY part",
-  "detail": "GBPUSD|2026-10-28|11:00 am|BUY|Layer 2 \u00b7 small traders crowded size 1100.0 at 1.32779 stop 1.32085 target 1.33495 | trade risk 28.48 AED",
-  "market": "GBPUSD",
-  "ok": true,
-  "t": "Wed 28 Oct 11:01 AM"
- },
- {
   "action": "target moved to fill + desk distance",
   "detail": "GBPUSD|2026-10-28|11:00 am|BUY|Layer 2 \u00b7 small traders crowded 1.33495 -> 1.33484 ",
   "market": "GBPUSD",
@@ -2798,5 +2784,19 @@
   "market": "US500",
   "ok": true,
   "t": "Fri 13 Nov 12:31 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "GOLD|2026-11-12|5:14 pm|SELL|U8 pivot (desk: close_now) ",
+  "market": "GOLD",
+  "ok": true,
+  "t": "Fri 13 Nov 12:50 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "GOLD|2026-11-12|5:45 pm|SELL|N5 weekS1 (desk: close_now) ",
+  "market": "GOLD",
+  "ok": true,
+  "t": "Fri 13 Nov 12:50 AM"
  }
 ]
