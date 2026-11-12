@@ -1,5 +1,5 @@
 {
- "updated": "Thu 12 Nov \u00b7 8:54 pm",
+ "updated": "Thu 12 Nov \u00b7 8:55 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -26,9 +26,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 3881.39,
+   "price": 3881.49,
    "close_at": "12:50 am",
-   "change": -107.22,
+   "change": -107.12,
    "size": 0.1,
    "datr": 90.05,
    "open_now": 2,
@@ -1579,9 +1579,9 @@
     ],
     [
      "8:50 pm",
-     3881.39,
+     3881.49,
      3876.89,
-     3882.02,
+     3882.82,
      3875.18
     ]
    ],
@@ -6798,8 +6798,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 86.333,
-   "change": 0.76,
+   "price": 86.398,
+   "change": 0.83,
    "entries": [
     {
      "time": "9:30 am",
@@ -8347,9 +8347,9 @@
     ],
     [
      "8:50 pm",
-     86.33,
-     86.18,
      86.4,
+     86.18,
+     86.47,
      86.13
     ]
    ],
@@ -9663,7 +9663,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.04,
+   "live_spread": 0.01,
    "history_note": "history to 2026-11-11 (60 days)"
   },
   "US500": {
@@ -9696,8 +9696,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
    "message": "NIGHT BUY (UST5yr-COT-falling-fast + credit-de-risking) at 3:01 am Dubai, stop 7453.9, closed (eod). PAPER BUY day: 1 trade today (1 running). Only BUY signals count today (max 3; no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop). Each trade keeps its stop, no half-close; everything closes at 12:30 am Dubai (3:30 pm New York).",
-   "price": 7632.5,
-   "change": 16.6,
+   "price": 7631.0,
+   "change": 15.1,
    "entries": [
     {
      "time": "3:01 am",
@@ -9746,7 +9746,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 37.9,
+     "live": 36.4,
      "spread": 0.8
     }
    ],
@@ -11328,7 +11328,7 @@
     ],
     [
      "8:50 pm",
-     7632.5,
+     7631.0,
      7629.2,
      7635.5,
      7627.5
@@ -11488,7 +11488,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 37.9,
+       "live": 36.4,
        "spread": 0.8
       }
      ],
@@ -12693,8 +12693,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "2 paper trades today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 28430.8,
-   "change": 109.3,
+   "price": 28420.3,
+   "change": 98.8,
    "entries": [
     {
      "time": "4:13 pm",
@@ -12747,7 +12747,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -75.5,
+     "live": -86.0,
      "rwf": null,
      "spread": 1.8,
      "spread_live": 1.8
@@ -14331,7 +14331,7 @@
     ],
     [
      "8:50 pm",
-     28430.8,
+     28420.3,
      28401.5,
      28447.8,
      28389.8
@@ -14410,7 +14410,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -75.5,
+       "live": -86.0,
        "rwf": null,
        "spread": 1.8,
        "spread_live": 1.8
@@ -18099,8 +18099,8 @@
    },
    "state": "sell",
    "message": "Today's signals: SELL (B). Stop 1.0x the 20-day range (rule C: 2.0x), no target; closes 11:30 pm Dubai if not stopped first.",
-   "price": 93.129,
-   "change": 1.45,
+   "price": 93.149,
+   "change": 1.47,
    "entries": [
     {
      "time": "1:00 pm",
@@ -19533,9 +19533,9 @@
     ],
     [
      "8:50 pm",
-     93.13,
+     93.15,
      92.94,
-     93.18,
+     93.23,
      92.89
     ]
    ],
