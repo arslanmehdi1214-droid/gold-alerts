@@ -1,12 +1,5 @@
 [
  {
-  "action": "stop moved",
-  "detail": "US100|2026-10-26|2:18 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am to 29001.8 (stop to entry: each position at its own fill price)",
-  "market": "US100",
-  "ok": true,
-  "t": "Mon 26 Oct 3:54 PM"
- },
- {
   "action": "OPEN BUY rest",
   "detail": "US500|2026-10-26|5:40 pm|BUY|S&P 9:40 am New York opening move size 0.13 at 7653.0 stop 7600.9 | trade risk 28.36 AED",
   "market": "US500",
@@ -2798,5 +2791,12 @@
   "market": "OIL",
   "ok": false,
   "t": "Thu 12 Nov 9:01 AM"
+ },
+ {
+  "action": "skip",
+  "detail": "OIL|2026-11-12|9:30 am|BUY|Yesterday's high/low: real risk 16.78 AED after lot rounding > 1.4x target 10.0 AED",
+  "market": "OIL",
+  "ok": false,
+  "t": "Thu 12 Nov 9:31 AM"
  }
 ]
