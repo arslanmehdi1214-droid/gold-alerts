@@ -1,19 +1,5 @@
 [
  {
-  "action": "stop moved",
-  "detail": "OIL|2026-10-28|11:01 am|BUY|Open \u00b1 \u00bd range to 101.21 (stop to entry: each position at its own fill price)",
-  "market": "OIL",
-  "ok": true,
-  "t": "Wed 28 Oct 11:41 AM"
- },
- {
-  "action": "rest closed on demo",
-  "detail": "OIL|2026-10-28|11:01 am|BUY|Open \u00b1 \u00bd range",
-  "market": "OIL",
-  "ok": true,
-  "t": "Wed 28 Oct 11:57 AM"
- },
- {
   "action": "OPEN SELL part",
   "detail": "US100|2026-10-28|2:48 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am size 0.002 at 29795.3 stop 29947.0 target 29726.5 | trade risk 9.72 AED",
   "market": "US100",
@@ -2798,5 +2784,19 @@
   "market": "US100",
   "ok": true,
   "t": "Fri 13 Nov 1:00 AM"
+ },
+ {
+  "action": "close part",
+  "detail": "GBPUSD|2026-11-12|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend (desk: eod) ",
+  "market": "GBPUSD",
+  "ok": true,
+  "t": "Fri 13 Nov 1:46 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "GBPUSD|2026-11-12|12:00 pm|SELL|Holiday sell \u00b7 day after a UK/US holiday (desk: eod) ",
+  "market": "GBPUSD",
+  "ok": true,
+  "t": "Fri 13 Nov 1:46 AM"
  }
 ]
