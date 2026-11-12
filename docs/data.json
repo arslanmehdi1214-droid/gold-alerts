@@ -1,5 +1,5 @@
 {
- "updated": "Thu 12 Nov \u00b7 4:25 am",
+ "updated": "Thu 12 Nov \u00b7 4:26 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 3984.95,
+   "price": 3984.3,
    "close_at": "12:50 am",
-   "change": -3.66,
+   "change": -4.31,
    "size": 0.1,
    "datr": 90.05,
    "open_now": 0,
@@ -135,10 +135,17 @@
     ],
     [
      "4:20 am",
-     3984.95,
+     3984.98,
      3982.09,
      3985.55,
      3978.51
+    ],
+    [
+     "4:25 am",
+     3984.3,
+     3985.08,
+     3985.08,
+     3983.13
     ]
    ],
    "history": [
@@ -1747,8 +1754,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 159.598,
-   "change_pips": -3.0,
+   "price": 159.584,
+   "change_pips": -4.4,
    "atr_pips": 92.6,
    "entries": [],
    "spark": [
@@ -1859,10 +1866,17 @@
     ],
     [
      "4:20 am",
-     159.598,
+     159.597,
      159.602,
      159.641,
      159.582
+    ],
+    [
+     "4:25 am",
+     159.584,
+     159.598,
+     159.603,
+     159.577
     ]
    ],
    "journal": {
@@ -3856,6 +3870,13 @@
      85.17,
      85.23,
      85.16
+    ],
+    [
+     "4:25 am",
+     85.18,
+     85.17,
+     85.18,
+     85.17
     ]
    ],
    "journal": {
@@ -5123,7 +5144,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.042,
+   "live_spread": 0.04,
    "history_note": "history to 2026-11-11 (60 days)"
   },
   "US500": {
@@ -5381,6 +5402,13 @@
      7587.5,
      7588.8,
      7586.6
+    ],
+    [
+     "4:25 am",
+     7588.5,
+     7588.3,
+     7589.2,
+     7587.8
     ]
    ],
    "journal": {
@@ -6704,8 +6732,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 28152.2,
-   "change": -169.3,
+   "price": 28148.0,
+   "change": -173.5,
    "entries": [],
    "spark": [
     [
@@ -6903,6 +6931,13 @@
      28136.3,
      28154.4,
      28133.5
+    ],
+    [
+     "4:25 am",
+     28148.0,
+     28151.7,
+     28155.8,
+     28143.8
     ]
    ],
    "journal": {
@@ -8023,8 +8058,8 @@
    "regime": 0.516,
    "gap": null,
    "message": "Today is a SELL day (euro hedge funds trend). The trade opens at 12:00 pm Dubai (10:00 broker). Day after a UK/US holiday: an extra HALF-size SELL opens at 12:00 pm Dubai.",
-   "price": 1.32726,
-   "change": -7e-05,
+   "price": 1.32732,
+   "change": -1e-05,
    "entries": [],
    "spark": [
     [
@@ -8222,6 +8257,13 @@
      1.32739,
      1.32739,
      1.32713
+    ],
+    [
+     "4:25 am",
+     1.32732,
+     1.32727,
+     1.32736,
+     1.32726
     ]
    ],
    "journal": {
@@ -9100,7 +9142,7 @@
     "source": "MT4 BRENT_WED_HOL_v110.mq4, his run 9 Nov 2026, 2018.01.02-2026.10.30, spread 8 ($0.08/bbl) - AW+K2 together: 251 trades (AW 210 at full 0.30 lot, K2 41 at half 0.15 lot), net +$13,453. Full v1.10 EA (A-F+K++AW+K2): +$81,158, PF 1.43, max drawdown $10,241, 1,492 trades vs the v1.07a baseline +$67,704, DD $9,199, 1,241 trades, PF 1.43 (net per $1 of drawdown 7.92 vs 7.36 - at equal drawdown ~+7.7% net). v1.10 technically misses the strict $10,000 max-DD cap by $241 but wins on the equal-drawdown rule - his go-ahead 9 Nov 2026."
    },
    "state": "none",
-   "message": "Brent paper update failed at 4:25 am Dubai (FeedError: newest closed price bar (2:59 am Dubai) is 85 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
+   "message": "Brent paper update failed at 4:26 am Dubai (FeedError: newest closed price bar (2:59 am Dubai) is 86 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
    "price": 91.424,
    "change": -0.25,
    "entries": [],
