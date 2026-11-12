@@ -1,19 +1,5 @@
 [
  {
-  "action": "stop moved",
-  "detail": "US100|2026-10-26|2:18 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am to 29146.3",
-  "market": "US100",
-  "ok": true,
-  "t": "Mon 26 Oct 7:01 PM"
- },
- {
-  "action": "stop moved",
-  "detail": "US100|2026-10-26|2:18 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am to 29161.6",
-  "market": "US100",
-  "ok": true,
-  "t": "Mon 26 Oct 7:03 PM"
- },
- {
   "action": "close rest",
   "detail": "US500|2026-10-26|5:40 pm|BUY|S&P 9:40 am New York opening move (desk: eod) ",
   "market": "US500",
@@ -2798,5 +2784,19 @@
   "market": "BRENT",
   "ok": true,
   "t": "Thu 12 Nov 1:01 PM"
+ },
+ {
+  "action": "OPEN SELL part",
+  "detail": "US100|2026-11-12|4:13 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am size 0.001 at 28192.5 stop 28418.2 target 28090.9 | trade risk 9.62 AED",
+  "market": "US100",
+  "ok": true,
+  "t": "Thu 12 Nov 4:14 PM"
+ },
+ {
+  "action": "OPEN SELL rest",
+  "detail": "US100|2026-11-12|4:13 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am size 0.011 at 28191.9 stop 28418.2 | trade risk 9.62 AED",
+  "market": "US100",
+  "ok": true,
+  "t": "Thu 12 Nov 4:14 PM"
  }
 ]
