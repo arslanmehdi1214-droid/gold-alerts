@@ -1,19 +1,5 @@
 [
  {
-  "action": "part closed on demo",
-  "detail": "US100|2026-10-27|2:47 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am",
-  "market": "US100",
-  "ok": true,
-  "t": "Tue 27 Oct 6:56 PM"
- },
- {
-  "action": "rest closed on demo",
-  "detail": "US100|2026-10-27|2:47 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am",
-  "market": "US100",
-  "ok": true,
-  "t": "Tue 27 Oct 6:56 PM"
- },
- {
   "action": "close rest",
   "detail": "OIL|2026-10-27|12:27 pm|BUY|Open \u00b1 \u00bd range (desk: close_now) ",
   "market": "OIL",
@@ -2798,5 +2784,19 @@
   "market": "US500",
   "ok": true,
   "t": "Thu 12 Nov 7:01 PM"
+ },
+ {
+  "action": "OPEN BUY part",
+  "detail": "USDJPY|2026-11-12|7:15 pm|BUY|Hourly squeeze 3pm size 2800.0 at 159.945 stop 159.709 target 160.072 | trade risk 29.83 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Thu 12 Nov 7:16 PM"
+ },
+ {
+  "action": "OPEN BUY rest",
+  "detail": "USDJPY|2026-11-12|7:15 pm|BUY|Hourly squeeze 3pm size 2800.0 at 159.944 stop 159.709 | trade risk 29.83 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Thu 12 Nov 7:16 PM"
  }
 ]
