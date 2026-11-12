@@ -1,27 +1,6 @@
 [
  {
   "action": "stop moved",
-  "detail": "US100|2026-10-26|2:18 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am to 29072.3",
-  "market": "US100",
-  "ok": true,
-  "t": "Mon 26 Oct 6:48 PM"
- },
- {
-  "action": "stop moved",
-  "detail": "US100|2026-10-26|2:18 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am to 29091.3",
-  "market": "US100",
-  "ok": true,
-  "t": "Mon 26 Oct 6:50 PM"
- },
- {
-  "action": "stop moved",
-  "detail": "US100|2026-10-26|2:18 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am to 29103.3",
-  "market": "US100",
-  "ok": true,
-  "t": "Mon 26 Oct 6:53 PM"
- },
- {
-  "action": "stop moved",
   "detail": "US100|2026-10-26|2:18 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am to 29118.2",
   "market": "US100",
   "ok": true,
@@ -2798,5 +2777,26 @@
   "market": "USDJPY",
   "ok": true,
   "t": "Thu 12 Nov 11:28 AM"
+ },
+ {
+  "action": "OPEN SELL part",
+  "detail": "GBPUSD|2026-11-12|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend size 1000.0 at 1.32687 stop 1.33477 target 1.31911 | trade risk 28.76 AED",
+  "market": "GBPUSD",
+  "ok": true,
+  "t": "Thu 12 Nov 12:01 PM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "GBPUSD|2026-11-12|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend 1.31911 -> 1.31904 ",
+  "market": "GBPUSD",
+  "ok": true,
+  "t": "Thu 12 Nov 12:01 PM"
+ },
+ {
+  "action": "OPEN SELL rest",
+  "detail": "GBPUSD|2026-11-12|12:00 pm|SELL|Holiday sell \u00b7 day after a UK/US holiday size 500.0 at 1.32686 stop 1.33869 | trade risk 21.58 AED",
+  "market": "GBPUSD",
+  "ok": true,
+  "t": "Thu 12 Nov 12:01 PM"
  }
 ]
