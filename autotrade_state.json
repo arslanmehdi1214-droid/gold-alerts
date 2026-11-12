@@ -1,14 +1,14 @@
 {
- "balance": 1508.55,
+ "balance": 1510.63,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-12",
-  "pl": 0.11,
+  "pl": 4.28,
   "start_balance": 1525.26,
   "start_equity": 1525.26,
   "stopped": false
  },
- "open_positions": 7,
+ "open_positions": 6,
  "open_risk_aed": 161.81,
  "risk_usd": 8.168822328114365,
  "trades": {
@@ -552,16 +552,17 @@
    "part_x": 0.15,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-72a9-71ba-0495-7fc60004511e",
     "level": 28191.9,
-    "open": true,
+    "open": false,
     "size": 0.011,
     "tp": null
    },
    "risk_aed": 9.62,
    "risk_usd": 2.72,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 28200.0
   },
   "US500|2026-11-09|3:01 am|BUY|Night long (high-fear night: VIX / VVIX)": {
