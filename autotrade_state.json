@@ -1,15 +1,15 @@
 {
- "balance": 1525.16,
+ "balance": 1525.75,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-12",
-  "pl": -0.56,
+  "pl": 0.25,
   "start_balance": 1525.26,
   "start_equity": 1525.26,
   "stopped": false
  },
- "open_positions": 8,
- "open_risk_aed": 143.3,
+ "open_positions": 7,
+ "open_risk_aed": 133.68,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-09|5:01 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -504,9 +504,10 @@
    "market": "US100",
    "opened_at": "Thu 12 Nov 4:14 PM",
    "part": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-72a9-71ab-0495-7fc60004511e",
     "level": 28192.5,
-    "open": true,
+    "open": false,
     "size": 0.001,
     "tp": 28090.9
    },
@@ -523,7 +524,7 @@
    "risk_usd": 2.72,
    "side": "SELL",
    "state": "open",
-   "stop": 28418.2
+   "stop": 28200.0
   },
   "US500|2026-11-09|3:01 am|BUY|Night long (high-fear night: VIX / VVIX)": {
    "desk_price": 7351.2,
