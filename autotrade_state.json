@@ -1,15 +1,15 @@
 {
- "balance": 1557.44,
+ "balance": 1555.96,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-12",
-  "pl": 104.13,
+  "pl": 101.17,
   "start_balance": 1525.26,
   "start_equity": 1525.26,
   "stopped": false
  },
- "open_positions": 6,
- "open_risk_aed": 163.09,
+ "open_positions": 8,
+ "open_risk_aed": 192.33,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-09|5:01 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -564,6 +564,32 @@
    "side": "SELL",
    "state": "closed",
    "stop": 28200.0
+  },
+  "US100|2026-11-12|8:10 pm|BUY|US+10 H16 price crosses month open after 7am follow": {
+   "desk_price": 28504.5,
+   "market": "US100",
+   "opened_at": "Thu 12 Nov 8:11 PM",
+   "part": {
+    "id": "00000000-72ac-a1ef-0495-7fc60004511e",
+    "level": 28516.4,
+    "open": true,
+    "size": 0.005,
+    "tp": 28680.3
+   },
+   "part_x": 0.25,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-72ac-a203-0495-7fc60004511e",
+    "level": 28517.5,
+    "open": true,
+    "size": 0.018,
+    "tp": null
+   },
+   "risk_aed": 29.24,
+   "risk_usd": 8.17,
+   "side": "BUY",
+   "state": "open",
+   "stop": 28158.3
   },
   "US500|2026-11-09|3:01 am|BUY|Night long (high-fear night: VIX / VVIX)": {
    "desk_price": 7351.2,
