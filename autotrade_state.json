@@ -1,15 +1,15 @@
 {
- "balance": 1512.31,
+ "balance": 1508.58,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-12",
-  "pl": -26.26,
+  "pl": -33.72,
   "start_balance": 1525.26,
   "start_equity": 1525.26,
   "stopped": false
  },
- "open_positions": 5,
- "open_risk_aed": 104.83,
+ "open_positions": 6,
+ "open_risk_aed": 133.68,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-09|5:01 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -71,6 +71,25 @@
    "side": "BUY",
    "state": "closed",
    "stop": 87.14
+  },
+  "BRENT|2026-11-12|1:00 pm|SELL|Rule B \u00b7 day after US holiday": {
+   "desk_price": 92.09,
+   "market": "BRENT",
+   "opened_at": "Thu 12 Nov 1:01 PM",
+   "part_x": 0.0,
+   "px_adj": 0.04,
+   "rest": {
+    "id": "00000000-72a8-1946-0495-7fc60004511e",
+    "level": 92.009,
+    "open": true,
+    "size": 1.6,
+    "tp": null
+   },
+   "risk_aed": 28.85,
+   "risk_usd": 8.17,
+   "side": "SELL",
+   "state": "open",
+   "stop": 97.0
   },
   "GBPUSD|2026-11-09|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend": {
    "desk_price": 1.33911,
