@@ -1,5 +1,5 @@
 {
- "updated": "Thu 12 Nov \u00b7 8:00 am",
+ "updated": "Thu 12 Nov \u00b7 8:01 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 3982.87,
+   "price": 3982.08,
    "close_at": "12:50 am",
-   "change": -5.74,
+   "change": -6.53,
    "size": 0.1,
    "datr": 90.05,
    "open_now": 0,
@@ -436,10 +436,17 @@
     ],
     [
      "7:55 am",
-     3982.87,
+     3982.66,
      3981.77,
      3983.07,
      3980.41
+    ],
+    [
+     "8:00 am",
+     3982.08,
+     3982.62,
+     3982.64,
+     3981.97
     ]
    ],
    "history": [
@@ -2046,12 +2053,42 @@
    "what_note": "This page tracks whether live USD/JPY signals do as well as the v1.07 backtest. Decision after about 3 months.",
    "cost_note": "Pips are for the whole trade (\u2153-size trades count one third), after a fixed 1.0-pip spread (as in the MT4 test; fixed so shown levels never change). $ = at $100 risk per full-size trade, like the MT4 test.",
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
-   "state": "waiting",
-   "message": "Waiting for the first signal.",
-   "price": 159.738,
-   "change_pips": 11.0,
+   "state": "buy",
+   "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
+   "price": 159.736,
+   "change_pips": 10.8,
    "atr_pips": 92.6,
-   "entries": [],
+   "entries": [
+    {
+     "time": "8:00 am",
+     "side": "BUY",
+     "sig": "J13",
+     "name": "Heikin-Ashi 7am",
+     "price": 159.739,
+     "entry": 159.749,
+     "stop": 159.044,
+     "stop0": 159.044,
+     "stop_pips": 70.5,
+     "half_px": 159.77,
+     "half": false,
+     "part": 1.0,
+     "half_time": null,
+     "size": "third",
+     "quiet": false,
+     "first": true,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "pips": null,
+     "usd": null,
+     "r": null,
+     "r_sized": null,
+     "usd_risk": null,
+     "r_now": -0.0187,
+     "rwf": null,
+     "spread": 1.0
+    }
+   ],
    "spark": [
     [
      "3:05 am",
@@ -2465,16 +2502,23 @@
      159.703,
      159.74,
      159.699
+    ],
+    [
+     "8:00 am",
+     159.736,
+     159.739,
+     159.74,
+     159.726
     ]
    ],
    "journal": {
     "since": "05 Nov 2026",
     "weekdays": 6,
-    "trades": 13,
+    "trades": 14,
     "decided": 11,
     "direction": 45.5,
-    "days": 83.3,
-    "perday": 2.17,
+    "days": 100.0,
+    "perday": 2.33,
     "closed": 13,
     "win": 84.6,
     "pf": 3.21,
@@ -2491,8 +2535,38 @@
      "date": "2026-11-12",
      "rules": "v1.07",
      "label": "Thu 12 Nov",
-     "side": null,
-     "trades": [],
+     "side": "BUY",
+     "trades": [
+      {
+       "time": "8:00 am",
+       "side": "BUY",
+       "sig": "J13",
+       "name": "Heikin-Ashi 7am",
+       "price": 159.739,
+       "entry": 159.749,
+       "stop": 159.044,
+       "stop0": 159.044,
+       "stop_pips": 70.5,
+       "half_px": 159.77,
+       "half": false,
+       "part": 1.0,
+       "half_time": null,
+       "size": "third",
+       "quiet": false,
+       "first": true,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "pips": null,
+       "usd": null,
+       "r": null,
+       "r_sized": null,
+       "usd_risk": null,
+       "r_now": -0.0187,
+       "rwf": null,
+       "spread": 1.0
+      }
+     ],
      "atr_pips": 92.6,
      "final": false
     },
@@ -4336,8 +4410,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 84.698,
-   "change": -0.87,
+   "price": 84.663,
+   "change": -0.91,
    "entries": [],
    "spark": [
     [
@@ -4759,6 +4833,13 @@
      84.75,
      84.77,
      84.69
+    ],
+    [
+     "8:00 am",
+     84.66,
+     84.69,
+     84.7,
+     84.66
     ]
    ],
    "journal": {
@@ -6059,8 +6140,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
    "message": "NIGHT BUY (UST5yr-COT-falling-fast + credit-de-risking) at 3:01 am Dubai, stop 7453.9, closes at 7:00 pm Dubai (10:00 am New York). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7592.1,
-   "change": -23.8,
+   "price": 7593.3,
+   "change": -22.6,
    "entries": [
     {
      "time": "3:01 am",
@@ -6084,7 +6165,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -2.9,
+     "live": -1.7,
      "spread": 0.8
     }
    ],
@@ -6585,6 +6666,13 @@
      7588.8,
      7593.1,
      7588.6
+    ],
+    [
+     "8:00 am",
+     7593.3,
+     7591.8,
+     7593.3,
+     7591.8
     ]
    ],
    "journal": {
@@ -6703,7 +6791,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -2.9,
+       "live": -1.7,
        "spread": 0.8
       }
      ],
@@ -7908,8 +7996,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 28135.0,
-   "change": -186.5,
+   "price": 28146.9,
+   "change": -174.6,
    "entries": [],
    "spark": [
     [
@@ -8408,6 +8496,13 @@
      28108.7,
      28141.5,
      28104.4
+    ],
+    [
+     "8:00 am",
+     28146.9,
+     28135.6,
+     28147.6,
+     28133.7
     ]
    ],
    "journal": {
@@ -10028,6 +10123,13 @@
      1.32584,
      1.32587,
      1.32554
+    ],
+    [
+     "8:00 am",
+     1.32567,
+     1.32568,
+     1.32569,
+     1.3256
     ]
    ],
    "journal": {
@@ -10907,8 +11009,8 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 90.639,
-   "change": -1.04,
+   "price": 90.619,
+   "change": -1.06,
    "entries": [],
    "spark": [
     [
@@ -11239,6 +11341,13 @@
      90.72,
      90.72,
      90.63
+    ],
+    [
+     "8:00 am",
+     90.62,
+     90.63,
+     90.65,
+     90.62
     ]
    ],
    "journal": {
