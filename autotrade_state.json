@@ -1,15 +1,15 @@
 {
- "balance": 1508.14,
+ "balance": 1506.28,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-12",
-  "pl": -22.13,
+  "pl": -25.85,
   "start_balance": 1525.26,
   "start_equity": 1525.26,
   "stopped": false
  },
- "open_positions": 7,
- "open_risk_aed": 134.47,
+ "open_positions": 8,
+ "open_risk_aed": 162.9,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-09|5:01 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -274,6 +274,25 @@
    "side": "SELL",
    "state": "closed",
    "stop": 4096.44
+  },
+  "GOLD|2026-11-12|5:14 pm|SELL|U8 pivot": {
+   "desk_price": 3927.65,
+   "market": "GOLD",
+   "opened_at": "Thu 12 Nov 5:15 PM",
+   "part_x": 0.0,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-72aa-0f20-0495-7fc60004511e",
+    "level": 3924.95,
+    "open": true,
+    "size": 0.17,
+    "tp": null
+   },
+   "risk_aed": 28.43,
+   "risk_usd": 8.17,
+   "side": "SELL",
+   "state": "open",
+   "stop": 3973.18
   },
   "OIL|2026-11-09|3:11 pm|SELL|Open \u00b1 \u00bd range": {
    "desk_price": 88.06,
