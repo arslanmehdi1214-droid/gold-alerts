@@ -1,19 +1,5 @@
 [
  {
-  "action": "stop moved",
-  "detail": "USDJPY|2026-10-28|5:28 pm|BUY|Hourly squeeze 3pm to 157.989 (stop to entry: each position at its own fill price)",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Wed 28 Oct 5:43 PM"
- },
- {
-  "action": "close rest",
-  "detail": "USDJPY|2026-10-28|2:24 am|BUY|Week-so-far break (desk: close_now) ",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Wed 28 Oct 7:00 PM"
- },
- {
   "action": "close rest",
   "detail": "USDJPY|2026-10-28|4:50 pm|BUY|Squeeze 4pm (desk: close_now) ",
   "market": "USDJPY",
@@ -2798,5 +2784,19 @@
   "market": "GBPUSD",
   "ok": true,
   "t": "Fri 13 Nov 12:01 PM"
+ },
+ {
+  "action": "OPEN SELL part",
+  "detail": "US100|2026-11-13|5:42 pm|SELL|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm size 0.001 at 28405.8 stop 28623.4 target 28288.3 | trade risk 9.85 AED",
+  "market": "US100",
+  "ok": true,
+  "t": "Fri 13 Nov 5:43 PM"
+ },
+ {
+  "action": "OPEN SELL rest",
+  "detail": "US100|2026-11-13|5:42 pm|SELL|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm size 0.011 at 28405.6 stop 28623.4 | trade risk 9.85 AED",
+  "market": "US100",
+  "ok": true,
+  "t": "Fri 13 Nov 5:43 PM"
  }
 ]
