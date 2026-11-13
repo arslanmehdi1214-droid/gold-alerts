@@ -1,19 +1,5 @@
 [
  {
-  "action": "stop moved",
-  "detail": "GBPUSD|2026-10-29|11:00 am|BUY|Layer 2 \u00b7 small traders crowded to 1.33145",
-  "market": "GBPUSD",
-  "ok": true,
-  "t": "Thu 29 Oct 4:33 PM"
- },
- {
-  "action": "part closed on demo",
-  "detail": "GBPUSD|2026-10-29|11:00 am|BUY|Layer 2 \u00b7 small traders crowded",
-  "market": "GBPUSD",
-  "ok": true,
-  "t": "Thu 29 Oct 5:03 PM"
- },
- {
   "action": "part closed on demo",
   "detail": "US100|2026-10-29|3:04 am|BUY|F2 sweep prev-day hi/lo by 0.1ATR from 1am back inside <30min -> reverse",
   "market": "US100",
@@ -2798,5 +2784,19 @@
   "market": "ALL",
   "ok": false,
   "t": "Fri 13 Nov 8:30 PM"
+ },
+ {
+  "action": "part closed on demo",
+  "detail": "US100|2026-11-13|8:21 pm|SELL|J30 U8 only when vol high (>1.1)",
+  "market": "US100",
+  "ok": true,
+  "t": "Fri 13 Nov 9:08 PM"
+ },
+ {
+  "action": "rest closed on demo",
+  "detail": "US100|2026-11-13|8:21 pm|SELL|J30 U8 only when vol high (>1.1)",
+  "market": "US100",
+  "ok": true,
+  "t": "Fri 13 Nov 9:08 PM"
  }
 ]
