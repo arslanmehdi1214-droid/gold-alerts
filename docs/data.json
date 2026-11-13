@@ -1,5 +1,5 @@
 {
- "updated": "Sat 14 Nov \u00b7 12:59 am",
+ "updated": "Sat 14 Nov \u00b7 1:00 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -26,9 +26,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 3878.08,
+   "price": 3878.23,
    "close_at": "12:50 am",
-   "change": 0.69,
+   "change": 0.84,
    "size": 0.1,
    "datr": 96.42,
    "open_now": 1,
@@ -1900,7 +1900,7 @@
     ],
     [
      "12:55 am",
-     3878.08,
+     3878.23,
      3879.46,
      3879.54,
      3877.0
@@ -3512,8 +3512,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 4:00 pm Dubai close.",
-   "price": 159.77,
-   "change_pips": -6.9,
+   "price": 159.795,
+   "change_pips": -4.4,
    "atr_pips": 90.1,
    "entries": [
     {
@@ -5441,10 +5441,10 @@
     ],
     [
      "12:55 am",
-     159.77,
+     159.795,
      159.817,
      159.817,
-     159.77
+     159.766
     ]
    ],
    "journal": {
@@ -7491,7 +7491,7 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 1.2,
+   "live_spread_pips": 0.9,
    "history_note": "history to 2026-11-12 (300 days)"
   },
   "DE40": {
@@ -7530,8 +7530,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 87.966,
-   "change": 0.15,
+   "price": 87.986,
+   "change": 0.17,
    "entries": [
     {
      "time": "10:10 am",
@@ -9400,9 +9400,9 @@
     ],
     [
      "12:55 am",
-     87.97,
+     87.99,
      87.88,
-     87.98,
+     88.0,
      87.86
     ]
    ],
@@ -10782,8 +10782,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "sell",
    "message": "PAPER SELL day: 1 trade today (0 running). Only SELL signals count today (max 3; no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop). Each trade keeps its stop, no half-close; everything closes at 12:30 am Dubai (3:30 pm New York). No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak, no duration-curve-steepening + tech-weak, no bank-loan-weak + E-mini COT net-long, no DJIA-COT-bullish-fast + crypto-risk-off, no MSCI-EM-COT-extreme-long + communications-weak, no Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast, no UST5yr-COT-falling-fast + credit-de-risking, no Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence, no Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long, no ES-asset-manager-COT-fast-bullish + staples-weak, no VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish, no UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast, no Utilities-retail-COT-falling-fast + transports-weak, no Sugar-COT-net-long + financials-weak, no Feeder-Cattle-COT-rising-fast + credit-de-risking, no VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish, no EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast).",
-   "price": 7559.2,
-   "change": -38.0,
+   "price": 7564.2,
+   "change": -33.0,
    "entries": [
     {
      "time": "6:40 pm",
@@ -12732,7 +12732,7 @@
     ],
     [
      "12:55 am",
-     7559.2,
+     7564.2,
      7566.0,
      7566.0,
      7555.0
@@ -14247,8 +14247,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "2 paper trades today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:50 am Dubai close. At most 2 trades a day.",
-   "price": 27933.8,
-   "change": -367.1,
+   "price": 27946.3,
+   "change": -354.6,
    "entries": [
     {
      "time": "5:42 pm",
@@ -16228,7 +16228,7 @@
     ],
     [
      "12:55 am",
-     27933.8,
+     27946.3,
      28004.1,
      28004.1,
      27916.7
@@ -17474,8 +17474,8 @@
    "regime": 0.556,
    "gap": null,
    "message": "PAPER SELL at 1.32287 (12:00 pm Dubai). Stop 1.33081, target 1.31493 - close the WHOLE trade at the target; otherwise it closes at 1:45 am Dubai.",
-   "price": 1.32129,
-   "change": -0.0023,
+   "price": 1.32136,
+   "change": -0.00223,
    "entries": [
     {
      "time": "12:00 pm",
@@ -17501,7 +17501,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": 14.3,
+     "live": 13.6,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.33081 \u00b7 target 1.31493 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
     }
@@ -19427,9 +19427,9 @@
     ],
     [
      "12:55 am",
-     1.32129,
+     1.32136,
      1.32097,
-     1.32131,
+     1.32139,
      1.32094
     ]
    ],
@@ -19479,7 +19479,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": 14.3,
+       "live": 13.6,
        "spread": 1.5,
        "next": "Hold \u00b7 stop 1.33081 \u00b7 target 1.31493 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
       }
@@ -20428,8 +20428,8 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 94.909,
-   "change": 0.17,
+   "price": 94.939,
+   "change": 0.19,
    "entries": [],
    "spark": [
     [
@@ -22142,9 +22142,9 @@
     ],
     [
      "12:55 am",
-     94.91,
+     94.94,
      94.83,
-     94.92,
+     94.96,
      94.81
     ]
    ],
