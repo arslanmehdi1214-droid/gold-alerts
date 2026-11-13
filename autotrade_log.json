@@ -1,13 +1,6 @@
 [
  {
   "action": "close rest",
-  "detail": "US500|2026-10-28|5:40 pm|SELL|S&P 9:40 am New York opening move (desk: eod) ",
-  "market": "US500",
-  "ok": true,
-  "t": "Wed 28 Oct 11:31 PM"
- },
- {
-  "action": "close rest",
   "detail": "GOLD|2026-10-28|4:21 pm|SELL|FILL range fade (desk: close_now) ",
   "market": "GOLD",
   "ok": true,
@@ -2798,5 +2791,12 @@
   "market": "US100",
   "ok": true,
   "t": "Fri 13 Nov 6:57 PM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "US100|2026-11-13|5:42 pm|SELL|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm to 28348.3",
+  "market": "US100",
+  "ok": true,
+  "t": "Fri 13 Nov 7:01 PM"
  }
 ]
