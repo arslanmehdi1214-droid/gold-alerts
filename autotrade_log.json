@@ -1,19 +1,5 @@
 [
  {
-  "action": "OPEN SELL rest",
-  "detail": "US500|2026-10-28|5:40 pm|SELL|S&P 9:40 am New York opening move size 0.13 at 7730.5 stop 7792.5 | trade risk 29.03 AED",
-  "market": "US500",
-  "ok": true,
-  "t": "Wed 28 Oct 5:41 PM"
- },
- {
-  "action": "part closed on demo",
-  "detail": "USDJPY|2026-10-28|5:28 pm|BUY|Hourly squeeze 3pm",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Wed 28 Oct 5:42 PM"
- },
- {
   "action": "stop moved",
   "detail": "USDJPY|2026-10-28|5:28 pm|BUY|Hourly squeeze 3pm to 157.989 (stop to entry: each position at its own fill price)",
   "market": "USDJPY",
@@ -2798,5 +2784,19 @@
   "market": "GOLD",
   "ok": true,
   "t": "Fri 13 Nov 11:05 AM"
+ },
+ {
+  "action": "OPEN SELL part",
+  "detail": "GBPUSD|2026-11-13|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend size 1000.0 at 1.32286 stop 1.33081 target 1.31493 | trade risk 29.16 AED",
+  "market": "GBPUSD",
+  "ok": true,
+  "t": "Fri 13 Nov 12:01 PM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "GBPUSD|2026-11-13|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend 1.31493 -> 1.31492 ",
+  "market": "GBPUSD",
+  "ok": true,
+  "t": "Fri 13 Nov 12:01 PM"
  }
 ]

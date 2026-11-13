@@ -1,15 +1,15 @@
 {
- "balance": 1510.44,
+ "balance": 1509.6,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-13",
-  "pl": 6.26,
+  "pl": 4.58,
   "start_balance": 1506.19,
   "start_equity": 1506.19,
   "stopped": false
  },
- "open_positions": 1,
- "open_risk_aed": 28.62,
+ "open_positions": 2,
+ "open_risk_aed": 57.78,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-09|5:01 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -191,6 +191,25 @@
    "side": "SELL",
    "state": "closed",
    "stop": 1.33477
+  },
+  "GBPUSD|2026-11-13|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend": {
+   "desk_price": 1.32287,
+   "market": "GBPUSD",
+   "opened_at": "Fri 13 Nov 12:01 PM",
+   "part": {
+    "id": "00000000-72e1-5c5a-0495-7fc60004511e",
+    "level": 1.32286,
+    "open": true,
+    "size": 1000.0,
+    "tp": 1.31492
+   },
+   "part_x": 1.0,
+   "px_adj": 0.0,
+   "risk_aed": 29.16,
+   "risk_usd": 8.17,
+   "side": "SELL",
+   "state": "open",
+   "stop": 1.33081
   },
   "GOLD|2026-11-09|2:09 pm|SELL|FILL range fade": {
    "desk_price": 4099.73,
