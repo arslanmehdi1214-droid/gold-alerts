@@ -1,5 +1,5 @@
 {
- "updated": "Sat 14 Nov \u00b7 1:58 am",
+ "updated": "Sat 14 Nov \u00b7 1:59 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -24,11 +24,11 @@
    ],
    "actions_day": "2026-11-13",
    "feed_error": false,
-   "state": "sell",
-   "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 3882.08,
+   "state": "closed",
+   "message": "Market closed for the weekend",
+   "price": 3883.65,
    "close_at": "12:50 am",
-   "change": 4.69,
+   "change": 6.26,
    "size": 0.1,
    "datr": 96.42,
    "open_now": 1,
@@ -1984,9 +1984,9 @@
     ],
     [
      "1:55 am",
-     3882.08,
+     3883.65,
      3879.51,
-     3882.42,
+     3883.65,
      3878.94
     ]
    ],
@@ -3594,100 +3594,12 @@
    "what_note": "This page tracks whether live USD/JPY signals do as well as the v1.07 backtest. Decision after about 3 months.",
    "cost_note": "Pips are for the whole trade (\u2153-size trades count one third), after a fixed 1.0-pip spread (as in the MT4 test; fixed so shown levels never change). $ = at $100 risk per full-size trade, like the MT4 test.",
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
-   "state": "buy",
-   "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 4:00 pm Dubai close.",
-   "price": 159.669,
-   "change_pips": -17.0,
+   "state": "closed",
+   "message": "Market closed for the weekend.",
+   "price": 159.673,
+   "change_pips": -16.6,
    "atr_pips": 90.1,
-   "entries": [
-    {
-     "time": "8:00 am",
-     "side": "BUY",
-     "sig": "J13",
-     "name": "Heikin-Ashi 7am",
-     "price": 159.886,
-     "entry": 159.896,
-     "stop": 159.21,
-     "stop0": 159.21,
-     "stop_pips": 68.6,
-     "half_px": 159.917,
-     "half": false,
-     "part": 1.0,
-     "half_time": null,
-     "size": "third",
-     "quiet": false,
-     "first": true,
-     "status": "target",
-     "exit": 159.917,
-     "exit_time": "8:11 am",
-     "pips": 0.7,
-     "usd": 0.44,
-     "r": 0.0304,
-     "r_sized": 0.01,
-     "usd_risk": 1.0,
-     "r_now": 0.0304,
-     "rwf": 1,
-     "spread": 1.0
-    },
-    {
-     "time": "9:00 am",
-     "side": "BUY",
-     "sig": "S12 HAM",
-     "name": "HAM (Heikin-Ashi, 2nd hour)",
-     "price": 159.909,
-     "entry": 159.919,
-     "stop": 159.233,
-     "stop0": 159.233,
-     "stop_pips": 68.6,
-     "half_px": 159.94,
-     "half": false,
-     "part": 1.0,
-     "half_time": null,
-     "size": "third",
-     "quiet": false,
-     "first": false,
-     "status": "target",
-     "exit": 159.94,
-     "exit_time": "9:09 am",
-     "pips": 0.7,
-     "usd": 0.44,
-     "r": 0.0304,
-     "r_sized": 0.01,
-     "usd_risk": 1.0,
-     "r_now": 0.0304,
-     "rwf": 1,
-     "spread": 1.0
-    },
-    {
-     "time": "10:05 am",
-     "side": "BUY",
-     "sig": "L3",
-     "name": "Week-so-far break",
-     "price": 160.04,
-     "entry": 160.05,
-     "stop": 160.05,
-     "stop0": 159.364,
-     "stop_pips": 68.6,
-     "half_px": 160.119,
-     "half": true,
-     "part": 0.5,
-     "half_time": "10:14 am",
-     "size": "full",
-     "quiet": false,
-     "first": false,
-     "status": "be",
-     "exit": 160.05,
-     "exit_time": "10:31 am",
-     "pips": 3.4,
-     "usd": 2.12,
-     "r": 0.0507,
-     "r_sized": 0.051,
-     "usd_risk": 5.1,
-     "r_now": 0.0507,
-     "rwf": 0,
-     "spread": 1.0
-    }
-   ],
+   "entries": [],
    "spark": [
     [
      "3:05 am",
@@ -7674,7 +7586,6 @@
    "symbol": "WTI \u00b7 Capital.com US Crude",
    "live": false,
    "paper": true,
-   "status": "Paper",
    "version": "v1.16",
    "unit": "usd",
    "dp": 2,
@@ -7692,38 +7603,15 @@
     "pf": 1.1,
     "months": 3
    },
-   "day_note": "14-day range $4.50 \u00b7 stop: buys 1 range, sells \u00be range \u00b7 close 25% at +0.05 (buys) / +0.15 (sells) x risk, then stop to entry (sells on supply days: no part-close, hold to stop / day end) \u00b7 day lock +2R/+1R \u00b7 no new trades after 4:30 pm broker (v1.16: 3:30 pm; one late first trade to 7:00 pm) \u00b7 option-expiry day: first trade only \u00b7 a buy only as the first trade (later buy signals skipped) \u00b7 v1.08: the weakest third of entries (by a fixed score) trade at half size \u00b7 v1.10: SIDE SELL at 7:00 am broker time if yesterday closed in the bottom 20% of its range and nothing has traded yet, \u00bc size, own stop \u00b7 v1.11: a ladder trade with no part-close 90 min after entry gets a lower part-close level (sells 0.05, buys 0.02 of its risk) \u00b7 v1.12: a ladder SELL entered while the day is not falling (5-minute down-vs-up move flow at or below 0.212) gets its part-close level at 0.10 of its risk from the start \u00b7 close 8:00 pm broker = 9:00 pm Dubai, 10:00 pm in winter (v1.16: 9:00 pm broker) \u00b7 size: first trade and buys \u2153, later sells full while the day is in profit \u00b7 v1.16: buys part-close at +0.03, first sell at +0.06, decay after 120 min, last entry 3:30 pm, close 9:00 pm broker = 10:00 pm Dubai (11:00 pm in winter) \u00b7 v1.08: weakest-third entries at half of that \u00b7 v1.05: First sell today: FULL size (Cushing stocks rose in the last EIA report and oil is down over 5 days) \u00b7 EIA week 2026-11-06: +106k bbl \u00b7 v1.07: later buys off \u00b7 v1.06: not an option-expiry day \u00b7 sells today: HOLD whole trade (US production rose in the last EIA report and oil is below its 50-day average) \u00b7 EIA production week 2026-11-06: +10k b/d",
+   "day_note": "14-day range \u2014 \u00b7 stop: buys 1 range, sells \u00be range \u00b7 close 25% at +0.05 (buys) / +0.15 (sells) x risk, then stop to entry (sells on supply days: no part-close, hold to stop / day end) \u00b7 day lock +2R/+1R \u00b7 no new trades after 4:30 pm broker (v1.16: 3:30 pm; one late first trade to 7:00 pm) \u00b7 option-expiry day: first trade only \u00b7 a buy only as the first trade (later buy signals skipped) \u00b7 v1.08: the weakest third of entries (by a fixed score) trade at half size \u00b7 v1.10: SIDE SELL at 7:00 am broker time if yesterday closed in the bottom 20% of its range and nothing has traded yet, \u00bc size, own stop \u00b7 v1.11: a ladder trade with no part-close 90 min after entry gets a lower part-close level (sells 0.05, buys 0.02 of its risk) \u00b7 v1.12: a ladder SELL entered while the day is not falling (5-minute down-vs-up move flow at or below 0.212) gets its part-close level at 0.10 of its risk from the start \u00b7 close 8:00 pm broker = 9:00 pm Dubai, 10:00 pm in winter (v1.16: 9:00 pm broker) \u00b7 size: first trade and buys \u2153, later sells full while the day is in profit \u00b7 v1.16: buys part-close at +0.03, first sell at +0.06, decay after 120 min, last entry 3:30 pm, close 9:00 pm broker = 10:00 pm Dubai (11:00 pm in winter) \u00b7 v1.08: weakest-third entries at half of that",
    "what_note": "This page tracks whether live WTI signals do as well as the backtest. Decision after about 3 months.",
    "cost_note": "Results are $ per barrel (sizes: full or \u2153), from the signal price with the backtest's slip, after a fixed 4-cent spread (the MT4 test's spread and Capital.com's usual; fixed so shown levels never change).",
    "net_label": "Net $ per barrel (v1.16)",
-   "state": "buy",
-   "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 88.026,
-   "change": 0.21,
-   "entries": [
-    {
-     "time": "10:10 am",
-     "side": "BUY",
-     "name": "Day open (buy)",
-     "price": 87.84,
-     "stop": 87.88,
-     "stop0": 83.34,
-     "half_px": 88.01,
-     "half": true,
-     "part": 0.25,
-     "late": false,
-     "stop_usd": 4.5,
-     "size": "1/3",
-     "first": true,
-     "status": "be",
-     "exit": 87.88,
-     "exit_time": "10:33 am",
-     "res": 0.034,
-     "res_sized": 0.011,
-     "rwf": null,
-     "spread": 0.04
-    }
-   ],
+   "state": "closed",
+   "message": "Market closed for the weekend.",
+   "price": 88.016,
+   "change": 0.2,
+   "entries": [],
    "spark": [
     [
      "3:00 am",
@@ -9652,9 +9540,9 @@
     ],
     [
      "1:55 am",
+     88.02,
      88.03,
-     88.03,
-     88.04,
+     88.06,
      87.93
     ]
    ],
@@ -11002,7 +10890,8 @@
    "feed_error": false,
    "epic": "OIL_CRUDE",
    "live_spread": 0.04,
-   "history_note": "history to 2026-11-12 (60 days)"
+   "history_note": "history to 2026-11-12 (60 days)",
+   "status": "Paper"
   },
   "US500": {
    "code": "US500",
@@ -11010,7 +10899,6 @@
    "symbol": "US500 \u00b7 Capital.com US 500",
    "live": false,
    "paper": true,
-   "status": "Paper",
    "version": "v1.23",
    "unit": "pts",
    "dp": 1,
@@ -11028,41 +10916,15 @@
     "pf": 1.15,
     "months": 3
    },
-   "day_note": "14-day range 143 pts \u00b7 stop 0.75 x range (= 107 pts) \u00b7 no half-close \u00b7 the day's first signal sets BUY or SELL, later signals the same way add (max 3 trades) \u00b7 v1.04: no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop \u00b7 signals: Nasdaq desk signals copied in US hours + S&P 9:40 am New York move, yesterday high/low sweep, big move by 10 am New York \u00b7 close 3:30 pm New York \u00b7 NIGHT trade on high-fear nights (VIX above VIX3M, or VIX / VVIX in their 1-year top 10%): BUY 6:01 pm New York (v1.07: Mon/Tue/Wed broker-days only), stop 1 x range (v1.07, was 2x), close 10:00 am New York \u00b7 v1.07 TURN-OF-MONTH: on the last broker weekday of the month and the first 3 of the next, BUY 9:30 am New York, stop 0.75 x range, close 3:30 pm New York - only on a day with no other S&P trade \u00b7 v1.08 NIGHT V3: a 2nd, independent night trigger (only fires when the night trade above does not - never both), broker-day Wed/Thu/Fri only, on a gold+WTI combined overnight shock (the smaller of gold's and WTI's own 252-day-percentile |daily move|, from 2 days before, >= 0.70): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the night leg above \u00b7 v1.09 NIGHT V4: a 3rd, independent night trigger (only fires when the two night trades above do not - never more than one a night), no weekday restriction, on a weak last-hour close (252-day percentile of the 15:00-16:00 New York return <= 0.30) combined with a last-hour volume spike (z-score vs its own trailing 20-day average >= 2.0): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the other night trades. WATCH ITEM (only 25 historical occurrences, mostly overlapping the VIX night trade above) - needs ~2-4 weeks of its own live volume history before it can fire at all \u00b7 v1.10 NIGHT V5: a 4th, independent night trigger (only fires when the three night trades above do not - never more than one a night), no weekday restriction, on the US Dollar Index weakening over 5 days (252-day percentile of the 5-day % change <= 0.20) combined with the market narrowing on both a 10-day AND a 20-day horizon (252-day percentile of the RSP/SPY equal-weight/cap-weight ratio's 10-day and 20-day % change, both <= 0.20): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the other night trades. WATCH ITEM (20 historical Python occurrences, 18 confirmed in MT4) - unlike Night V4, this data is available from day one, no live warm-up needed \u00b7 v1.11 NIGHT V6: a 5th, independent night trigger (only fires when the four night trades above do not - never more than one a night), no weekday restriction, on the broad trade-weighted US Dollar index (FRED DTWEXBGS, 26-currency basket) being broadly weak (252-day percentile of its level <= 0.15) combined with the pan-European STOXX50E index having a shock move the prior session (252-day percentile of its |daily % close move| >= 0.85): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the other night trades. WATCH ITEM (24 historical Python occurrences, 14 confirmed in MT4) - like Night V5, this data is available from day one, no live warm-up needed \u00b7 v1.12 NIGHT V7: a 6th, independent night trigger (only fires when the five night trades above do not - never more than one a night), no weekday restriction, on the materials sector (XLB) being relatively weak vs SPY (252-day percentile of the XLB/SPY ratio level <= 0.30) combined with the communications-services sector (XLC) rallying sharply vs SPY (252-day percentile of the 10-day % change in the XLC/SPY ratio >= 0.85): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the other night trades. WATCH ITEM (93 historical Python occurrences, the biggest sample of any night trigger this project; 78 confirmed in MT4) - like Night V5/V6, this data is available from day one, no live warm-up needed",
+   "day_note": "14-day range \u2014 \u00b7 stop 0.75 x range \u00b7 no half-close \u00b7 the day's first signal sets BUY or SELL, later signals the same way add (max 3 trades) \u00b7 v1.04: no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop \u00b7 signals: Nasdaq desk signals copied in US hours + S&P 9:40 am New York move, yesterday high/low sweep, big move by 10 am New York \u00b7 close 3:30 pm New York \u00b7 NIGHT trade on high-fear nights (VIX above VIX3M, or VIX / VVIX in their 1-year top 10%): BUY 6:01 pm New York (v1.07: Mon/Tue/Wed broker-days only), stop 1 x range (v1.07, was 2x), close 10:00 am New York \u00b7 v1.07 TURN-OF-MONTH: on the last broker weekday of the month and the first 3 of the next, BUY 9:30 am New York, stop 0.75 x range, close 3:30 pm New York - only on a day with no other S&P trade \u00b7 v1.08 NIGHT V3: a 2nd, independent night trigger (only fires when the night trade above does not - never both), broker-day Wed/Thu/Fri only, on a gold+WTI combined overnight shock (the smaller of gold's and WTI's own 252-day-percentile |daily move|, from 2 days before, >= 0.70): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the night leg above \u00b7 v1.09 NIGHT V4: a 3rd, independent night trigger (only fires when the two night trades above do not - never more than one a night), no weekday restriction, on a weak last-hour close (252-day percentile of the 15:00-16:00 New York return <= 0.30) combined with a last-hour volume spike (z-score vs its own trailing 20-day average >= 2.0): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the other night trades. WATCH ITEM (only 25 historical occurrences, mostly overlapping the VIX night trade above) - needs ~2-4 weeks of its own live volume history before it can fire at all \u00b7 v1.10 NIGHT V5: a 4th, independent night trigger (only fires when the three night trades above do not - never more than one a night), no weekday restriction, on the US Dollar Index weakening over 5 days (252-day percentile of the 5-day % change <= 0.20) combined with the market narrowing on both a 10-day AND a 20-day horizon (252-day percentile of the RSP/SPY equal-weight/cap-weight ratio's 10-day and 20-day % change, both <= 0.20): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the other night trades. WATCH ITEM (20 historical Python occurrences, 18 confirmed in MT4) - unlike Night V4, this data is available from day one, no live warm-up needed \u00b7 v1.11 NIGHT V6: a 5th, independent night trigger (only fires when the four night trades above do not - never more than one a night), no weekday restriction, on the broad trade-weighted US Dollar index (FRED DTWEXBGS, 26-currency basket) being broadly weak (252-day percentile of its level <= 0.15) combined with the pan-European STOXX50E index having a shock move the prior session (252-day percentile of its |daily % close move| >= 0.85): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the other night trades. WATCH ITEM (24 historical Python occurrences, 14 confirmed in MT4) - like Night V5, this data is available from day one, no live warm-up needed \u00b7 v1.12 NIGHT V7: a 6th, independent night trigger (only fires when the five night trades above do not - never more than one a night), no weekday restriction, on the materials sector (XLB) being relatively weak vs SPY (252-day percentile of the XLB/SPY ratio level <= 0.30) combined with the communications-services sector (XLC) rallying sharply vs SPY (252-day percentile of the 10-day % change in the XLC/SPY ratio >= 0.85): BUY 6:01 pm New York, stop 1 x range, close 10:00 am New York - same mechanics as the other night trades. WATCH ITEM (93 historical Python occurrences, the biggest sample of any night trigger this project; 78 confirmed in MT4) - like Night V5/V6, this data is available from day one, no live warm-up needed",
    "what_note": "Tracks whether live S&P signals do as well as the v1.12 MT4 test (500109 + Night V3 + Night V4 + Night V5 + Night V6 + Night V7). Decision after about 3 months.",
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.12 rules)",
-   "state": "sell",
-   "message": "PAPER SELL day: 1 trade today (0 running). Only SELL signals count today (max 3; no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop). Each trade keeps its stop, no half-close; everything closes at 12:30 am Dubai (3:30 pm New York). No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak, no duration-curve-steepening + tech-weak, no bank-loan-weak + E-mini COT net-long, no DJIA-COT-bullish-fast + crypto-risk-off, no MSCI-EM-COT-extreme-long + communications-weak, no Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast, no UST5yr-COT-falling-fast + credit-de-risking, no Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence, no Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long, no ES-asset-manager-COT-fast-bullish + staples-weak, no VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish, no UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast, no Utilities-retail-COT-falling-fast + transports-weak, no Sugar-COT-net-long + financials-weak, no Feeder-Cattle-COT-rising-fast + credit-de-risking, no VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish, no EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast).",
-   "price": 7539.4,
-   "change": -57.8,
-   "entries": [
-    {
-     "time": "6:40 pm",
-     "side": "SELL",
-     "name": "S&P 9:40 am New York opening move",
-     "src": "S&P",
-     "leg": 1,
-     "night": false,
-     "price": 7589.8,
-     "entry": 7589.8,
-     "stop": 7697.0,
-     "stop0": 7697.0,
-     "stop_pts": 107.2,
-     "half_px": null,
-     "half": false,
-     "size": "full",
-     "status": "eod",
-     "exit": 7549.7,
-     "exit_time": "12:30 am",
-     "res": 39.3,
-     "res_sized": 39.3,
-     "r": 0.367,
-     "r_sized": 0.367,
-     "live": null,
-     "spread": 0.8
-    }
-   ],
+   "state": "closed",
+   "message": "Market closed for the weekend.",
+   "price": 7537.2,
+   "change": -60.0,
+   "entries": [],
    "spark": [
     [
      "2:05 am",
@@ -13068,10 +12930,10 @@
     ],
     [
      "1:55 am",
-     7539.4,
+     7537.2,
      7541.3,
      7541.3,
-     7535.9
+     7535.4
     ]
    ],
    "journal": {
@@ -14551,7 +14413,8 @@
    "picks_stale": false,
    "epic": "US500",
    "close_at": "12:30 am",
-   "history_note": "history to 2026-11-12 (36 days)"
+   "history_note": "history to 2026-11-12 (36 days)",
+   "status": "Paper"
   },
   "US100": {
    "code": "US100",
@@ -14559,7 +14422,6 @@
    "symbol": "US100 \u00b7 Capital.com US Tech 100",
    "live": false,
    "paper": true,
-   "status": "Paper",
    "version": "2026.1",
    "unit": "pts",
    "dp": 1,
@@ -14577,72 +14439,15 @@
     "pf": 1.1,
     "months": 3
    },
-   "day_note": "14-day range 886 pts \u00b7 stop: buys 0.4 x range, sells \u00bc range \u00b7 sells \u2153 size \u00b7 at +0.5 x risk close 25% (buys) / 15% (sells), stop to entry, then trail the rest 0.45 x range (= 399 pts) behind its best price \u00b7 no new trades from 10:00 pm broker (Fri 8:00 pm) \u00b7 day lock +3R/+1.5R \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
+   "day_note": "14-day range \u2014 \u00b7 stop: buys 0.4 x range, sells \u00bc range \u00b7 sells \u2153 size \u00b7 at +0.5 x risk close 25% (buys) / 15% (sells), stop to entry, then trail the rest 0.45 x range behind its best price \u00b7 no new trades from 10:00 pm broker (Fri 8:00 pm) \u00b7 day lock +3R/+1.5R \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
    "what_note": "Tracks whether live Nasdaq signals do as well as the v1.02 backtest. Decision after about 3 months.",
    "cost_note": "Results are index points for the whole trade at its v1.02 size (sells \u2153, the 25% / 15% part included), after a fixed 1.8-point spread (as in the MT4 test; entry, stop and part levels use it too). Capital.com's live spread is shown for reference only.",
    "net_label": "Net points (v1.02 rules)",
-   "state": "sell",
-   "message": "2 paper trades today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:50 am Dubai close. At most 2 trades a day.",
-   "price": 27832.3,
-   "change": -468.6,
-   "entries": [
-    {
-     "time": "5:42 pm",
-     "side": "SELL",
-     "name": "REV H2 round $400 break, close beyond, then retest -> follow, from 1pm",
-     "role": "filler",
-     "price": 28400.0,
-     "entry": 28400.0,
-     "stop": 28008.1,
-     "stop0": 28623.4,
-     "stop_pts": 221.6,
-     "half_px": 28288.3,
-     "half": true,
-     "half_time": "6:30 pm",
-     "size": "third",
-     "status": "eod",
-     "part": 0.15,
-     "trail_pts": 398.8,
-     "exit": 27947.0,
-     "exit_time": "12:50 am",
-     "res": 133.9,
-     "res_sized": 133.9,
-     "r": 1.814,
-     "r_sized": 0.605,
-     "live": null,
-     "rwf": 1,
-     "spread": 1.8,
-     "spread_live": 1.8
-    },
-    {
-     "time": "8:21 pm",
-     "side": "SELL",
-     "name": "J30 U8 only when vol high (>1.1)",
-     "role": "core",
-     "price": 27618.8,
-     "entry": 27618.8,
-     "stop": 27842.2,
-     "stop0": 27842.2,
-     "stop_pts": 221.6,
-     "half_px": 27507.1,
-     "half": false,
-     "half_time": null,
-     "size": "third",
-     "status": "stopped",
-     "part": 0.15,
-     "trail_pts": 398.8,
-     "exit": 27842.2,
-     "exit_time": "9:07 pm",
-     "res": -74.5,
-     "res_sized": -74.5,
-     "r": -1.008,
-     "r_sized": -0.336,
-     "live": null,
-     "rwf": 0,
-     "spread": 1.8,
-     "spread_live": 1.8
-    }
-   ],
+   "state": "closed",
+   "message": "Market closed for the weekend.",
+   "price": 27819.8,
+   "change": -481.1,
+   "entries": [],
    "spark": [
     [
      "2:05 am",
@@ -16648,10 +16453,10 @@
     ],
     [
      "1:55 am",
-     27832.3,
+     27819.8,
      27848.6,
      27848.6,
-     27813.3
+     27812.8
     ]
    ],
    "journal": {
@@ -17860,7 +17665,8 @@
     "note": "CPI overnight (2026-11-10): hit stop, -270.2 pts."
    },
    "tuesday": null,
-   "bigup": null
+   "bigup": null,
+   "status": "Paper"
   },
   "GBPUSD": {
    "code": "GBPUSD",
@@ -17868,7 +17674,6 @@
    "symbol": "GBPUSD \u00b7 Capital.com GBP/USD",
    "live": false,
    "paper": true,
-   "status": "Paper",
    "version": "v1.08",
    "unit": "pips",
    "dp": 5,
@@ -17885,47 +17690,18 @@
     "pf": 1.1,
     "months": 3
    },
-   "day_note": "Today: SELL \u00b7 layer 5 (euro hedge funds trend) \u00b7 CFTC report of Tue 03 Nov \u00b7 14-day range 79 pips \u00b7 market normal (range at 56% of its last 250 days) \u00b7 stop 1.0 x range, target 1.0 x stop (close the whole trade there), no half-close \u00b7 one trade a day at 10:00 broker (11:00 am Dubai in summer, 12:00 pm in winter) \u00b7 everything closes at 23:45 broker (12:45 am Dubai in summer, 1:45 am in winter)",
+   "day_note": "Today: NO TRADE \u00b7 no layer on \u00b7 CFTC report of Tue 03 Nov \u00b7 14-day range \u2014 \u00b7 stop 1.0 x range, target 1.0 x stop (close the whole trade there), no half-close \u00b7 one trade a day at 10:00 broker (11:00 am Dubai in summer, 12:00 pm in winter) \u00b7 everything closes at 23:45 broker (12:45 am Dubai in summer, 1:45 am in winter)",
    "what_note": "Tracks whether live GBP/USD signals do as well as the v1.08 MT4 test. The auto-trader places each trade on the Capital.com demo (from 27 Oct). Decision after about 3 months.",
    "cost_note": "Results are pips per trade after the spread (at least 1.5 pips). 0.01 lot = 1,000 units = $0.10 per pip.",
    "net_label": "Net pips (v1.08 rules, holiday sell / FOMC buy at half size)",
-   "state": "sell",
+   "state": "closed",
    "mode": "normal",
    "regime": 0.556,
    "gap": null,
-   "message": "Closed at the day end (1:45 am Dubai): +17.8 pips.",
-   "price": 1.32094,
-   "change": -0.00265,
-   "entries": [
-    {
-     "time": "12:00 pm",
-     "side": "SELL",
-     "name": "Layer 5 \u00b7 euro hedge funds trend",
-     "layer": 5,
-     "price": 1.32287,
-     "entry": 1.32287,
-     "stop": 1.33081,
-     "stop0": 1.33081,
-     "stop_pips": 79.4,
-     "mode": "normal",
-     "lock_px": null,
-     "locked": false,
-     "half_px": 1.31493,
-     "half": false,
-     "part": 1.0,
-     "size": "full",
-     "status": "eod",
-     "exit": 1.32094,
-     "exit_time": "1:45 am",
-     "pips": 17.8,
-     "res": 17.8,
-     "res_sized": 17.8,
-     "r": 0.224,
-     "live": null,
-     "spread": 1.5,
-     "next": null
-    }
-   ],
+   "message": "Market closed for the weekend. Next week: day by day: layer 4 (EUR/GBP) first, else SELL (euro funds) (CFTC report of 03 Nov).",
+   "price": 1.32083,
+   "change": -0.00276,
+   "entries": [],
    "spark": [
     [
      "2:05 am",
@@ -19931,10 +19707,10 @@
     ],
     [
      "1:55 am",
-     1.32094,
+     1.32083,
      1.32109,
      1.32137,
-     1.32092
+     1.32079
     ]
    ],
    "journal": {
@@ -20809,7 +20585,8 @@
     "eur_amcp": 0.058,
     "gbp_orp": 0.654
    },
-   "eurgbp_z": -0.59
+   "eurgbp_z": -0.59,
+   "status": "Paper"
   },
   "BRENT": {
    "code": "BRENT",
@@ -20817,7 +20594,6 @@
    "symbol": "BRENT \u00b7 Capital.com Brent Oil Future",
    "live": false,
    "paper": true,
-   "status": "Paper",
    "version": "v1.10",
    "unit": "usd",
    "dp": 2,
@@ -20930,10 +20706,10 @@
     "note": "New, 2022-heavy - $5,596 of the $13,453 extra (42%) is 2022 alone; 6 of 9 years positive.",
     "source": "MT4 BRENT_WED_HOL_v110.mq4, his run 9 Nov 2026, 2018.01.02-2026.10.30, spread 8 ($0.08/bbl) - AW+K2 together: 251 trades (AW 210 at full 0.30 lot, K2 41 at half 0.15 lot), net +$13,453. Full v1.10 EA (A-F+K++AW+K2): +$81,158, PF 1.43, max drawdown $10,241, 1,492 trades vs the v1.07a baseline +$67,704, DD $9,199, 1,241 trades, PF 1.43 (net per $1 of drawdown 7.92 vs 7.36 - at equal drawdown ~+7.7% net). v1.10 technically misses the strict $10,000 max-DD cap by $241 but wins on the equal-drawdown rule - his go-ahead 9 Nov 2026."
    },
-   "state": "none",
-   "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 94.939,
-   "change": 0.19,
+   "state": "closed",
+   "message": "Market closed for the weekend.",
+   "price": 94.921,
+   "change": 0.18,
    "entries": [],
    "spark": [
     [
@@ -22730,9 +22506,9 @@
     ],
     [
      "1:55 am",
-     94.94,
      94.92,
-     94.94,
+     94.92,
+     94.98,
      94.86
     ]
    ],
@@ -22928,7 +22704,8 @@
     "ruleD_sell": false,
     "ruleE": false,
     "ruleF": false
-   }
+   },
+   "status": "Paper"
   }
  }
 }
