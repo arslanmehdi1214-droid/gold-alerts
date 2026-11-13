@@ -1101,19 +1101,42 @@
   {
    "date": "2026-11-13",
    "label": "Fri 13 Nov",
-   "side": null,
-   "trades": [],
+   "side": "SELL",
+   "trades": [
+    {
+     "time": "11:04 am",
+     "side": "SELL",
+     "tag": "N5 weekS1",
+     "price": 3899.43,
+     "stop": 3948.14,
+     "stop0": 3948.14,
+     "half_px": null,
+     "half": false,
+     "half_time": null,
+     "size": 0.1,
+     "status": "open",
+     "first": true,
+     "exit": null,
+     "exit_time": null,
+     "pnl": null,
+     "pnl_oz": null,
+     "size_x": 1.0,
+     "rwf": null,
+     "next": "Hold to the stop 3948.14 or the day-end close \u00b7 no half-close",
+     "late": false
+    }
+   ],
    "skipped": 0,
    "final": false
   }
  ],
  "summary": {
   "since": "03 Oct 2026",
-  "trades": 45,
+  "trades": 46,
   "direction": 37.5,
   "decided": 16,
-  "days": 93.3,
-  "perday": 1.5,
+  "days": 96.7,
+  "perday": 1.53,
   "avg_pnl": -0.95,
   "closed": 45,
   "total_pnl_01": -4.28
