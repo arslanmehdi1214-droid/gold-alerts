@@ -1,19 +1,5 @@
 [
  {
-  "action": "rest closed on demo",
-  "detail": "US100|2026-10-29|3:04 am|BUY|F2 sweep prev-day hi/lo by 0.1ATR from 1am back inside <30min -> reverse",
-  "market": "US100",
-  "ok": true,
-  "t": "Thu 29 Oct 5:33 PM"
- },
- {
-  "action": "stop moved",
-  "detail": "OIL|2026-10-29|1:06 pm|SELL|Whole dollar to 99.97 (stop to entry: each position at its own fill price)",
-  "market": "OIL",
-  "ok": true,
-  "t": "Thu 29 Oct 5:33 PM"
- },
- {
   "action": "part closed on demo",
   "detail": "USDJPY|2026-10-29|4:04 pm|BUY|Squeeze 4pm",
   "market": "USDJPY",
@@ -2798,5 +2784,19 @@
   "market": "US500",
   "ok": true,
   "t": "Sat 14 Nov 12:31 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "GOLD|2026-11-13|11:04 am|SELL|N5 weekS1 (desk: close_now) ",
+  "market": "GOLD",
+  "ok": true,
+  "t": "Sat 14 Nov 12:50 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "US100|2026-11-13|5:42 pm|SELL|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm (desk: eod) ",
+  "market": "US100",
+  "ok": true,
+  "t": "Sat 14 Nov 12:50 AM"
  }
 ]
