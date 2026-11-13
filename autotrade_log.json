@@ -1,12 +1,5 @@
 [
  {
-  "action": "OPEN BUY rest",
-  "detail": "USDJPY|2026-10-29|4:04 pm|BUY|Squeeze 4pm size 3100.0 at 158.074 stop 157.839 | trade risk 29.68 AED",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Thu 29 Oct 4:05 PM"
- },
- {
   "action": "stop moved",
   "detail": "GBPUSD|2026-10-29|11:00 am|BUY|Layer 2 \u00b7 small traders crowded to 1.33145",
   "market": "GBPUSD",
@@ -2798,5 +2791,12 @@
   "market": "US100",
   "ok": true,
   "t": "Fri 13 Nov 8:23 PM"
+ },
+ {
+  "action": "DAILY LOSS STOP",
+  "detail": "day P/L -3015.06 AED <= -100.0% of 1506.19 - no new trades until the next broker day",
+  "market": "ALL",
+  "ok": false,
+  "t": "Fri 13 Nov 8:30 PM"
  }
 ]
