@@ -1,19 +1,5 @@
 [
  {
-  "action": "OPEN SELL part",
-  "detail": "US100|2026-10-28|2:48 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am size 0.002 at 29795.3 stop 29947.0 target 29726.5 | trade risk 9.72 AED",
-  "market": "US100",
-  "ok": true,
-  "t": "Wed 28 Oct 2:49 PM"
- },
- {
-  "action": "OPEN SELL rest",
-  "detail": "US100|2026-10-28|2:48 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am size 0.016 at 29794.9 stop 29947.0 | trade risk 9.72 AED",
-  "market": "US100",
-  "ok": true,
-  "t": "Wed 28 Oct 2:49 PM"
- },
- {
   "action": "OPEN SELL rest",
   "detail": "GOLD|2026-10-28|4:21 pm|SELL|FILL range fade size 0.24 at 4057.69 stop 4089.1 | trade risk 28.87 AED",
   "market": "GOLD",
@@ -2798,5 +2784,19 @@
   "market": "GBPUSD",
   "ok": true,
   "t": "Fri 13 Nov 1:46 AM"
+ },
+ {
+  "action": "OPEN BUY part",
+  "detail": "USDJPY|2026-11-13|8:00 am|BUY|Heikin-Ashi 7am size 600.0 at 159.893 stop 159.21 target 159.917 | trade risk 9.32 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Fri 13 Nov 8:01 AM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "USDJPY|2026-11-13|8:00 am|BUY|Heikin-Ashi 7am 159.917 -> 159.924 ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Fri 13 Nov 8:01 AM"
  }
 ]

@@ -1,5 +1,5 @@
 {
- "updated": "Fri 13 Nov \u00b7 7:52 am",
+ "updated": "Fri 13 Nov \u00b7 8:01 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 3918.43,
+   "price": 3920.27,
    "close_at": "12:50 am",
-   "change": 41.04,
+   "change": 42.88,
    "size": 0.1,
    "datr": 96.42,
    "open_now": 0,
@@ -429,10 +429,24 @@
     ],
     [
      "7:50 am",
-     3918.43,
+     3918.57,
      3920.28,
      3920.98,
-     3918.43
+     3917.63
+    ],
+    [
+     "7:55 am",
+     3920.4,
+     3918.59,
+     3921.26,
+     3917.56
+    ],
+    [
+     "8:00 am",
+     3920.27,
+     3920.35,
+     3920.48,
+     3920.0
     ]
    ],
    "history": [
@@ -2039,12 +2053,42 @@
    "what_note": "This page tracks whether live USD/JPY signals do as well as the v1.07 backtest. Decision after about 3 months.",
    "cost_note": "Pips are for the whole trade (\u2153-size trades count one third), after a fixed 1.0-pip spread (as in the MT4 test; fixed so shown levels never change). $ = at $100 risk per full-size trade, like the MT4 test.",
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
-   "state": "waiting",
-   "message": "Waiting for the first signal.",
-   "price": 159.905,
-   "change_pips": 6.6,
+   "state": "buy",
+   "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 4:00 pm Dubai close.",
+   "price": 159.882,
+   "change_pips": 4.3,
    "atr_pips": 90.1,
-   "entries": [],
+   "entries": [
+    {
+     "time": "8:00 am",
+     "side": "BUY",
+     "sig": "J13",
+     "name": "Heikin-Ashi 7am",
+     "price": 159.886,
+     "entry": 159.896,
+     "stop": 159.21,
+     "stop0": 159.21,
+     "stop_pips": 68.6,
+     "half_px": 159.917,
+     "half": false,
+     "part": 1.0,
+     "half_time": null,
+     "size": "third",
+     "quiet": false,
+     "first": true,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "pips": null,
+     "usd": null,
+     "r": null,
+     "r_sized": null,
+     "usd_risk": null,
+     "r_now": -0.0207,
+     "rwf": null,
+     "spread": 1.0
+    }
+   ],
    "spark": [
     [
      "3:05 am",
@@ -2447,20 +2491,34 @@
     ],
     [
      "7:50 am",
-     159.905,
+     159.881,
      159.916,
      159.917,
-     159.904
+     159.881
+    ],
+    [
+     "7:55 am",
+     159.887,
+     159.882,
+     159.893,
+     159.854
+    ],
+    [
+     "8:00 am",
+     159.882,
+     159.886,
+     159.889,
+     159.881
     ]
    ],
    "journal": {
     "since": "05 Nov 2026",
     "weekdays": 7,
-    "trades": 17,
+    "trades": 18,
     "decided": 13,
     "direction": 38.5,
-    "days": 85.7,
-    "perday": 2.43,
+    "days": 100.0,
+    "perday": 2.57,
     "closed": 17,
     "win": 70.6,
     "pf": 1.27,
@@ -2477,8 +2535,38 @@
      "date": "2026-11-13",
      "rules": "v1.07",
      "label": "Fri 13 Nov",
-     "side": null,
-     "trades": [],
+     "side": "BUY",
+     "trades": [
+      {
+       "time": "8:00 am",
+       "side": "BUY",
+       "sig": "J13",
+       "name": "Heikin-Ashi 7am",
+       "price": 159.886,
+       "entry": 159.896,
+       "stop": 159.21,
+       "stop0": 159.21,
+       "stop_pips": 68.6,
+       "half_px": 159.917,
+       "half": false,
+       "part": 1.0,
+       "half_time": null,
+       "size": "third",
+       "quiet": false,
+       "first": true,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "pips": null,
+       "usd": null,
+       "r": null,
+       "r_sized": null,
+       "usd_risk": null,
+       "r_now": -0.0207,
+       "rwf": null,
+       "spread": 1.0
+      }
+     ],
      "atr_pips": 90.1,
      "final": false
     },
@@ -4448,8 +4536,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 87.286,
-   "change": -0.53,
+   "price": 87.306,
+   "change": -0.51,
    "entries": [],
    "spark": [
     [
@@ -4860,10 +4948,24 @@
     ],
     [
      "7:50 am",
-     87.29,
+     87.23,
      87.32,
      87.34,
-     87.28
+     87.2
+    ],
+    [
+     "7:55 am",
+     87.25,
+     87.24,
+     87.29,
+     87.23
+    ],
+    [
+     "8:00 am",
+     87.31,
+     87.26,
+     87.31,
+     87.26
     ]
    ],
    "journal": {
@@ -6219,8 +6321,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak, no duration-curve-steepening + tech-weak, no bank-loan-weak + E-mini COT net-long, no DJIA-COT-bullish-fast + crypto-risk-off, no MSCI-EM-COT-extreme-long + communications-weak, no Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast, no UST5yr-COT-falling-fast + credit-de-risking, no Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence, no Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long, no ES-asset-manager-COT-fast-bullish + staples-weak, no VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish, no UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast, no Utilities-retail-COT-falling-fast + transports-weak, no Sugar-COT-net-long + financials-weak, no Feeder-Cattle-COT-rising-fast + credit-de-risking, no VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish, no EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast).",
-   "price": 7603.5,
-   "change": 6.3,
+   "price": 7597.3,
+   "change": 0.1,
    "entries": [],
    "spark": [
     [
@@ -6708,10 +6810,24 @@
     ],
     [
      "7:50 am",
-     7603.5,
+     7601.0,
      7607.0,
      7607.3,
-     7603.5
+     7600.8
+    ],
+    [
+     "7:55 am",
+     7600.3,
+     7600.9,
+     7602.3,
+     7599.8
+    ],
+    [
+     "8:00 am",
+     7597.3,
+     7600.0,
+     7600.0,
+     7596.3
     ]
    ],
    "journal": {
@@ -8184,8 +8300,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 28283.0,
-   "change": -17.9,
+   "price": 28242.4,
+   "change": -58.5,
    "entries": [],
    "spark": [
     [
@@ -8673,10 +8789,24 @@
     ],
     [
      "7:50 am",
-     28283.0,
+     28272.1,
      28312.4,
      28312.4,
-     28282.8
+     28266.8
+    ],
+    [
+     "7:55 am",
+     28262.4,
+     28272.5,
+     28275.9,
+     28258.0
+    ],
+    [
+     "8:00 am",
+     28242.4,
+     28262.8,
+     28262.8,
+     28237.5
     ]
    ],
    "journal": {
@@ -9862,8 +9992,8 @@
    "regime": 0.556,
    "gap": null,
    "message": "Today is a SELL day (euro hedge funds trend). The trade opens at 12:00 pm Dubai (10:00 broker).",
-   "price": 1.32336,
-   "change": -0.00023,
+   "price": 1.32364,
+   "change": 5e-05,
    "entries": [],
    "spark": [
     [
@@ -10351,10 +10481,24 @@
     ],
     [
      "7:50 am",
-     1.32336,
+     1.32346,
      1.32343,
-     1.32344,
+     1.32346,
      1.32333
+    ],
+    [
+     "7:55 am",
+     1.32353,
+     1.32347,
+     1.32363,
+     1.32343
+    ],
+    [
+     "8:00 am",
+     1.32364,
+     1.32354,
+     1.32364,
+     1.32352
     ]
    ],
    "journal": {
@@ -11314,8 +11458,8 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 94.284,
-   "change": -0.46,
+   "price": 94.269,
+   "change": -0.47,
    "entries": [],
    "spark": [
     [
@@ -11635,10 +11779,24 @@
     ],
     [
      "7:50 am",
-     94.28,
+     94.22,
      94.3,
      94.32,
-     94.28
+     94.19
+    ],
+    [
+     "7:55 am",
+     94.24,
+     94.21,
+     94.27,
+     94.21
+    ],
+    [
+     "8:00 am",
+     94.27,
+     94.24,
+     94.28,
+     94.24
     ]
    ],
    "journal": {
