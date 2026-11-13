@@ -1,19 +1,5 @@
 [
  {
-  "action": "OPEN SELL rest",
-  "detail": "OIL|2026-10-29|1:06 pm|SELL|Whole dollar size 1.0 at 99.953 stop 102.84 | trade risk 10.39 AED",
-  "market": "OIL",
-  "ok": true,
-  "t": "Thu 29 Oct 1:07 PM"
- },
- {
-  "action": "OPEN SELL rest",
-  "detail": "GOLD|2026-10-29|1:10 pm|SELL|FILL range fade size 0.36 at 4034.29 stop 4067.89 | trade risk 44.03 AED",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Thu 29 Oct 1:11 PM"
- },
- {
   "action": "OPEN BUY part",
   "detail": "USDJPY|2026-10-29|4:04 pm|BUY|Squeeze 4pm size 3100.0 at 158.074 stop 157.839 target 158.163 | trade risk 29.68 AED",
   "market": "USDJPY",
@@ -2798,5 +2784,19 @@
   "market": "US100",
   "ok": true,
   "t": "Fri 13 Nov 8:06 PM"
+ },
+ {
+  "action": "OPEN SELL part",
+  "detail": "US100|2026-11-13|8:21 pm|SELL|J30 U8 only when vol high (>1.1) size 0.001 at 27614.2 stop 27842.2 target 27507.1 | trade risk 9.85 AED",
+  "market": "US100",
+  "ok": true,
+  "t": "Fri 13 Nov 8:22 PM"
+ },
+ {
+  "action": "OPEN SELL rest",
+  "detail": "US100|2026-11-13|8:21 pm|SELL|J30 U8 only when vol high (>1.1) size 0.011 at 27613.1 stop 27842.2 | trade risk 9.85 AED",
+  "market": "US100",
+  "ok": true,
+  "t": "Fri 13 Nov 8:22 PM"
  }
 ]
