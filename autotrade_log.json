@@ -1,12 +1,5 @@
 [
  {
-  "action": "rest closed on demo",
-  "detail": "OIL|2026-10-29|1:06 pm|SELL|Whole dollar",
-  "market": "OIL",
-  "ok": true,
-  "t": "Thu 29 Oct 6:00 PM"
- },
- {
   "action": "close rest",
   "detail": "US500|2026-10-29|5:40 pm|SELL|S&P 9:40 am New York opening move (desk: eod) ",
   "market": "US500",
@@ -2798,5 +2791,12 @@
   "market": "ALL",
   "ok": false,
   "t": "Sat 14 Nov 1:55 PM"
+ },
+ {
+  "action": "error",
+  "detail": "HTTPError: 429 Client Error:  for url: https://demo-api-capital.backend-capital.com/api/v1/session",
+  "market": "ALL",
+  "ok": false,
+  "t": "Sun 15 Nov 11:41 AM"
  }
 ]
