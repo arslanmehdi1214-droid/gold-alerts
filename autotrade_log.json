@@ -1,12 +1,5 @@
 [
  {
-  "action": "OPEN BUY rest",
-  "detail": "GOLD|2026-10-30|7:00 am|BUY|N2 near100 size 0.36 at 3998.25 stop 3964.58 | trade risk 44.09 AED",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Fri 30 Oct 7:01 AM"
- },
- {
   "action": "open part REJECTED",
   "detail": "USDJPY|2026-10-30|7:00 am|SELL|Heikin-Ashi 7am size 600.0 stop 158.196: REJECTED http 400 {\"errorCode\":\"error.invalid.takeprofit.maxvalue: 157.519\"}",
   "market": "USDJPY",
@@ -2798,5 +2791,12 @@
   "market": "USDJPY",
   "ok": true,
   "t": "Mon 16 Nov 3:06 AM"
+ },
+ {
+  "action": "part closed on demo",
+  "detail": "USDJPY|2026-11-16|3:05 am|SELL|WGAP (weekend-gap fade)",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Mon 16 Nov 3:07 AM"
  }
 ]
