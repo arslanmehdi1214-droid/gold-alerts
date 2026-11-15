@@ -1,19 +1,5 @@
 [
  {
-  "action": "close rest",
-  "detail": "GOLD|2026-10-29|1:10 pm|SELL|FILL range fade (desk: close_now) ",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Fri 30 Oct 12:00 AM"
- },
- {
-  "action": "skip",
-  "detail": "OIL|2026-10-30|5:43 am|BUY|Open \u00b1 \u00bd range: real risk 14.14 AED after lot rounding > 1.4x target 10.0 AED",
-  "market": "OIL",
-  "ok": false,
-  "t": "Fri 30 Oct 5:44 AM"
- },
- {
   "action": "OPEN BUY rest",
   "detail": "GOLD|2026-10-30|7:00 am|BUY|N2 near100 size 0.36 at 3998.25 stop 3964.58 | trade risk 44.09 AED",
   "market": "GOLD",
@@ -2798,5 +2784,19 @@
   "market": "GOLD",
   "ok": true,
   "t": "Mon 16 Nov 3:01 AM"
+ },
+ {
+  "action": "OPEN SELL part",
+  "detail": "USDJPY|2026-11-16|3:05 am|SELL|WGAP (weekend-gap fade) size 2400.0 at 159.797 stop 160.337 target 159.784 | trade risk 29.62 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Mon 16 Nov 3:06 AM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "USDJPY|2026-11-16|3:05 am|SELL|WGAP (weekend-gap fade) 159.784 -> 159.781 ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Mon 16 Nov 3:06 AM"
  }
 ]
