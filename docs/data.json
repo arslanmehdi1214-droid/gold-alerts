@@ -1,5 +1,5 @@
 {
- "updated": "Mon 16 Nov \u00b7 2:57 am",
+ "updated": "Mon 16 Nov \u00b7 3:01 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -8,28 +8,66 @@
    "symbol": "XAU/USD",
    "live": true,
    "version": "v2.24",
-   "actions": [],
+   "actions": [
+    {
+     "time": "3:00 am",
+     "kind": "OPEN",
+     "side": "SELL",
+     "text": "OPEN SELL now ~3866.11 | stop 3914.93 (48.8 away) | no half-close: hold to the stop or the day-end close | signal N3 inside"
+    }
+   ],
    "actions_day": "2026-11-16",
    "feed_error": false,
-   "state": "waiting",
-   "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": null,
+   "state": "sell",
+   "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
+   "price": 3879.07,
    "close_at": "12:50 am",
-   "change": null,
+   "change": 12.96,
    "size": 0.1,
    "datr": 96.65,
-   "open_now": 0,
-   "entries": [],
-   "spark": [],
+   "open_now": 1,
+   "entries": [
+    {
+     "time": "3:00 am",
+     "side": "SELL",
+     "tag": "N3 inside",
+     "price": 3866.11,
+     "stop": 3914.93,
+     "stop0": 3914.93,
+     "half_px": null,
+     "half": false,
+     "half_time": null,
+     "size": 0.1,
+     "status": "open",
+     "first": true,
+     "exit": null,
+     "exit_time": null,
+     "pnl": null,
+     "pnl_oz": null,
+     "size_x": 1.0,
+     "rwf": null,
+     "next": "Hold to the stop 3914.93 or the day-end close \u00b7 no half-close",
+     "late": false
+    }
+   ],
+   "spark": [
+    [
+     "3:00 am",
+     3879.07,
+     3866.11,
+     3879.34,
+     3865.62
+    ]
+   ],
    "history": [
     {
      "date": "2026-11-16",
      "label": "Mon 16 Nov",
-     "state": "none",
-     "entries": 0,
+     "state": "sell",
+     "entries": 1,
      "stopped": 0,
      "eod": 0,
-     "running": 0,
+     "running": 1,
      "rw": 0,
      "rd": 0,
      "pnl": null
@@ -208,8 +246,8 @@
     "dollar_5d": "rose",
     "vix_5d": "fell",
     "tnx_5d": "rose",
-    "dollar_driven": null,
-    "corr": null,
+    "dollar_driven": false,
+    "corr": -0.447,
     "low_attention": true,
     "missing": [],
     "notes": []
@@ -224,11 +262,11 @@
    },
    "journal": {
     "since": "03 Oct 2026",
-    "trades": 46,
+    "trades": 47,
     "direction": 37.5,
     "decided": 16,
-    "days": 93.5,
-    "perday": 1.48,
+    "days": 96.8,
+    "perday": 1.52,
     "avg_pnl": -0.39,
     "closed": 46,
     "total_pnl_01": -1.79
@@ -1627,7 +1665,7 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 159.664,
+   "price": 159.752,
    "change_pips": null,
    "atr_pips": 87.8,
    "entries": [],
@@ -3681,10 +3719,18 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 87.246,
+   "change": -0.15,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "3:00 am",
+     87.25,
+     87.4,
+     87.56,
+     87.17
+    ]
+   ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 6,
@@ -5038,7 +5084,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": null,
+   "live_spread": 0.09,
    "history_note": "history to 2026-11-15 (60 days)"
   },
   "US500": {
@@ -5071,10 +5117,18 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak, no duration-curve-steepening + tech-weak, no bank-loan-weak + E-mini COT net-long, no DJIA-COT-bullish-fast + crypto-risk-off, no MSCI-EM-COT-extreme-long + communications-weak, no Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast, no UST5yr-COT-falling-fast + credit-de-risking, no Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence, no Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long, no ES-asset-manager-COT-fast-bullish + staples-weak, no VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish, no UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast, no Utilities-retail-COT-falling-fast + transports-weak, no Sugar-COT-net-long + financials-weak, no Feeder-Cattle-COT-rising-fast + credit-de-risking, no VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish, no EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast).",
-   "price": null,
-   "change": null,
+   "price": 7581.5,
+   "change": 13.6,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "3:00 am",
+     7581.5,
+     7567.9,
+     7584.5,
+     7565.8
+    ]
+   ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 6,
@@ -6618,10 +6672,18 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 28117.7,
+   "change": 103.3,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "3:00 am",
+     28117.7,
+     28014.4,
+     28155.1,
+     28010.7
+    ]
+   ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 21,
@@ -7870,8 +7932,8 @@
    "regime": 0.528,
    "gap": null,
    "message": "Today is a SELL day (euro hedge funds trend). The trade opens at 12:00 pm Dubai (10:00 broker).",
-   "price": 1.32123,
-   "change": 5e-05,
+   "price": 1.32127,
+   "change": 9e-05,
    "entries": [],
    "spark": [
     [
@@ -7946,10 +8008,17 @@
     ],
     [
      "2:55 am",
-     1.32123,
+     1.32127,
      1.32116,
-     1.32123,
+     1.32133,
      1.32116
+    ],
+    [
+     "3:00 am",
+     1.32127,
+     1.32128,
+     1.32155,
+     1.3212
     ]
    ],
    "journal": {
@@ -8961,10 +9030,18 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": null,
-   "change": null,
+   "price": 93.763,
+   "change": -0.56,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "3:00 am",
+     93.76,
+     94.32,
+     94.48,
+     93.66
+    ]
+   ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 6,
