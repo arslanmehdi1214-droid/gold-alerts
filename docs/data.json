@@ -1,5 +1,5 @@
 {
- "updated": "Tue 17 Nov \u00b7 2:00 am",
+ "updated": "Tue 17 Nov \u00b7 2:13 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -1627,7 +1627,7 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
+   "price": 159.388,
    "change_pips": null,
    "atr_pips": 87.7,
    "entries": [],
@@ -3713,8 +3713,8 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": null,
-   "history_note": "history to 2026-11-16 (300 days) \u00b7 added 2026-11-16"
+   "live_spread_pips": 9.0,
+   "history_note": "history to 2026-11-16 (300 days)"
   },
   "DE40": {
    "code": "DE40",
@@ -5165,7 +5165,7 @@
    "feed_error": false,
    "epic": "OIL_CRUDE",
    "live_spread": null,
-   "history_note": "history to 2026-11-16 (60 days) \u00b7 added 2026-11-16"
+   "history_note": "history to 2026-11-16 (60 days)"
   },
   "US500": {
    "code": "US500",
@@ -5197,10 +5197,25 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak, no duration-curve-steepening + tech-weak, no bank-loan-weak + E-mini COT net-long, no DJIA-COT-bullish-fast + crypto-risk-off, no MSCI-EM-COT-extreme-long + communications-weak, no Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast, no UST5yr-COT-falling-fast + credit-de-risking, no Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence, no Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long, no ES-asset-manager-COT-fast-bullish + staples-weak, no VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish, no UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast, no Utilities-retail-COT-falling-fast + transports-weak, no Sugar-COT-net-long + financials-weak, no Feeder-Cattle-COT-rising-fast + credit-de-risking, no VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish, no EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast).",
-   "price": null,
-   "change": null,
+   "price": 7415.7,
+   "change": 4.6,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     7412.7,
+     7411.1,
+     7412.9,
+     7407.1
+    ],
+    [
+     "2:10 am",
+     7415.7,
+     7412.6,
+     7415.7,
+     7412.6
+    ]
+   ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 7,
@@ -6824,7 +6839,7 @@
    "picks_stale": false,
    "epic": "US500",
    "close_at": "12:30 am",
-   "history_note": "history to 2026-11-16 (38 days) \u00b7 added 2026-11-16"
+   "history_note": "history to 2026-11-16 (38 days)"
   },
   "US100": {
    "code": "US100",
@@ -6856,10 +6871,25 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 27196.8,
+   "change": 32.1,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     27187.8,
+     27164.7,
+     27188.1,
+     27159.3
+    ],
+    [
+     "2:10 am",
+     27196.8,
+     27187.6,
+     27196.8,
+     27186.0
+    ]
+   ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 22,
@@ -8097,7 +8127,7 @@
    "feed_error": false,
    "epic": "US100",
    "close_at": "1:00 am",
-   "history_note": "history to 2026-11-16 (378 days) \u00b7 added 2026-11-16",
+   "history_note": "history to 2026-11-16 (378 days)",
    "fomc": null,
    "cpi": {
     "state": "closed",
@@ -8145,10 +8175,25 @@
    "regime": 0.532,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker). TUESDAY: stop moves to entry + 5 pips once +0.2 x stop in profit.",
-   "price": null,
-   "change": null,
+   "price": 1.31842,
+   "change": -6e-05,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     1.31841,
+     1.31848,
+     1.31848,
+     1.31818
+    ],
+    [
+     "2:10 am",
+     1.31842,
+     1.31842,
+     1.31844,
+     1.31842
+    ]
+   ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 7,
@@ -9210,15 +9255,22 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 90.028,
-   "change": -0.04,
+   "price": 90.023,
+   "change": -0.05,
    "entries": [],
    "spark": [
     [
      "2:00 am",
-     90.03,
+     90.06,
      90.07,
      90.09,
+     90.02
+    ],
+    [
+     "2:05 am",
+     90.02,
+     90.06,
+     90.06,
      90.02
     ]
    ],
