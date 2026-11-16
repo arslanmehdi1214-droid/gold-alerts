@@ -1,9 +1,9 @@
 {
- "balance": 1536.66,
+ "balance": 1536.51,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-16",
-  "pl": -21.16,
+  "pl": -21.46,
   "start_balance": 1546.8,
   "start_equity": 1546.8,
   "stopped": false
@@ -602,6 +602,19 @@
    "side": "SELL",
    "state": "closed",
    "stop": 160.337
+  },
+  "USDJPY|2026-11-16|8:00 am|SELL|Heikin-Ashi 7am": {
+   "desk_price": 159.644,
+   "market": "USDJPY",
+   "opened_at": "Mon 16 Nov 8:01 AM",
+   "part_x": 1.0,
+   "px_adj": 0.0,
+   "risk_aed": 9.23,
+   "risk_usd": 2.72,
+   "side": "SELL",
+   "state": "not entered",
+   "stop": 160.313,
+   "why": "rejected by Capital.com"
   }
  },
  "untracked_seen": {}
