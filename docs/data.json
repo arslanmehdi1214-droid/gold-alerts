@@ -1,5 +1,5 @@
 {
- "updated": "Mon 16 Nov \u00b7 7:30 am",
+ "updated": "Mon 16 Nov \u00b7 7:31 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -26,9 +26,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 3871.68,
+   "price": 3869.75,
    "close_at": "12:50 am",
-   "change": 5.57,
+   "change": 3.64,
    "size": 0.1,
    "datr": 96.65,
    "open_now": 2,
@@ -452,10 +452,17 @@
     ],
     [
      "7:25 am",
-     3871.68,
+     3870.49,
      3872.16,
      3872.7,
      3868.92
+    ],
+    [
+     "7:30 am",
+     3869.75,
+     3870.47,
+     3870.47,
+     3868.81
     ]
    ],
    "history": [
@@ -2064,8 +2071,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 159.676,
-   "change_pips": -12.4,
+   "price": 159.661,
+   "change_pips": -13.9,
    "atr_pips": 87.8,
    "entries": [
     {
@@ -2465,10 +2472,17 @@
     ],
     [
      "7:25 am",
-     159.676,
+     159.675,
      159.698,
      159.699,
      159.661
+    ],
+    [
+     "7:30 am",
+     159.661,
+     159.674,
+     159.674,
+     159.659
     ]
    ],
    "journal": {
@@ -4550,8 +4564,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Supply day: hold the whole sell (no part-close), the stop stays where it is; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 86.681,
-   "change": -0.72,
+   "price": 86.666,
+   "change": -0.73,
    "entries": [
     {
      "time": "7:03 am",
@@ -4954,6 +4968,13 @@
      86.6,
      86.69,
      86.58
+    ],
+    [
+     "7:30 am",
+     86.67,
+     86.68,
+     86.68,
+     86.65
     ]
    ],
    "journal": {
@@ -6365,8 +6386,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak, no duration-curve-steepening + tech-weak, no bank-loan-weak + E-mini COT net-long, no DJIA-COT-bullish-fast + crypto-risk-off, no MSCI-EM-COT-extreme-long + communications-weak, no Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast, no UST5yr-COT-falling-fast + credit-de-risking, no Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence, no Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long, no ES-asset-manager-COT-fast-bullish + staples-weak, no VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish, no UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast, no Utilities-retail-COT-falling-fast + transports-weak, no Sugar-COT-net-long + financials-weak, no Feeder-Cattle-COT-rising-fast + credit-de-risking, no VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish, no EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast).",
-   "price": 7551.6,
-   "change": -16.3,
+   "price": 7551.1,
+   "change": -16.8,
    "entries": [],
    "spark": [
     [
@@ -6746,6 +6767,13 @@
      7554.3,
      7554.4,
      7550.9
+    ],
+    [
+     "7:30 am",
+     7551.1,
+     7551.5,
+     7551.8,
+     7548.8
     ]
    ],
    "journal": {
@@ -8291,8 +8319,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 27847.3,
-   "change": -167.1,
+   "price": 27846.1,
+   "change": -168.3,
    "entries": [],
    "spark": [
     [
@@ -8672,6 +8700,13 @@
      27864.3,
      27865.8,
      27838.6
+    ],
+    [
+     "7:30 am",
+     27846.1,
+     27845.6,
+     27849.6,
+     27827.4
     ]
    ],
    "journal": {
@@ -9922,8 +9957,8 @@
    "regime": 0.528,
    "gap": null,
    "message": "Today is a SELL day (euro hedge funds trend). The trade opens at 12:00 pm Dubai (10:00 broker).",
-   "price": 1.32073,
-   "change": -0.00045,
+   "price": 1.32067,
+   "change": -0.00051,
    "entries": [],
    "spark": [
     [
@@ -10380,6 +10415,13 @@
      1.32076,
      1.32079,
      1.32073
+    ],
+    [
+     "7:30 am",
+     1.32067,
+     1.32074,
+     1.32076,
+     1.32067
     ]
    ],
    "journal": {
@@ -11772,6 +11814,13 @@
      92.99,
      93.12,
      92.95
+    ],
+    [
+     "7:30 am",
+     93.12,
+     93.11,
+     93.12,
+     93.11
     ]
    ],
    "journal": {
