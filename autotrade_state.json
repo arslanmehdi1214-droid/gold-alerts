@@ -1,15 +1,15 @@
 {
- "balance": 1583.26,
+ "balance": 1582.78,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-16",
-  "pl": 74.33,
+  "pl": 73.37,
   "start_balance": 1546.8,
   "start_equity": 1546.8,
   "stopped": false
  },
- "open_positions": 3,
- "open_risk_aed": 102.3,
+ "open_positions": 1,
+ "open_risk_aed": 28.79,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-11-13|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend": {
@@ -90,16 +90,17 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-73a1-394a-0495-7fc60004511e",
     "level": 3879.7,
-    "open": true,
+    "open": false,
     "size": 0.16,
     "tp": null
    },
    "risk_aed": 28.69,
    "risk_usd": 8.17,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 3914.93
   },
   "GOLD|2026-11-16|5:03 am|SELL|S24 sq24": {
@@ -109,16 +110,17 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-73a2-02fe-0495-7fc60004511e",
     "level": 3867.74,
-    "open": true,
+    "open": false,
     "size": 0.25,
     "tp": null
    },
    "risk_aed": 44.82,
    "risk_usd": 12.25,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 3914.44
   },
   "OIL|2026-11-13|10:10 am|BUY|Day open (buy)": {
