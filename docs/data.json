@@ -1,5 +1,5 @@
 {
- "updated": "Mon 16 Nov \u00b7 2:49 pm",
+ "updated": "Mon 16 Nov \u00b7 2:50 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -44,9 +44,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 3866.94,
+   "price": 3868.3,
    "close_at": "12:50 am",
-   "change": 0.83,
+   "change": 2.19,
    "size": 0.1,
    "datr": 96.65,
    "open_now": 2,
@@ -1086,7 +1086,7 @@
     ],
     [
      "2:45 pm",
-     3866.94,
+     3868.3,
      3866.36,
      3868.54,
      3866.36
@@ -2698,8 +2698,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 159.67,
-   "change_pips": -13.0,
+   "price": 159.679,
+   "change_pips": -12.1,
    "atr_pips": 87.8,
    "entries": [
     {
@@ -3773,7 +3773,7 @@
     ],
     [
      "2:45 pm",
-     159.67,
+     159.679,
      159.659,
      159.69,
      159.655
@@ -5916,8 +5916,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Supply day: hold the whole sell (no part-close), the stop stays where it is; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 87.151,
-   "change": -0.25,
+   "price": 87.171,
+   "change": -0.22,
    "entries": [
     {
      "time": "7:03 am",
@@ -6954,7 +6954,7 @@
     ],
     [
      "2:45 pm",
-     87.15,
+     87.17,
      87.12,
      87.28,
      87.09
@@ -8358,7 +8358,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.04,
+   "live_spread": 0.023,
    "history_note": "history to 2026-11-15 (60 days)"
   },
   "US500": {
@@ -10933,8 +10933,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 27672.8,
-   "change": -341.6,
+   "price": 27673.7,
+   "change": -340.7,
    "entries": [],
    "spark": [
     [
@@ -11926,9 +11926,9 @@
     ],
     [
      "2:45 pm",
-     27672.8,
+     27673.7,
      27667.6,
-     27672.8,
+     27678.4,
      27656.3
     ]
    ],
@@ -13180,8 +13180,8 @@
    "regime": 0.528,
    "gap": null,
    "message": "PAPER SELL at 1.32025 (12:00 pm Dubai). Stop 1.32809, target 1.31241 - close the WHOLE trade at the target; otherwise it closes at 1:45 am Dubai.",
-   "price": 1.31889,
-   "change": -0.00229,
+   "price": 1.31877,
+   "change": -0.00241,
    "entries": [
     {
      "time": "12:00 pm",
@@ -13207,7 +13207,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": 12.1,
+     "live": 13.3,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.32809 \u00b7 target 1.31241 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
     }
@@ -14279,10 +14279,10 @@
     ],
     [
      "2:45 pm",
-     1.31889,
+     1.31877,
      1.31917,
      1.31918,
-     1.31886
+     1.31877
     ]
    ],
    "journal": {
@@ -14331,7 +14331,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": 12.1,
+       "live": 13.3,
        "spread": 1.5,
        "next": "Hold \u00b7 stop 1.32809 \u00b7 target 1.31241 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
       }
@@ -15332,8 +15332,8 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 93.678,
-   "change": -0.64,
+   "price": 93.703,
+   "change": -0.62,
    "entries": [],
    "spark": [
     [
@@ -16325,7 +16325,7 @@
     ],
     [
      "2:45 pm",
-     93.68,
+     93.7,
      93.65,
      93.84,
      93.65
