@@ -1,19 +1,5 @@
 [
  {
-  "action": "OPEN BUY part",
-  "detail": "GBPUSD|2026-10-30|11:00 am|BUY|Layer 2 \u00b7 small traders crowded size 1100.0 at 1.33949 stop 1.33199 target 1.34677 | trade risk 29.85 AED",
-  "market": "GBPUSD",
-  "ok": true,
-  "t": "Fri 30 Oct 11:01 AM"
- },
- {
-  "action": "target moved to fill + desk distance",
-  "detail": "GBPUSD|2026-10-30|11:00 am|BUY|Layer 2 \u00b7 small traders crowded 1.34677 -> 1.34688 ",
-  "market": "GBPUSD",
-  "ok": true,
-  "t": "Fri 30 Oct 11:01 AM"
- },
- {
   "action": "stop moved",
   "detail": "GBPUSD|2026-10-30|11:00 am|BUY|Layer 2 \u00b7 small traders crowded to 1.33988",
   "market": "GBPUSD",
@@ -2798,5 +2784,19 @@
   "market": "USDJPY",
   "ok": false,
   "t": "Mon 16 Nov 8:01 AM"
+ },
+ {
+  "action": "OPEN SELL part",
+  "detail": "USDJPY|2026-11-16|9:00 am|SELL|HAM (Heikin-Ashi, 2nd hour) size 600.0 at 159.582 stop 160.269 target 159.58 | trade risk 9.24 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Mon 16 Nov 9:01 AM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "USDJPY|2026-11-16|9:00 am|SELL|HAM (Heikin-Ashi, 2nd hour) 159.58 -> 159.562 ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Mon 16 Nov 9:01 AM"
  }
 ]

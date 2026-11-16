@@ -1,15 +1,15 @@
 {
- "balance": 1549.27,
+ "balance": 1551.43,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-16",
-  "pl": 4.06,
+  "pl": 8.38,
   "start_balance": 1546.8,
   "start_equity": 1546.8,
   "stopped": false
  },
- "open_positions": 3,
- "open_risk_aed": 102.77,
+ "open_positions": 4,
+ "open_risk_aed": 112.01,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-12|1:00 pm|SELL|Rule B \u00b7 day after US holiday": {
@@ -615,6 +615,25 @@
    "state": "not entered",
    "stop": 160.313,
    "why": "rejected by Capital.com"
+  },
+  "USDJPY|2026-11-16|9:00 am|SELL|HAM (Heikin-Ashi, 2nd hour)": {
+   "desk_price": 159.6,
+   "market": "USDJPY",
+   "opened_at": "Mon 16 Nov 9:01 AM",
+   "part": {
+    "id": "00000000-73b2-c218-0495-7fc60004511e",
+    "level": 159.582,
+    "open": true,
+    "size": 600.0,
+    "tp": 159.562
+   },
+   "part_x": 1.0,
+   "px_adj": 0.0,
+   "risk_aed": 9.24,
+   "risk_usd": 2.72,
+   "side": "SELL",
+   "state": "open",
+   "stop": 160.269
   }
  },
  "untracked_seen": {}
