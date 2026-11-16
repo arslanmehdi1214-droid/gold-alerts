@@ -1,15 +1,15 @@
 {
- "balance": 1554.15,
+ "balance": 1554.45,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-16",
-  "pl": 13.92,
+  "pl": 14.52,
   "start_balance": 1546.8,
   "start_equity": 1546.8,
   "stopped": false
  },
- "open_positions": 4,
- "open_risk_aed": 131.56,
+ "open_positions": 5,
+ "open_risk_aed": 143.75,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-12|1:00 pm|SELL|Rule B \u00b7 day after US holiday": {
@@ -238,6 +238,25 @@
    "market": "OIL",
    "state": "not entered",
    "why": "real risk 16.53 AED after lot rounding > 1.4x target 10.0 AED"
+  },
+  "OIL|2026-11-16|1:21 pm|SELL|Yesterday's high/low": {
+   "desk_price": 86.85,
+   "market": "OIL",
+   "opened_at": "Mon 16 Nov 1:22 PM",
+   "part_x": 0.0,
+   "px_adj": 0.04,
+   "rest": {
+    "id": "00000000-73b4-d1e6-0495-7fc60004511e",
+    "level": 86.841,
+    "open": true,
+    "size": 1.0,
+    "tp": null
+   },
+   "risk_aed": 12.19,
+   "risk_usd": 2.72,
+   "side": "SELL",
+   "state": "open",
+   "stop": 90.17
   },
   "OIL|2026-11-16|7:03 am|SELL|Open \u00b1 \u00bd range": {
    "desk_price": 86.46,
