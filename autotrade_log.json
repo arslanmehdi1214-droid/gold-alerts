@@ -1,12 +1,5 @@
 [
  {
-  "action": "open part REJECTED",
-  "detail": "USDJPY|2026-10-30|7:00 am|SELL|Heikin-Ashi 7am size 600.0 stop 158.196: REJECTED http 400 {\"errorCode\":\"error.invalid.takeprofit.maxvalue: 157.519\"}",
-  "market": "USDJPY",
-  "ok": false,
-  "t": "Fri 30 Oct 7:01 AM"
- },
- {
   "action": "OPEN SELL part",
   "detail": "US100|2026-10-30|7:00 am|SELL|H1 U5 only when 5d trend against size 0.002 at 28752.3 stop 28915.1 target 28688.6 | trade risk 9.98 AED",
   "market": "US100",
@@ -2798,5 +2791,12 @@
   "market": "USDJPY",
   "ok": true,
   "t": "Mon 16 Nov 3:07 AM"
+ },
+ {
+  "action": "OPEN SELL rest",
+  "detail": "GOLD|2026-11-16|5:03 am|SELL|S24 sq24 size 0.25 at 3867.74 stop 3914.44 | trade risk 44.82 AED",
+  "market": "GOLD",
+  "ok": true,
+  "t": "Mon 16 Nov 5:04 AM"
  }
 ]

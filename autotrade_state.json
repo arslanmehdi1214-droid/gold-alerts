@@ -1,15 +1,15 @@
 {
- "balance": 1552.4,
+ "balance": 1554.47,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-16",
-  "pl": 10.32,
+  "pl": 14.46,
   "start_balance": 1546.8,
   "start_equity": 1546.8,
   "stopped": false
  },
- "open_positions": 1,
- "open_risk_aed": 28.69,
+ "open_positions": 2,
+ "open_risk_aed": 73.51,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-12|1:00 pm|SELL|Rule B \u00b7 day after US holiday": {
@@ -182,6 +182,25 @@
    "side": "SELL",
    "state": "open",
    "stop": 3914.93
+  },
+  "GOLD|2026-11-16|5:03 am|SELL|S24 sq24": {
+   "desk_price": 3865.62,
+   "market": "GOLD",
+   "opened_at": "Mon 16 Nov 5:04 AM",
+   "part_x": 0.0,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-73a2-02fe-0495-7fc60004511e",
+    "level": 3867.74,
+    "open": true,
+    "size": 0.25,
+    "tp": null
+   },
+   "risk_aed": 44.82,
+   "risk_usd": 12.25,
+   "side": "SELL",
+   "state": "open",
+   "stop": 3914.44
   },
   "OIL|2026-11-12|9:00 am|SELL|Side sell (weak close)": {
    "at": "Thu 12 Nov 9:01 AM",
