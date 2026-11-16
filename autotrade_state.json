@@ -1,15 +1,15 @@
 {
- "balance": 1585.73,
+ "balance": 1581.94,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-16",
-  "pl": 77.08,
+  "pl": 98.92,
   "start_balance": 1546.8,
   "start_equity": 1546.8,
   "stopped": false
  },
- "open_positions": 7,
- "open_risk_aed": 173.22,
+ "open_positions": 5,
+ "open_risk_aed": 143.75,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-12|1:00 pm|SELL|Rule B \u00b7 day after US holiday": {
@@ -394,25 +394,27 @@
    "market": "US100",
    "opened_at": "Mon 16 Nov 4:07 PM",
    "part": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-73b5-f035-0495-7fc60004511e",
     "level": 27598.8,
-    "open": true,
+    "open": false,
     "size": 0.005,
     "tp": 27785.1
    },
    "part_x": 0.25,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-73b5-f044-0495-7fc60004511e",
     "level": 27599.1,
-    "open": true,
+    "open": false,
     "size": 0.017,
     "tp": null
    },
    "risk_aed": 29.47,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 27235.3
   },
   "US500|2026-11-12|3:01 am|BUY|Night long (UST5yr-COT-falling-fast + credit-de-risking)": {
