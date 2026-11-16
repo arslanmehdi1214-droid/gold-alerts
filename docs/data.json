@@ -1,5 +1,5 @@
 {
- "updated": "Tue 17 Nov \u00b7 12:37 am",
+ "updated": "Tue 17 Nov \u00b7 12:38 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -44,9 +44,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 3853.45,
+   "price": 3853.21,
    "close_at": "12:50 am",
-   "change": -12.66,
+   "change": -12.9,
    "size": 0.1,
    "datr": 96.65,
    "open_now": 2,
@@ -1912,10 +1912,10 @@
     ],
     [
      "12:35 am",
-     3853.45,
+     3853.21,
      3856.21,
      3856.27,
-     3853.09
+     3853.07
     ]
    ],
    "history": [
@@ -5428,7 +5428,7 @@
      159.456,
      159.468,
      159.469,
-     159.451
+     159.445
     ]
    ],
    "journal": {
@@ -7568,8 +7568,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Supply day: hold the whole sell (no part-close), the stop stays where it is; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 84.276,
-   "change": -3.12,
+   "price": 84.291,
+   "change": -3.11,
    "entries": [
     {
      "time": "7:03 am",
@@ -9432,10 +9432,10 @@
     ],
     [
      "12:35 am",
-     84.28,
-     84.28,
      84.29,
-     84.26
+     84.28,
+     84.3,
+     84.25
     ]
    ],
    "journal": {
@@ -10869,8 +10869,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "none",
    "message": "No paper day trade today. No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak, no duration-curve-steepening + tech-weak, no bank-loan-weak + E-mini COT net-long, no DJIA-COT-bullish-fast + crypto-risk-off, no MSCI-EM-COT-extreme-long + communications-weak, no Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast, no UST5yr-COT-falling-fast + credit-de-risking, no Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence, no Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long, no ES-asset-manager-COT-fast-bullish + staples-weak, no VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish, no UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast, no Utilities-retail-COT-falling-fast + transports-weak, no Sugar-COT-net-long + financials-weak, no Feeder-Cattle-COT-rising-fast + credit-de-risking, no VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish, no EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast).",
-   "price": 7408.8,
-   "change": -159.1,
+   "price": 7403.8,
+   "change": -164.1,
    "entries": [],
    "spark": [
     [
@@ -12688,10 +12688,10 @@
     ],
     [
      "12:35 am",
-     7408.8,
+     7403.8,
      7408.6,
      7409.8,
-     7407.3
+     7403.8
     ]
    ],
    "journal": {
@@ -14239,8 +14239,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 27179.5,
-   "change": -834.9,
+   "price": 27151.1,
+   "change": -863.3,
    "entries": [
     {
      "time": "4:06 pm",
@@ -16087,10 +16087,10 @@
     ],
     [
      "12:35 am",
-     27179.5,
+     27151.1,
      27184.7,
      27187.6,
-     27175.0
+     27151.0
     ]
    ],
    "journal": {
@@ -17370,8 +17370,8 @@
    "regime": 0.528,
    "gap": null,
    "message": "PAPER SELL at 1.32025 (12:00 pm Dubai). Stop 1.32809, target 1.31241 - close the WHOLE trade at the target; otherwise it closes at 1:45 am Dubai.",
-   "price": 1.31836,
-   "change": -0.00282,
+   "price": 1.31829,
+   "change": -0.00289,
    "entries": [
     {
      "time": "12:00 pm",
@@ -17397,7 +17397,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": 17.4,
+     "live": 18.1,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.32809 \u00b7 target 1.31241 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
     }
@@ -19295,7 +19295,7 @@
     ],
     [
      "12:35 am",
-     1.31836,
+     1.31829,
      1.31824,
      1.31838,
      1.31824
@@ -19347,7 +19347,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": 17.4,
+       "live": 18.1,
        "spread": 1.5,
        "next": "Hold \u00b7 stop 1.32809 \u00b7 target 1.31241 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
       }
@@ -20348,8 +20348,8 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 90.628,
-   "change": -3.69,
+   "price": 90.618,
+   "change": -3.7,
    "entries": [],
    "spark": [
     [
@@ -22167,7 +22167,7 @@
     ],
     [
      "12:35 am",
-     90.63,
+     90.62,
      90.64,
      90.65,
      90.6
