@@ -1,5 +1,5 @@
 {
- "updated": "Mon 16 Nov \u00b7 10:15 am",
+ "updated": "Mon 16 Nov \u00b7 10:16 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -32,9 +32,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 3851.46,
+   "price": 3852.87,
    "close_at": "12:50 am",
-   "change": -14.65,
+   "change": -13.24,
    "size": 0.1,
    "datr": 96.65,
    "open_now": 2,
@@ -689,10 +689,17 @@
     ],
     [
      "10:10 am",
-     3851.46,
+     3851.1,
      3850.83,
      3852.39,
      3847.87
+    ],
+    [
+     "10:15 am",
+     3852.87,
+     3851.14,
+     3854.1,
+     3850.06
     ]
    ],
    "history": [
@@ -2301,8 +2308,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 159.392,
-   "change_pips": -40.8,
+   "price": 159.364,
+   "change_pips": -43.6,
    "atr_pips": 87.8,
    "entries": [
     {
@@ -2995,6 +3002,13 @@
      159.372,
      159.408,
      159.355
+    ],
+    [
+     "10:15 am",
+     159.364,
+     159.391,
+     159.393,
+     159.361
     ]
    ],
    "journal": {
@@ -5134,8 +5148,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Supply day: hold the whole sell (no part-close), the stop stays where it is; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 87.646,
-   "change": 0.25,
+   "price": 87.571,
+   "change": 0.17,
    "entries": [
     {
      "time": "7:03 am",
@@ -5769,6 +5783,13 @@
      87.56,
      87.71,
      87.55
+    ],
+    [
+     "10:15 am",
+     87.57,
+     87.65,
+     87.65,
+     87.57
     ]
    ],
    "journal": {
@@ -7147,7 +7168,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.023,
+   "live_spread": 0.04,
    "history_note": "history to 2026-11-15 (60 days)"
   },
   "US500": {
@@ -7792,6 +7813,13 @@
      7519.4,
      7520.3,
      7516.3
+    ],
+    [
+     "10:15 am",
+     7516.8,
+     7517.0,
+     7518.6,
+     7516.5
     ]
    ],
    "journal": {
@@ -9337,8 +9365,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 27574.6,
-   "change": -439.8,
+   "price": 27574.2,
+   "change": -440.2,
    "entries": [],
    "spark": [
     [
@@ -9949,6 +9977,13 @@
      27603.1,
      27608.7,
      27571.4
+    ],
+    [
+     "10:15 am",
+     27574.2,
+     27575.6,
+     27586.6,
+     27572.1
     ]
    ],
    "journal": {
@@ -11199,8 +11234,8 @@
    "regime": 0.528,
    "gap": null,
    "message": "Today is a SELL day (euro hedge funds trend). The trade opens at 12:00 pm Dubai (10:00 broker).",
-   "price": 1.32098,
-   "change": -0.0002,
+   "price": 1.32106,
+   "change": -0.00012,
    "entries": [],
    "spark": [
     [
@@ -11888,6 +11923,13 @@
      1.32105,
      1.32117,
      1.32087
+    ],
+    [
+     "10:15 am",
+     1.32106,
+     1.32097,
+     1.3211,
+     1.32097
     ]
    ],
    "journal": {
@@ -12899,8 +12941,8 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 94.258,
-   "change": -0.06,
+   "price": 94.188,
+   "change": -0.13,
    "entries": [],
    "spark": [
     [
@@ -13511,6 +13553,13 @@
      94.15,
      94.35,
      94.15
+    ],
+    [
+     "10:15 am",
+     94.19,
+     94.26,
+     94.27,
+     94.18
     ]
    ],
    "journal": {
