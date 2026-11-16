@@ -1,5 +1,5 @@
 {
- "updated": "Mon 16 Nov \u00b7 1:25 pm",
+ "updated": "Mon 16 Nov \u00b7 1:26 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -44,9 +44,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 3861.14,
+   "price": 3860.77,
    "close_at": "12:50 am",
-   "change": -4.97,
+   "change": -5.34,
    "size": 0.1,
    "datr": 96.65,
    "open_now": 2,
@@ -967,10 +967,17 @@
     ],
     [
      "1:20 pm",
-     3861.14,
+     3861.12,
      3862.24,
      3863.4,
      3860.18
+    ],
+    [
+     "1:25 pm",
+     3860.77,
+     3861.14,
+     3861.21,
+     3860.41
     ]
    ],
    "history": [
@@ -2579,8 +2586,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 159.454,
-   "change_pips": -34.6,
+   "price": 159.434,
+   "change_pips": -36.6,
    "atr_pips": 87.8,
    "entries": [
     {
@@ -3539,6 +3546,13 @@
      159.459,
      159.485,
      159.447
+    ],
+    [
+     "1:25 pm",
+     159.434,
+     159.453,
+     159.456,
+     159.428
     ]
    ],
    "journal": {
@@ -5678,8 +5692,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Supply day: hold the whole sell (no part-close), the stop stays where it is; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 86.821,
-   "change": -0.58,
+   "price": 86.781,
+   "change": -0.61,
    "entries": [
     {
      "time": "7:03 am",
@@ -6600,6 +6614,13 @@
      86.82,
      86.92,
      86.93,
+     86.76
+    ],
+    [
+     "1:25 pm",
+     86.78,
+     86.82,
+     86.84,
      86.76
     ]
    ],
@@ -8001,7 +8022,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.055,
+   "live_spread": 0.04,
    "history_note": "history to 2026-11-15 (60 days)"
   },
   "US500": {
@@ -8034,8 +8055,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak, no duration-curve-steepening + tech-weak, no bank-loan-weak + E-mini COT net-long, no DJIA-COT-bullish-fast + crypto-risk-off, no MSCI-EM-COT-extreme-long + communications-weak, no Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast, no UST5yr-COT-falling-fast + credit-de-risking, no Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence, no Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long, no ES-asset-manager-COT-fast-bullish + staples-weak, no VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish, no UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast, no Utilities-retail-COT-falling-fast + transports-weak, no Sugar-COT-net-long + financials-weak, no Feeder-Cattle-COT-rising-fast + credit-de-risking, no VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish, no EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast).",
-   "price": 7538.3,
-   "change": -29.6,
+   "price": 7539.3,
+   "change": -28.6,
    "entries": [],
    "spark": [
     [
@@ -8912,6 +8933,13 @@
      7537.3,
      7538.8,
      7534.9
+    ],
+    [
+     "1:25 pm",
+     7539.3,
+     7538.5,
+     7540.0,
+     7538.4
     ]
    ],
    "journal": {
@@ -10457,8 +10485,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 27691.2,
-   "change": -323.2,
+   "price": 27697.2,
+   "change": -317.2,
    "entries": [],
    "spark": [
     [
@@ -11335,6 +11363,13 @@
      27686.3,
      27692.9,
      27670.3
+    ],
+    [
+     "1:25 pm",
+     27697.2,
+     27691.3,
+     27702.3,
+     27688.4
     ]
    ],
    "journal": {
@@ -12585,8 +12620,8 @@
    "regime": 0.528,
    "gap": null,
    "message": "PAPER SELL at 1.32025 (12:00 pm Dubai). Stop 1.32809, target 1.31241 - close the WHOLE trade at the target; otherwise it closes at 1:45 am Dubai.",
-   "price": 1.32074,
-   "change": -0.00044,
+   "price": 1.32054,
+   "change": -0.00064,
    "entries": [
     {
      "time": "12:00 pm",
@@ -12612,7 +12647,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": -6.4,
+     "live": -4.4,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.32809 \u00b7 target 1.31241 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
     }
@@ -13569,6 +13604,13 @@
      1.32106,
      1.32107,
      1.32062
+    ],
+    [
+     "1:25 pm",
+     1.32054,
+     1.32076,
+     1.32076,
+     1.32053
     ]
    ],
    "journal": {
@@ -13617,7 +13659,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": -6.4,
+       "live": -4.4,
        "spread": 1.5,
        "next": "Hold \u00b7 stop 1.32809 \u00b7 target 1.31241 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
       }
@@ -14618,8 +14660,8 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 93.218,
-   "change": -1.1,
+   "price": 93.178,
+   "change": -1.14,
    "entries": [],
    "spark": [
     [
@@ -15496,6 +15538,13 @@
      93.39,
      93.41,
      93.13
+    ],
+    [
+     "1:25 pm",
+     93.18,
+     93.23,
+     93.25,
+     93.16
     ]
    ],
    "journal": {
