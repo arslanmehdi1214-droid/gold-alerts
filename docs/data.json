@@ -1,5 +1,5 @@
 {
- "updated": "Tue 17 Nov \u00b7 10:59 pm",
+ "updated": "Tue 17 Nov \u00b7 11:00 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 3856.19,
+   "price": 3855.2,
    "close_at": "12:50 am",
-   "change": -1.22,
+   "change": -2.21,
    "size": 0.1,
    "datr": 96.09,
    "open_now": 1,
@@ -1726,7 +1726,7 @@
     ],
     [
      "10:55 pm",
-     3856.19,
+     3855.2,
      3854.72,
      3856.55,
      3854.48
@@ -3338,8 +3338,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 159.313,
-   "change_pips": -12.7,
+   "price": 159.314,
+   "change_pips": -12.6,
    "atr_pips": 87.7,
    "entries": [
     {
@@ -5099,9 +5099,9 @@
     ],
     [
      "10:55 pm",
-     159.313,
-     159.276,
      159.314,
+     159.276,
+     159.318,
      159.273
     ]
    ],
@@ -7313,8 +7313,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 option-expiry day: no more trades today. Close 25% at the part level, then move the stop to entry; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 85.085,
-   "change": 1.21,
+   "price": 85.095,
+   "change": 1.22,
    "entries": [
     {
      "time": "9:40 am",
@@ -7352,7 +7352,7 @@
      "stop_usd": 3.38,
      "size": 0.25,
      "first": false,
-     "status": "open",
+     "status": "close_now",
      "exit": null,
      "exit_time": null,
      "res": null,
@@ -9037,7 +9037,7 @@
     ],
     [
      "10:55 pm",
-     85.08,
+     85.09,
      85.08,
      85.17,
      85.07
@@ -9101,7 +9101,7 @@
        "stop_usd": 3.38,
        "size": 0.25,
        "first": false,
-       "status": "open",
+       "status": "close_now",
        "exit": null,
        "exit_time": null,
        "res": null,
@@ -9112,7 +9112,7 @@
      ],
      "range_usd": 4.51,
      "traded": true,
-     "final": false
+     "final": true
     },
     {
      "date": "2026-11-16",
@@ -10529,8 +10529,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "sell",
    "message": "PAPER SELL day: 1 trade today (1 running). Only SELL signals count today (max 3; no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop). Each trade keeps its stop, no half-close; everything closes at 12:30 am Dubai (3:30 pm New York). No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak, no duration-curve-steepening + tech-weak, no bank-loan-weak + E-mini COT net-long, no DJIA-COT-bullish-fast + crypto-risk-off, no MSCI-EM-COT-extreme-long + communications-weak, no Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast, no UST5yr-COT-falling-fast + credit-de-risking, no Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence, no Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long, no ES-asset-manager-COT-fast-bullish + staples-weak, no VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish, no UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast, no Utilities-retail-COT-falling-fast + transports-weak, no Sugar-COT-net-long + financials-weak, no Feeder-Cattle-COT-rising-fast + credit-de-risking, no VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish, no EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast).",
-   "price": 7329.8,
-   "change": -81.3,
+   "price": 7328.6,
+   "change": -82.5,
    "entries": [
     {
      "time": "6:40 pm",
@@ -10554,7 +10554,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 69.7,
+     "live": 70.9,
      "spread": 0.8
     }
    ],
@@ -12311,7 +12311,7 @@
     ],
     [
      "10:55 pm",
-     7329.8,
+     7328.6,
      7326.1,
      7332.1,
      7324.9
@@ -12474,7 +12474,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 69.7,
+       "live": 70.9,
        "spread": 0.8
       }
      ],
@@ -14010,8 +14010,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 26886.0,
-   "change": -278.7,
+   "price": 26882.1,
+   "change": -282.6,
    "entries": [
     {
      "time": "3:28 pm",
@@ -15795,7 +15795,7 @@
     ],
     [
      "10:55 pm",
-     26886.0,
+     26882.1,
      26861.5,
      26896.0,
      26852.9
@@ -17115,8 +17115,8 @@
    "regime": 0.532,
    "gap": null,
    "message": "Locked stop hit at 2:02 pm Dubai: +3.5 pips. Done for today.",
-   "price": 1.32195,
-   "change": 0.00347,
+   "price": 1.32189,
+   "change": 0.00341,
    "entries": [
     {
      "time": "12:00 pm",
@@ -18900,10 +18900,10 @@
     ],
     [
      "10:55 pm",
-     1.32195,
+     1.32189,
      1.32218,
      1.32223,
-     1.32194
+     1.32189
     ]
    ],
    "journal": {
@@ -20005,8 +20005,8 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 91.88,
-   "change": 1.81,
+   "price": 91.91,
+   "change": 1.84,
    "entries": [],
    "spark": [
     [
@@ -21586,7 +21586,7 @@
     ],
     [
      "10:55 pm",
-     91.88,
+     91.91,
      91.85,
      91.94,
      91.84
