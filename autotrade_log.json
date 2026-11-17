@@ -1,12 +1,5 @@
 [
  {
-  "action": "stop moved",
-  "detail": "OIL|2026-11-02|6:31 am|SELL|Open \u00b1 \u00bd range to 100.07 (stop to entry: each position at its own fill price)",
-  "market": "OIL",
-  "ok": true,
-  "t": "Mon 2 Nov 8:11 AM"
- },
- {
   "action": "OPEN SELL rest",
   "detail": "OIL|2026-11-02|8:16 am|SELL|Open \u00b1 0.7 range size 2.9 at 99.585 stop 102.37 | trade risk 29.5 AED",
   "market": "OIL",
@@ -2798,5 +2791,12 @@
   "market": "US100",
   "ok": true,
   "t": "Tue 17 Nov 7:54 PM"
+ },
+ {
+  "action": "rest closed on demo",
+  "detail": "US100|2026-11-17|3:28 pm|SELL|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm",
+  "market": "US100",
+  "ok": true,
+  "t": "Tue 17 Nov 9:20 PM"
  }
 ]
