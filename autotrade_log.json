@@ -1,20 +1,6 @@
 [
  {
   "action": "stop moved",
-  "detail": "US100|2026-10-30|7:00 am|SELL|H1 U5 only when 5d trend against to 28476.7",
-  "market": "US100",
-  "ok": true,
-  "t": "Fri 30 Oct 10:17 PM"
- },
- {
-  "action": "stop moved",
-  "detail": "US100|2026-10-30|7:00 am|SELL|H1 U5 only when 5d trend against to 28453.9",
-  "market": "US100",
-  "ok": true,
-  "t": "Fri 30 Oct 10:18 PM"
- },
- {
-  "action": "stop moved",
   "detail": "US100|2026-10-30|7:00 am|SELL|H1 U5 only when 5d trend against to 28445.9",
   "market": "US100",
   "ok": true,
@@ -2798,5 +2784,19 @@
   "market": "USDJPY",
   "ok": true,
   "t": "Tue 17 Nov 1:05 PM"
+ },
+ {
+  "action": "part closed on demo",
+  "detail": "USDJPY|2026-11-17|1:04 pm|SELL|EMA10 break",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Tue 17 Nov 1:13 PM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "USDJPY|2026-11-17|1:04 pm|SELL|EMA10 break to 158.98 (stop to entry: each position at its own fill price)",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Tue 17 Nov 1:13 PM"
  }
 ]
