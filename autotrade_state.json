@@ -1,15 +1,15 @@
 {
- "balance": 1572.56,
+ "balance": 1571.54,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-17",
-  "pl": -19.32,
+  "pl": -21.36,
   "start_balance": 1582.08,
   "start_equity": 1582.08,
   "stopped": false
  },
- "open_positions": 1,
- "open_risk_aed": 44.57,
+ "open_positions": 2,
+ "open_risk_aed": 73.36,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-11-13|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend": {
@@ -51,6 +51,25 @@
    "side": "SELL",
    "state": "closed",
    "stop": 1.32809
+  },
+  "GBPUSD|2026-11-17|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded": {
+   "desk_price": 1.31866,
+   "market": "GBPUSD",
+   "opened_at": "Tue 17 Nov 12:01 PM",
+   "part": {
+    "id": "00000000-7406-22b7-0495-7fc60004511e",
+    "level": 1.31861,
+    "open": true,
+    "size": 1000.0,
+    "tp": 1.32645
+   },
+   "part_x": 1.0,
+   "px_adj": 0.0,
+   "risk_aed": 28.79,
+   "risk_usd": 8.17,
+   "side": "BUY",
+   "state": "open",
+   "stop": 1.31082
   },
   "GOLD|2026-11-13|11:04 am|SELL|N5 weekS1": {
    "desk_price": 3899.43,

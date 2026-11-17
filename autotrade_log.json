@@ -1,20 +1,6 @@
 [
  {
   "action": "stop moved",
-  "detail": "US100|2026-10-30|7:00 am|SELL|H1 U5 only when 5d trend against to 28535.9",
-  "market": "US100",
-  "ok": true,
-  "t": "Fri 30 Oct 9:51 PM"
- },
- {
-  "action": "stop moved",
-  "detail": "US100|2026-10-30|7:00 am|SELL|H1 U5 only when 5d trend against to 28523.8",
-  "market": "US100",
-  "ok": true,
-  "t": "Fri 30 Oct 9:52 PM"
- },
- {
-  "action": "stop moved",
   "detail": "US100|2026-10-30|7:00 am|SELL|H1 U5 only when 5d trend against to 28516.2",
   "market": "US100",
   "ok": true,
@@ -2798,5 +2784,19 @@
   "market": "OIL",
   "ok": false,
   "t": "Tue 17 Nov 9:41 AM"
+ },
+ {
+  "action": "OPEN BUY part",
+  "detail": "GBPUSD|2026-11-17|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded size 1000.0 at 1.31861 stop 1.31082 target 1.3265 | trade risk 28.79 AED",
+  "market": "GBPUSD",
+  "ok": true,
+  "t": "Tue 17 Nov 12:01 PM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "GBPUSD|2026-11-17|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded 1.3265 -> 1.32645 ",
+  "market": "GBPUSD",
+  "ok": true,
+  "t": "Tue 17 Nov 12:01 PM"
  }
 ]
