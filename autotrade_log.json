@@ -1,13 +1,6 @@
 [
  {
   "action": "OPEN SELL rest",
-  "detail": "OIL|2026-11-02|6:31 am|SELL|Open \u00b1 \u00bd range size 1.0 at 100.025 stop 102.88 | trade risk 10.17 AED",
-  "market": "OIL",
-  "ok": true,
-  "t": "Mon 2 Nov 6:32 AM"
- },
- {
-  "action": "OPEN SELL rest",
   "detail": "GOLD|2026-11-02|8:00 am|SELL|N2 near100 size 0.33 at 3904.28 stop 3938.83 | trade risk 44.48 AED",
   "market": "GOLD",
   "ok": true,
@@ -2798,5 +2791,12 @@
   "market": "US100",
   "ok": true,
   "t": "Tue 17 Nov 7:44 PM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "US100|2026-11-17|3:28 pm|SELL|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm to 27134.9",
+  "market": "US100",
+  "ok": true,
+  "t": "Tue 17 Nov 7:47 PM"
  }
 ]
