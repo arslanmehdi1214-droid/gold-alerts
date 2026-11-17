@@ -1,19 +1,5 @@
 [
  {
-  "action": "OPEN BUY part",
-  "detail": "GBPUSD|2026-11-02|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded size 1000.0 at 1.34183 stop 1.33394 target 1.3488 | trade risk 27.29 AED",
-  "market": "GBPUSD",
-  "ok": true,
-  "t": "Mon 2 Nov 12:02 PM"
- },
- {
-  "action": "target moved to fill + desk distance",
-  "detail": "GBPUSD|2026-11-02|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded 1.3488 -> 1.34926 ",
-  "market": "GBPUSD",
-  "ok": true,
-  "t": "Mon 2 Nov 12:02 PM"
- },
- {
   "action": "stop moved",
   "detail": "OIL|2026-11-02|8:16 am|SELL|Open \u00b1 0.7 range to 99.56 (stop to entry: each position at its own fill price)",
   "market": "OIL",
@@ -2798,5 +2784,19 @@
   "market": "US500",
   "ok": true,
   "t": "Wed 18 Nov 3:02 AM"
+ },
+ {
+  "action": "OPEN SELL part",
+  "detail": "US100|2026-11-18|3:21 am|SELL|F2 sweep prev-day hi/lo by 0.1ATR from 1am back inside <30min -> reverse size 0.001 at 27401.9 stop 27647.0 target 27281.6 | trade risk 9.84 AED",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 18 Nov 3:22 AM"
+ },
+ {
+  "action": "OPEN SELL rest",
+  "detail": "US100|2026-11-18|3:21 am|SELL|F2 sweep prev-day hi/lo by 0.1ATR from 1am back inside <30min -> reverse size 0.01 at 27406.5 stop 27647.0 | trade risk 9.84 AED",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 18 Nov 3:22 AM"
  }
 ]
