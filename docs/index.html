@@ -476,7 +476,7 @@ function render(){
  cards.innerHTML=op.map(ticket).join('');
  const idle=MK.filter(m=>!T.some(o=>o.m===m&&!done(o.e)));
  idle.innerHTML=idle.length?idle.map(m=>`<span data-c="${m.c}"><b>${m.n}</b> ${dirOf(M[m.c])==='NONE'?'waiting for first signal':'no open trade'}</span>`).join(' &nbsp; '):'';
- closedbox.innerHTML=cl.length?`<h3 id="clhdr">Closed today · ${cl.length}</h3><table>${cl.map(c=>`<tr data-c="${c.o.m.c}"><td>${c.o.m.n}</td><td class="${c.o.e.side==='BUY'?'pos':'neg'}">${c.o.e.side}</td><td class="num dim">${c.o.e.time}</td><td class="r num ${c.mv>=0?'pos':'neg'}">${sg(c.R)}R</td><td class="r num ${c.pl>=0?'pos':'neg'}">${sg(c.pl*AED)} AED</td></tr>`).join('')}</table>`:'';
+ closedbox.innerHTML=cl.length?`<h3 id="clhdr">Closed today · ${cl.length}</h3><table>${cl.map(c=>{const sk=SKIP.has(c.o.m.c+'|'+bkey()+'|'+c.o.e.time+'|'+c.o.e.side);return `<tr data-c="${c.o.m.c}"><td>${c.o.m.n}${sk?'<br><small class="dim">not on the demo account</small>':''}</td><td class="${c.o.e.side==='BUY'?'pos':'neg'}">${c.o.e.side}</td><td class="num dim">${c.o.e.time}</td><td class="r num ${c.mv>=0?'pos':'neg'}">${sg(c.R)}R</td><td class="r num ${c.pl>=0?'pos':'neg'}">${sg(c.pl*AED)} AED</td></tr>`}).join('')}</table>`:'';
  try{const fo=(M.US100||{}).fomc;                    /* 8 Nov: FOMC-overnight (own journal, independent of the v1.02 card above) */
   if(!fo)fomcbox.innerHTML='';
   else if(fo.state==='open'){const dp=(MK.find(x=>x.c==='US100')||{}).dp??1;
@@ -738,6 +738,8 @@ async function loadCal(){for(const u of ['calendar.json?t='+Date.now(),WORKER_UR
 // ---- Capital.com DEMO account (the desk's auto-trader trades here) ----
 let DEMO=null,DEMO_ERR=null,DEMO_MAP={},DEMO_SER=[];
 const DEMO_STATE_URL='https://raw.githubusercontent.com/arslanmehdi1214-droid/gold-alerts/main/autotrade_state.json';
+const SKIP_LOG_URL='https://raw.githubusercontent.com/arslanmehdi1214-droid/gold-alerts/main/autotrade_log.json';let SKIP=new Set();   /* 17 Nov: a desk signal the risk filter skipped never reaches the demo account - flag it the same way Open Trades does */
+async function pullSkips(){try{const j=await (await fetch(SKIP_LOG_URL+'?t='+Date.now(),{cache:'no-store'})).json();const s=new Set();(Array.isArray(j)?j:[]).forEach(e=>{if(e.action!=='skip')return;const p=(e.detail||'').split('|');if(p.length<4)return;s.add(p[0]+'|'+p[1]+'|'+p[2]+'|'+p[3])});SKIP=s;render()}catch(e){}}
 function demoKeyDay(){return DEMO&&DEMO.day_start_utc?DEMO.day_start_utc.slice(0,10):dkey(new Date())}
 function demoLoadSer(){try{const j=JSON.parse(localStorage.getItem('demoSer')||'{}');DEMO_SER=j.d===demoKeyDay()?j.s:[]}catch(e){DEMO_SER=DEMO_SER||[]}}
 function demoSaveSer(){try{localStorage.setItem('demoSer',JSON.stringify({d:demoKeyDay(),s:DEMO_SER.slice(-1500)}))}catch(e){}}
@@ -780,6 +782,6 @@ function renderDemo(){
 }
 buildT();render();applySel();tick();loadDesk();loadCal();setInterval(loadDesk,60000);loadHist();setInterval(loadHist,5*60000);setInterval(loadCal,30*60000);setInterval(tick,1000);
 pullLive();setInterval(pullLive,WORKER_URL?3000:5000);
-pullDemoMap().then(pullDemo);setInterval(pullDemo,5000);setInterval(pullDemoMap,60000);
+pullDemoMap().then(pullDemo);setInterval(pullDemo,5000);setInterval(pullDemoMap,60000);pullSkips();setInterval(pullSkips,60000);
 const fixH=()=>document.documentElement.style.setProperty('--hh',document.querySelector('header').offsetHeight+'px');fixH();addEventListener('resize',fixH);
 </script></body></html>
