@@ -1,20 +1,6 @@
 [
  {
   "action": "stop moved",
-  "detail": "US100|2026-10-30|7:00 am|SELL|H1 U5 only when 5d trend against to 28616.5",
-  "market": "US100",
-  "ok": true,
-  "t": "Fri 30 Oct 8:52 PM"
- },
- {
-  "action": "stop moved",
-  "detail": "US100|2026-10-30|7:00 am|SELL|H1 U5 only when 5d trend against to 28607.4",
-  "market": "US100",
-  "ok": true,
-  "t": "Fri 30 Oct 9:08 PM"
- },
- {
-  "action": "stop moved",
   "detail": "US100|2026-10-30|7:00 am|SELL|H1 U5 only when 5d trend against to 28597.1",
   "market": "US100",
   "ok": true,
@@ -2798,5 +2784,19 @@
   "market": "GBPUSD",
   "ok": true,
   "t": "Tue 17 Nov 1:46 AM"
+ },
+ {
+  "action": "OPEN SELL part",
+  "detail": "USDJPY|2026-11-17|8:00 am|SELL|Heikin-Ashi 7am size 600.0 at 159.269 stop 159.924 target 159.236 | trade risk 9.24 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Tue 17 Nov 8:01 AM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "USDJPY|2026-11-17|8:00 am|SELL|Heikin-Ashi 7am 159.236 -> 159.249 ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Tue 17 Nov 8:01 AM"
  }
 ]
