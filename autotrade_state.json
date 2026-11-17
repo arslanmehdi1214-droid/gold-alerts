@@ -170,6 +170,12 @@
    "state": "closed",
    "stop": 89.78
   },
+  "OIL|2026-11-17|9:00 am|SELL|Side sell (weak close)": {
+   "at": "Tue 17 Nov 9:01 AM",
+   "market": "OIL",
+   "state": "not entered",
+   "why": "real risk 12.41 AED after lot rounding > 1.4x target 7.5 AED"
+  },
   "US100|2026-11-13|5:42 pm|SELL|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm": {
    "desk_price": 28400.0,
    "market": "US100",
@@ -414,6 +420,19 @@
    "side": "SELL",
    "state": "closed",
    "stop": 159.924
+  },
+  "USDJPY|2026-11-17|9:00 am|SELL|HAM (Heikin-Ashi, 2nd hour)": {
+   "desk_price": 159.248,
+   "market": "USDJPY",
+   "opened_at": "Tue 17 Nov 9:01 AM",
+   "part_x": 1.0,
+   "px_adj": 0.0,
+   "risk_aed": 9.24,
+   "risk_usd": 2.72,
+   "side": "SELL",
+   "state": "not entered",
+   "stop": 159.916,
+   "why": "rejected by Capital.com"
   }
  },
  "untracked_seen": {}

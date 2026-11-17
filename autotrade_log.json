@@ -1,20 +1,6 @@
 [
  {
   "action": "stop moved",
-  "detail": "US100|2026-10-30|7:00 am|SELL|H1 U5 only when 5d trend against to 28588.8",
-  "market": "US100",
-  "ok": true,
-  "t": "Fri 30 Oct 9:11 PM"
- },
- {
-  "action": "stop moved",
-  "detail": "US100|2026-10-30|7:00 am|SELL|H1 U5 only when 5d trend against to 28579.1",
-  "market": "US100",
-  "ok": true,
-  "t": "Fri 30 Oct 9:18 PM"
- },
- {
-  "action": "stop moved",
   "detail": "US100|2026-10-30|7:00 am|SELL|H1 U5 only when 5d trend against to 28563.0",
   "market": "US100",
   "ok": true,
@@ -2798,5 +2784,19 @@
   "market": "USDJPY",
   "ok": true,
   "t": "Tue 17 Nov 8:10 AM"
+ },
+ {
+  "action": "open part REJECTED",
+  "detail": "USDJPY|2026-11-17|9:00 am|SELL|HAM (Heikin-Ashi, 2nd hour) size 600.0 stop 159.916: REJECTED http 400 {\"errorCode\":\"error.invalid.takeprofit.maxvalue: 159.211\"}",
+  "market": "USDJPY",
+  "ok": false,
+  "t": "Tue 17 Nov 9:01 AM"
+ },
+ {
+  "action": "skip",
+  "detail": "OIL|2026-11-17|9:00 am|SELL|Side sell (weak close): real risk 12.41 AED after lot rounding > 1.4x target 7.5 AED",
+  "market": "OIL",
+  "ok": false,
+  "t": "Tue 17 Nov 9:01 AM"
  }
 ]
