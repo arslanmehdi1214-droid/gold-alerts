@@ -8,8 +8,8 @@
   "start_equity": 1581.23,
   "stopped": false
  },
- "open_positions": 0,
- "open_risk_aed": 0,
+ "open_positions": 1,
+ "open_risk_aed": 29.66,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-11-16|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend": {
@@ -251,6 +251,25 @@
    "side": "SELL",
    "state": "closed",
    "stop": 7517.1
+  },
+  "US500|2026-11-18|3:01 am|BUY|Night long (high-fear night: VIX / VVIX)": {
+   "desk_price": 7393.8,
+   "market": "US500",
+   "opened_at": "Wed 18 Nov 3:02 AM",
+   "part_x": 0.0,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-745b-1c64-0495-7fc60004511e",
+    "level": 7403.9,
+    "open": true,
+    "size": 0.05,
+    "tp": null
+   },
+   "risk_aed": 29.66,
+   "risk_usd": 8.17,
+   "side": "BUY",
+   "state": "open",
+   "stop": 7232.3
   },
   "USDJPY|2026-11-16|3:05 am|SELL|WGAP (weekend-gap fade)": {
    "desk_price": 159.8,
