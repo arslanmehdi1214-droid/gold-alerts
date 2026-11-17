@@ -1,5 +1,5 @@
 {
- "updated": "Wed 18 Nov \u00b7 3:26 am",
+ "updated": "Wed 18 Nov \u00b7 3:27 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 3856.19,
+   "price": 3855.79,
    "close_at": "12:50 am",
-   "change": 4.1,
+   "change": 3.7,
    "size": 0.1,
    "datr": 95.8,
    "open_now": 0,
@@ -58,7 +58,7 @@
     ],
     [
      "3:25 am",
-     3856.19,
+     3855.79,
      3855.42,
      3856.56,
      3855.42
@@ -1670,8 +1670,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 159.482,
-   "change_pips": 0.4,
+   "price": 159.48,
+   "change_pips": 0.2,
    "atr_pips": 88.1,
    "entries": [],
    "spark": [
@@ -1705,9 +1705,9 @@
     ],
     [
      "3:25 am",
-     159.482,
+     159.48,
      159.479,
-     159.482,
+     159.484,
      159.479
     ]
    ],
@@ -3851,8 +3851,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 84.505,
-   "change": 0.11,
+   "price": 84.54,
+   "change": 0.15,
    "entries": [],
    "spark": [
     [
@@ -3892,9 +3892,9 @@
     ],
     [
      "3:25 am",
-     84.5,
+     84.54,
      84.52,
-     84.52,
+     84.54,
      84.5
     ]
    ],
@@ -5394,8 +5394,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
    "message": "NIGHT BUY (high-fear night) at 3:01 am Dubai, stop 7232.3, closes at 7:00 pm Dubai (10:00 am New York). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7396.2,
-   "change": 58.2,
+   "price": 7395.8,
+   "change": 57.8,
    "entries": [
     {
      "time": "3:01 am",
@@ -5419,7 +5419,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 0.9,
+     "live": 0.5,
      "spread": 1.5
     }
    ],
@@ -5538,10 +5538,10 @@
     ],
     [
      "3:25 am",
-     7396.2,
+     7395.8,
      7399.2,
      7401.3,
-     7396.2
+     7395.3
     ]
    ],
    "journal": {
@@ -5610,7 +5610,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 0.9,
+       "live": 0.5,
        "spread": 1.5
       }
      ],
@@ -7294,8 +7294,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 27395.0,
-   "change": 413.1,
+   "price": 27400.6,
+   "change": 418.7,
    "entries": [
     {
      "time": "3:21 am",
@@ -7320,7 +7320,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 2.2,
+     "live": 0.3,
      "rwf": null,
      "spread": 1.8,
      "spread_live": 4.0
@@ -7441,10 +7441,10 @@
     ],
     [
      "3:25 am",
-     27395.0,
+     27400.6,
      27408.7,
      27418.1,
-     27395.0
+     27390.1
     ]
    ],
    "journal": {
@@ -7492,7 +7492,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 2.2,
+       "live": 0.3,
        "rwf": null,
        "spread": 1.8,
        "spread_live": 4.0
@@ -8808,8 +8808,8 @@
    "regime": 0.504,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker).",
-   "price": 1.32076,
-   "change": 0.0001,
+   "price": 1.32066,
+   "change": 0.0,
    "entries": [],
    "spark": [
     [
@@ -8926,10 +8926,10 @@
     ],
     [
      "3:25 am",
-     1.32076,
+     1.32066,
      1.32075,
-     1.32076,
-     1.32074
+     1.32082,
+     1.32065
     ]
    ],
    "journal": {
@@ -10044,7 +10044,7 @@
     "source": "MT4 BRENT_WED_HOL_v110.mq4, his run 9 Nov 2026, 2018.01.02-2026.10.30, spread 8 ($0.08/bbl) - AW+K2 together: 251 trades (AW 210 at full 0.30 lot, K2 41 at half 0.15 lot), net +$13,453. Full v1.10 EA (A-F+K++AW+K2): +$81,158, PF 1.43, max drawdown $10,241, 1,492 trades vs the v1.07a baseline +$67,704, DD $9,199, 1,241 trades, PF 1.43 (net per $1 of drawdown 7.92 vs 7.36 - at equal drawdown ~+7.7% net). v1.10 technically misses the strict $10,000 max-DD cap by $241 but wins on the equal-drawdown rule - his go-ahead 9 Nov 2026."
    },
    "state": "waiting",
-   "message": "Brent paper update failed at 3:26 am Dubai (FeedError: newest closed price bar (2:59 am Dubai) is 26 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
+   "message": "Brent paper update failed at 3:27 am Dubai (FeedError: newest closed price bar (2:59 am Dubai) is 27 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
    "price": 91.534,
    "change": 0.1,
    "entries": [],
