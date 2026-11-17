@@ -1,12 +1,5 @@
 [
  {
-  "action": "OPEN BUY part",
-  "detail": "USDJPY|2026-11-02|8:00 am|BUY|Heikin-Ashi 7am size 600.0 at 157.91 stop 157.288 target 157.94 | trade risk 8.69 AED",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Mon 2 Nov 8:01 AM"
- },
- {
   "action": "target moved to fill + desk distance",
   "detail": "USDJPY|2026-11-02|8:00 am|BUY|Heikin-Ashi 7am 157.94 -> 157.939 ",
   "market": "USDJPY",
@@ -2798,5 +2791,12 @@
   "market": "US100",
   "ok": true,
   "t": "Tue 17 Nov 7:48 PM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "US100|2026-11-17|3:28 pm|SELL|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm to 27028.7",
+  "market": "US100",
+  "ok": true,
+  "t": "Tue 17 Nov 7:52 PM"
  }
 ]
