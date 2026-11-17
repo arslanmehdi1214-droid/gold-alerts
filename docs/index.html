@@ -606,7 +606,7 @@ const HMK=[
   tag:t=>(t.name||'').split(':')[0],info:t=>`in ${f(t.price,1)} · stop ${f(t.stop,1)}${t.exit!=null?` · out ${f(t.exit,1)}`:''}${t.res!=null?` · ${sg(t.res,1)} pts`:''}`},
  {c:'US500',n:'S&P 500',file:'journal_sp.json',usd:t=>t.res==null?null:t.res*0.1,
   tag:t=>(t.src||'')+(t.leg?' · leg '+t.leg:''),info:t=>`in ${f(t.price,1)} · stop ${f(t.stop,1)}${t.exit!=null?` · out ${f(t.exit,1)}`:''}${t.res!=null?` · ${sg(t.res,1)} pts`:''}`},
- {c:'GBPUSD',n:'GBP/USD',file:'journal_gbp.json',usd:t=>t.pips==null?null:t.pips*0.1,
+ {c:'GBPUSD',n:'GBP/USD',file:'journal_gbp.json',usd:t=>{const r=t.res_sized??t.pips;return r==null?null:r*0.1},
   tag:t=>t.name||'',info:t=>`in ${f(t.price,5)} · stop ${f(t.stop,5)} · target ${f(t.half_px,5)}${t.half?' ✓':''}${t.exit!=null?` · out ${f(t.exit,5)}`:''}${t.pips!=null?` · ${sg(t.pips,1)} pips`:''}`}];
 let HJ={},HC=null,HV='today',HM=null,HALL=false;
 const bkey=()=>{const n=new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}));n.setHours(n.getHours()+7);return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0')};
