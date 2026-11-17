@@ -1185,19 +1185,42 @@
   {
    "date": "2026-11-17",
    "label": "Tue 17 Nov",
-   "side": null,
-   "trades": [],
+   "side": "BUY",
+   "trades": [
+    {
+     "time": "9:21 am",
+     "side": "BUY",
+     "tag": "N15 hsq",
+     "price": 3880.26,
+     "stop": 3831.71,
+     "stop0": 3831.71,
+     "half_px": null,
+     "half": false,
+     "half_time": null,
+     "size": 0.1,
+     "status": "open",
+     "first": true,
+     "exit": null,
+     "exit_time": null,
+     "pnl": null,
+     "pnl_oz": null,
+     "size_x": 1.5,
+     "rwf": null,
+     "next": "Hold to the stop 3831.71 or the day-end close \u00b7 no half-close \u00b7 size x1.5",
+     "late": false
+    }
+   ],
    "skipped": 0,
    "final": false
   }
  ],
  "summary": {
   "since": "03 Oct 2026",
-  "trades": 48,
+  "trades": 49,
   "direction": 37.5,
   "decided": 16,
-  "days": 93.8,
-  "perday": 1.5,
+  "days": 96.9,
+  "perday": 1.53,
   "avg_pnl": 0.32,
   "closed": 48,
   "total_pnl_01": 1.54
