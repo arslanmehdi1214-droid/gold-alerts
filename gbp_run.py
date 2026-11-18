@@ -10,21 +10,23 @@ EUR/GBP at 10:00 broker of the last 20 trading days, from Capital.com hourly bar
 (4) docs/journal_gbp.json (every paper trade) and docs/data.json -> markets.GBPUSD (the page).
 v1.08 (8 Nov 2026, MT4 his run 9): calm days lock at +0.25 x stop and no target; Tuesday lock at +0.2 x stop on any main trade;
 layer 6 (code 8) = euro asset managers' 1-week change (CFTC euro report, asset-manager columns); layer 7 (code 9) = GBP other
-reportables at a 52-week extreme (CFTC pound report, other-reportable columns). Both CFTC caches now also store those columns."""
+reportables at a 52-week extreme (CFTC pound report, other-reportable columns). Both CFTC caches now also store those columns.
+v1.09 (18 Nov 2026, MT4 his run 10): on calm days the side follows Australian-dollar hedge funds' big 1-week move (top / bottom 10% of
+52 weeks) - weekly CFTC AUD report cached in docs/cftc_aud.json (optional: without it the desk trades exactly v1.08)."""
 import os, json, time, requests, numpy as np, pandas as pd
 import feeds as F, gbp_engine as E
 DEADLINE = time.time() + 240          # loop.py resets this every minute; the GBP part never holds up gold
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 JOUR = os.path.join(HERE, 'docs', 'journal_gbp.json'); PORTAL = os.path.join(HERE, 'docs', 'data.json')
-CFTC = os.path.join(HERE, 'docs', 'cftc_gbp.json'); CFTC_EUR = os.path.join(HERE, 'docs', 'cftc_eur.json'); HIST = os.path.join(HERE, 'docs', 'gbp_daily.json'); HIST_KEEP = 500          # days kept (regime needs 250 + 14)
+CFTC = os.path.join(HERE, 'docs', 'cftc_gbp.json'); CFTC_EUR = os.path.join(HERE, 'docs', 'cftc_eur.json'); CFTC_AUD = os.path.join(HERE, 'docs', 'cftc_aud.json'); HIST = os.path.join(HERE, 'docs', 'gbp_daily.json'); HIST_KEEP = 500          # days kept (regime needs 250 + 14)
 CFTC_URL = 'https://publicreporting.cftc.gov/resource/gpe5-46if.json'
 EPIC = os.environ.get('CAPITAL_EPIC_GBP', 'GBPUSD'); EPIC_EUR = os.environ.get('CAPITAL_EPIC_EUR', 'EURUSD')
-RULES = 'v1.08'
+RULES = 'v1.09'
 PASS = dict(pf=1.10, months=3)
-BACKTEST = dict(direction='—', days='98% of weekdays traded, 1 trade a day (2 on ~22 days a year: + holiday sell / FOMC buy) · profit days 63%', perday='1.06', win='3.5% hit target · 62.6% closed in profit', pf='1.25',
-                net='+$19,717.63 at 0.10 lot (net/DD 12.99)',
-                source='MT4 test GBP_CROWD v1.08 (his run 9, 8 Nov 2026, spread 1.8 pips), 2010-08..2026-06-19, 4,385 trades (4,059 main + 326 half-size holiday/FOMC); max DD $1,517.42; v1.06 same data: $16,244 / DD $1,596')
+BACKTEST = dict(direction='—', days='98% of weekdays traded, 1 trade a day (2 on ~22 days a year: + holiday sell / FOMC buy) · profit days 63%', perday='1.06', win='3.5% hit target · 63.0% closed in profit', pf='1.29',
+                net='+$22,745.74 at 0.10 lot (net/DD 16.0)',
+                source='MT4 test GBP_CROWD v1.09 (his run 10, 18 Nov 2026, spread 1.8 pips), 2010-08..2026-06-19, 4,385 trades (4,059 main + 326 half-size holiday/FOMC); max DD $1,420.31; v1.08 same data: $19,718 / DD $1,517')
 
 class FeedError(RuntimeError):
     pass
@@ -76,6 +78,9 @@ def weekly(rows):
     W = pd.DataFrame(rows); W.index = pd.to_datetime(W.pop('d')); return E.codes(W[['oi', 'lev_l', 'lev_s', 'nr_l', 'nr_s']].astype(float))
 def weekly_eur(rows):
     W = pd.DataFrame(rows); W.index = pd.to_datetime(W.pop('d')); return E.eur_codes(W[['oi', 'lev_l', 'lev_s']].astype(float))
+def weekly_aud(rows):
+    W = pd.DataFrame(rows); W.index = pd.to_datetime(W.pop('d')); W = W[['oi', 'lev_l', 'lev_s']].astype(float).dropna()
+    return E.aud_codes(W) if len(W) >= 60 else None
 def weekly_x(rows, cols, fn):
     """v1.08 layers 6/7: codes from the rows that carry the new columns (older cached rows without them are dropped)."""
     W = pd.DataFrame(rows); W.index = pd.to_datetime(W.pop('d'))
@@ -216,7 +221,7 @@ def base_card(A=None, rep=None, code=0, md=None, pct=None, hol=False, fom=False,
     note = (f"Today: {'BUY' if code > 0 else 'SELL' if code < 0 else 'NO TRADE'} · {lay} · CFTC report of {rp} · 14-day range "
             + ('—' if A is None else f'{A * 1e4:.0f} pips') + ('' if pct is None else f" · market {'BUSY' if md == 'busy' else 'CALM' if md in ('calm', 'calm_gap') else 'normal'} (range at {100 * pct:.0f}% of its last 250 days)")
             + (' · BUSY rules: stop 1.25 x range, target 1.5 x stop · ' if md == 'busy' else
-               f" · CALM rules: stop 1.0 x range, NO target (closes at the day end), move the stop to entry + 5 pips once +{'0.2' if day_is_tue else '0.25'} x stop in profit; side set at 10:00 against any big overnight GBP-vs-EUR gap · " if md in ('calm', 'calm_gap') else
+               f" · CALM rules: stop 1.0 x range, NO target (closes at the day end), move the stop to entry + 5 pips once +{'0.2' if day_is_tue else '0.25'} x stop in profit; side set at 10:00 against any big overnight GBP-vs-EUR gap, then by a big 1-week move of AUD hedge funds (v1.09) · " if md in ('calm', 'calm_gap') else
                ' · stop 1.0 x range, target 1.0 x stop (close the whole trade there), no half-close · ')
             + ('TUESDAY: move the stop to entry + 5 pips once +0.2 x stop in profit · ' if (code and day_is_tue and md not in ('calm', 'calm_gap')) else '')
             + ('DAY AFTER A UK/US HOLIDAY: extra HALF-size SELL at 10:00, stop 1.5 x range, no target · ' if hol else '')
@@ -225,9 +230,9 @@ def base_card(A=None, rep=None, code=0, md=None, pct=None, hol=False, fom=False,
             + '(12:45 am Dubai in summer, 1:45 am in winter)')
     return dict(code='GBPUSD', name='GBP/USD', symbol='GBPUSD · Capital.com GBP/USD', live=False, paper=True, status='Paper', version=RULES,
                 unit='pips', dp=5, stats=BACKTEST, pass_bar=PASS, day_note=note,
-                what_note='Tracks whether live GBP/USD signals do as well as the v1.08 MT4 test. The auto-trader places each trade on the Capital.com demo (from 27 Oct). Decision after about 3 months.',
+                what_note='Tracks whether live GBP/USD signals do as well as the v1.09 MT4 test. The auto-trader places each trade on the Capital.com demo (from 27 Oct). Decision after about 3 months.',
                 cost_note='Results are pips per trade after the spread (at least 1.5 pips). 0.01 lot = 1,000 units = $0.10 per pip.',
-                net_label='Net pips (v1.08 rules, holiday sell / FOMC buy at half size)')
+                net_label='Net pips (v1.09 rules, holiday sell / FOMC buy at half size)')
 
 def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eur=None, eoget=None):
     global DEADLINE; DEADLINE = time.time() + 75     # own 75 s time budget per market
@@ -248,6 +253,12 @@ def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eu
         if CA is not None: amcode, amrep = E.code_for(CA, day)
         if CO is not None: orcode, orrep = E.code_for(CO, day)
     except Exception as ex: cnote = (cnote + '; ' if cnote else '') + f'layers 6/7 unavailable ({type(ex).__name__})'
+    CU = None; acode = 0; arep = None                                     # v1.09 AUD calm flip (optional - without it = v1.08)
+    try:
+        rows_a, anote = cftc_rows(None, '232741', CFTC_AUD, 'CFTC AUD'); CU = weekly_aud(rows_a)
+        if CU is not None: acode, arep = E.code_for(CU, day)
+        if anote: cnote = (cnote + '; ' if cnote else '') + anote
+    except Exception as ex: cnote = (cnote + '; ' if cnote else '') + f'AUD report unavailable ({type(ex).__name__}) - v1.08 side today'
     code = gcode
     if now.dayofweek >= 5:
         prev = mk.get('GBPUSD') or {}
@@ -301,12 +312,13 @@ def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eu
         e0, e10_ = _DAILY.get('eo', (np.nan, np.nan))
         dv = E.gap_div(first_open(b, day), first_open(b, t_in), e0, e10_, A, eA)
     code, kS, kT, lk, md = E.mode(code, pct, dv)
+    code_gap = code; code, aflip = E.aud_flip(code, md, acode)              # v1.09: calm day -> AUD hedge funds' big 1-week move sets the side
     la = E.LOCK_AT
     if code != 0 and day.dayofweek == 1: lk, la = True, E.TUE_LOCK_AT        # v1.08 Tuesday: any main trade locks at +0.2 x stop, target unchanged
     A0 = A                                                                # v1.05 holiday sell uses today's own range
     jd = next((d for d in J['days'] if d['date'] == str(day.date())), None)
     if jd and jd.get('trades') and jd.get('frozen'):                       # a trade already shown keeps its entry, stop, target and rules
-        fz = jd['frozen']; code = int(fz['code']); A = float(fz['A']); kS = float(fz.get('k', E.STOP_X)); kT = float(fz.get('t', E.TGT_X)); lk = bool(fz.get('lock', False)); md = fz.get('mode', 'normal')
+        fz = jd['frozen']; aflip = bool(fz.get('aud_flip', False)); code = int(fz['code']); A = float(fz['A']); kS = float(fz.get('k', E.STOP_X)); kT = float(fz.get('t', E.TGT_X)); lk = bool(fz.get('lock', False)); md = fz.get('mode', 'normal')
         la = float(fz.get('la', 0.35 if jd.get('rules') in ('v1.04', 'v1.05', 'v1.06') else E.LOCK_AT))
     t = E.trade(b[['o', 'h', 'l', 'c']], day, code, A, now=now, cost=cost, k=kS, tx=kT, lock=lk, lock_at=la)
     if t: t['mode'] = md
@@ -326,8 +338,9 @@ def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eu
     nd = dict(date=str(day.date()), rules=RULES, label=day.strftime('%a %d %b'), side=(rows[0]['side'] if rows else None), trades=rows + hrows,
               final=(bool(t is None and now >= t_in + pd.Timedelta(minutes=E.ENTRY_LATE + 1)) or bool(t and t['status'] != 'open')) and not (ht and ht['status'] == 'open') and not (ft and ft['status'] == 'open'),
               code=int(code), report=None if rep is None else str(pd.Timestamp(rep).date()), mode=md,
-              regime=None if not np.isfinite(pct) else round(pct, 3), gap=None if not np.isfinite(dv) else round(dv, 3), code_before_gap=int(code0))
-    if t: nd['frozen'] = dict(code=int(code), A=float(A), k=float(kS), t=float(kT), lock=bool(lk), mode=md, la=float(la))
+              regime=None if not np.isfinite(pct) else round(pct, 3), gap=None if not np.isfinite(dv) else round(dv, 3), code_before_gap=int(code0),
+              aud_code=int(acode), aud_flip=bool(aflip))
+    if t: nd['frozen'] = dict(code=int(code), A=float(A), k=float(kS), t=float(kT), lock=bool(lk), mode=md, la=float(la), aud_flip=bool(aflip))
     J['days'] = sorted([d for d in J['days'] if d['date'] != str(day.date())] + [nd], key=lambda d: d['date'])
     J['summary'] = summary(J, day); dumpj(J, JOUR, indent=1)
     spark = []
@@ -345,7 +358,8 @@ def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eu
             lkw = 'TUESDAY' if (day.dayofweek == 1 and md not in ('calm', 'calm_gap')) else 'CALM day'
             if t.get('lock') and not t.get('locked'): msg += f" {lkw}: when price reaches {t['lock_px']:.5f}, move the stop to {t['lock_stop']:.5f} (entry + 5 pips)."
             elif t.get('locked'): msg += f" Stop now locked at {t['stop']:.5f} (entry + 5 pips) since {dubai(t['locked_t'])} Dubai."
-            if md == 'calm_gap' and np.sign(code) != np.sign(code0): msg += ' (Side switched at 10:00: GBP ran away from EUR overnight - trading the snap-back.)'
+            if aflip: msg += " (Side set by the v1.09 AUD rule: Australian-dollar hedge funds made a big 1-week move - on calm days we follow them.)"
+            elif md == 'calm_gap' and np.sign(code) != np.sign(code0): msg += ' (Side switched at 10:00: GBP ran away from EUR overnight - trading the snap-back.)'
             if md == 'busy': msg += ' BUSY day: wider stop (1.25 x range) and target 1.5 x stop.'
         elif st0 == 'stopped' and t.get('locked'): msg = f"Locked stop hit at {r0['exit_time']} Dubai: {r0['pips']:+.1f} pips. Done for today."
         elif st0 == 'target': msg = f"Target hit at {r0['exit_time']} Dubai: {r0['pips']:+.1f} pips. Done for today."
@@ -355,6 +369,7 @@ def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eu
     elif side is None: state, msg = 'none', 'No GBP/USD trade today: no layer is on (pound crowds, EUR/GBP stretch, euro funds, euro asset managers and pound corporates all neutral).'
     elif now < t_in:
         state, msg = 'waiting', f"Today is a {side} day ({E.LAYER_NAME[abs(code)].split(' · ')[1]}). The trade opens at {dubai(t_in)} Dubai (10:00 broker)."
+        if aflip: msg += ' Side set by the v1.09 AUD rule (Australian-dollar hedge funds made a big 1-week move; on calm days we follow them).'
         if md in ('calm', 'calm_gap'): msg += f" CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; no target; stop moves to entry + 5 pips once +{0.2 if day.dayofweek == 1 else 0.25} x stop in profit."
         elif day.dayofweek == 1: msg += ' TUESDAY: stop moves to entry + 5 pips once +0.2 x stop in profit.'
         elif md == 'busy': msg += ' BUSY market: stop 1.25 x range, target 1.5 x stop.'
@@ -381,7 +396,9 @@ def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eu
                                   nrcp=None if rep is None else round(float(C.loc[rep, 'nrcp']), 3),
                                   eur_levp=None if (CE is None or erep is None) else round(float(CE.loc[erep, 'levp']), 3),
                                   eur_amcp=None if (CA is None or amrep is None or not np.isfinite(CA.loc[amrep, 'amcp'])) else round(float(CA.loc[amrep, 'amcp']), 3),
-                                  gbp_orp=None if (CO is None or orrep is None or not np.isfinite(CO.loc[orrep, 'orp'])) else round(float(CO.loc[orrep, 'orp']), 3)),
+                                  gbp_orp=None if (CO is None or orrep is None or not np.isfinite(CO.loc[orrep, 'orp'])) else round(float(CO.loc[orrep, 'orp']), 3),
+                                  aud_chgp=None if (CU is None or arep is None or not np.isfinite(CU.loc[arep, 'audcp'])) else round(float(CU.loc[arep, 'audcp']), 3),
+                                  aud_code=int(acode), aud_flip=bool(aflip)),
                         eurgbp_z=None if not np.isfinite(egz) else round(egz, 2))
     dumpj(old, PORTAL, indent=1)
     print(f'GBP paper: {now} broker | bars {len(b)} | code {code} report {None if rep is None else pd.Timestamp(rep).date()} | A {A * 1e4 if np.isfinite(A) else None} pips | trade {None if not t else t["status"]}')

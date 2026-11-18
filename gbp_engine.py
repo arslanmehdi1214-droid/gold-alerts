@@ -24,7 +24,11 @@ v1.08 (MT4 his run 9, 8 Nov 2026: 4,385 trades, net $19,717.63, max DD $1,517.42
   b) Tuesday (broker): any main trade locks at +0.2 x stop (stop -> entry + 5 pips), target unchanged;
   c) layer 6 (desk code 8): else FOLLOW euro asset managers' 1-week change of net/OI (CFTC TFF 099741): 52-week percentile >= 0.7 -> BUY, <= 0.3 -> SELL;
   d) layer 7 (desk code 9): else FADE GBP "other reportables" net/OI at a 52-week extreme (096742): percentile >= 0.9 -> SELL, <= 0.1 -> BUY.
-  Layers 6/7 use the plain rules (stop 1.0 x range, target 1.0 x stop). Source for c/d: Menkhoff, Sarno, Schmeling & Schrimpf (2016)."""
+  Layers 6/7 use the plain rules (stop 1.0 x range, target 1.0 x stop). Source for c/d: Menkhoff, Sarno, Schmeling & Schrimpf (2016).
+v1.09 (MT4 his run 10, 18 Nov 2026: 4,385 trades, net $22,745.74, max DD $1,420.31, net/DD 16.0, 63.0% closed in profit, every period up vs v1.08)
+  = v1.08 + AUD calm flip: on CALM days (modes calm / calm_gap, after the gap rule) the side follows Australian-dollar leveraged funds'
+  1-week change of net/OI (CFTC TFF 232741, report date + 6 days): 52-week percentile (strict, min 40) >= 0.9 -> BUY, <= 0.1 -> SELL;
+  0 = keep the side. Same stop / lock / no target as any calm day. 187 of 1,936 calm days flipped 2010-2026 (MT4 = Python)."""
 import numpy as np, pandas as pd
 
 Q1, Q2, Q3 = 0.10, 0.20, 0.25
@@ -99,6 +103,7 @@ REG_W, REG_MIN, BUSY_Q, CALM_Q = 250, 120, 0.8, 0.5
 BUSY_STOP, BUSY_TGT, LOCK_AT, LOCK_PX, DIV_X = 1.25, 1.5, 0.25, 0.0005, 0.3     # v1.08: calm lock 0.35 -> 0.25
 CALM_TGT, TUE_LOCK_AT = 0.0, 0.2                 # v1.08: calm days no target; Tuesday lock at +0.2 x stop (any main layer)
 Q6, Q7 = 0.3, 0.1                                # v1.08 layers 6 / 7 thresholds
+Q_AUD = 0.10                                     # v1.09 AUD calm flip threshold
 
 def rank_pct(v, win=52, minp=26):
     """rolling 52-week percentile of the newest value = pandas rolling(52, min_periods=26).rank(pct=True) (average ties)."""
@@ -149,6 +154,16 @@ def or_codes(W):
     """v1.08 layer 7: W = weekly British Pound rows (oi, or_l, or_s) -> orp + code (FADE: top 10% -> -1 SELL, bottom 10% -> +1 BUY)."""
     W = W.sort_index(); orr = (W.or_l - W.or_s) / W.oi; p = pct_strict(orr.values)
     return pd.DataFrame(dict(orr=orr, orp=p, code=np.where(p >= 1 - Q7, -1, np.where(p <= Q7, 1, 0))), index=W.index)
+
+def aud_codes(W):
+    """v1.09: W = weekly AUSTRALIAN DOLLAR TFF rows (oi, lev_l, lev_s) -> audcp + code +1 (funds added a lot: BUY GBP/USD) / -1 / 0."""
+    W = W.sort_index(); lev = (W.lev_l - W.lev_s) / W.oi; p = pct_strict(lev.diff().values)
+    return pd.DataFrame(dict(lev=lev, audcp=p, code=np.where(p >= 1 - Q_AUD, 1, np.where(p <= Q_AUD, -1, 0))), index=W.index)
+
+def aud_flip(code, md, acode):
+    """v1.09: on calm days (md calm / calm_gap) a non-zero AUD code that disagrees with our side replaces it. Returns (code, flipped)."""
+    if code and acode and md in ('calm', 'calm_gap') and np.sign(acode) != np.sign(code): return int(np.sign(acode)) * abs(int(code)), True
+    return int(code), False
 
 def eg_side(vals):
     """vals = EUR/GBP at 10:00 broker on the trading days BEFORE today, oldest first. Uses the newest 20 (= pandas rolling(20) z of
