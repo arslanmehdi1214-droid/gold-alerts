@@ -1,5 +1,5 @@
 {
- "updated": "Thu 19 Nov \u00b7 2:00 am",
+ "updated": "Thu 19 Nov \u00b7 2:13 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -1627,7 +1627,7 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
+   "price": 159.303,
    "change_pips": null,
    "atr_pips": 88.1,
    "entries": [],
@@ -3775,8 +3775,8 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": null,
-   "history_note": "history to 2026-11-18 (300 days) \u00b7 added 2026-11-18"
+   "live_spread_pips": 8.0,
+   "history_note": "history to 2026-11-18 (300 days)"
   },
   "DE40": {
    "code": "DE40",
@@ -5381,7 +5381,7 @@
    "feed_error": false,
    "epic": "OIL_CRUDE",
    "live_spread": null,
-   "history_note": "history to 2026-11-18 (60 days) \u00b7 added 2026-11-18"
+   "history_note": "history to 2026-11-18 (60 days)"
   },
   "US500": {
    "code": "US500",
@@ -5413,10 +5413,25 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (high-fear night, but v1.07 only trades the night leg Mon/Tue/Wed - no night trade.)",
-   "price": null,
-   "change": null,
+   "price": 7319.6,
+   "change": 0.0,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     7319.6,
+     7319.6,
+     7320.1,
+     7318.6
+    ],
+    [
+     "2:10 am",
+     7319.6,
+     7319.7,
+     7320.7,
+     7319.6
+    ]
+   ],
    "journal": {
     "since": "17 Nov 2026",
     "weekdays": 3,
@@ -7287,7 +7302,7 @@
    "picks_stale": false,
    "epic": "US500",
    "close_at": "12:30 am",
-   "history_note": "history to 2026-11-18 (40 days) \u00b7 added 2026-11-18"
+   "history_note": "history to 2026-11-18 (40 days)"
   },
   "US100": {
    "code": "US100",
@@ -7319,10 +7334,25 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 27082.1,
+   "change": -1.2,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     27084.7,
+     27083.3,
+     27093.5,
+     27083.3
+    ],
+    [
+     "2:10 am",
+     27082.1,
+     27084.5,
+     27085.0,
+     27081.9
+    ]
+   ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 24,
@@ -8634,7 +8664,7 @@
    "feed_error": false,
    "epic": "US100",
    "close_at": "1:00 am",
-   "history_note": "history to 2026-11-18 (380 days) \u00b7 added 2026-11-18",
+   "history_note": "history to 2026-11-18 (380 days)",
    "fomc": null,
    "cpi": {
     "state": "closed",
@@ -8692,10 +8722,25 @@
    "regime": 0.48,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; no target; stop moves to entry + 5 pips once +0.25 x stop in profit.",
-   "price": null,
-   "change": null,
+   "price": 1.31465,
+   "change": -0.0002,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     1.31456,
+     1.31485,
+     1.31485,
+     1.31455
+    ],
+    [
+     "2:10 am",
+     1.31465,
+     1.3145,
+     1.31467,
+     1.3145
+    ]
+   ],
    "journal": {
     "since": "18 Nov 2026",
     "weekdays": 2,
@@ -9869,16 +9914,30 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 89.536,
-   "change": -0.01,
+   "price": 89.484,
+   "change": -0.07,
    "entries": [],
    "spark": [
     [
      "2:00 am",
-     89.54,
+     89.47,
      89.55,
      89.55,
-     89.54
+     89.46
+    ],
+    [
+     "2:05 am",
+     89.49,
+     89.45,
+     89.49,
+     89.44
+    ],
+    [
+     "2:10 am",
+     89.48,
+     89.48,
+     89.48,
+     89.48
     ]
    ],
    "journal": {
