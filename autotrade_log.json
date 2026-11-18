@@ -1,12 +1,5 @@
 [
  {
-  "action": "close rest",
-  "detail": "OIL|2026-11-02|8:16 am|SELL|Open \u00b1 0.7 range (desk: close_now) ",
-  "market": "OIL",
-  "ok": true,
-  "t": "Mon 2 Nov 10:00 PM"
- },
- {
   "action": "open part REJECTED",
   "detail": "USDJPY|2026-11-03|8:00 am|SELL|Heikin-Ashi 7am size 700.0 stop 158.492: REJECTED http 400 {\"errorCode\":\"error.invalid.takeprofit.maxvalue: 157.845\"}",
   "market": "USDJPY",
@@ -2798,5 +2791,12 @@
   "market": "BRENT",
   "ok": true,
   "t": "Wed 18 Nov 4:01 PM"
+ },
+ {
+  "action": "OPEN BUY rest",
+  "detail": "BRENT|2026-11-18|4:02 pm|BUY|AW size 1.0 at 90.854 stop 81.27 | trade risk 35.04 AED",
+  "market": "BRENT",
+  "ok": true,
+  "t": "Wed 18 Nov 4:03 PM"
  }
 ]
