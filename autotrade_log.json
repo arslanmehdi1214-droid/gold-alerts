@@ -1,12 +1,5 @@
 [
  {
-  "action": "rest closed on demo",
-  "detail": "GOLD|2026-11-03|12:46 pm|SELL|U2 round",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Tue 3 Nov 6:33 PM"
- },
- {
   "action": "OPEN BUY rest",
   "detail": "US500|2026-11-03|6:40 pm|BUY|S&P 9:40 am New York opening move size 0.11 at 7559.3 stop 7489.1 | trade risk 29.09 AED",
   "market": "US500",
@@ -2798,5 +2791,12 @@
   "market": "US500",
   "ok": true,
   "t": "Wed 18 Nov 7:01 PM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "US100|2026-11-18|3:21 am|SELL|F2 sweep prev-day hi/lo by 0.1ATR from 1am back inside <30min -> reverse to 27289.1",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 18 Nov 8:21 PM"
  }
 ]
