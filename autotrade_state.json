@@ -1,15 +1,15 @@
 {
- "balance": 1585.9,
+ "balance": 1587.73,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-18",
-  "pl": 9.34,
+  "pl": 12.54,
   "start_balance": 1581.23,
   "start_equity": 1581.23,
   "stopped": false
  },
- "open_positions": 4,
- "open_risk_aed": 67.94,
+ "open_positions": 3,
+ "open_risk_aed": 58.1,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-11-16|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend": {
@@ -256,9 +256,10 @@
    "market": "US100",
    "opened_at": "Wed 18 Nov 3:22 AM",
    "part": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-745b-497c-0495-7fc60004511e",
     "level": 27401.9,
-    "open": true,
+    "open": false,
     "size": 0.001,
     "tp": 27281.6
    },
@@ -275,7 +276,7 @@
    "risk_usd": 2.72,
    "side": "SELL",
    "state": "open",
-   "stop": 27647.0
+   "stop": 27403.4
   },
   "US500|2026-11-17|6:40 pm|SELL|S&P 9:40 am New York opening move": {
    "desk_price": 7400.3,

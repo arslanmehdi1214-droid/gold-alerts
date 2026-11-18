@@ -1,20 +1,6 @@
 [
  {
   "action": "OPEN SELL rest",
-  "detail": "OIL|2026-11-02|12:35 pm|SELL|Whole dollar size 2.9 at 98.98 stop 101.79 | trade risk 29.5 AED",
-  "market": "OIL",
-  "ok": true,
-  "t": "Mon 2 Nov 12:36 PM"
- },
- {
-  "action": "stop moved",
-  "detail": "GBPUSD|2026-11-02|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded to 1.34187",
-  "market": "GBPUSD",
-  "ok": true,
-  "t": "Mon 2 Nov 12:55 PM"
- },
- {
-  "action": "OPEN SELL rest",
   "detail": "OIL|2026-11-02|1:07 pm|SELL|Open \u00b1 1 range size 2.9 at 98.695 stop 101.6 | trade risk 29.39 AED",
   "market": "OIL",
   "ok": true,
@@ -2798,5 +2784,19 @@
   "market": "GOLD",
   "ok": true,
   "t": "Wed 18 Nov 4:24 AM"
+ },
+ {
+  "action": "part closed on demo",
+  "detail": "US100|2026-11-18|3:21 am|SELL|F2 sweep prev-day hi/lo by 0.1ATR from 1am back inside <30min -> reverse",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 18 Nov 5:10 AM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "US100|2026-11-18|3:21 am|SELL|F2 sweep prev-day hi/lo by 0.1ATR from 1am back inside <30min -> reverse to 27403.4 (stop to entry: each position at its own fill price)",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 18 Nov 5:10 AM"
  }
 ]
