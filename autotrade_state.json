@@ -1,15 +1,15 @@
 {
- "balance": 1714.85,
+ "balance": 1716.72,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-18",
-  "pl": 236.82,
+  "pl": 240.56,
   "start_balance": 1581.23,
   "start_equity": 1581.23,
   "stopped": false
  },
- "open_positions": 7,
- "open_risk_aed": 192.99,
+ "open_positions": 5,
+ "open_risk_aed": 128.17,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-18|4:00 pm|BUY|Rule A \u00b7 Wednesday momentum": {
@@ -19,16 +19,17 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: exit",
     "id": "00000000-7460-c19d-0495-7fc60004511e",
     "level": 90.894,
-    "open": true,
+    "open": false,
     "size": 1.7,
     "tp": null
    },
    "risk_aed": 29.78,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 86.06
   },
   "BRENT|2026-11-18|4:02 pm|BUY|AW": {
@@ -38,16 +39,17 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: exit",
     "id": "00000000-7460-c663-0495-7fc60004511e",
     "level": 90.854,
-    "open": true,
+    "open": false,
     "size": 1.0,
     "tp": null
    },
    "risk_aed": 35.04,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 81.27
   },
   "GBPUSD|2026-11-16|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend": {
