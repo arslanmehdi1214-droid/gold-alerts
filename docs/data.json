@@ -1,5 +1,5 @@
 {
- "updated": "Wed 18 Nov \u00b7 5:10 am",
+ "updated": "Wed 18 Nov \u00b7 5:11 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 3821.02,
+   "price": 3820.82,
    "close_at": "12:50 am",
-   "change": -31.07,
+   "change": -31.27,
    "size": 0.1,
    "datr": 95.8,
    "open_now": 1,
@@ -228,10 +228,17 @@
     ],
     [
      "5:05 am",
-     3821.02,
+     3821.2,
      3821.94,
      3830.32,
      3818.32
+    ],
+    [
+     "5:10 am",
+     3820.82,
+     3821.19,
+     3823.2,
+     3818.52
     ]
    ],
    "history": [
@@ -1840,8 +1847,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 159.543,
-   "change_pips": 6.5,
+   "price": 159.527,
+   "change_pips": 4.9,
    "atr_pips": 88.1,
    "entries": [],
    "spark": [
@@ -2015,10 +2022,17 @@
     ],
     [
      "5:05 am",
-     159.543,
+     159.542,
      159.556,
      159.559,
      159.526
+    ],
+    [
+     "5:10 am",
+     159.527,
+     159.541,
+     159.542,
+     159.523
     ]
    ],
    "journal": {
@@ -4161,8 +4175,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 84.375,
-   "change": -0.02,
+   "price": 84.345,
+   "change": -0.05,
    "entries": [],
    "spark": [
     [
@@ -4346,6 +4360,13 @@
      84.27,
      84.38,
      84.2
+    ],
+    [
+     "5:10 am",
+     84.34,
+     84.37,
+     84.39,
+     84.33
     ]
    ],
    "journal": {
@@ -5811,7 +5832,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.04,
+   "live_spread": 0.035,
    "history_note": "history to 2026-11-17 (60 days)"
   },
   "US500": {
@@ -5844,8 +5865,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
    "message": "NIGHT BUY (high-fear night) at 3:01 am Dubai, stop 7232.3, closes at 7:00 pm Dubai (10:00 am New York). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": 7374.9,
-   "change": 36.9,
+   "price": 7374.2,
+   "change": 36.2,
    "entries": [
     {
      "time": "3:01 am",
@@ -5869,7 +5890,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -19.7,
+     "live": -20.4,
      "spread": 0.8
     }
    ],
@@ -6132,6 +6153,13 @@
      7380.8,
      7383.3,
      7374.9
+    ],
+    [
+     "5:10 am",
+     7374.2,
+     7374.7,
+     7376.7,
+     7373.9
     ]
    ],
    "journal": {
@@ -6200,7 +6228,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -19.7,
+       "live": -20.4,
        "spread": 0.8
       }
      ],
@@ -7884,8 +7912,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 27255.2,
-   "change": 273.3,
+   "price": 27254.5,
+   "change": 272.6,
    "entries": [
     {
      "time": "3:21 am",
@@ -7910,7 +7938,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 47.6,
+     "live": 47.8,
      "rwf": null,
      "spread": 1.8,
      "spread_live": 1.8
@@ -8175,6 +8203,13 @@
      27299.6,
      27317.4,
      27254.7
+    ],
+    [
+     "5:10 am",
+     27254.5,
+     27255.1,
+     27266.6,
+     27250.4
     ]
    ],
    "journal": {
@@ -8222,7 +8257,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 47.6,
+       "live": 47.8,
        "rwf": null,
        "spread": 1.8,
        "spread_live": 1.8
@@ -9538,8 +9573,8 @@
    "regime": 0.504,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker).",
-   "price": 1.31986,
-   "change": -0.0008,
+   "price": 1.31996,
+   "change": -0.0007,
    "entries": [],
    "spark": [
     [
@@ -9800,6 +9835,13 @@
      1.31972,
      1.32004,
      1.31965
+    ],
+    [
+     "5:10 am",
+     1.31996,
+     1.31987,
+     1.32004,
+     1.31986
     ]
    ],
    "journal": {
@@ -10915,8 +10957,8 @@
    },
    "state": "waiting",
    "message": "Wednesday - checking the 10:00\u219214:00 broker move against its 60-day spread (enters 14:00 broker if big enough).",
-   "price": 91.286,
-   "change": -0.14,
+   "price": 91.264,
+   "change": -0.17,
    "entries": [],
    "spark": [
     [
@@ -11016,6 +11058,13 @@
      91.17,
      91.29,
      91.09
+    ],
+    [
+     "5:10 am",
+     91.26,
+     91.29,
+     91.31,
+     91.24
     ]
    ],
    "journal": {
