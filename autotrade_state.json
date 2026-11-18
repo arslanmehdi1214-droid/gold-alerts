@@ -1,15 +1,15 @@
 {
- "balance": 1608.06,
+ "balance": 1612.92,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-18",
-  "pl": 52.91,
+  "pl": 62.63,
   "start_balance": 1581.23,
   "start_equity": 1581.23,
   "stopped": false
  },
- "open_positions": 4,
- "open_risk_aed": 102.54,
+ "open_positions": 5,
+ "open_risk_aed": 111.83,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-11-16|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend": {
@@ -469,6 +469,25 @@
    "side": "SELL",
    "state": "closed",
    "stop": 159.997
+  },
+  "USDJPY|2026-11-18|9:00 am|SELL|HAM (Heikin-Ashi, 2nd hour)": {
+   "desk_price": 159.155,
+   "market": "USDJPY",
+   "opened_at": "Wed 18 Nov 9:01 AM",
+   "part": {
+    "id": "00000000-745d-931b-0495-7fc60004511e",
+    "level": 159.157,
+    "open": true,
+    "size": 600.0,
+    "tp": 159.137
+   },
+   "part_x": 1.0,
+   "px_adj": 0.0,
+   "risk_aed": 9.29,
+   "risk_usd": 2.72,
+   "side": "SELL",
+   "state": "open",
+   "stop": 159.826
   }
  },
  "untracked_seen": {}

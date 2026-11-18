@@ -1,20 +1,6 @@
 [
  {
   "action": "rest closed on demo",
-  "detail": "OIL|2026-11-02|12:35 pm|SELL|Whole dollar",
-  "market": "OIL",
-  "ok": true,
-  "t": "Mon 2 Nov 2:30 PM"
- },
- {
-  "action": "stop moved",
-  "detail": "OIL|2026-11-02|1:07 pm|SELL|Open \u00b1 1 range to 98.8 (stop to entry: each position at its own fill price)",
-  "market": "OIL",
-  "ok": true,
-  "t": "Mon 2 Nov 2:51 PM"
- },
- {
-  "action": "rest closed on demo",
   "detail": "OIL|2026-11-02|1:07 pm|SELL|Open \u00b1 1 range",
   "market": "OIL",
   "ok": true,
@@ -2798,5 +2784,19 @@
   "market": "USDJPY",
   "ok": true,
   "t": "Wed 18 Nov 8:36 AM"
+ },
+ {
+  "action": "OPEN SELL part",
+  "detail": "USDJPY|2026-11-18|9:00 am|SELL|HAM (Heikin-Ashi, 2nd hour) size 600.0 at 159.157 stop 159.826 target 159.135 | trade risk 9.29 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Wed 18 Nov 9:01 AM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "USDJPY|2026-11-18|9:00 am|SELL|HAM (Heikin-Ashi, 2nd hour) 159.135 -> 159.137 ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Wed 18 Nov 9:01 AM"
  }
 ]
