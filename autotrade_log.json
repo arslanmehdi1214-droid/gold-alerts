@@ -1,26 +1,5 @@
 [
  {
-  "action": "OPEN SELL rest",
-  "detail": "OIL|2026-11-02|1:07 pm|SELL|Open \u00b1 1 range size 2.9 at 98.695 stop 101.6 | trade risk 29.39 AED",
-  "market": "OIL",
-  "ok": true,
-  "t": "Mon 2 Nov 1:08 PM"
- },
- {
-  "action": "OPEN SELL rest",
-  "detail": "OIL|2026-11-02|1:08 pm|SELL|Last week's high/low size 2.9 at 98.74 stop 101.49 | trade risk 29.5 AED",
-  "market": "OIL",
-  "ok": true,
-  "t": "Mon 2 Nov 1:09 PM"
- },
- {
-  "action": "stop moved",
-  "detail": "OIL|2026-11-02|12:35 pm|SELL|Whole dollar to 98.98 (stop to entry: each position at its own fill price)",
-  "market": "OIL",
-  "ok": true,
-  "t": "Mon 2 Nov 1:48 PM"
- },
- {
   "action": "part closed on demo",
   "detail": "GBPUSD|2026-11-02|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded",
   "market": "GBPUSD",
@@ -2798,5 +2777,26 @@
   "market": "US100",
   "ok": true,
   "t": "Wed 18 Nov 5:10 AM"
+ },
+ {
+  "action": "OPEN SELL rest",
+  "detail": "GOLD|2026-11-18|8:00 am|SELL|G2 calm3ys size 0.25 at 3785.68 stop 3836.48 | trade risk 44.44 AED",
+  "market": "GOLD",
+  "ok": true,
+  "t": "Wed 18 Nov 8:01 AM"
+ },
+ {
+  "action": "OPEN SELL part",
+  "detail": "USDJPY|2026-11-18|8:00 am|SELL|Heikin-Ashi 7am size 600.0 at 159.317 stop 159.997 target 159.306 | trade risk 9.28 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Wed 18 Nov 8:01 AM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "USDJPY|2026-11-18|8:00 am|SELL|Heikin-Ashi 7am 159.306 -> 159.297 ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Wed 18 Nov 8:01 AM"
  }
 ]

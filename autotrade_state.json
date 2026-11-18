@@ -1,15 +1,15 @@
 {
- "balance": 1610.11,
+ "balance": 1611.17,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-18",
-  "pl": 57.3,
+  "pl": 59.42,
   "start_balance": 1581.23,
   "start_equity": 1581.23,
   "stopped": false
  },
- "open_positions": 3,
- "open_risk_aed": 58.1,
+ "open_positions": 5,
+ "open_risk_aed": 111.82,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-11-16|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend": {
@@ -142,6 +142,25 @@
    "side": "SELL",
    "state": "open",
    "stop": 3885.1
+  },
+  "GOLD|2026-11-18|8:00 am|SELL|G2 calm3ys": {
+   "desk_price": 3788.08,
+   "market": "GOLD",
+   "opened_at": "Wed 18 Nov 8:01 AM",
+   "part_x": 0.0,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-745d-3db1-0495-7fc60004511e",
+    "level": 3785.68,
+    "open": true,
+    "size": 0.25,
+    "tp": null
+   },
+   "risk_aed": 44.44,
+   "risk_usd": 12.25,
+   "side": "SELL",
+   "state": "open",
+   "stop": 3836.48
   },
   "OIL|2026-11-16|1:21 pm|SELL|Yesterday's high/low": {
    "desk_price": 86.85,
@@ -430,6 +449,25 @@
    "state": "not entered",
    "stop": 159.916,
    "why": "rejected by Capital.com"
+  },
+  "USDJPY|2026-11-18|8:00 am|SELL|Heikin-Ashi 7am": {
+   "desk_price": 159.326,
+   "market": "USDJPY",
+   "opened_at": "Wed 18 Nov 8:01 AM",
+   "part": {
+    "id": "00000000-745d-3dbc-0495-7fc60004511e",
+    "level": 159.317,
+    "open": true,
+    "size": 600.0,
+    "tp": 159.297
+   },
+   "part_x": 1.0,
+   "px_adj": 0.0,
+   "risk_aed": 9.28,
+   "risk_usd": 2.72,
+   "side": "SELL",
+   "state": "open",
+   "stop": 159.997
   }
  },
  "untracked_seen": {}
