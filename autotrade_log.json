@@ -1,19 +1,5 @@
 [
  {
-  "action": "open part REJECTED",
-  "detail": "USDJPY|2026-11-03|8:00 am|SELL|Heikin-Ashi 7am size 700.0 stop 158.492: REJECTED http 400 {\"errorCode\":\"error.invalid.takeprofit.maxvalue: 157.845\"}",
-  "market": "USDJPY",
-  "ok": false,
-  "t": "Tue 3 Nov 8:01 AM"
- },
- {
-  "action": "skip",
-  "detail": "OIL|2026-11-03|9:00 am|SELL|Side sell (weak close): real risk 10.98 AED after lot rounding > 1.4x target 7.5 AED",
-  "market": "OIL",
-  "ok": false,
-  "t": "Tue 3 Nov 9:01 AM"
- },
- {
   "action": "OPEN BUY part",
   "detail": "GBPUSD|2026-11-03|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded size 1000.0 at 1.34218 stop 1.33429 target 1.34931 | trade risk 27.58 AED",
   "market": "GBPUSD",
@@ -2798,5 +2784,19 @@
   "market": "BRENT",
   "ok": true,
   "t": "Wed 18 Nov 4:03 PM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "US100|2026-11-18|3:21 am|SELL|F2 sweep prev-day hi/lo by 0.1ATR from 1am back inside <30min -> reverse to 27380.2",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 18 Nov 6:41 PM"
+ },
+ {
+  "action": "OPEN SELL rest",
+  "detail": "US500|2026-11-18|6:40 pm|SELL|S&P 9:40 am New York opening move size 0.06 at 7323.7 stop 7460.7 | trade risk 26.68 AED",
+  "market": "US500",
+  "ok": true,
+  "t": "Wed 18 Nov 6:41 PM"
  }
 ]
