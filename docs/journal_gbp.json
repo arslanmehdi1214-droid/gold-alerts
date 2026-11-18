@@ -945,7 +945,7 @@
   },
   {
    "date": "2026-11-18",
-   "rules": "v1.08",
+   "rules": "v1.09",
    "label": "Wed 18 Nov",
    "side": "BUY",
    "trades": [
@@ -973,7 +973,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": -22.7,
+     "live": -22.8,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.30945 \u00b7 target 1.32503 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
     }
@@ -985,6 +985,8 @@
    "regime": 0.504,
    "gap": null,
    "code_before_gap": 2,
+   "aud_code": 0,
+   "aud_flip": false,
    "frozen": {
     "code": 2,
     "A": 0.007794285714285706,
@@ -992,23 +994,24 @@
     "t": 1.0,
     "lock": false,
     "mode": "normal",
-    "la": 0.25
+    "la": 0.25,
+    "aud_flip": false
    }
   }
  ],
  "summary": {
-  "since": "09 Nov 2026",
-  "weekdays": 8,
-  "trades": 9,
+  "since": "18 Nov 2026",
+  "weekdays": 1,
+  "trades": 1,
   "days": 100.0,
-  "perday": 1.12,
-  "closed": 8,
-  "win": 12.5,
-  "inprofit": 87.5,
-  "pf": 4.22,
-  "net": 159.8,
-  "rules": "v1.08",
+  "perday": 1.0,
+  "closed": 0,
+  "win": null,
+  "inprofit": null,
+  "pf": null,
+  "net": null,
+  "rules": "v1.09",
   "direction": null,
-  "green": 75.0
+  "green": 0.0
  }
 }
