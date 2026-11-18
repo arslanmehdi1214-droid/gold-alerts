@@ -1,15 +1,15 @@
 {
- "balance": 1693.84,
+ "balance": 1698.5,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-18",
-  "pl": 233.92,
+  "pl": 243.24,
   "start_balance": 1581.23,
   "start_equity": 1581.23,
   "stopped": false
  },
- "open_positions": 11,
- "open_risk_aed": 309.85,
+ "open_positions": 7,
+ "open_risk_aed": 192.99,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-18|4:00 pm|BUY|Rule A \u00b7 Wednesday momentum": {
@@ -278,16 +278,17 @@
    "part_x": 0.0,
    "px_adj": 0.04,
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-745d-f04f-0495-7fc60004511e",
     "level": 83.355,
-    "open": true,
+    "open": false,
     "size": 2.4,
     "tp": null
    },
    "risk_aed": 29.17,
    "risk_usd": 8.17,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 86.68
   },
   "OIL|2026-11-18|10:46 am|SELL|Open \u00b1 \u00bd range": {
@@ -297,16 +298,17 @@
    "part_x": 0.0,
    "px_adj": 0.04,
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-745e-3e37-0495-7fc60004511e",
     "level": 83.06,
-    "open": true,
+    "open": false,
     "size": 2.4,
     "tp": null
    },
    "risk_aed": 29.17,
    "risk_usd": 8.17,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 86.41
   },
   "OIL|2026-11-18|10:47 am|SELL|Last week's high/low": {
@@ -316,16 +318,17 @@
    "part_x": 0.0,
    "px_adj": 0.04,
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-745e-42a4-0495-7fc60004511e",
     "level": 83.015,
-    "open": true,
+    "open": false,
     "size": 2.4,
     "tp": null
    },
    "risk_aed": 29.26,
    "risk_usd": 8.17,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 86.26
   },
   "OIL|2026-11-18|11:08 am|SELL|Open \u00b1 0.7 range": {
@@ -335,16 +338,17 @@
    "part_x": 0.0,
    "px_adj": 0.04,
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-745e-7740-0495-7fc60004511e",
     "level": 82.57,
-    "open": true,
+    "open": false,
     "size": 2.4,
     "tp": null
    },
    "risk_aed": 29.26,
    "risk_usd": 8.17,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 85.9
   },
   "US100|2026-11-16|4:06 pm|BUY|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm": {

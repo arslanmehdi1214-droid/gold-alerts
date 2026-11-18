@@ -1,33 +1,5 @@
 [
  {
-  "action": "OPEN BUY rest",
-  "detail": "US500|2026-11-03|6:40 pm|BUY|S&P 9:40 am New York opening move size 0.11 at 7559.3 stop 7489.1 | trade risk 29.09 AED",
-  "market": "US500",
-  "ok": true,
-  "t": "Tue 3 Nov 6:41 PM"
- },
- {
-  "action": "OPEN BUY part",
-  "detail": "USDJPY|2026-11-03|7:01 pm|BUY|Inside-week break size 3200.0 at 158.385 stop 158.14 target 158.456 | trade risk 29.84 AED",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Tue 3 Nov 7:03 PM"
- },
- {
-  "action": "OPEN BUY rest",
-  "detail": "USDJPY|2026-11-03|7:01 pm|BUY|Inside-week break size 3200.0 at 158.385 stop 158.14 | trade risk 29.84 AED",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Tue 3 Nov 7:03 PM"
- },
- {
-  "action": "part closed on demo",
-  "detail": "USDJPY|2026-11-03|7:01 pm|BUY|Inside-week break",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Tue 3 Nov 7:06 PM"
- },
- {
   "action": "stop moved",
   "detail": "USDJPY|2026-11-03|7:01 pm|BUY|Inside-week break to 158.351 (stop to entry: each position at its own fill price)",
   "market": "USDJPY",
@@ -2798,5 +2770,33 @@
   "market": "US100",
   "ok": true,
   "t": "Wed 18 Nov 8:21 PM"
+ },
+ {
+  "action": "close rest",
+  "detail": "OIL|2026-11-18|10:02 am|SELL|Yesterday's high/low (desk: close_now) ",
+  "market": "OIL",
+  "ok": true,
+  "t": "Wed 18 Nov 11:00 PM"
+ },
+ {
+  "action": "close rest",
+  "detail": "OIL|2026-11-18|10:46 am|SELL|Open \u00b1 \u00bd range (desk: close_now) ",
+  "market": "OIL",
+  "ok": true,
+  "t": "Wed 18 Nov 11:00 PM"
+ },
+ {
+  "action": "close rest",
+  "detail": "OIL|2026-11-18|10:47 am|SELL|Last week's high/low (desk: close_now) ",
+  "market": "OIL",
+  "ok": true,
+  "t": "Wed 18 Nov 11:00 PM"
+ },
+ {
+  "action": "close rest",
+  "detail": "OIL|2026-11-18|11:08 am|SELL|Open \u00b1 0.7 range (desk: close_now) ",
+  "market": "OIL",
+  "ok": true,
+  "t": "Wed 18 Nov 11:00 PM"
  }
 ]
