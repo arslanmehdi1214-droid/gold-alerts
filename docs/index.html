@@ -418,6 +418,8 @@ function actsRender(){const x=M.GOLD||{},A=(x.actions||[]).slice().reverse(),day
  const tg=document.getElementById('dnt');if(tg)tg.onclick=()=>{DN_OPEN=!DN_OPEN;try{localStorage.setItem('doNowOpen',DN_OPEN?'1':'0')}catch(e){}actsRender()};
  const b=document.getElementById('snd2');if(b)b.onclick=()=>{sound=!sound;if(sound){beep(1);try{Notification.requestPermission&&Notification.requestPermission()}catch(e){}}actsRender()}}
 /* his 21 Oct ask: open trades show the REAL Capital.com demo position (size, entry, stop, P/L) when the auto-trader holds it */
+let _dsig='';function demoSigRender(){try{const g=(DEMO?'1':'0')+(DEMO_ERR?'1':'0')+(DMAP_OK?'1':'0')+(DMAP_FAIL?'1':'0')+(DEMO&&DEMO.positions?DEMO.positions.length:'-');if(g!==_dsig){_dsig=g;render()}}catch(e){}}
+function demoNote(){if(!DEMO)return DEMO_ERR?"can't check the demo account right now":'checking the demo account…';if(!DMAP_OK)return DMAP_FAIL?"can't check the demo account right now":'checking the demo account…';return 'not on the demo account'}
 function demoOf(m,e){if(!DEMO||!DEMO.positions)return null;const tg=e.tag||e.name||e.sig||'';
  const P=DEMO.positions.filter(p=>{const l=DEMO_MAP[p.dealId];if(!l)return false;const k=l.k.split('|');return k[0]===m.c&&k[2]===e.time&&k[3]===e.side&&k[4]===String(tg)});
  if(!P.length)return null;const cur=(DEMO.account||{}).currency||'USD';let sz=0,lv=0,up=0,st=null;
@@ -429,7 +431,7 @@ function ticket(c){const {o,px}=c,{m,x,e,i}=o,dp=demoOf(m,e),ep=dp?dp.level:e.pr
  const lo=Math.min(st0,tgt),hi=Math.max(st0,tgt),P=v=>Math.max(0,Math.min(100,(v-lo)/(hi-lo)*100)),pp=v=>e.side==='SELL'?100-P(v):P(v),lv=liveOf(m);
  return `<div class="tk ${e.side}" data-c="${m.c}">
   <span class="side">${e.side==='BUY'?'▲':'▼'} ${e.side}</span>
-  <div class="who"><a target="_blank" rel="noopener" href="https://www.tradingview.com/chart/?symbol=${m.tv}"><b>${m.n}</b></a><small>${e.time} · risk AED ${f(dp&&dp.risk!=null?dp.risk:c.risk*AED,0)} · ${dp?'size '+f(dp.size,Number.isInteger(dp.size)?0:2):'not on the demo account'}</small></div>
+  <div class="who"><a target="_blank" rel="noopener" href="https://www.tradingview.com/chart/?symbol=${m.tv}"><b>${m.n}</b></a><small>${e.time} · risk AED ${f(dp&&dp.risk!=null?dp.risk:c.risk*AED,0)} · ${dp?'size '+f(dp.size,Number.isInteger(dp.size)?0:2):demoNote()}</small></div>
   <div class="lad"><div class="ln2"></div><div class="zl" style="left:${Math.min(pp(st0),pp(ep))}%;width:${Math.abs(pp(ep)-pp(st0))}%"></div><div class="zw" style="left:${Math.min(pp(ep),pp(tgt))}%;width:${Math.abs(pp(tgt)-pp(ep))}%"></div>
    <span class="lb l">${f(st0,m.dp)}</span>${e.half_px!=null?`<span class="lb h" style="left:${pp(e.half_px)}%;transform:translateX(${pp(e.half_px)>80?-100:pp(e.half_px)<20?0:-50}%)">${e.part>=0.999?(e.half?'target hit':'target'):e.part!=null?(e.half?Math.round(e.part*100)+'% banked':'close '+Math.round(e.part*100)+'% at'):(e.half?'½ banked':'½ at')} ${f(e.half_px,m.dp)}</span>`:''}<span class="lb c" style="left:${pp(ep)}%">${f(ep,m.dp)}</span><span class="lb r">${f(tgt,m.dp)}</span>
    <div class="nowm" style="left:${pp(px)}%"><span>${f(px,m.dp)}<i class="dot ${lv?'on':''}"></i></span><i></i></div></div>
@@ -736,7 +738,7 @@ function bindHist(){
 async function loadDesk(){try{const j=await (await fetch(DATA_URL+'?t='+Date.now(),{cache:'no-store'})).json();D=j;M=j.markets||{};buildT();render();actsRender();applySel();deskstat.textContent='Desk data '+((j.updated||'').split('·')[1]||j.updated||'').trim()}catch(e){deskstat.textContent='Desk data unreachable, retrying'}}
 async function loadCal(){for(const u of ['calendar.json?t='+Date.now(),WORKER_URL+'calendar']){try{const j=await (await fetch(u,{cache:'no-store'})).json();if(Array.isArray(j)&&j.length){CAL=j;buildG();render();applySel();return}}catch(e){}}}
 // ---- Capital.com DEMO account (the desk's auto-trader trades here) ----
-let DEMO=null,DEMO_ERR=null,DEMO_MAP={},DEMO_SER=[];
+let DEMO=null,DEMO_ERR=null,DEMO_MAP={},DEMO_SER=[],DMAP_OK=false,DMAP_FAIL=false;   /* 18 Nov: only say "not on the demo account" when the demo data really loaded - otherwise say we can't check */
 const DEMO_STATE_URL='https://raw.githubusercontent.com/arslanmehdi1214-droid/gold-alerts/main/autotrade_state.json';
 const SKIP_LOG_URL='https://raw.githubusercontent.com/arslanmehdi1214-droid/gold-alerts/main/autotrade_log.json';let SKIP=new Set();   /* 17 Nov: a desk signal the risk filter skipped never reaches the demo account - flag it the same way Open Trades does */
 async function pullSkips(){try{const j=await (await fetch(SKIP_LOG_URL+'?t='+Date.now(),{cache:'no-store'})).json();const s=new Set();(Array.isArray(j)?j:[]).forEach(e=>{if(e.action!=='skip')return;const p=(e.detail||'').split('|');if(p.length<4)return;s.add(p[0]+'|'+p[1]+'|'+p[2]+'|'+p[3])});SKIP=s;render()}catch(e){}}
@@ -751,10 +753,12 @@ async function pullDemo(){
    if(!DEMO_SER.length||n-DEMO_SER[DEMO_SER.length-1][0]>=60000){DEMO_SER.push([n,today]);demoSaveSer()}else DEMO_SER[DEMO_SER.length-1]=[DEMO_SER[DEMO_SER.length-1][0],today]}
  }catch(e){DEMO_ERR='no answer from the price service'}
  try{renderDemo()}catch(e){}
+ demoSigRender()
 }
 async function pullDemoMap(){
  try{const j=await (await fetch(DEMO_STATE_URL+'?t='+Date.now(),{cache:'no-store'})).json();const m={};
-  Object.entries(j.trades||{}).forEach(([k,v])=>['part','rest'].forEach(r=>{if(v[r]&&v[r].id)m[v[r].id]={k,role:r,risk:v.risk_aed}}));DEMO_MAP=m}catch(e){}
+  Object.entries(j.trades||{}).forEach(([k,v])=>['part','rest'].forEach(r=>{if(v[r]&&v[r].id)m[v[r].id]={k,role:r,risk:v.risk_aed}}));DEMO_MAP=m;DMAP_OK=true;DMAP_FAIL=false}catch(e){DMAP_FAIL=true}
+ demoSigRender()
 }
 function demoMoney(x,cur){ // -> [AED, USD]
  if(x==null||isNaN(x))return [null,null];x=+x;
