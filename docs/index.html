@@ -462,14 +462,34 @@ try{renderHist()}catch(e){}
  oth.textContent=`Open trades · ${document.querySelectorAll('.row:not(.hide),.tk:not(.hide),.pt tr[data-c]:not(.hide)').length}`;
  const clh=document.getElementById('clhdr');if(clh)clh.textContent=`Closed today · ${document.querySelectorAll('#closedbox tr[data-c]:not(.hide)').length}`}
 /* 19 Nov: the Closed-today list shows the REAL Capital.com demo trades (same numbers as the account box); the desk's own paper list is only the fallback when the demo data did not load */
+/* 19 Nov: what we put in each closed trade (size + risk AED). The real transactions carry no deal id, so each one is matched to the auto-trader's own "close" log line (same market, same minute +-3) and through it to the trade's saved size/risk. No match = nothing shown, never a guess. */
+function legInfo(rows){
+ const out=new Map();
+ try{
+  const keys=Object.keys(STATE_TR).sort((p,q)=>q.length-p.length),ev=[];
+  LOGJ.forEach(e=>{const a=e.action||'';if(!/^(close part|close rest|part closed on demo|rest closed on demo)/.test(a))return;
+   const m=/(\d+) \w{3} (\d+):(\d\d) (AM|PM)/i.exec(e.t||'');if(!m)return;
+   const k=keys.find(z=>(e.detail||'').startsWith(z));if(!k)return;
+   const role=/^(close part|part closed)/.test(a)?'part':'rest',leg=(STATE_TR[k]||{})[role];if(!leg)return;
+   ev.push({day:+m[1],min:((+m[2])%12+(m[4].toUpperCase()==='PM'?12:0))*60+ +m[3],c:e.market,k,role,size:+leg.size,risk:+STATE_TR[k].risk_aed})});
+  const near=r=>{const du=new Date(r.d.getTime()+4*3600e3),mn=du.getUTCHours()*60+du.getUTCMinutes();return ev.filter(e=>e.c===r.c&&e.day===du.getUTCDate()&&e.min-mn>=-1&&e.min-mn<=3)};
+  const used=new Set();
+  rows.forEach((r,i)=>{if(isNaN(r.d))return;const c=near(r);if(c.length===1){out.set(i,c[0]);used.add(c[0])}});
+  const left=rows.map((r,i)=>i).filter(i=>!out.has(i)&&!isNaN(rows[i].d));
+  const grp={};left.forEach(i=>{const du=new Date(rows[i].d.getTime()+4*3600e3);(grp[rows[i].c+'|'+du.getUTCDate()+'|'+Math.floor(du.getTime()/180000)]=grp[rows[i].c+'|'+du.getUTCDate()+'|'+Math.floor(du.getTime()/180000)]||[]).push(i)});
+  Object.values(grp).forEach(ix=>{const cs=[...new Set(ix.flatMap(i=>near(rows[i])))].filter(e=>!used.has(e));
+   if(cs.length===ix.length&&cs.length>1){cs.sort((p,q)=>q.size-p.size);ix.sort((p,q)=>Math.abs(rows[q].a)-Math.abs(rows[p].a));ix.forEach((i,j)=>out.set(i,cs[j]))}});
+ }catch(e){}
+ return out}
 function realClosedHtml(){
  if(!DEMO||!Array.isArray(DEMO.closed_today)||(DEMO.errors&&DEMO.errors.length))return '';
  const cur=(DEMO.account||{}).currency||'USD';
  const rows=DEMO.closed_today.map(x=>{const m=MK.find(z=>z.ep===x.name),ts=String(x.t||''),d=new Date(/Z|[+-]\d\d:?\d\d$/.test(ts)?ts:ts+'Z'),a=demoMoney(x.amount,x.currency||cur)[0];return {m,name:m?m.n:(x.name||'?'),c:m?m.c:'',d,a:a==null||isNaN(a)?0:a}})
   .filter(r=>SEL==='ALL'||r.c===SEL).sort((p,q)=>q.d-p.d);
+ const LI=legInfo(rows);
  if(!rows.length)return ' ';
  const tot=rows.reduce((u,r)=>u+r.a,0);
- return `<h3 id="clhdr">Closed today · ${rows.length}</h3><table>${rows.map(r=>`<tr data-c="${r.c}"><td>${r.name}</td><td class="num dim">${isNaN(r.d)?'':t12(r.d)}</td><td class="r num ${r.a>=0?'pos':'neg'}">${sg(r.a)} AED</td></tr>`).join('')}<tr class="tot"><td colspan="2"><b>Total</b></td><td class="r num ${tot>=0?'pos':'neg'}"><b>${sg(tot)} AED</b></td></tr></table><div class="dnote">Real Capital.com demo trades${DEMO_SNAP?' (saved copy)':''} - the same numbers as the account box.</div>`}
+ return `<h3 id="clhdr">Closed today · ${rows.length}</h3><table>${rows.map((r,i)=>{const L=LI.get(i);return `<tr data-c="${r.c}"><td>${r.name}${L?`<br><small class="dim">risk AED ${f(L.risk,0)} · size ${L.size>=100?f(L.size,0):L.size} (${L.role})</small>`:''}</td><td class="num dim">${isNaN(r.d)?'':t12(r.d)}</td><td class="r num ${r.a>=0?'pos':'neg'}">${sg(r.a)} AED</td></tr>`}).join('')}<tr class="tot"><td colspan="2"><b>Total</b></td><td class="r num ${tot>=0?'pos':'neg'}"><b>${sg(tot)} AED</b></td></tr></table><div class="dnote">Real Capital.com demo trades${DEMO_SNAP?' (saved copy)':''} - the same numbers as the account box.</div>`}
 function render(){
  try{actsLive()}catch(e){}
  try{actsRender()}catch(e){}
@@ -749,8 +769,8 @@ async function loadCal(){for(const u of ['calendar.json?t='+Date.now(),WORKER_UR
 // ---- Capital.com DEMO account (the desk's auto-trader trades here) ----
 let DEMO=null,DEMO_ERR=null,DEMO_MAP={},DEMO_SER=[],DMAP_OK=false,DMAP_FAIL=false,DEMO_SNAP=false,_snapAt='';   /* 18 Nov: only say "not on the demo account" when the demo data really loaded - otherwise say we can't check */
 const DEMO_STATE_URL='https://raw.githubusercontent.com/arslanmehdi1214-droid/gold-alerts/main/autotrade_state.json';
-const SKIP_LOG_URL='https://raw.githubusercontent.com/arslanmehdi1214-droid/gold-alerts/main/autotrade_log.json';let SKIP=new Set();   /* 17 Nov: a desk signal the risk filter skipped never reaches the demo account - flag it the same way Open Trades does */
-async function pullSkips(){try{const j=await (await fetch(SKIP_LOG_URL+'?t='+Date.now(),{cache:'no-store'})).json();const s=new Set();(Array.isArray(j)?j:[]).forEach(e=>{if(e.action!=='skip')return;const p=(e.detail||'').split('|');if(p.length<4)return;s.add(p[0]+'|'+p[1]+'|'+p[2]+'|'+p[3])});SKIP=s;render()}catch(e){}}
+const SKIP_LOG_URL='https://raw.githubusercontent.com/arslanmehdi1214-droid/gold-alerts/main/autotrade_log.json';let SKIP=new Set(),LOGJ=[],STATE_TR={};   /* 17 Nov: a desk signal the risk filter skipped never reaches the demo account - flag it the same way Open Trades does */
+async function pullSkips(){try{const j=await (await fetch(SKIP_LOG_URL+'?t='+Date.now(),{cache:'no-store'})).json();LOGJ=Array.isArray(j)?j:[];const s=new Set();(Array.isArray(j)?j:[]).forEach(e=>{if(e.action!=='skip')return;const p=(e.detail||'').split('|');if(p.length<4)return;s.add(p[0]+'|'+p[1]+'|'+p[2]+'|'+p[3])});SKIP=s;render()}catch(e){}}
 function demoKeyDay(){return DEMO&&DEMO.day_start_utc?DEMO.day_start_utc.slice(0,10):dkey(new Date())}
 function demoLoadSer(){try{const j=JSON.parse(localStorage.getItem('demoSer')||'{}');DEMO_SER=j.d===demoKeyDay()?j.s:[]}catch(e){DEMO_SER=DEMO_SER||[]}}
 function demoSaveSer(){try{localStorage.setItem('demoSer',JSON.stringify({d:demoKeyDay(),s:DEMO_SER.slice(-1500)}))}catch(e){}}
@@ -772,7 +792,7 @@ async function pullDemo2(){
  demoSigRender()
 }
 async function pullDemoMap(){
- try{const j=await (await fetch(DEMO_STATE_URL+'?t='+Date.now(),{cache:'no-store'})).json();const m={};
+ try{const j=await (await fetch(DEMO_STATE_URL+'?t='+Date.now(),{cache:'no-store'})).json();const m={};STATE_TR=j.trades||{};
   Object.entries(j.trades||{}).forEach(([k,v])=>['part','rest'].forEach(r=>{if(v[r]&&v[r].id)m[v[r].id]={k,role:r,risk:v.risk_aed}}));DEMO_MAP=m;DMAP_OK=true;DMAP_FAIL=false}catch(e){DMAP_FAIL=true}
  demoSigRender()
 }
