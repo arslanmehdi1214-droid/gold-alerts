@@ -97,6 +97,8 @@ def main():
     except Exception as e: autotrade = None; print('autotrade not loaded:', type(e).__name__, e)
     try: import sentiment                                                  # read-only client-sentiment recorder (23 Oct)
     except Exception as e: sentiment = None; print('sentiment not loaded:', type(e).__name__, e)
+    try: import demo_snapshot                                              # 19 Nov: saved copy of the demo account for the dashboard (docs/demo.json), for networks that block workers.dev
+    except Exception as e: demo_snapshot = None; print('demo_snapshot not loaded:', type(e).__name__, e)
     while True:
         before = open(R.STATE).read() if os.path.exists(R.STATE) else ''
         if yen_run is not None and hasattr(yen_run, 'DEADLINE'): yen_run.DEADLINE = time.time() + 90
@@ -117,6 +119,9 @@ def main():
         if feed_error(): _SHARED[0] = None; _H1.clear()                   # fresh session + full history next minute
         alerted = (open(R.STATE).read() if os.path.exists(R.STATE) else '') != before
         if alerted or at_changed or time.time() - last_push >= PUSH_EVERY:
+            if demo_snapshot is not None:                                  # read-only; any failure here is only printed, never touches trading
+                try: print(time.strftime('%H:%M:%S'), 'demo copy |', demo_snapshot.write())
+                except Exception as e: print('demo copy error:', type(e).__name__, str(e)[:150])
             print(time.strftime('%H:%M:%S'), 'check', n, '|', push()); last_push = time.time()
         if F.broker_now().dayofweek >= 5: print('weekend - one pass only'); break
         if (time.time() - start) / 60 >= MAX_MIN: print('time limit'); break
