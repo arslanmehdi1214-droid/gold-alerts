@@ -1,19 +1,5 @@
 [
  {
-  "action": "OPEN SELL rest",
-  "detail": "OIL|2026-11-04|5:51 pm|SELL|Yesterday's high/low size 2.5 at 92.724 stop 95.84 | trade risk 29.01 AED",
-  "market": "OIL",
-  "ok": true,
-  "t": "Wed 4 Nov 5:52 PM"
- },
- {
-  "action": "OPEN SELL rest",
-  "detail": "OIL|2026-11-04|5:59 pm|SELL|Open \u00b1 0.7 range size 2.5 at 92.529 stop 95.54 | trade risk 29.01 AED",
-  "market": "OIL",
-  "ok": true,
-  "t": "Wed 4 Nov 6:00 PM"
- },
- {
   "action": "stop moved",
   "detail": "OIL|2026-11-04|5:51 pm|SELL|Yesterday's high/low to 92.64 (stop to entry: each position at its own fill price)",
   "market": "OIL",
@@ -2798,5 +2784,19 @@
   "market": "US500",
   "ok": true,
   "t": "Thu 19 Nov 6:41 PM"
+ },
+ {
+  "action": "close rest",
+  "detail": "GOLD|2026-11-19|3:22 pm|BUY|FILL range fade (desk: reversed) ",
+  "market": "GOLD",
+  "ok": true,
+  "t": "Thu 19 Nov 7:30 PM"
+ },
+ {
+  "action": "OPEN SELL rest",
+  "detail": "GOLD|2026-11-19|7:29 pm|SELL|N6 bigrange size 0.24 at 3686.56 stop 3744.32 | trade risk 44.98 AED",
+  "market": "GOLD",
+  "ok": true,
+  "t": "Thu 19 Nov 7:30 PM"
  }
 ]
