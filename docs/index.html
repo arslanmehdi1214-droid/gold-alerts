@@ -418,8 +418,8 @@ function actsRender(){const x=M.GOLD||{},A=(x.actions||[]).slice().reverse(),day
  const tg=document.getElementById('dnt');if(tg)tg.onclick=()=>{DN_OPEN=!DN_OPEN;try{localStorage.setItem('doNowOpen',DN_OPEN?'1':'0')}catch(e){}actsRender()};
  const b=document.getElementById('snd2');if(b)b.onclick=()=>{sound=!sound;if(sound){beep(1);try{Notification.requestPermission&&Notification.requestPermission()}catch(e){}}actsRender()}}
 /* his 21 Oct ask: open trades show the REAL Capital.com demo position (size, entry, stop, P/L) when the auto-trader holds it */
-let _dsig='';function demoSigRender(){try{const g=(DEMO?'1':'0')+(DEMO_ERR?'1':'0')+(DMAP_OK?'1':'0')+(DMAP_FAIL?'1':'0')+(DEMO&&DEMO.positions?DEMO.positions.length:'-');if(g!==_dsig){_dsig=g;render()}}catch(e){}}
-function demoNote(){if(!DEMO)return DEMO_ERR?"can't check the demo account right now":'checking the demo account…';if(!DMAP_OK)return DMAP_FAIL?"can't check the demo account right now":'checking the demo account…';return 'not on the demo account'}
+let _dsig='';function demoSigRender(){try{const g=(DEMO?'1':'0')+(DEMO_ERR?'1':'0')+(DMAP_OK?'1':'0')+(DMAP_FAIL?'1':'0')+(DEMO_SNAP?'1':'0')+(DEMO&&DEMO.positions?DEMO.positions.length:'-');if(g!==_dsig){_dsig=g;render()}}catch(e){}}
+function demoNote(){if(!DEMO)return DEMO_ERR?"can't check the demo account right now":'checking the demo account…';if(!DMAP_OK)return DMAP_FAIL?"can't check the demo account right now":'checking the demo account…';return DEMO_SNAP?'not in the saved demo copy yet':'not on the demo account'}
 function demoOf(m,e){if(!DEMO||!DEMO.positions)return null;const tg=e.tag||e.name||e.sig||'';
  const P=DEMO.positions.filter(p=>{const l=DEMO_MAP[p.dealId];if(!l)return false;const k=l.k.split('|');return k[0]===m.c&&k[2]===e.time&&k[3]===e.side&&k[4]===String(tg)});
  if(!P.length)return null;const cur=(DEMO.account||{}).currency||'USD';let sz=0,lv=0,up=0,st=null;
@@ -738,20 +738,24 @@ function bindHist(){
 async function loadDesk(){try{const j=await (await fetch(DATA_URL+'?t='+Date.now(),{cache:'no-store'})).json();D=j;M=j.markets||{};buildT();render();actsRender();applySel();deskstat.textContent='Desk data '+((j.updated||'').split('·')[1]||j.updated||'').trim()}catch(e){deskstat.textContent='Desk data unreachable, retrying'}}
 async function loadCal(){for(const u of ['calendar.json?t='+Date.now(),WORKER_URL+'calendar']){try{const j=await (await fetch(u,{cache:'no-store'})).json();if(Array.isArray(j)&&j.length){CAL=j;buildG();render();applySel();return}}catch(e){}}}
 // ---- Capital.com DEMO account (the desk's auto-trader trades here) ----
-let DEMO=null,DEMO_ERR=null,DEMO_MAP={},DEMO_SER=[],DMAP_OK=false,DMAP_FAIL=false;   /* 18 Nov: only say "not on the demo account" when the demo data really loaded - otherwise say we can't check */
+let DEMO=null,DEMO_ERR=null,DEMO_MAP={},DEMO_SER=[],DMAP_OK=false,DMAP_FAIL=false,DEMO_SNAP=false,_snapAt='';   /* 18 Nov: only say "not on the demo account" when the demo data really loaded - otherwise say we can't check */
 const DEMO_STATE_URL='https://raw.githubusercontent.com/arslanmehdi1214-droid/gold-alerts/main/autotrade_state.json';
 const SKIP_LOG_URL='https://raw.githubusercontent.com/arslanmehdi1214-droid/gold-alerts/main/autotrade_log.json';let SKIP=new Set();   /* 17 Nov: a desk signal the risk filter skipped never reaches the demo account - flag it the same way Open Trades does */
 async function pullSkips(){try{const j=await (await fetch(SKIP_LOG_URL+'?t='+Date.now(),{cache:'no-store'})).json();const s=new Set();(Array.isArray(j)?j:[]).forEach(e=>{if(e.action!=='skip')return;const p=(e.detail||'').split('|');if(p.length<4)return;s.add(p[0]+'|'+p[1]+'|'+p[2]+'|'+p[3])});SKIP=s;render()}catch(e){}}
 function demoKeyDay(){return DEMO&&DEMO.day_start_utc?DEMO.day_start_utc.slice(0,10):dkey(new Date())}
 function demoLoadSer(){try{const j=JSON.parse(localStorage.getItem('demoSer')||'{}');DEMO_SER=j.d===demoKeyDay()?j.s:[]}catch(e){DEMO_SER=DEMO_SER||[]}}
 function demoSaveSer(){try{localStorage.setItem('demoSer',JSON.stringify({d:demoKeyDay(),s:DEMO_SER.slice(-1500)}))}catch(e){}}
+const DEMO_SNAP_URL='demo.json';   /* 19 Nov: some networks (e.g. Pakistan ISPs) block workers.dev - fall back to the saved copy the auto-trader loop writes to the dashboard's own page */
 async function pullDemo(){
  if(!WORKER_URL)return;
- try{const j=await (await fetch(WORKER_URL+'demo',{cache:'no-store'})).json();
-  if(j.error){DEMO_ERR=j.error}else{const first=!DEMO;DEMO=j;DEMO_ERR=null;if(first)demoLoadSer();
+ let j=null,why='no answer from the price service',snap=false;
+ try{j=await (await fetch(WORKER_URL+'demo',{cache:'no-store'})).json();if(j.error){why=j.error;j=null}}catch(e){j=null}
+ if(!j){try{const s2=await (await fetch(DEMO_SNAP_URL+'?t='+Date.now(),{cache:'no-store'})).json();if(s2&&s2.account&&Array.isArray(s2.positions)){j=s2;snap=true}}catch(e){}}
+ if(!j){DEMO_ERR=why}
+ else{const first=!DEMO;DEMO=j;DEMO_SNAP=snap;DEMO_ERR=null;if(first)demoLoadSer();
+  if(!snap||j.at!==_snapAt){_snapAt=snap?j.at:'';
    const today=(+j.realized_today||0)+(+j.account.upl||0);const n=Date.now();
-   if(!DEMO_SER.length||n-DEMO_SER[DEMO_SER.length-1][0]>=60000){DEMO_SER.push([n,today]);demoSaveSer()}else DEMO_SER[DEMO_SER.length-1]=[DEMO_SER[DEMO_SER.length-1][0],today]}
- }catch(e){DEMO_ERR='no answer from the price service'}
+   if(!DEMO_SER.length||n-DEMO_SER[DEMO_SER.length-1][0]>=60000){DEMO_SER.push([n,today]);demoSaveSer()}else DEMO_SER[DEMO_SER.length-1]=[DEMO_SER[DEMO_SER.length-1][0],today]}}
  try{renderDemo()}catch(e){}
  demoSigRender()
 }
@@ -782,7 +786,7 @@ function renderDemo(){
   <div class="kv">Balance<b>AED ${f(bA,0)}</b></div>
   <div class="kv">Equity now<b>AED ${f(eA,0)}</b></div>
   <div class="kv">Open positions<b>${P.length}</b></div><div class="kv">Closed today<b>${nc}</b></div>
-  <div class="dnote">${a.name||'Demo'} · ${cur} · updated ${t12(new Date(DEMO.at))}${DEMO_ERR?' · last read failed: '+DEMO_ERR:''}</div>`;
+  <div class="dnote">${a.name||'Demo'} · ${cur} · updated ${t12(new Date(DEMO.at))}${DEMO_SNAP?' · saved copy, '+Math.max(0,Math.round((Date.now()-new Date(DEMO.at))/60000))+' min old (live service not reachable from this network)':''}${DEMO_ERR?' · last read failed: '+DEMO_ERR:''}</div>`;
 }
 buildT();render();applySel();tick();loadDesk();loadCal();setInterval(loadDesk,60000);loadHist();setInterval(loadHist,5*60000);setInterval(loadCal,30*60000);setInterval(tick,1000);
 pullLive();setInterval(pullLive,WORKER_URL?3000:5000);
