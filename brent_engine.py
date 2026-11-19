@@ -91,6 +91,25 @@ RULES AW + K2 (v1.10, new 9 Nov 2026, added on top of live v1.07a per his reques
   Both AW and K2 are fully independent of A-F/K+/each other: own trade/position (own tag), do NOT take part in
   conflict-close in either direction - both are appended to the day's trades AFTER apply_conflict_close() runs on
   A-F+C, same treatment as K+ (run_day() below).
+WATCH RULES W1-W4 (v1.12W, new 19 Nov 2026, DEMO / FORWARD TEST ONLY - his instruction "demo only, keep live v1.10 unchanged";
+  source EA BRENT_WED_HOL_v112W.mq4 (md5 54564281efc512dbe26015fd353aa326), spec BRENT_v112W_DASHBOARD_SPEC.txt). Four extra
+  rules, each its OWN position with its OWN tag, independent of every live rule (no conflict-close in either direction, appended
+  after A-F/K+/AW/K2), all same-day (closed 21:30 broker). None has a target - they close on time. MT4 proof 19 Nov (his run,
+  BRENT M1 every tick, spread 8, 0.30 lot, 2018-01-02..2026-10-30): full v1.12W EA +$94,121, PF 1.41, max DD $9,527, 1,811 trades;
+  v1.10 part unchanged 1,491 trades +$80,891. W1 M4 106 trades +$1,441 (52% closed in profit) | W2 M1 104 +$4,739 (55%) |
+  W3 EU 44 +$3,187 (53%) | W4 N150 65 +$3,863 (55%).
+  W1 (tag WM4): 4th-last trading day of the month (day list W_M4_DAYS, copied from the EA) -> BUY 15:00 broker, NO stop (as
+    tested), close 21:30. The auto-trader cannot place or size an order without a stop, so the ROW carries a far "demo safety
+    stop" (WM4_SAFETY_MULT x A) for sizing/placement only - the paper result never uses it (see watch_trade()).
+  W2 (tag WM1): first trading day of the month (W_M1_DAYS) -> SELL 15:00, stop 2.0 x A, close 21:30.
+  W3 (tag WEU): day in W_EU_DAYS (German/French-only holiday, UK and US open) and not a live calendar day (B/D/E/F lists) ->
+    SELL 11:00, stop 1.0 x A, close 21:30.
+  W4 (tag WN150): yesterday's 21:29 broker close is ABOVE the highest (or BELOW the lowest) of the 150 daily 21:29 closes before
+    it AND the day before that was NOT already beyond in the same direction (first day of the break only); today (not a live
+    calendar day) trade that way at 03:20 broker, stop 1.0 x A, close 21:30. The 21:29 closes come from brent_run's own
+    docs/brent_close.json (built from the same Capital.com minute feed).
+  A = the same 20-day average range as every live rule. Early-close days (US holidays end ~20:28): a still-open trade shows 'open'
+  until the next run (same limitation as every other rule here).
 US/UK holiday dates (HOL_AFTER / UK_HOL_BUY / UK_HOL_SELL / UK_HOL_SELL2 / PRE_HOL_BUY) are the EXACT baked-in lists
 from the proven EA (BRENT_WED_HOL_v106.mq4), copied verbatim - NOT recomputed from a calendar library (unchanged
 from v1.05 - only the entry TIMES for B/D/C moved in v1.06, not these lists). A first attempt (back in v1.05) to
@@ -208,12 +227,61 @@ K2_LAST_SIGNAL_MIN = K_LAST_SIGNAL_MIN                  # K2's own last-entry cu
 K2_LOT_X = 0.5                                          # v1.10 rule K2 size = this x a normal trade (EA K2_Lot_x) - NOT a stop multiplier;
 # consumed by brent_run.row() (size=K2_LOT_X -> autotrade.py's weight()/plan() halves the USD risk and lot size)
 
+# ---- v1.12W WATCH rules (new 19 Nov 2026, demo forward test only - independent of every live rule) ----
+W_M4_DAYS = (
+    "2018.01.26,2018.02.23,2018.03.26,2018.04.25,2018.05.28,2018.06.26,2018.07.26,2018.08.28,2018.09.25,2018.10.26,"
+    "2018.11.27,2018.12.26,2019.01.28,2019.02.25,2019.03.26,2019.04.25,2019.05.28,2019.06.25,2019.07.26,2019.08.27,"
+    "2019.09.25,2019.10.28,2019.11.26,2019.12.26,2020.01.28,2020.02.25,2020.03.26,2020.04.27,2020.05.26,2020.06.25,"
+    "2020.07.28,2020.08.26,2020.09.25,2020.10.27,2020.11.25,2020.12.28,2021.01.26,2021.02.23,2021.03.26,2021.04.27,"
+    "2021.05.26,2021.06.25,2021.07.27,2021.08.26,2021.09.27,2021.10.26,2021.11.25,2021.12.28,2022.01.26,2022.02.23,"
+    "2022.03.28,2022.04.26,2022.05.26,2022.06.27,2022.07.26,2022.08.26,2022.09.27,2022.10.26,2022.11.25,2022.12.27,"
+    "2023.01.26,2023.02.23,2023.03.28,2023.04.25,2023.05.26,2023.06.27,2023.07.26,2023.08.28,2023.09.26,2023.10.26,"
+    "2023.11.27,2023.12.26,2024.01.26,2024.02.26,2024.03.25,2024.04.25,2024.05.28,2024.06.25,2024.07.26,2024.08.27,"
+    "2024.09.25,2024.10.28,2024.11.26,2024.12.26,2025.01.28,2025.02.25,2025.03.26,2025.04.25,2025.05.27,2025.06.25,"
+    "2025.07.28,2025.08.26,2025.09.25,2025.10.28,2025.11.25,2025.12.26,2026.01.27,2026.02.24,2026.03.26,2026.04.27,"
+    "2026.05.26,2026.06.25,2026.07.28,2026.08.26,2026.09.25,2026.10.27,2026.11.25,2026.12.28,2027.01.26,2027.02.23,"
+    "2027.03.25,2027.04.27,2027.05.26,2027.06.25,2027.07.27,2027.08.26,2027.09.27,2027.10.26,2027.11.25,2027.12.28,"
+    "2028.01.26,2028.02.24,2028.03.28,2028.04.25,2028.05.26,2028.06.27,2028.07.26,2028.08.28,2028.09.26,2028.10.26,"
+    "2028.11.27,2028.12.26")
+W_M1_DAYS = (
+    "2018.01.02,2018.02.01,2018.03.01,2018.04.02,2018.05.01,2018.06.01,2018.07.02,2018.08.01,2018.09.03,2018.10.01,"
+    "2018.11.01,2018.12.03,2019.01.02,2019.02.01,2019.03.01,2019.04.01,2019.05.01,2019.06.03,2019.07.01,2019.08.01,"
+    "2019.09.02,2019.10.01,2019.11.01,2019.12.02,2020.01.02,2020.02.03,2020.03.02,2020.04.01,2020.05.01,2020.06.01,"
+    "2020.07.01,2020.08.03,2020.09.01,2020.10.01,2020.11.02,2020.12.01,2021.01.04,2021.02.01,2021.03.01,2021.04.01,"
+    "2021.05.03,2021.06.01,2021.07.01,2021.08.02,2021.09.01,2021.10.01,2021.11.01,2021.12.01,2022.01.03,2022.02.01,"
+    "2022.03.01,2022.04.01,2022.05.02,2022.06.01,2022.07.01,2022.08.01,2022.09.01,2022.10.03,2022.11.01,2022.12.01,"
+    "2023.01.02,2023.02.01,2023.03.01,2023.04.03,2023.05.01,2023.06.01,2023.07.03,2023.08.01,2023.09.01,2023.10.02,"
+    "2023.11.01,2023.12.01,2024.01.02,2024.02.01,2024.03.01,2024.04.01,2024.05.01,2024.06.03,2024.07.01,2024.08.01,"
+    "2024.09.02,2024.10.01,2024.11.01,2024.12.02,2025.01.02,2025.02.03,2025.03.03,2025.04.01,2025.05.01,2025.06.02,"
+    "2025.07.01,2025.08.01,2025.09.01,2025.10.01,2025.11.03,2025.12.01,2026.01.02,2026.02.02,2026.03.02,2026.04.01,"
+    "2026.05.01,2026.06.01,2026.07.01,2026.08.03,2026.09.01,2026.10.01,2026.11.02,2026.12.01,2027.01.04,2027.02.01,"
+    "2027.03.01,2027.04.01,2027.05.03,2027.06.01,2027.07.01,2027.08.02,2027.09.01,2027.10.01,2027.11.01,2027.12.01,"
+    "2028.01.03,2028.02.01,2028.03.01,2028.04.03,2028.05.01,2028.06.01,2028.07.03,2028.08.01,2028.09.01,2028.10.02,"
+    "2028.11.01,2028.12.01")
+W_EU_DAYS = (
+    "2018.05.01,2018.05.10,2018.05.21,2018.08.15,2018.10.03,2018.11.01,2019.05.01,2019.05.30,2019.06.10,2019.08.15,"
+    "2019.10.03,2019.11.01,2020.05.01,2020.05.21,2020.06.01,2020.07.14,2021.05.13,2021.05.24,2021.07.14,2021.11.01,"
+    "2022.05.26,2022.06.06,2022.07.14,2022.08.15,2022.10.03,2022.11.01,2023.05.18,2023.07.14,2023.08.15,2023.10.03,"
+    "2023.11.01,2024.05.01,2024.05.09,2024.05.20,2024.08.15,2024.10.03,2024.11.01,2025.05.01,2025.05.29,2025.06.09,"
+    "2025.07.14,2025.08.15,2025.10.03,2026.05.01,2026.05.14,2026.07.14,2027.05.06,2027.05.17,2027.07.14,2027.11.01,"
+    "2028.05.25,2028.06.05,2028.07.14,2028.08.15,2028.10.03,2028.11.01")
+
+WATCH_M4_DAYS, WATCH_M1_DAYS, WATCH_EU_DAYS = _dateset(W_M4_DAYS), _dateset(W_M1_DAYS), _dateset(W_EU_DAYS)
+WATCH_LAST = dict(M4=max(WATCH_M4_DAYS), M1=max(WATCH_M1_DAYS), EU=max(WATCH_EU_DAYS))
+M4_ENTRY_MIN, M1_ENTRY_MIN, EU_ENTRY_MIN, N150_ENTRY_MIN = 15 * 60, 15 * 60, 11 * 60, 3 * 60 + 20    # EA lines 71, 74, 77, 81 (broker clock)
+M4_STOP_MULT, M1_STOP_MULT, EU_STOP_MULT, N150_STOP_MULT = 0.0, 2.0, 1.0, 1.0   # EA lines 72, 75, 78, 82 (0 = no stop, as tested)
+N150_DAYS = 150                                         # EA line 80
+WM4_SAFETY_MULT = 2.0                                   # demo-order safety stop for W1 only (x A); NOT part of the tested rule, see watch_trade(). Python replay of the 106 MT4 W1 days: worst adverse move 1.31 x A, so 2.0 x A is never touched
+WATCH_RULES = ('WM4', 'WM1', 'WEU', 'WN150')
+
 RULE_NAME = {'A': 'Rule A · Wednesday momentum', 'B': 'Rule B · day after US holiday',
              'C': 'Rule C · 20-day range break', 'Dbuy': 'Rule D · UK bank holiday (buy)', 'Dsell': 'Rule D · UK bank holiday (sell next day)',
              'E': 'Rule E · 2nd day after UK holiday (sell)', 'F': 'Rule F · day before holiday (buy)',
              'K': 'Rule K+ · overextension fade (new 9 Nov 2026 - thin before 2026)',
              'AW': 'Rule AW · Wednesday re-entry (new 9 Nov 2026 - 2022-heavy)',
-             'K2': 'Rule K2 · K+ add-on fade, half size (new 9 Nov 2026 - 2022-heavy)'}
+             'K2': 'Rule K2 · K+ add-on fade, half size (new 9 Nov 2026 - 2022-heavy)',
+             'WM4': 'W1 · month-end buy (DEMO forward test)', 'WM1': 'W2 · first-day-of-month sell (DEMO forward test)',
+             'WEU': 'W3 · Europe-only holiday sell (DEMO forward test)', 'WN150': 'W4 · 150-day close break (DEMO forward test)'}
 
 # ---------------- calendar lookups (exact EA lists above) ----------------
 def rule_flags(day):
@@ -442,6 +510,56 @@ def k2_trade(b, day, dt, A, k_trade, c_entry_t, cost, mult=K2_STOP_MULT, th_mult
     if out['exit'] is not None: out['res'] = sig * (out['exit'] - en) - cost
     return out
 
+# ---------------- WATCH rules W1-W4 (v1.12W, new 19 Nov 2026 - demo forward test, independent of every live rule) ----------------
+def watch_trade(b, day, entry_min, direction, A, rk, cost, mult):
+    """One watch trade at a fixed broker minute, closed 21:30 broker (or stopped first). Same mechanics as fixed_trade().
+    mult <= 0 = NO STOP (W1, exactly as MT4-tested): the paper result then never stops out, but the returned row still
+    carries a far safety stop (WM4_SAFETY_MULT x A, 'nostop': True) because the demo auto-trader needs a stop level to place
+    and size an order - that stop is a demo-order safeguard only and is not used for the paper result. Tag = the rule key."""
+    if mult and mult > 0:
+        t = fixed_trade(b, day, entry_min, direction, A, rk, cost, mult)
+    else:
+        t = fixed_trade(b, day, entry_min, direction, A, rk, cost, 1e9)      # a stop so far away it can never fire
+        if t:
+            sf = t['entry'] - t['dir'] * WM4_SAFETY_MULT * A
+            t.update(stop=sf, stop0=sf, nostop=True)
+    if t: t['tag'] = rk
+    return t
+
+def wn150_dir(dcl, day, n=N150_DAYS):
+    """W4 signal for broker `day` from the daily 21:29 closes (Series indexed by broker day, days BEFORE `day` only):
+    +1/-1 if yesterday's close is beyond the high/low of the n closes before it AND the day before was not already beyond in
+    the same direction (EA TBreakN(k) != 0 and != TBreakN(k-1)); 0 = no signal; None = fewer than n+2 closes yet (warming up).
+    k-n-1 >= 0 in the EA = at least n+2 closes."""
+    v = dcl[dcl.index < pd.Timestamp(day).normalize()].dropna().sort_index().values
+    if len(v) < n + 2: return None
+    def brk(k):
+        w = v[k - n:k]
+        return 1 if v[k] > w.max() else -1 if v[k] < w.min() else 0
+    k = len(v) - 1; nY, nP = brk(k), brk(k - 1)
+    return nY if (nY != 0 and nY != nP) else 0
+
+def watch_trades(b, day, dt, A, dcl, cost):
+    """All four watch rules for `day`. Calendar-list days (live B/D/E/F lists) are skipped for W3/W4 only, exactly as the EA
+    (W1/W2 have no calendar test). dcl = daily 21:29 closes Series (None = not built yet -> W4 sits out)."""
+    day = pd.Timestamp(day).normalize(); out = []
+    cal = bool(dt['ruleB'] or dt['ruleD_buy'] or dt['ruleD_sell'] or dt['ruleE'] or dt['ruleF'])
+    if day in WATCH_M4_DAYS:
+        t = watch_trade(b, day, M4_ENTRY_MIN, +1, A, 'WM4', cost, M4_STOP_MULT)
+        if t: out.append(t)
+    if day in WATCH_M1_DAYS:
+        t = watch_trade(b, day, M1_ENTRY_MIN, -1, A, 'WM1', cost, M1_STOP_MULT)
+        if t: out.append(t)
+    if day in WATCH_EU_DAYS and not cal:
+        t = watch_trade(b, day, EU_ENTRY_MIN, -1, A, 'WEU', cost, EU_STOP_MULT)
+        if t: out.append(t)
+    if not cal and dcl is not None:
+        nd = wn150_dir(dcl, day)
+        if nd:
+            t = watch_trade(b, day, N150_ENTRY_MIN, nd, A, 'WN150', cost, N150_STOP_MULT)
+            if t: out.append(t)
+    return out
+
 # ---------------- conflict-close (v1.06, new) ----------------
 def apply_conflict_close(trades):
     """A new signal opposite an earlier-still-open trade from the SAME day closes that trade (at the new signal's
@@ -465,7 +583,7 @@ def apply_conflict_close(trades):
     for k in kept: k.pop('_closed', None)
     return kept
 
-def run_day(b, day, dt, A, hi, lo, sd, cost=0.08):
+def run_day(b, day, dt, A, hi, lo, sd, cost=0.08, dcl=None, watch=True):
     """b: today's closed minute bars. dt = day_type(...) for the day. A = ADR20; (hi,lo) = rule C's 20-day channel;
     sd = rule A's 60-day move std. Returns the list of trade dicts that fired today (0-N; A-F+C conflict-closed,
     K+ (v1.07a) and AW/K2 (v1.10) appended after - all three independent, never conflict-closed, see
@@ -501,4 +619,5 @@ def run_day(b, day, dt, A, hi, lo, sd, cost=0.08):
     if tAW: kept.append(tAW)
     tK2 = k2_trade(b, day, dt, A, tK, tC['t'] if tC else None, cost)   # v1.10, new 9 Nov 2026 - independent, see module docstring
     if tK2: kept.append(tK2)
+    if watch: kept += watch_trades(b, day, dt, A, dcl, cost)   # v1.12W, new 19 Nov 2026 - demo forward test, independent, see module docstring
     return kept
