@@ -746,11 +746,14 @@ function demoKeyDay(){return DEMO&&DEMO.day_start_utc?DEMO.day_start_utc.slice(0
 function demoLoadSer(){try{const j=JSON.parse(localStorage.getItem('demoSer')||'{}');DEMO_SER=j.d===demoKeyDay()?j.s:[]}catch(e){DEMO_SER=DEMO_SER||[]}}
 function demoSaveSer(){try{localStorage.setItem('demoSer',JSON.stringify({d:demoKeyDay(),s:DEMO_SER.slice(-1500)}))}catch(e){}}
 const DEMO_SNAP_URL='demo.json';   /* 19 Nov: some networks (e.g. Pakistan ISPs) block workers.dev - fall back to the saved copy the auto-trader loop writes to the dashboard's own page */
-async function pullDemo(){
+let _pdBusy=false,_wFail=0;
+async function jget(u,ms){const c=new AbortController(),t=setTimeout(()=>c.abort(),ms);try{return await (await fetch(u,{cache:'no-store',signal:c.signal})).json()}finally{clearTimeout(t)}} // never waits longer than ms (some networks leave the request hanging)
+async function pullDemo(){if(_pdBusy)return;_pdBusy=true;try{await pullDemo2()}finally{_pdBusy=false}}
+async function pullDemo2(){
  if(!WORKER_URL)return;
  let j=null,why='no answer from the price service',snap=false;
- try{j=await (await fetch(WORKER_URL+'demo',{cache:'no-store'})).json();if(j.error){why=j.error;j=null}}catch(e){j=null}
- if(!j){try{const s2=await (await fetch(DEMO_SNAP_URL+'?t='+Date.now(),{cache:'no-store'})).json();if(s2&&s2.account&&Array.isArray(s2.positions)){j=s2;snap=true}}catch(e){}}
+ if(!(_wFail&&Date.now()-_wFail<60000)){try{j=await jget(WORKER_URL+'demo',4000);if(j.error){why=j.error;j=null}}catch(e){j=null}if(!j)_wFail=Date.now();else _wFail=0}
+ if(!j){try{const s2=await jget(DEMO_SNAP_URL+'?t='+Date.now(),8000);if(s2&&s2.account&&Array.isArray(s2.positions)){j=s2;snap=true}}catch(e){}}
  if(!j){DEMO_ERR=why}
  else{const first=!DEMO;DEMO=j;DEMO_SNAP=snap;DEMO_ERR=null;if(first)demoLoadSer();
   if(!snap||j.at!==_snapAt){_snapAt=snap?j.at:'';
