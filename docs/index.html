@@ -280,6 +280,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
   <div class="dim" id="cpibox" style="margin-top:8px"></div>
   <div class="dim" id="tuesdaybox" style="margin-top:8px"></div>
   <div class="dim" id="bigupbox" style="margin-top:8px"></div>
+  <div class="dim" id="brentwbox" style="margin-top:8px"></div>
   <div class="hist" id="histbox"></div>
  </section>
  <aside class="rail rr pane p-nw">
@@ -431,7 +432,7 @@ function ticket(c){const {o,px}=c,{m,x,e,i}=o,dp=demoOf(m,e),ep=dp?dp.level:e.pr
  const lo=Math.min(st0,tgt),hi=Math.max(st0,tgt),P=v=>Math.max(0,Math.min(100,(v-lo)/(hi-lo)*100)),pp=v=>e.side==='SELL'?100-P(v):P(v),lv=liveOf(m);
  return `<div class="tk ${e.side}" data-c="${m.c}">
   <span class="side">${e.side==='BUY'?'▲':'▼'} ${e.side}</span>
-  <div class="who"><a target="_blank" rel="noopener" href="https://www.tradingview.com/chart/?symbol=${m.tv}"><b>${m.n}</b></a><small>${e.time} · risk AED ${f(dp&&dp.risk!=null?dp.risk:c.risk*AED,0)} · ${dp?'size '+f(dp.size,Number.isInteger(dp.size)?0:2):demoNote()}</small></div>
+  <div class="who"><a target="_blank" rel="noopener" href="https://www.tradingview.com/chart/?symbol=${m.tv}"><b>${m.n}</b></a><small>${e.time}${e.demo?' · DEMO watch':''} · risk AED ${f(dp&&dp.risk!=null?dp.risk:c.risk*AED,0)} · ${dp?'size '+f(dp.size,Number.isInteger(dp.size)?0:2):demoNote()}</small></div>
   <div class="lad"><div class="ln2"></div><div class="zl" style="left:${Math.min(pp(st0),pp(ep))}%;width:${Math.abs(pp(ep)-pp(st0))}%"></div><div class="zw" style="left:${Math.min(pp(ep),pp(tgt))}%;width:${Math.abs(pp(tgt)-pp(ep))}%"></div>
    <span class="lb l">${f(st0,m.dp)}</span>${e.half_px!=null?`<span class="lb h" style="left:${pp(e.half_px)}%;transform:translateX(${pp(e.half_px)>80?-100:pp(e.half_px)<20?0:-50}%)">${e.part>=0.999?(e.half?'target hit':'target'):e.part!=null?(e.half?Math.round(e.part*100)+'% banked':'close '+Math.round(e.part*100)+'% at'):(e.half?'½ banked':'½ at')} ${f(e.half_px,m.dp)}</span>`:''}<span class="lb c" style="left:${pp(ep)}%">${f(ep,m.dp)}</span><span class="lb r">${f(tgt,m.dp)}</span>
    <div class="nowm" style="left:${pp(px)}%"><span>${f(px,m.dp)}<i class="dot ${lv?'on':''}"></i></span><i></i></div></div>
@@ -532,6 +533,11 @@ function render(){
   else if(bu.state==='open'){const dp=(MK.find(x=>x.c==='US100')||{}).dp??1;
    bigupbox.innerHTML=`<b>Big Up Continuation</b> · long from ${bu.entry_time} @ ${f(bu.entry,dp)} · stop ${f(bu.stop,dp)} / target ${f(bu.target,dp)} (R=${f(bu.r,dp)})${bu.live!=null?` · <b class="${bu.live>=0?'pos':'neg'}">${sg(bu.live,dp)} pts</b>`:''}`}
   else bigupbox.innerHTML=`<b>Big Up Continuation</b> · ${bu.note}`
+ }catch(e){}
+ try{const bw=(M.BRENT||{}).watch,bb=((M.BRENT||{}).watch_backtest)||null;           /* 19 Nov: Brent WATCH rules W1-W4 (DEMO forward test, own journal; live v1.10 unchanged) */
+  if(!bw||!(SEL==='ALL'||SEL==='BRENT'))brentwbox.innerHTML='';
+  else{const sm=bw.summary&&bw.summary.all||{},nx=(bw.next||[]).map(n=>`${n.rule} ${n.side} ${n.label}`).join(' · '),w4=bw.w4,bt=(bb&&bb.rules||[]).map(r=>`${r.code} ${r.trades} trades +$${f(r.net,0)}`).join(' · ');
+   brentwbox.innerHTML=`<b>Brent watch rules W1-W4</b> <span class="tag">DEMO FORWARD TEST</span> · ${(M.BRENT||{}).version||''} · live rules unchanged · no target, they close on time${bw.close?' ('+bw.close+')':''}<br>Next: ${nx||'-'} · W4: ${!w4?'checking':w4.ready?'ready (150 closes loaded)':'warming up - '+w4.have+' of '+w4.need+' daily closes loaded'}<br>Forward test so far: ${sm.trades?sm.trades+' trade'+(sm.trades>1?'s':'')+(sm.closed?' · '+f(sm.win,0)+'% closed in profit':'' ):'no trades yet'}${bt?` <span class="dim">· MT4 proof (0.30 lot, 2018-26): ${bt}</span>`:''}`}
  }catch(e){}
  const now=new Date();
  const DKeys=[...new Set(G.map(g=>dkey(g.t)))].sort();
@@ -634,6 +640,8 @@ const HMK=[
   tag:t=>t.name+(t.size?' · size '+t.size:''),info:t=>`in ${f(t.price,2)} · stop ${f(t.stop,2)}${t.exit!=null?` · out ${f(t.exit,2)}`:''}`},
  {c:'BRENT',n:'Brent Oil',file:'journal_brent.json',usd:t=>{const r=t.res_sized??t.res;return r==null?null:r*10},
   tag:t=>t.name,info:t=>`in ${f(t.price,2)} · stop ${f(t.stop,2)}${t.exit!=null?` · out ${f(t.exit,2)}`:''}`},
+ {c:'BRENTW',n:'Brent watch (demo)',file:'journal_brent_watch.json',usd:t=>{const r=t.res_sized??t.res;return r==null?null:r*10},
+  tag:t=>t.name,info:t=>`in ${f(t.price,2)} · ${t.nostop?'no stop':'stop '+f(t.stop,2)}${t.exit!=null?` · out ${f(t.exit,2)}`:''}`},
  {c:'US100',n:'Nasdaq',file:'journal_nq.json',usd:t=>t.res==null?null:t.res*0.1,
   tag:t=>(t.name||'').split(':')[0],info:t=>`in ${f(t.price,1)} · stop ${f(t.stop,1)}${t.exit!=null?` · out ${f(t.exit,1)}`:''}${t.res!=null?` · ${sg(t.res,1)} pts`:''}`},
  {c:'US500',n:'S&P 500',file:'journal_sp.json',usd:t=>t.res==null?null:t.res*0.1,
