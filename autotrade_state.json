@@ -8,8 +8,8 @@
   "start_equity": 1670.51,
   "stopped": false
  },
- "open_positions": 0,
- "open_risk_aed": 0,
+ "open_positions": 1,
+ "open_risk_aed": 25.66,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-18|4:00 pm|BUY|Rule A \u00b7 Wednesday momentum": {
@@ -643,6 +643,25 @@
    "side": "SELL",
    "state": "closed",
    "stop": 7505.6
+  },
+  "US500|2026-11-20|3:01 am|BUY|Night long (gold+WTI overnight shock)": {
+   "desk_price": 7175.3,
+   "market": "US500",
+   "opened_at": "Fri 20 Nov 3:02 AM",
+   "part_x": 0.0,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-7510-e305-0495-7fc60004511e",
+    "level": 7175.3,
+    "open": true,
+    "size": 0.04,
+    "tp": null
+   },
+   "risk_aed": 25.66,
+   "risk_usd": 8.17,
+   "side": "BUY",
+   "state": "open",
+   "stop": 7000.6
   },
   "USDJPY|2026-11-16|3:05 am|SELL|WGAP (weekend-gap fade)": {
    "desk_price": 159.8,

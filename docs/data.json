@@ -1,5 +1,5 @@
 {
- "updated": "Fri 20 Nov \u00b7 2:54 am",
+ "updated": "Fri 20 Nov \u00b7 3:02 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,14 +13,22 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": null,
+   "price": 3634.6,
    "close_at": "12:50 am",
-   "change": null,
+   "change": 2.66,
    "size": 0.1,
    "datr": 99.81,
    "open_now": 0,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "3:00 am",
+     3634.6,
+     3631.94,
+     3638.7,
+     3627.13
+    ]
+   ],
    "history": [
     {
      "date": "2026-11-20",
@@ -208,8 +216,8 @@
     "dollar_5d": "rose",
     "vix_5d": "rose",
     "tnx_5d": "fell",
-    "dollar_driven": null,
-    "corr": null,
+    "dollar_driven": false,
+    "corr": -0.451,
     "low_attention": false,
     "missing": [],
     "notes": []
@@ -1627,7 +1635,7 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 159.611,
+   "price": 159.576,
    "change_pips": null,
    "atr_pips": 86.4,
    "entries": [],
@@ -3914,10 +3922,18 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 82.971,
+   "change": -0.02,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "3:00 am",
+     82.97,
+     82.99,
+     83.04,
+     82.89
+    ]
+   ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 10,
@@ -5513,7 +5529,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": null,
+   "live_spread": 0.068,
    "history_note": "history to 2026-11-19 (60 days)"
   },
   "US500": {
@@ -5544,11 +5560,37 @@
    "what_note": "Tracks whether live S&P signals do as well as the v1.12 MT4 test (500109 + Night V3 + Night V4 + Night V5 + Night V6 + Night V7). Decision after about 3 months.",
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.12 rules)",
-   "state": "waiting",
-   "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (high-fear night, but v1.07 only trades the night leg Mon/Tue/Wed - no night trade.)",
-   "price": 7173.6,
-   "change": 7.6,
-   "entries": [],
+   "state": "buy",
+   "message": "NIGHT BUY (gold+WTI shock) at 3:01 am Dubai, stop 7000.6, closes at 7:00 pm Dubai (10:00 am New York). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
+   "price": 7172.2,
+   "change": 6.2,
+   "entries": [
+    {
+     "time": "3:01 am",
+     "side": "BUY",
+     "name": "Night long (gold+WTI overnight shock)",
+     "src": "Night",
+     "leg": 0,
+     "night": true,
+     "price": 7175.3,
+     "entry": 7175.3,
+     "stop": 7000.6,
+     "stop0": 7000.6,
+     "stop_pts": 174.7,
+     "half_px": null,
+     "half": false,
+     "size": "full",
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "r": null,
+     "r_sized": null,
+     "live": -4.6,
+     "spread": 1.5
+    }
+   ],
    "spark": [
     [
      "2:05 am",
@@ -5615,18 +5657,32 @@
     ],
     [
      "2:50 am",
-     7173.6,
+     7171.7,
      7173.7,
      7173.8,
-     7173.5
+     7171.5
+    ],
+    [
+     "2:55 am",
+     7172.8,
+     7171.8,
+     7172.8,
+     7171.3
+    ],
+    [
+     "3:00 am",
+     7172.2,
+     7176.1,
+     7180.8,
+     7170.9
     ]
    ],
    "journal": {
     "since": "17 Nov 2026",
     "weekdays": 4,
-    "trades": 4,
-    "days": 75.0,
-    "perday": 1.0,
+    "trades": 5,
+    "days": 100.0,
+    "perday": 1.25,
     "closed": 4,
     "win": 75.0,
     "pf": 7.23,
@@ -5669,7 +5725,33 @@
      "rules": "v1.24",
      "label": "Fri 20 Nov",
      "side": null,
-     "trades": [],
+     "trades": [
+      {
+       "time": "3:01 am",
+       "side": "BUY",
+       "name": "Night long (gold+WTI overnight shock)",
+       "src": "Night",
+       "leg": 0,
+       "night": true,
+       "price": 7175.3,
+       "entry": 7175.3,
+       "stop": 7000.6,
+       "stop0": 7000.6,
+       "stop_pts": 174.7,
+       "half_px": null,
+       "half": false,
+       "size": "full",
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "res_sized": null,
+       "r": null,
+       "r_sized": null,
+       "live": -4.6,
+       "spread": 1.5
+      }
+     ],
      "final": false
     },
     {
@@ -7598,8 +7680,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 26497.5,
-   "change": 36.3,
+   "price": 26468.6,
+   "change": 7.4,
    "entries": [],
    "spark": [
     [
@@ -7667,10 +7749,24 @@
     ],
     [
      "2:50 am",
-     26497.5,
+     26488.0,
      26507.6,
      26508.9,
-     26497.0
+     26488.0
+    ],
+    [
+     "2:55 am",
+     26495.7,
+     26488.9,
+     26495.8,
+     26474.9
+    ],
+    [
+     "3:00 am",
+     26468.6,
+     26524.6,
+     26524.6,
+     26461.7
     ]
    ],
    "journal": {
@@ -9107,8 +9203,8 @@
    "regime": 0.54,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker).",
-   "price": 1.30905,
-   "change": 0.00043,
+   "price": 1.30902,
+   "change": 0.0004,
    "entries": [],
    "spark": [
     [
@@ -9180,6 +9276,20 @@
      1.30875,
      1.30911,
      1.30868
+    ],
+    [
+     "2:55 am",
+     1.30909,
+     1.30906,
+     1.30914,
+     1.30901
+    ],
+    [
+     "3:00 am",
+     1.30902,
+     1.30908,
+     1.3091,
+     1.30872
     ]
    ],
    "journal": {
