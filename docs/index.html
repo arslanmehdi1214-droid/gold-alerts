@@ -489,7 +489,8 @@ function realClosedHtml(){
  const LI=legInfo(rows);
  if(!rows.length)return ' ';
  const tot=rows.reduce((u,r)=>u+r.a,0);
- return `<h3 id="clhdr">Closed today · ${rows.length}</h3><table>${rows.map((r,i)=>{const L=LI.get(i);return `<tr data-c="${r.c}"><td>${r.name}${L?`<br><small class="dim">risk AED ${f(L.risk,0)} · size ${L.size>=100?f(L.size,0):L.size} (${L.role})</small>`:''}</td><td class="num dim">${isNaN(r.d)?'':t12(r.d)}</td><td class="r num ${r.a>=0?'pos':'neg'}">${sg(r.a)} AED</td></tr>`}).join('')}<tr class="tot"><td colspan="2"><b>Total</b></td><td class="r num ${tot>=0?'pos':'neg'}"><b>${sg(tot)} AED</b></td></tr></table><div class="dnote">Real Capital.com demo trades${DEMO_SNAP?' (saved copy)':''} - the same numbers as the account box.</div>`}
+ const RUN=[];{let u=0;for(let i=rows.length-1;i>=0;i--){u+=rows[i].a;RUN[i]=u}}  /* running total AFTER each trade (rows are newest first) */
+ return `<h3 id="clhdr">Closed today · ${rows.length}</h3><table><tr class="dim"><td><small>Trade</small></td><td><small>Closed</small></td><td class="r"><small>Result</small></td><td class="r"><small>Running total</small></td></tr>${rows.map((r,i)=>{const L=LI.get(i);return `<tr data-c="${r.c}"><td>${r.name}${L?`<br><small class="dim">risk AED ${f(L.risk,0)} · size ${L.size>=100?f(L.size,0):L.size} (${L.role})</small>`:''}</td><td class="num dim">${isNaN(r.d)?'':t12(r.d)}</td><td class="r num ${r.a>=0?'pos':'neg'}">${sg(r.a)} AED</td><td class="r num ${RUN[i]>=0?'pos':'neg'}">${sg(RUN[i])}</td></tr>`}).join('')}<tr class="tot"><td colspan="3"><b>Total</b></td><td class="r num ${tot>=0?'pos':'neg'}"><b>${sg(tot)} AED</b></td></tr></table><div class="dnote">Real Capital.com demo trades${DEMO_SNAP?' (saved copy)':''} - the same numbers as the account box.</div>`}
 function render(){
  try{actsLive()}catch(e){}
  try{actsRender()}catch(e){}
