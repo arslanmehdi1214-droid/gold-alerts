@@ -1,19 +1,5 @@
 [
  {
-  "action": "rest closed on demo",
-  "detail": "USDJPY|2026-11-04|3:05 am|BUY|Inside-week break",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Wed 4 Nov 3:50 AM"
- },
- {
-  "action": "OPEN SELL part",
-  "detail": "US100|2026-11-04|5:32 am|SELL|REV J4 day open \u00b11.0ATR first touch from 4am fade size 0.002 at 27684.8 stop 27810.7 target 27568.9 | trade risk 9.47 AED",
-  "market": "US100",
-  "ok": true,
-  "t": "Wed 4 Nov 5:33 AM"
- },
- {
   "action": "OPEN SELL rest",
   "detail": "US100|2026-11-04|5:32 am|SELL|REV J4 day open \u00b11.0ATR first touch from 4am fade size 0.014 at 27681.6 stop 27810.7 | trade risk 9.47 AED",
   "market": "US100",
@@ -2798,5 +2784,19 @@
   "market": "OIL",
   "ok": true,
   "t": "Thu 19 Nov 5:55 AM"
+ },
+ {
+  "action": "OPEN BUY part",
+  "detail": "USDJPY|2026-11-19|8:00 am|BUY|Heikin-Ashi 7am size 600.0 at 159.612 stop 158.925 target 159.616 | trade risk 9.13 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Thu 19 Nov 8:01 AM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "USDJPY|2026-11-19|8:00 am|BUY|Heikin-Ashi 7am 159.616 -> 159.642 ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Thu 19 Nov 8:01 AM"
  }
 ]
