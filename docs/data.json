@@ -1,5 +1,5 @@
 {
- "updated": "Fri 20 Nov \u00b7 2:00 am",
+ "updated": "Fri 20 Nov \u00b7 2:11 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -1627,7 +1627,7 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
+   "price": 159.659,
    "change_pips": null,
    "atr_pips": 86.4,
    "entries": [],
@@ -3875,8 +3875,8 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": null,
-   "history_note": "history to 2026-11-19 (300 days) \u00b7 added 2026-11-19"
+   "live_spread_pips": 6.0,
+   "history_note": "history to 2026-11-19 (300 days)"
   },
   "DE40": {
    "code": "DE40",
@@ -5514,7 +5514,7 @@
    "feed_error": false,
    "epic": "OIL_CRUDE",
    "live_spread": null,
-   "history_note": "history to 2026-11-19 (60 days) \u00b7 added 2026-11-19"
+   "history_note": "history to 2026-11-19 (60 days)"
   },
   "US500": {
    "code": "US500",
@@ -5546,10 +5546,25 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (high-fear night, but v1.07 only trades the night leg Mon/Tue/Wed - no night trade.)",
-   "price": null,
-   "change": null,
+   "price": 7167.9,
+   "change": 1.9,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     7166.5,
+     7166.0,
+     7167.0,
+     7161.8
+    ],
+    [
+     "2:10 am",
+     7167.9,
+     7166.8,
+     7167.9,
+     7166.8
+    ]
+   ],
    "journal": {
     "since": "17 Nov 2026",
     "weekdays": 4,
@@ -7495,7 +7510,7 @@
    "picks_stale": false,
    "epic": "US500",
    "close_at": "12:30 am",
-   "history_note": "history to 2026-11-19 (41 days) \u00b7 added 2026-11-19"
+   "history_note": "history to 2026-11-19 (41 days)"
   },
   "US100": {
    "code": "US100",
@@ -7527,10 +7542,25 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 26472.3,
+   "change": 11.1,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     26466.4,
+     26461.2,
+     26470.7,
+     26445.4
+    ],
+    [
+     "2:10 am",
+     26472.3,
+     26466.5,
+     26473.3,
+     26466.5
+    ]
+   ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 25,
@@ -8907,7 +8937,7 @@
    "feed_error": false,
    "epic": "US100",
    "close_at": "12:50 am",
-   "history_note": "history to 2026-11-19 (381 days) \u00b7 added 2026-11-19",
+   "history_note": "history to 2026-11-19 (381 days)",
    "fomc": null,
    "cpi": {
     "state": "closed",
@@ -8965,10 +8995,25 @@
    "regime": 0.54,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker).",
-   "price": null,
-   "change": null,
+   "price": 1.30842,
+   "change": -0.0002,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     1.30842,
+     1.30862,
+     1.30863,
+     1.30841
+    ],
+    [
+     "2:10 am",
+     1.30842,
+     1.30841,
+     1.30842,
+     1.30841
+    ]
+   ],
    "journal": {
     "since": "18 Nov 2026",
     "weekdays": 3,
