@@ -418,7 +418,7 @@ function actsRender(){const x=M.GOLD||{},A=(x.actions||[]).slice().reverse(),day
  const tg=document.getElementById('dnt');if(tg)tg.onclick=()=>{DN_OPEN=!DN_OPEN;try{localStorage.setItem('doNowOpen',DN_OPEN?'1':'0')}catch(e){}actsRender()};
  const b=document.getElementById('snd2');if(b)b.onclick=()=>{sound=!sound;if(sound){beep(1);try{Notification.requestPermission&&Notification.requestPermission()}catch(e){}}actsRender()}}
 /* his 21 Oct ask: open trades show the REAL Capital.com demo position (size, entry, stop, P/L) when the auto-trader holds it */
-let _dsig='';function demoSigRender(){try{const g=(DEMO?'1':'0')+(DEMO_ERR?'1':'0')+(DMAP_OK?'1':'0')+(DMAP_FAIL?'1':'0')+(DEMO_SNAP?'1':'0')+(DEMO&&DEMO.positions?DEMO.positions.length:'-');if(g!==_dsig){_dsig=g;render()}}catch(e){}}
+let _dsig='';function demoSigRender(){try{const g=(DEMO?'1':'0')+(DEMO_ERR?'1':'0')+(DMAP_OK?'1':'0')+(DMAP_FAIL?'1':'0')+(DEMO_SNAP?'1':'0')+(DEMO&&DEMO.positions?DEMO.positions.length:'-')+'|'+(DEMO&&DEMO.closed_today?DEMO.closed_today.length:'-');if(g!==_dsig){_dsig=g;render()}}catch(e){}}
 function demoNote(){if(!DEMO)return DEMO_ERR?"can't check the demo account right now":'checking the demo account…';if(!DMAP_OK)return DMAP_FAIL?"can't check the demo account right now":'checking the demo account…';return DEMO_SNAP?'not in the saved demo copy yet':'not on the demo account'}
 function demoOf(m,e){if(!DEMO||!DEMO.positions)return null;const tg=e.tag||e.name||e.sig||'';
  const P=DEMO.positions.filter(p=>{const l=DEMO_MAP[p.dealId];if(!l)return false;const k=l.k.split('|');return k[0]===m.c&&k[2]===e.time&&k[3]===e.side&&k[4]===String(tg)});
@@ -461,6 +461,15 @@ try{renderHist()}catch(e){}
  try{renderNews()}catch(e){}
  oth.textContent=`Open trades · ${document.querySelectorAll('.row:not(.hide),.tk:not(.hide),.pt tr[data-c]:not(.hide)').length}`;
  const clh=document.getElementById('clhdr');if(clh)clh.textContent=`Closed today · ${document.querySelectorAll('#closedbox tr[data-c]:not(.hide)').length}`}
+/* 19 Nov: the Closed-today list shows the REAL Capital.com demo trades (same numbers as the account box); the desk's own paper list is only the fallback when the demo data did not load */
+function realClosedHtml(){
+ if(!DEMO||!Array.isArray(DEMO.closed_today)||(DEMO.errors&&DEMO.errors.length))return '';
+ const cur=(DEMO.account||{}).currency||'USD';
+ const rows=DEMO.closed_today.map(x=>{const m=MK.find(z=>z.ep===x.name),ts=String(x.t||''),d=new Date(/Z|[+-]\d\d:?\d\d$/.test(ts)?ts:ts+'Z'),a=demoMoney(x.amount,x.currency||cur)[0];return {m,name:m?m.n:(x.name||'?'),c:m?m.c:'',d,a:a==null||isNaN(a)?0:a}})
+  .filter(r=>SEL==='ALL'||r.c===SEL).sort((p,q)=>q.d-p.d);
+ if(!rows.length)return ' ';
+ const tot=rows.reduce((u,r)=>u+r.a,0);
+ return `<h3 id="clhdr">Closed today · ${rows.length}</h3><table>${rows.map(r=>`<tr data-c="${r.c}"><td>${r.name}</td><td class="num dim">${isNaN(r.d)?'':t12(r.d)}</td><td class="r num ${r.a>=0?'pos':'neg'}">${sg(r.a)} AED</td></tr>`).join('')}<tr class="tot"><td colspan="2"><b>Total</b></td><td class="r num ${tot>=0?'pos':'neg'}"><b>${sg(tot)} AED</b></td></tr></table><div class="dnote">Real Capital.com demo trades${DEMO_SNAP?' (saved copy)':''} - the same numbers as the account box.</div>`}
 function render(){
  try{actsLive()}catch(e){}
  try{actsRender()}catch(e){}
@@ -478,7 +487,7 @@ function render(){
  cards.innerHTML=op.map(ticket).join('');
  const idle=MK.filter(m=>!T.some(o=>o.m===m&&!done(o.e)));
  idle.innerHTML=idle.length?idle.map(m=>`<span data-c="${m.c}"><b>${m.n}</b> ${dirOf(M[m.c])==='NONE'?'waiting for first signal':'no open trade'}</span>`).join(' &nbsp; '):'';
- closedbox.innerHTML=cl.length?`<h3 id="clhdr">Closed today · ${cl.length}</h3><table>${cl.map(c=>{const sk=SKIP.has(c.o.m.c+'|'+bkey()+'|'+c.o.e.time+'|'+c.o.e.side);return `<tr data-c="${c.o.m.c}"><td>${c.o.m.n}${sk?'<br><small class="dim">not on the demo account</small>':''}</td><td class="${c.o.e.side==='BUY'?'pos':'neg'}">${c.o.e.side}</td><td class="num dim">${c.o.e.time}</td><td class="r num ${c.mv>=0?'pos':'neg'}">${sg(c.R)}R</td><td class="r num ${c.pl>=0?'pos':'neg'}">${sg(c.pl*AED)} AED</td></tr>`}).join('')}</table>`:'';
+ closedbox.innerHTML=realClosedHtml()||(cl.length?`<h3 id="clhdr">Closed today · ${cl.length}</h3><table>${cl.map(c=>{const sk=SKIP.has(c.o.m.c+'|'+bkey()+'|'+c.o.e.time+'|'+c.o.e.side);return `<tr data-c="${c.o.m.c}"><td>${c.o.m.n}${sk?'<br><small class="dim">not on the demo account</small>':''}</td><td class="${c.o.e.side==='BUY'?'pos':'neg'}">${c.o.e.side}</td><td class="num dim">${c.o.e.time}</td><td class="r num ${c.mv>=0?'pos':'neg'}">${sg(c.R)}R</td><td class="r num ${c.pl>=0?'pos':'neg'}">${sg(c.pl*AED)} AED</td></tr>`}).join('')}</table>`:'');
  try{const fo=(M.US100||{}).fomc;                    /* 8 Nov: FOMC-overnight (own journal, independent of the v1.02 card above) */
   if(!fo)fomcbox.innerHTML='';
   else if(fo.state==='open'){const dp=(MK.find(x=>x.c==='US100')||{}).dp??1;
