@@ -1,15 +1,15 @@
 {
- "balance": 1676.34,
+ "balance": 1690.06,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-19",
-  "pl": -83.93,
+  "pl": -56.49,
   "start_balance": 1717.15,
   "start_equity": 1717.15,
   "stopped": false
  },
- "open_positions": 7,
- "open_risk_aed": 146.38,
+ "open_positions": 8,
+ "open_risk_aed": 173.81,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-18|4:00 pm|BUY|Rule A \u00b7 Wednesday momentum": {
@@ -577,6 +577,25 @@
    "side": "SELL",
    "state": "closed",
    "stop": 7460.7
+  },
+  "US500|2026-11-19|6:40 pm|SELL|S&P 9:40 am New York opening move": {
+   "desk_price": 7381.1,
+   "market": "US500",
+   "opened_at": "Thu 19 Nov 6:41 PM",
+   "part_x": 0.0,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-74dc-8f5c-0495-7fc60004511e",
+    "level": 7389.8,
+    "open": true,
+    "size": 0.06,
+    "tp": null
+   },
+   "risk_aed": 27.43,
+   "risk_usd": 8.17,
+   "side": "SELL",
+   "state": "open",
+   "stop": 7505.6
   },
   "USDJPY|2026-11-16|3:05 am|SELL|WGAP (weekend-gap fade)": {
    "desk_price": 159.8,
