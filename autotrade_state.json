@@ -1,15 +1,15 @@
 {
- "balance": 1597.93,
+ "balance": 1594.17,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-20",
-  "pl": -130.41,
+  "pl": -137.93,
   "start_balance": 1670.51,
   "start_equity": 1670.51,
   "stopped": false
  },
- "open_positions": 5,
- "open_risk_aed": 147.3,
+ "open_positions": 7,
+ "open_risk_aed": 156.53,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-18|4:00 pm|BUY|Rule A \u00b7 Wednesday momentum": {
@@ -668,6 +668,32 @@
    "side": "BUY",
    "state": "closed",
    "stop": 26201.8
+  },
+  "US100|2026-11-20|9:00 pm|SELL|US+10 H1 U2 only when vol high (>1.1)": {
+   "desk_price": 25576.9,
+   "market": "US100",
+   "opened_at": "Fri 20 Nov 9:01 PM",
+   "part": {
+    "id": "00000000-751b-4257-0495-7fc60004511e",
+    "level": 25559.1,
+    "open": true,
+    "size": 0.001,
+    "tp": 25451.2
+   },
+   "part_x": 0.15,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-751b-426a-0495-7fc60004511e",
+    "level": 25559.0,
+    "open": true,
+    "size": 0.009,
+    "tp": null
+   },
+   "risk_aed": 9.23,
+   "risk_usd": 2.72,
+   "side": "SELL",
+   "state": "open",
+   "stop": 25828.3
   },
   "US500|2026-11-17|6:40 pm|SELL|S&P 9:40 am New York opening move": {
    "desk_price": 7400.3,
