@@ -1,20 +1,6 @@
 [
  {
   "action": "OPEN BUY part",
-  "detail": "GBPUSD|2026-11-05|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded size 1200.0 at 1.34698 stop 1.34028 target 1.35386 | trade risk 29.92 AED",
-  "market": "GBPUSD",
-  "ok": true,
-  "t": "Thu 5 Nov 12:01 PM"
- },
- {
-  "action": "target moved to fill + desk distance",
-  "detail": "GBPUSD|2026-11-05|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded 1.35386 -> 1.35377 ",
-  "market": "GBPUSD",
-  "ok": true,
-  "t": "Thu 5 Nov 12:01 PM"
- },
- {
-  "action": "OPEN BUY part",
   "detail": "USDJPY|2026-11-05|1:55 pm|BUY|Last-week break size 1000.0 at 158.33 stop 157.7 target 158.416 | trade risk 29.73 AED",
   "market": "USDJPY",
   "ok": true,
@@ -2798,5 +2784,19 @@
   "market": "USDJPY",
   "ok": true,
   "t": "Fri 20 Nov 1:46 PM"
+ },
+ {
+  "action": "part closed on demo",
+  "detail": "USDJPY|2026-11-20|1:45 pm|SELL|Week-so-far break",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Fri 20 Nov 1:53 PM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "USDJPY|2026-11-20|1:45 pm|SELL|Week-so-far break to 158.863 (stop to entry: each position at its own fill price)",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Fri 20 Nov 1:53 PM"
  }
 ]
