@@ -1,15 +1,15 @@
 {
- "balance": 1596.58,
+ "balance": 1597.77,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-20",
-  "pl": -77.76,
+  "pl": -75.38,
   "start_balance": 1670.51,
   "start_equity": 1670.51,
   "stopped": false
  },
- "open_positions": 2,
- "open_risk_aed": 73.33,
+ "open_positions": 1,
+ "open_risk_aed": 28.9,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-18|4:00 pm|BUY|Rule A \u00b7 Wednesday momentum": {
@@ -258,16 +258,17 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: close_now",
     "id": "00000000-7519-edc2-0495-7fc60004511e",
     "level": 3531.77,
-    "open": true,
+    "open": false,
     "size": 0.24,
     "tp": null
    },
    "risk_aed": 44.43,
    "risk_usd": 12.25,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 3579.09
   },
   "OIL|2026-11-17|9:00 am|SELL|Side sell (weak close)": {
