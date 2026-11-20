@@ -1,5 +1,5 @@
 {
- "updated": "Fri 20 Nov \u00b7 11:59 am",
+ "updated": "Fri 20 Nov \u00b7 12:00 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 3568.0,
+   "price": 3569.23,
    "close_at": "12:50 am",
-   "change": -63.94,
+   "change": -62.71,
    "size": 0.1,
    "datr": 99.81,
    "open_now": 0,
@@ -772,7 +772,7 @@
     ],
     [
      "11:55 am",
-     3568.0,
+     3569.23,
      3572.34,
      3574.13,
      3566.59
@@ -2384,8 +2384,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 4:00 pm Dubai close.",
-   "price": 159.215,
-   "change_pips": -34.4,
+   "price": 159.191,
+   "change_pips": -36.8,
    "atr_pips": 86.4,
    "entries": [
     {
@@ -3221,10 +3221,10 @@
     ],
     [
      "11:55 am",
-     159.215,
+     159.191,
      159.195,
      159.226,
-     159.182
+     159.179
     ]
    ],
    "journal": {
@@ -5558,7 +5558,7 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 0.7,
+   "live_spread_pips": 1.2,
    "history_note": "history to 2026-11-19 (300 days)"
   },
   "DE40": {
@@ -5597,8 +5597,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 82.633,
-   "change": -0.36,
+   "price": 82.588,
+   "change": -0.41,
    "entries": [
     {
      "time": "6:51 am",
@@ -6375,9 +6375,9 @@
     ],
     [
      "11:55 am",
-     82.63,
+     82.59,
      82.5,
-     82.65,
+     82.66,
      82.47
     ]
    ],
@@ -8057,8 +8057,8 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -23.6,
-     "spread": 0.8
+     "live": -23.7,
+     "spread": 0.9
     },
     {
      "time": "11:41 am",
@@ -8082,8 +8082,8 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 3.9,
-     "spread": 0.8
+     "live": 3.8,
+     "spread": 0.9
     }
    ],
    "spark": [
@@ -9002,8 +9002,8 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -23.6,
-       "spread": 0.8
+       "live": -23.7,
+       "spread": 0.9
       },
       {
        "time": "11:41 am",
@@ -9027,8 +9027,8 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 3.9,
-       "spread": 0.8
+       "live": 3.8,
+       "spread": 0.9
       }
      ],
      "final": false
@@ -10959,8 +10959,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 26295.9,
-   "change": -165.3,
+   "price": 26305.7,
+   "change": -155.5,
    "entries": [],
    "spark": [
     [
@@ -11791,7 +11791,7 @@
     ],
     [
      "11:55 am",
-     26295.9,
+     26305.7,
      26323.4,
      26325.5,
      26267.7
@@ -13226,13 +13226,13 @@
    "what_note": "Tracks whether live GBP/USD signals do as well as the v1.09 MT4 test. The auto-trader places each trade on the Capital.com demo (from 27 Oct). Decision after about 3 months.",
    "cost_note": "Results are pips per trade after the spread (at least 1.5 pips). 0.01 lot = 1,000 units = $0.10 per pip.",
    "net_label": "Net pips (v1.09 rules, holiday sell / FOMC buy at half size)",
-   "state": "waiting",
+   "state": "none",
    "mode": "normal",
    "regime": 0.54,
    "gap": null,
-   "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker).",
-   "price": 1.31143,
-   "change": 0.00281,
+   "message": "No trade today: no price bar between 12:00 pm and 12:05 pm Dubai.",
+   "price": 1.31137,
+   "change": 0.00275,
    "entries": [],
    "spark": [
     [
@@ -14063,10 +14063,10 @@
     ],
     [
      "11:55 am",
-     1.31143,
+     1.31137,
      1.31168,
      1.31171,
-     1.31142
+     1.31137
     ]
    ],
    "journal": {
