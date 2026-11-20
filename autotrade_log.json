@@ -1,12 +1,5 @@
 [
  {
-  "action": "rest closed on demo",
-  "detail": "US100|2026-11-05|7:45 pm|SELL|J30 U8 only when vol high (>1.1)",
-  "market": "US100",
-  "ok": true,
-  "t": "Thu 5 Nov 8:10 PM"
- },
- {
   "action": "close rest",
   "detail": "US500|2026-11-05|6:40 pm|SELL|S&P 9:40 am New York opening move (desk: eod) ",
   "market": "US500",
@@ -2798,5 +2791,12 @@
   "market": "US100",
   "ok": true,
   "t": "Fri 20 Nov 10:19 PM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "OIL|2026-11-20|6:51 am|BUY|Last week's high/low to 83.02 (stop to entry: each position at its own fill price)",
+  "market": "OIL",
+  "ok": true,
+  "t": "Fri 20 Nov 10:53 PM"
  }
 ]
