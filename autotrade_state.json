@@ -1,15 +1,15 @@
 {
- "balance": 1597.66,
+ "balance": 1597.62,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-20",
-  "pl": -85.37,
+  "pl": -85.45,
   "start_balance": 1670.51,
   "start_equity": 1670.51,
   "stopped": false
  },
- "open_positions": 1,
- "open_risk_aed": 28.9,
+ "open_positions": 0,
+ "open_risk_aed": 0,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-18|4:00 pm|BUY|Rule A \u00b7 Wednesday momentum": {
@@ -117,9 +117,10 @@
    "market": "GBPUSD",
    "opened_at": "Fri 20 Nov 12:01 PM",
    "part": {
+    "closed_by": "desk: eod",
     "id": "00000000-7515-21c1-0495-7fc60004511e",
     "level": 1.31125,
-    "open": true,
+    "open": false,
     "size": 1000.0,
     "tp": 1.31912
    },
@@ -128,7 +129,7 @@
    "risk_aed": 28.9,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 1.30351
   },
   "GOLD|2026-11-17|9:21 am|BUY|N15 hsq": {
