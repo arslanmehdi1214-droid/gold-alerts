@@ -1,20 +1,6 @@
 [
  {
   "action": "close rest",
-  "detail": "US500|2026-11-04|6:40 pm|BUY|Nasdaq signal copied (desk: eod) ",
-  "market": "US500",
-  "ok": true,
-  "t": "Thu 5 Nov 12:31 AM"
- },
- {
-  "action": "close rest",
-  "detail": "US500|2026-11-04|6:40 pm|BUY|S&P 9:40 am New York opening move (desk: eod) ",
-  "market": "US500",
-  "ok": true,
-  "t": "Thu 5 Nov 12:31 AM"
- },
- {
-  "action": "close rest",
   "detail": "GOLD|2026-11-04|10:02 am|BUY|N6 bigrange (desk: close_now) ",
   "market": "GOLD",
   "ok": true,
@@ -2798,5 +2784,19 @@
   "market": "OIL",
   "ok": true,
   "t": "Fri 20 Nov 6:52 AM"
+ },
+ {
+  "action": "OPEN SELL part",
+  "detail": "USDJPY|2026-11-20|8:00 am|SELL|Heikin-Ashi 7am size 600.0 at 159.217 stop 159.885 target 159.207 | trade risk 9.11 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Fri 20 Nov 8:01 AM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "USDJPY|2026-11-20|8:00 am|SELL|Heikin-Ashi 7am 159.207 -> 159.197 ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Fri 20 Nov 8:01 AM"
  }
 ]
