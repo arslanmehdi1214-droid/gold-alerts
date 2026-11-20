@@ -472,7 +472,7 @@ function legInfo(rows){
    const m=/(\d+) \w{3} (\d+):(\d\d) (AM|PM)/i.exec(e.t||'');if(!m)return;
    const k=keys.find(z=>(e.detail||'').startsWith(z));if(!k)return;
    const role=/^(close part|part closed)/.test(a)?'part':'rest',leg=(STATE_TR[k]||{})[role];if(!leg)return;
-   ev.push({day:+m[1],min:((+m[2])%12+(m[4].toUpperCase()==='PM'?12:0))*60+ +m[3],c:e.market,k,role,size:+leg.size,risk:+STATE_TR[k].risk_aed})});
+   ev.push({day:+m[1],min:((+m[2])%12+(m[4].toUpperCase()==='PM'?12:0))*60+ +m[3],c:e.market,k,role,size:+leg.size,side:(STATE_TR[k].side||k.split('|')[3]||''),risk:+STATE_TR[k].risk_aed})});
   const near=r=>{const du=new Date(r.d.getTime()+4*3600e3),mn=du.getUTCHours()*60+du.getUTCMinutes();return ev.filter(e=>e.c===r.c&&e.day===du.getUTCDate()&&e.min-mn>=-1&&e.min-mn<=3)};
   const used=new Set();
   rows.forEach((r,i)=>{if(isNaN(r.d))return;const c=near(r);if(c.length===1){out.set(i,c[0]);used.add(c[0])}});
@@ -490,7 +490,7 @@ function realClosedHtml(){
  const LI=legInfo(rows);
  if(!rows.length)return ' ';
  const tot=rows.reduce((u,r)=>u+r.a,0);
- return `<h3 id="clhdr">Closed today · ${rows.length}</h3><table><tr class="dim"><td><small>Trade</small></td><td><small>Closed</small></td><td class="r"><small>Put in</small></td><td class="r"><small>Result</small></td></tr>${rows.map((r,i)=>{const L=LI.get(i);return `<tr data-c="${r.c}"><td>${r.name}</td><td class="num dim">${isNaN(r.d)?'':t12(r.d)}</td><td class="r num">${L?`AED ${f(L.risk,0)}`:'<span class="dim">-</span>'}</td><td class="r num ${r.a>=0?'pos':'neg'}">${sg(r.a)} AED</td></tr>`}).join('')}<tr class="tot"><td colspan="3"><b>Total</b></td><td class="r num ${tot>=0?'pos':'neg'}"><b>${sg(tot)} AED</b></td></tr></table><div class="dnote">Real Capital.com demo trades${DEMO_SNAP?' (saved copy)':''} - the same numbers as the account box.</div>`}
+ return `<h3 id="clhdr">Closed today · ${rows.length}</h3><table><tr class="dim"><td><small>Trade</small></td><td><small>Side</small></td><td><small>Closed</small></td><td class="r"><small>Put in</small></td><td class="r"><small>Result</small></td></tr>${rows.map((r,i)=>{const L=LI.get(i);return `<tr data-c="${r.c}"><td>${r.name}</td><td class="${L&&L.side=='BUY'?'pos':L&&L.side=='SELL'?'neg':'dim'}">${L&&L.side?L.side:'-'}</td><td class="num dim">${isNaN(r.d)?'':t12(r.d)}</td><td class="r num">${L?`AED ${f(L.risk,0)}`:'<span class="dim">-</span>'}</td><td class="r num ${r.a>=0?'pos':'neg'}">${sg(r.a)} AED</td></tr>`}).join('')}<tr class="tot"><td colspan="4"><b>Total</b></td><td class="r num ${tot>=0?'pos':'neg'}"><b>${sg(tot)} AED</b></td></tr></table><div class="dnote">Real Capital.com demo trades${DEMO_SNAP?' (saved copy)':''} - the same numbers as the account box.</div>`}
 function render(){
  try{actsLive()}catch(e){}
  try{actsRender()}catch(e){}
