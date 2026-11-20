@@ -1,19 +1,5 @@
 [
  {
-  "action": "part closed on demo",
-  "detail": "USDJPY|2026-11-05|3:05 am|BUY|Inside-week break",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Thu 5 Nov 4:53 AM"
- },
- {
-  "action": "rest closed on demo",
-  "detail": "USDJPY|2026-11-05|3:05 am|BUY|Inside-week break",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Thu 5 Nov 4:53 AM"
- },
- {
   "action": "skip",
   "detail": "OIL|2026-11-05|9:00 am|SELL|Side sell (weak close): real risk 12.63 AED after lot rounding > 1.4x target 7.5 AED",
   "market": "OIL",
@@ -2798,5 +2784,19 @@
   "market": "USDJPY",
   "ok": true,
   "t": "Fri 20 Nov 11:52 AM"
+ },
+ {
+  "action": "OPEN BUY part",
+  "detail": "GBPUSD|2026-11-20|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded size 1000.0 at 1.31125 stop 1.30351 target 1.31925 | trade risk 28.9 AED",
+  "market": "GBPUSD",
+  "ok": true,
+  "t": "Fri 20 Nov 12:01 PM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "GBPUSD|2026-11-20|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded 1.31925 -> 1.31912 ",
+  "market": "GBPUSD",
+  "ok": true,
+  "t": "Fri 20 Nov 12:01 PM"
  }
 ]
