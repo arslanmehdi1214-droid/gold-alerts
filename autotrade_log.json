@@ -1,19 +1,5 @@
 [
  {
-  "action": "OPEN SELL rest",
-  "detail": "GOLD|2026-11-05|3:16 pm|SELL|FILL range fade size 0.2 at 4135.58 stop 4173.49 | trade risk 28.67 AED",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Thu 5 Nov 3:17 PM"
- },
- {
-  "action": "part closed on demo",
-  "detail": "USDJPY|2026-11-05|1:55 pm|BUY|Last-week break",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Thu 5 Nov 3:52 PM"
- },
- {
   "action": "stop moved",
   "detail": "USDJPY|2026-11-05|1:55 pm|BUY|Last-week break to 158.351 (stop to entry: each position at its own fill price)",
   "market": "USDJPY",
@@ -2798,5 +2784,19 @@
   "market": "USDJPY",
   "ok": true,
   "t": "Fri 20 Nov 2:09 PM"
+ },
+ {
+  "action": "OPEN BUY part",
+  "detail": "US100|2026-11-20|3:05 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am size 0.005 at 26206.2 stop 25800.7 target 26402.4 | trade risk 29.33 AED",
+  "market": "US100",
+  "ok": true,
+  "t": "Fri 20 Nov 3:06 PM"
+ },
+ {
+  "action": "OPEN BUY rest",
+  "detail": "US100|2026-11-20|3:05 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am size 0.015 at 26206.4 stop 25800.7 | trade risk 29.33 AED",
+  "market": "US100",
+  "ok": true,
+  "t": "Fri 20 Nov 3:06 PM"
  }
 ]
