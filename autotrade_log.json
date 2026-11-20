@@ -1,20 +1,6 @@
 [
  {
   "action": "error",
-  "detail": "ReadTimeout: HTTPSConnectionPool(host='demo-api-capital.backend-capital.com', port=443): Read timed out. (read timeout=20)",
-  "market": "ALL",
-  "ok": false,
-  "t": "Thu 5 Nov 1:25 AM"
- },
- {
-  "action": "error",
-  "detail": "HTTPError: 504 Server Error: Gateway Time-out for url: https://demo-api-capital.backend-capital.com/api/v1/session",
-  "market": "ALL",
-  "ok": false,
-  "t": "Thu 5 Nov 1:28 AM"
- },
- {
-  "action": "error",
   "detail": "HTTPError: 504 Server Error: Gateway Time-out for url: https://demo-api-capital.backend-capital.com/api/v1/session",
   "market": "ALL",
   "ok": false,
@@ -2798,5 +2784,19 @@
   "market": "USDJPY",
   "ok": true,
   "t": "Fri 20 Nov 9:09 AM"
+ },
+ {
+  "action": "OPEN SELL part",
+  "detail": "USDJPY|2026-11-20|11:00 am|SELL|EMA10 break size 900.0 at 159.194 stop 159.866 target 159.142 | trade risk 28.84 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Fri 20 Nov 11:01 AM"
+ },
+ {
+  "action": "OPEN SELL rest",
+  "detail": "USDJPY|2026-11-20|11:00 am|SELL|EMA10 break size 1000.0 at 159.196 stop 159.866 | trade risk 28.84 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Fri 20 Nov 11:01 AM"
  }
 ]
