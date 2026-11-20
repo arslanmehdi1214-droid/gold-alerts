@@ -1,15 +1,15 @@
 {
- "balance": 1665.59,
+ "balance": 1665.08,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-20",
-  "pl": -10.13,
+  "pl": -11.43,
   "start_balance": 1670.51,
   "start_equity": 1670.51,
   "stopped": false
  },
- "open_positions": 3,
- "open_risk_aed": 51.0,
+ "open_positions": 2,
+ "open_risk_aed": 41.89,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-18|4:00 pm|BUY|Rule A \u00b7 Wednesday momentum": {
@@ -957,9 +957,10 @@
    "market": "USDJPY",
    "opened_at": "Fri 20 Nov 9:01 AM",
    "part": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-7513-db18-0495-7fc60004511e",
     "level": 159.141,
-    "open": true,
+    "open": false,
     "size": 600.0,
     "tp": 159.121
    },
@@ -968,7 +969,7 @@
    "risk_aed": 9.11,
    "risk_usd": 2.72,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 159.794
   }
  },
