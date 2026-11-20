@@ -1,15 +1,15 @@
 {
- "balance": 1666.73,
+ "balance": 1667.81,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-20",
-  "pl": -8.13,
+  "pl": -7.07,
   "start_balance": 1670.51,
   "start_equity": 1670.51,
   "stopped": false
  },
- "open_positions": 4,
- "open_risk_aed": 70.73,
+ "open_positions": 3,
+ "open_risk_aed": 41.89,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-18|4:00 pm|BUY|Rule A \u00b7 Wednesday momentum": {
@@ -937,9 +937,10 @@
    "market": "USDJPY",
    "opened_at": "Fri 20 Nov 11:01 AM",
    "part": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-7514-af4e-0495-7fc60004511e",
     "level": 159.194,
-    "open": true,
+    "open": false,
     "size": 900.0,
     "tp": 159.142
    },
@@ -956,7 +957,7 @@
    "risk_usd": 8.17,
    "side": "SELL",
    "state": "open",
-   "stop": 159.866
+   "stop": 159.208
   },
   "USDJPY|2026-11-20|8:00 am|SELL|Heikin-Ashi 7am": {
    "desk_price": 159.227,
