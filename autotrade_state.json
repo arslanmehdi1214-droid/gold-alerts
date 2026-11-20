@@ -1,15 +1,15 @@
 {
- "balance": 1630.34,
+ "balance": 1631.59,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-20",
-  "pl": -88.89,
+  "pl": -86.39,
   "start_balance": 1670.51,
   "start_equity": 1670.51,
   "stopped": false
  },
  "open_positions": 5,
- "open_risk_aed": 132.2,
+ "open_risk_aed": 147.3,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-18|4:00 pm|BUY|Rule A \u00b7 Wednesday momentum": {
@@ -298,17 +298,37 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: reversed",
     "id": "00000000-7516-2e30-0495-7fc60004511e",
     "level": 3571.45,
-    "open": true,
+    "open": false,
     "size": 0.16,
     "tp": null
    },
    "risk_aed": 29.33,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 3517.26
+  },
+  "GOLD|2026-11-20|7:27 pm|SELL|U8 pivot": {
+   "desk_price": 3528.68,
+   "market": "GOLD",
+   "opened_at": "Fri 20 Nov 7:28 PM",
+   "part_x": 0.0,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-7519-edc2-0495-7fc60004511e",
+    "level": 3531.77,
+    "open": true,
+    "size": 0.24,
+    "tp": null
+   },
+   "risk_aed": 44.43,
+   "risk_usd": 12.25,
+   "side": "SELL",
+   "state": "open",
+   "stop": 3579.09
   },
   "OIL|2026-11-16|1:21 pm|SELL|Yesterday's high/low": {
    "desk_price": 86.85,
