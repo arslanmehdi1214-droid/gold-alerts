@@ -1903,6 +1903,15 @@
      "leg": 1,
      "entry": 7147.8,
      "sd": 131.0196428571429
+    },
+    {
+     "t": "2026-11-20 16:40:00",
+     "dir": 1,
+     "src": 1,
+     "name": "S&P 9:40 am New York opening move",
+     "leg": 2,
+     "entry": 7149.3,
+     "sd": 131.0196428571429
     }
    ],
    "stress": false,
@@ -1958,7 +1967,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -26.3,
+     "live": -35.3,
      "spread": 0.8
     },
     {
@@ -1983,7 +1992,32 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 1.2,
+     "live": -7.8,
+     "spread": 0.8
+    },
+    {
+     "time": "6:40 pm",
+     "side": "BUY",
+     "name": "S&P 9:40 am New York opening move",
+     "src": "S&P",
+     "leg": 2,
+     "night": false,
+     "price": 7149.3,
+     "entry": 7149.3,
+     "stop": 7018.3,
+     "stop0": 7018.3,
+     "stop_pts": 131.0,
+     "half_px": null,
+     "half": false,
+     "size": "full",
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "r": null,
+     "r_sized": null,
+     "live": -9.3,
      "spread": 0.8
     }
    ],
@@ -1993,9 +2027,9 @@
  "summary": {
   "since": "17 Nov 2026",
   "weekdays": 4,
-  "trades": 6,
+  "trades": 7,
   "days": 100.0,
-  "perday": 1.5,
+  "perday": 1.75,
   "closed": 4,
   "win": 75.0,
   "pf": 7.23,
