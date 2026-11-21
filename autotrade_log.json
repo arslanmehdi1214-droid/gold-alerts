@@ -1,12 +1,5 @@
 [
  {
-  "action": "OPEN SELL part",
-  "detail": "USDJPY|2026-11-06|3:05 am|SELL|Inside-day break size 2800.0 at 157.538 stop 157.763 target 157.419 | trade risk 29.9 AED",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Fri 6 Nov 3:06 AM"
- },
- {
   "action": "OPEN SELL rest",
   "detail": "USDJPY|2026-11-06|3:05 am|SELL|Inside-day break size 2800.0 at 157.538 stop 157.763 | trade risk 29.9 AED",
   "market": "USDJPY",
@@ -2798,5 +2791,12 @@
   "market": "ALL",
   "ok": false,
   "t": "Sat 21 Nov 10:14 AM"
+ },
+ {
+  "action": "error",
+  "detail": "HTTPError: 429 Client Error:  for url: https://demo-api-capital.backend-capital.com/api/v1/session",
+  "market": "ALL",
+  "ok": false,
+  "t": "Sat 21 Nov 10:22 PM"
  }
 ]
