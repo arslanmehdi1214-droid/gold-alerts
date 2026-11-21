@@ -53,8 +53,8 @@ HIST = os.path.join(HERE, 'docs', 'brent_daily.json'); HIST_KEEP = 150     # day
 EPIC = os.environ.get('CAPITAL_EPIC_BRENT', 'OIL_BRENT')                  # NOT yet confirmed live - see brent_run.fail() note
 MIN_SPREAD = 0.02                     # the paper result never uses less than 2 cents a barrel
 RULES = 'v1.10'                       # LIVE rule version: tags the live journal days (watch rules do NOT change it)
-VERSION_LABEL = 'v1.10 + watch v1.12W'  # shown on the card
-WRULES = 'v1.12W'
+VERSION_LABEL = 'v1.10 + watch v1.13W'  # shown on the card
+WRULES = 'v1.13W'
 JOURW = os.path.join(HERE, 'docs', 'journal_brent_watch.json')       # watch trades only (DEMO forward test)
 CLOSEF = os.path.join(HERE, 'docs', 'brent_close.json')              # daily 21:29 broker closes for W4
 CLOSE_BACK_DAYS = 240; CLOSE_MAX_NONE = 12   # calendar days of closes kept/required; more empty weekdays than this = minute history unusable
@@ -89,6 +89,7 @@ AWK2_BACKTEST = dict(trades=251, aw_trades=210, k2_trades=41, net=13453,
                             '7.92 vs 7.36 - at equal drawdown ~+7.7% net). v1.10 technically misses the strict $10,000 max-DD cap by $241 but wins on '
                             'the equal-drawdown rule - his go-ahead 9 Nov 2026.')
 
+# v1.13W, 21 Nov 2026: W5 added (tag WLTD4, BUY 10:00 broker the day before ICE Brent options expiry, stop 1.0x, close 21:30; see brent_engine.py).
 # v1.12W, 19 Nov 2026: WATCH rules W1-W4 (demo forward test only). MT4 proof = his run 19 Nov (BRENT M1 every tick, spread 8, 0.30 lot,
 # 2018-01-02..2026-10-30, order fails 0). None of the four has a target - they close on time -> show "% closed in profit", never "% hit target".
 # Python replay of the same window on his M1 file (my check 19 Nov, not MT4): W1 106 trades +$1,442; W2 105 +$4,842; W3 44 +$2,922;
@@ -98,10 +99,14 @@ WATCH_BACKTEST = dict(
     rules=[dict(code='W1', tag='WM4', name='M4 month-end', side='BUY', trades=106, net=1441, win=52, y1=577, y2=864, note='weakest of the four'),
            dict(code='W2', tag='WM1', name='M1 first day of month', side='SELL', trades=104, net=4739, win=55, y1=2619, y2=2120),
            dict(code='W3', tag='WEU', name='EU-only holiday', side='SELL', trades=44, net=3187, win=53, y1=1273, y2=1914),
-           dict(code='W4', tag='WN150', name='150-day close break', side='FOLLOW', trades=65, net=3863, win=55, y1=1270, y2=2594)],
+           dict(code='W4', tag='WN150', name='150-day close break', side='FOLLOW', trades=65, net=3863, win=55, y1=1270, y2=2594),
+           dict(code='W5', tag='WLTD4', name='day before Brent options expiry', side='BUY', trades=106, net=4322, win=None, y1=None, y2=None,
+                note='added 21 Nov 2026 - his MT4 run: +$4,322 on 106 trades, positive in both 2018-21 and 2022-26 (split not given)')],
     source='MT4 BRENT_WED_HOL_v112W.mq4 (md5 54564281efc512dbe26015fd353aa326), his run 19 Nov 2026, BRENT M1 every tick, spread 8, 0.30 lot, '
            '2018.01.02-2026.10.30: v1.12W full EA +$94,121, PF 1.41, max DD $9,527, 1,811 trades, 54.45% closed in profit; v1.10 part unchanged '
-           '1,491 trades +$80,891. y1 = 2018-21, y2 = 2022-26.',
+           '1,491 trades +$80,891. y1 = 2018-21, y2 = 2022-26. W5 (v1.13W, BRENT_WED_HOL_v113W.mq4 md5 775dc705c5db4d1440cab29d19454155): his MT4 run 21 Nov 2026, '
+           '106 trades +$4,322, positive in both 2018-21 and 2022-26, rest of the engine unchanged (the full-EA totals above are the v1.12W run - no v1.13W full total was given). '
+           'W5 Python check on his broker M1 file (my replay, not MT4): 53% closed in profit.',
     note='DEMO / FORWARD TEST ONLY - no target, they close on time (21:30 broker); % = closed in profit, not hit target. Live v1.10 rules unchanged.')
 
 class FeedError(RuntimeError):
@@ -245,9 +250,9 @@ def watch_summary(JW):
     return out
 
 def watch_next(now):
-    """Next scheduled W1/W2/W3 dates (today still counts while its entry time is ahead), with side and Dubai entry time, from the EA's own day lists."""
+    """Next scheduled W1/W2/W3/W5 dates (today still counts while its entry time is ahead), with side and Dubai entry time, from the EA's own day lists."""
     day = now.normalize(); out = []
-    for code, lst, em, side in (('W1', E.WATCH_M4_DAYS, E.M4_ENTRY_MIN, 'BUY'), ('W2', E.WATCH_M1_DAYS, E.M1_ENTRY_MIN, 'SELL'), ('W3', E.WATCH_EU_DAYS, E.EU_ENTRY_MIN, 'SELL')):
+    for code, lst, em, side in (('W1', E.WATCH_M4_DAYS, E.M4_ENTRY_MIN, 'BUY'), ('W2', E.WATCH_M1_DAYS, E.M1_ENTRY_MIN, 'SELL'), ('W3', E.WATCH_EU_DAYS, E.EU_ENTRY_MIN, 'SELL'), ('W5', E.WATCH_LTD4_DAYS, E.LTD4_ENTRY_MIN, 'BUY')):
         nxt = [d for d in sorted(lst) if d + pd.Timedelta(minutes=em) > now and not (code == 'W3' and any(E.rule_flags(d)))]   # EA skips W3 on live calendar days
         if nxt:
             d = nxt[0]; t = d + pd.Timedelta(minutes=em)
@@ -270,10 +275,11 @@ def base_card():
             'trigger price in the same direction as the original stretch -> a 2nd fade, same direction as K+, HALF the normal size, stop 2.0x the range, '
             'exit 21:30 broker (not K+\'s own 19:00). AW and K2 are each independent of A-F/K+/each other - own position, never conflict-closed, skipped '
             'on calendar days (K2 also skips on Wednesday or if rule C already traded today) · '
-            'WATCH W1-W4) NEW 19 Nov 2026, DEMO / FORWARD TEST ONLY, own positions, never conflict-closed, no target (close 21:30 broker): '
+            'WATCH W1-W5) NEW 19 Nov 2026 (W5 added 21 Nov), DEMO / FORWARD TEST ONLY, own positions, never conflict-closed, no target (close 21:30 broker): '
             'W1 BUY 15:00 on the 4th-last trading day of the month (no stop in the test; the demo order carries a far 2.0x safety stop) · '
             'W2 SELL 15:00 on the first trading day of the month (stop 2.0x) · W3 SELL 11:00 on a Germany/France-only holiday (stop 1.0x) · '
-            'W4 follow the first daily 21:29 close beyond the last 150 closes, entry 03:20 broker (stop 1.0x)')
+            'W4 follow the first daily 21:29 close beyond the last 150 closes, entry 03:20 broker (stop 1.0x) · '
+            'W5 BUY 10:00 the day before Brent options expiry (stop 1.0x)')
     return dict(code='BRENT', name='Brent Oil', symbol='BRENT · Capital.com Brent Oil Future', live=False, paper=True, status='Paper', version=VERSION_LABEL, live_rules=RULES,
                 unit='usd', dp=2, stats=BACKTEST, pass_bar=PASS, day_note=note,
                 what_note='Tracks whether live Brent signals do as well as the v1.05 MT4 test (this build\'s own v1.06 B/D/C/conflict-close deltas were '
@@ -284,14 +290,15 @@ def base_card():
                           'go-ahead 9 Nov 2026). Copied to the Capital.com DEMO account by the auto-trader, same as Gold/USDJPY/Oil/Nasdaq/S&P500/GBPUSD '
                           '(his 6 Nov go-ahead, reversing his earlier same-day "signals only" instruction); up to 3 Brent positions can be open at once '
                           '(e.g. A-F + K+ + K2, or A + C + AW) - autotrade.py\'s own per-trade keying already supports it, no autotrade.py change needed. '
-                          'v1.12W (19 Nov 2026) adds four WATCH rules W1-W4 on top, DEMO forward test only, live v1.10 rules unchanged - own journal, see the watch panel. '
+                          'v1.12W (19 Nov 2026) adds four WATCH rules W1-W4 on top, DEMO forward test only, live v1.10 rules unchanged - own journal, see the watch panel; '
+                          'v1.13W (21 Nov 2026) adds a fifth watch rule W5 (day before Brent options expiry, BUY), same demo-only treatment. '
                           'Decision after about 3 months.',
                 cost_note='Results are $ per barrel (0.30-lot backtest scale, K2 at half that - 0.15 lot), from the signal price after the live Capital.com spread (at least 2 cents).',
                 net_label=f'Net $ per barrel ({RULES})',
                 kfade=dict(KPLUS_BACKTEST), awk2=dict(AWK2_BACKTEST), watch_backtest=dict(WATCH_BACKTEST))
 
 def watch_block(JW, now, cl):
-    """The card's 'watch' panel: forward-test totals, next scheduled W1-W3 trades, and W4's close history state (cl = daily_closes() result or None)."""
+    """The card's 'watch' panel: forward-test totals, next scheduled W1/W2/W3/W5 trades, and W4's close history state (cl = daily_closes() result or None)."""
     w4 = None if cl is None else dict(ready=bool(cl['ready']), have=int(cl['have']), need=E.N150_DAYS + 2, missing=int(cl['missing']), empty=int(cl['none']))
     return dict(version=WRULES, label='DEMO / FORWARD TEST', summary=watch_summary(JW), next=watch_next(now), w4=w4, close=dubai(now.normalize() + pd.Timedelta(minutes=E.EXIT_MIN)))
 

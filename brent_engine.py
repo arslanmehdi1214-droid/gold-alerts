@@ -108,6 +108,8 @@ WATCH RULES W1-W4 (v1.12W, new 19 Nov 2026, DEMO / FORWARD TEST ONLY - his instr
     it AND the day before that was NOT already beyond in the same direction (first day of the break only); today (not a live
     calendar day) trade that way at 03:20 broker, stop 1.0 x A, close 21:30. The 21:29 closes come from brent_run's own
     docs/brent_close.json (built from the same Capital.com minute feed).
+  W5 (tag WLTD4, v1.13W 21 Nov 2026): day in W_LTD4_DAYS (the day before ICE Brent options expiry, copied from the EA) -> BUY
+    10:00 broker, stop 1.0 x A, close 21:30; no calendar test, own position, never conflict-closed. MT4: 106 trades +$4,322.
   A = the same 20-day average range as every live rule. Early-close days (US holidays end ~20:28): a still-open trade shows 'open'
   until the next run (same limitation as every other rule here).
 US/UK holiday dates (HOL_AFTER / UK_HOL_BUY / UK_HOL_SELL / UK_HOL_SELL2 / PRE_HOL_BUY) are the EXACT baked-in lists
@@ -266,13 +268,31 @@ W_EU_DAYS = (
     "2025.07.14,2025.08.15,2025.10.03,2026.05.01,2026.05.14,2026.07.14,2027.05.06,2027.05.17,2027.07.14,2027.11.01,"
     "2028.05.25,2028.06.05,2028.07.14,2028.08.15,2028.10.03,2028.11.01")
 
+W_LTD4_DAYS = (
+    "2018.01.25,2018.02.22,2018.03.23,2018.04.24,2018.05.24,2018.06.25,2018.07.25,2018.08.24,2018.09.24,2018.10.25,"
+    "2018.11.26,2018.12.21,2019.01.25,2019.02.22,2019.03.25,2019.04.24,2019.05.24,2019.06.24,2019.07.25,2019.08.23,"
+    "2019.09.24,2019.10.25,2019.11.25,2019.12.23,2020.01.27,2020.02.24,2020.03.25,2020.04.24,2020.05.22,2020.06.24,"
+    "2020.07.27,2020.08.24,2020.09.24,2020.10.26,2020.11.24,2020.12.23,2021.01.25,2021.02.22,2021.03.25,2021.04.26,"
+    "2021.05.24,2021.06.24,2021.07.26,2021.08.24,2021.09.24,2021.10.25,2021.11.24,2021.12.23,2022.01.25,2022.02.22,"
+    "2022.03.25,2022.04.25,2022.05.25,2022.06.24,2022.07.25,2022.08.24,2022.09.26,2022.10.25,2022.11.24,2022.12.22,"
+    "2023.01.25,2023.02.22,2023.03.27,2023.04.24,2023.05.24,2023.06.26,2023.07.25,2023.08.24,2023.09.25,2023.10.25,"
+    "2023.11.24,2023.12.21,2024.01.25,2024.02.23,2024.03.22,2024.04.24,2024.05.24,2024.06.24,2024.07.25,2024.08.23,"
+    "2024.09.24,2024.10.25,2024.11.25,2024.12.23,2025.01.27,2025.02.24,2025.03.25,2025.04.24,2025.05.23,2025.06.24,"
+    "2025.07.25,2025.08.22,2025.09.24,2025.10.27,2025.11.24,2025.12.23,2026.01.26,2026.02.23,2026.03.25,2026.04.24,"
+    "2026.05.22,2026.06.24,2026.07.27,2026.08.24,2026.09.24,2026.10.26,2026.11.24,2026.12.23,2027.01.25,2027.02.22,"
+    "2027.03.23,2027.04.26,2027.05.24,2027.06.24,2027.07.26,2027.08.24,2027.09.24,2027.10.25,2027.11.24,2027.12.23,"
+    "2028.01.25,2028.02.23,2028.03.27,2028.04.24,2028.05.24,2028.06.26,2028.07.25,2028.08.24,2028.09.25,2028.10.25,"
+    "2028.11.24,2028.12.21")   # v1.13W W5: day before ICE Brent options expiry, copied as-is from the EA (BRENT_WED_HOL_v113W.mq4 md5 775dc705...)
+
 WATCH_M4_DAYS, WATCH_M1_DAYS, WATCH_EU_DAYS = _dateset(W_M4_DAYS), _dateset(W_M1_DAYS), _dateset(W_EU_DAYS)
-WATCH_LAST = dict(M4=max(WATCH_M4_DAYS), M1=max(WATCH_M1_DAYS), EU=max(WATCH_EU_DAYS))
+WATCH_LTD4_DAYS = _dateset(W_LTD4_DAYS)
+WATCH_LAST = dict(M4=max(WATCH_M4_DAYS), M1=max(WATCH_M1_DAYS), EU=max(WATCH_EU_DAYS), LTD4=max(WATCH_LTD4_DAYS))
 M4_ENTRY_MIN, M1_ENTRY_MIN, EU_ENTRY_MIN, N150_ENTRY_MIN = 15 * 60, 15 * 60, 11 * 60, 3 * 60 + 20    # EA lines 71, 74, 77, 81 (broker clock)
 M4_STOP_MULT, M1_STOP_MULT, EU_STOP_MULT, N150_STOP_MULT = 0.0, 2.0, 1.0, 1.0   # EA lines 72, 75, 78, 82 (0 = no stop, as tested)
+LTD4_ENTRY_MIN, LTD4_STOP_MULT = 10 * 60, 1.0                  # W5 (v1.13W): BUY 10:00 broker, stop 1.0 x A, close 21:30 (EA lines 83-85)
 N150_DAYS = 150                                         # EA line 80
 WM4_SAFETY_MULT = 2.0                                   # demo-order safety stop for W1 only (x A); NOT part of the tested rule, see watch_trade(). Python replay of the 106 MT4 W1 days: worst adverse move 1.31 x A, so 2.0 x A is never touched
-WATCH_RULES = ('WM4', 'WM1', 'WEU', 'WN150')
+WATCH_RULES = ('WM4', 'WM1', 'WEU', 'WN150', 'WLTD4')
 
 RULE_NAME = {'A': 'Rule A · Wednesday momentum', 'B': 'Rule B · day after US holiday',
              'C': 'Rule C · 20-day range break', 'Dbuy': 'Rule D · UK bank holiday (buy)', 'Dsell': 'Rule D · UK bank holiday (sell next day)',
@@ -281,7 +301,8 @@ RULE_NAME = {'A': 'Rule A · Wednesday momentum', 'B': 'Rule B · day after US h
              'AW': 'Rule AW · Wednesday re-entry (new 9 Nov 2026 - 2022-heavy)',
              'K2': 'Rule K2 · K+ add-on fade, half size (new 9 Nov 2026 - 2022-heavy)',
              'WM4': 'W1 · month-end buy (DEMO forward test)', 'WM1': 'W2 · first-day-of-month sell (DEMO forward test)',
-             'WEU': 'W3 · Europe-only holiday sell (DEMO forward test)', 'WN150': 'W4 · 150-day close break (DEMO forward test)'}
+             'WEU': 'W3 · Europe-only holiday sell (DEMO forward test)', 'WN150': 'W4 · 150-day close break (DEMO forward test)',
+             'WLTD4': 'W5 · day before Brent options expiry buy (DEMO forward test)'}
 
 # ---------------- calendar lookups (exact EA lists above) ----------------
 def rule_flags(day):
@@ -552,6 +573,9 @@ def watch_trades(b, day, dt, A, dcl, cost):
         if t: out.append(t)
     if day in WATCH_EU_DAYS and not cal:
         t = watch_trade(b, day, EU_ENTRY_MIN, -1, A, 'WEU', cost, EU_STOP_MULT)
+        if t: out.append(t)
+    if day in WATCH_LTD4_DAYS:                                  # W5: no calendar test (same as W1/W2), BUY, own position, no conflict-close
+        t = watch_trade(b, day, LTD4_ENTRY_MIN, +1, A, 'WLTD4', cost, LTD4_STOP_MULT)
         if t: out.append(t)
     if not cal and dcl is not None:
         nd = wn150_dir(dcl, day)
