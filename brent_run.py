@@ -362,7 +362,9 @@ def main(feed=None, get=None, getd=None, getc=None, now=None):
                        range_usd=(None if not np.isfinite(A) else round(A, 2)),
                        rule_today=dict(wed=dt['wed'], ruleB=dt['ruleB'], ruleD_buy=dt['ruleD_buy'], ruleD_sell=dt['ruleD_sell'], ruleE=dt['ruleE'], ruleF=dt['ruleF']))
     dumpj(old, PORTAL, indent=1)
-    print(f'Brent paper: {now} broker | bars {len(b)} | A {round(A,2) if np.isfinite(A) else None} | trades today {len(rows)} | rules {rule_tags} | watch trades {[r["rule"] for r in wrows]} | W4 closes {None if cl is None else (cl["have"], "ready" if cl["ready"] else f"warming, {cl["missing"]} days to fetch")}')
+    w4txt = None if cl is None else (cl['have'], 'ready' if cl['ready'] else 'warming, %s days to fetch' % cl['missing'])      # 21 Nov: plain string - the old nested f-string only compiles on Python 3.12+, the runner is 3.11
+    wtags = [r['rule'] for r in wrows]
+    print(f'Brent paper: {now} broker | bars {len(b)} | A {round(A,2) if np.isfinite(A) else None} | trades today {len(rows)} | rules {rule_tags} | watch trades {wtags} | W4 closes {w4txt}')
 
 def fail(e):
     """Keep the last good Brent card and say what failed. NOTE: EPIC='OIL_BRENT' (env CAPITAL_EPIC_BRENT overrides it)
