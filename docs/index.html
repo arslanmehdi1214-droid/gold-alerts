@@ -533,10 +533,10 @@ function render(){
    bigupbox.innerHTML=`<b>Big Up Continuation</b> · long from ${bu.entry_time} @ ${f(bu.entry,dp)} · stop ${f(bu.stop,dp)} / target ${f(bu.target,dp)} (R=${f(bu.r,dp)})${bu.live!=null?` · <b class="${bu.live>=0?'pos':'neg'}">${sg(bu.live,dp)} pts</b>`:''}`}
   else bigupbox.innerHTML=`<b>Big Up Continuation</b> · ${bu.note}`
  }catch(e){}
- try{const bw=(M.BRENT||{}).watch,bb=((M.BRENT||{}).watch_backtest)||null;           /* 19 Nov: Brent WATCH rules W1-W4 (DEMO forward test, own journal; live v1.10 unchanged) */
+ try{const bw=(M.BRENT||{}).watch,bb=((M.BRENT||{}).watch_backtest)||null;           /* 19 Nov: Brent WATCH rules W1-W5 (DEMO forward test, own journal; live v1.10 unchanged) */
   if(!bw||!(SEL==='ALL'||SEL==='BRENT'))brentwbox.innerHTML='';
   else{const sm=bw.summary&&bw.summary.all||{},nx=(bw.next||[]).map(n=>`${n.rule} ${n.side} ${n.label}`).join(' · '),w4=bw.w4,bt=(bb&&bb.rules||[]).map(r=>`${r.code} ${r.trades} trades +$${f(r.net,0)}`).join(' · ');
-   brentwbox.innerHTML=`<b>Brent watch rules W1-W4</b> <span class="tag">DEMO FORWARD TEST</span> · ${(M.BRENT||{}).version||''} · live rules unchanged · no target, they close on time${bw.close?' ('+bw.close+')':''}<br>Next: ${nx||'-'} · W4: ${!w4?'checking':w4.ready?'ready (150 closes loaded)':'warming up - '+w4.have+' of '+w4.need+' daily closes loaded'}<br>Forward test so far: ${sm.trades?sm.trades+' trade'+(sm.trades>1?'s':'')+(sm.closed?' · '+f(sm.win,0)+'% closed in profit':'' ):'no trades yet'}${bt?` <span class="dim">· MT4 proof (0.30 lot, 2018-26): ${bt}</span>`:''}`}
+   brentwbox.innerHTML=`<b>Brent watch rules W1-W5</b> <span class="tag">DEMO FORWARD TEST</span> · ${(M.BRENT||{}).version||''} · live rules unchanged · no target, they close on time${bw.close?' ('+bw.close+')':''}<br>Next: ${nx||'-'} · W4: ${!w4?'checking':w4.ready?'ready (150 closes loaded)':'warming up - '+w4.have+' of '+w4.need+' daily closes loaded'}<br>Forward test so far: ${sm.trades?sm.trades+' trade'+(sm.trades>1?'s':'')+(sm.closed?' · '+f(sm.win,0)+'% closed in profit':'' ):'no trades yet'}${bt?` <span class="dim">· MT4 proof (0.30 lot, 2018-26): ${bt}</span>`:''}`}
  }catch(e){}
  const now=new Date();
  const DKeys=[...new Set(G.map(g=>dkey(g.t)))].sort();
