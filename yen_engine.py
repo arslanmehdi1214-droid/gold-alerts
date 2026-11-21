@@ -38,13 +38,13 @@ EOD_GRACE = 600                                      # 23 Oct fix: with no bar a
 QUIET = {2, 3, 4, 5, 6, 10}                          # EA signals 3,4,5,6,7,11 (inside-week / inside-day / quiet 5-day / squeeze 4pm / quiet 2-day / hourly squeeze)
 Q_STOP, Q_HALF, O_STOP, O_HALF = 0.25, 0.50, 0.75, 0.10   # stop = x 14-day range; half at + x risk (risk = stop distance incl. spread)
 PART, LOCK_PK, LOCK_FL, HA_W = 0.5, 2.0, 1.0, 1 / 3      # half part; day lock peak / floor in R; Heikin-Ashi 7am size
-HA_TARGET = 0.03                                     # v1.04: Heikin-Ashi 7am closes the whole trade at + this x risk (0 = v1.03 half-close)
+HA_TARGET = 0.50                                     # v1.04: Heikin-Ashi 7am closes the whole trade at + this x risk (0 = v1.03 half-close) [19 Nov: widened 0.03->0.50, best net/DD of sweep]
 HAM_HOUR = 7                                         # v1.06: signal 12 "HAM" - the EXACT same Heikin-Ashi scalp as signal 0 (weight/target below),
                                                      # fired again once more at this broker hour (do not use 6,8,9,14,15 - already used by other signals)
 WGAP_ON = True                                       # v1.07: signal 12 (0-based) "WGAP" on/off switch (yen_run.py date-gates this, like HAM_HOUR=-1)
 WGAP_MIN_ATR = 0.10                                  # gap vs the last finished day's close must be >= this x the 14-day range to fire
 WGAP_STOP = 0.60                                     # WGAP's own real stop, x the 14-day range (not the quiet/other convention)
-WGAP_TARGET = 0.03                                   # WGAP closes the WHOLE trade at + this x risk - same tiny-target mechanism as S1/S12
+WGAP_TARGET = 0.50                                   # WGAP closes the WHOLE trade at + this x risk - same tiny-target mechanism as S1/S12 [19 Nov: widened 0.03->0.50, best net/DD of sweep]
 FLIP = True                                          # v1.04: a quiet signal against the day's side closes open trades and switches the side
 FLIP_MAX = 1                                         # v1.05: at most this many flips a day that close open trades (0 = no limit = v1.04)
 RISK_USD = 100.0                                     # v1.03 set file Risk_Dollars=100: a full-size stop = $100 (the MT4 backtest's size)
