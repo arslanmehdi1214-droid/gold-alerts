@@ -15,7 +15,7 @@ PICK_LATE = pd.Timedelta(minutes=3)   # 22 Oct fix: a Nasdaq pick first seen mor
 EPIC = os.environ.get('CAPITAL_EPIC_SP', 'US500')
 MIN_SPREAD = S.COST                   # the paper result never uses less than 0.8 index points per leg (as in the MT4 test)
 PASS = dict(green=40.0, pf=1.15, months=3)
-RULES = 'v1.24'
+RULES = 'v1.23'
 BACKTEST_104 = dict(direction='—', days='44.5% profit days / 87% traded', perday='1.37', win='53.4%', pf='1.32', net='+$16,896 at $100 risk per leg',
                 source='MT4 test SP500_DAYTRADE v1.04 (his run 24 Oct, spread 0.8 pt), 2020-01-01..2026-09-30, 2,416 trades (2,135 day + 281 night); '
                        'worst day -$315; net/DD 8.83; max DD $1,914')
@@ -227,6 +227,10 @@ SGOTHFY = os.path.join(HERE, 'docs', 'sgothfy_sp.json')        # v1.24: cached C
 FCSWCQ = os.path.join(HERE, 'docs', 'fcswcq_sp.json')          # v1.24: cached CFTC COT Feeder-Cattle (Disaggregated, SWAP-DEALER net position, 4-report SHIFT) + HYG/LQD daily closes for the Night V26 trigger
 VIXLCOMMDXYFNR = os.path.join(HERE, 'docs', 'vixlcommdxyfnr_sp.json')  # v1.24: cached CFTC COT VIX-futures (Legacy, COMMERCIAL net position) + USD-Index-futures (Legacy, NON-REPORTABLES net position), both 4-report SHIFT, for the Night V27 trigger
 EURJPYNCOMMBT = os.path.join(HERE, 'docs', 'eurjpyncommbt_sp.json')  # v1.24: cached CFTC COT EUR/JPY-cross-futures (Legacy, NON-COMMERCIAL net position, 4-report SHIFT) + BTC-USD daily closes for the Night V28 trigger
+TLTSPYAUDOTH = os.path.join(HERE, 'docs', 'tltspyaudoth_sp.json')  # v1.25: cached TLT/SPY daily closes + CFTC COT Australian-Dollar (TFF, OTHER-REPORTABLES net position, 4-report SHIFT) for the Night V36 trigger
+AUD_MKT = 'AUSTRALIAN DOLLAR - CHICAGO MERCANTILE EXCHANGE'
+XLESPYCADFX = os.path.join(HERE, 'docs', 'xlespycadfx_sp.json')  # v1.25: cached XLE/SPY daily closes + CFTC COT Canadian-Dollar (TFF, LEVERAGED-MONEY net position, 4-report SHIFT) for the Night V37 trigger
+CAD_MKT = 'CANADIAN DOLLAR - CHICAGO MERCANTILE EXCHANGE'
 FRED_URL = 'https://fred.stlouisfed.org/graph/fredgraph.csv?id={}'   # free, no API key needed
 
 def _cboe_series(sym, col):
@@ -1086,6 +1090,92 @@ def eurjpyncomm_bt_today(day):
     eurjpyl_ncomm_chg4_pct = cot_avail.reindex(idx, method='ffill')
     return pd.DataFrame(dict(eurjpyl_ncomm_chg4_pct=eurjpyl_ncomm_chg4_pct, bt_chg10_pct=bt_chg10_pct))
 
+def tltspy_audoth_today(day):
+    """v1.25 Night V36: TLT (20+yr Treasury ETF) + SPY daily closes, a flight-to-safety/duration-risk-appetite
+    ratio brand new to this project, PLUS CFTC's weekly Traders in Financial Futures report for Australian
+    Dollar futures (OTHER-REPORTABLES net position, 4-report SHIFT - a cohort never used on this currency
+    before) - cached in docs/tltspyaudoth_sp.json, refreshed once per broker day (same once-a-day shape as
+    sgoth_fy_today()). A 3-day publication lag is applied to the COT data (report Tuesday, published the
+    following Friday - same method as every prior COT leg) so nothing is look-ahead. Returns a DataFrame
+    indexed by date with tltspy_chg10_pct (252-day rolling percentile of the 10-day % change in the TLT/SPY
+    ratio - high = flight-to-safety rising fast) and aud2_oth_chg4_pct (52-week rolling percentile of the
+    4-report SHIFT in the AUD Other-Reportables net position - low = this cohort's AUD positioning falling
+    fast) for v36_flag() in sp_engine.py, or None on a fetch failure (Night V36 then simply does not fire
+    that night - same fail-safe shape as the other night-trigger fetches)."""
+    c = loadj(TLTSPYAUDOTH, {})
+    if c.get('day') == str(day.date()) and 'dates' in c:
+        idx = pd.to_datetime(c['dates'])
+        tlt = pd.Series([np.nan if x is None else x for x in c['tlt']], index=idx)
+        spy = pd.Series([np.nan if x is None else x for x in c['spy']], index=idx)
+        cot_dates = pd.to_datetime(c['cot_dates']); cot_net4 = pd.Series([np.nan if x is None else float(x) for x in c['cot_net']], index=cot_dates)
+    else:
+        try:
+            tlt = _yahoo_daily_close('TLT'); spy = _yahoo_daily_close('SPY')
+            idx = tlt.index.union(spy.index); tlt = tlt.reindex(idx); spy = spy.reindex(idx)
+            r = requests.get(COT_URL, params={
+                '$select': 'report_date_as_yyyy_mm_dd,other_rept_positions_long,other_rept_positions_short,open_interest_all',
+                '$where': f"market_and_exchange_names='{AUD_MKT}'",
+                '$order': 'report_date_as_yyyy_mm_dd ASC', '$limit': 5000}, timeout=20)
+            r.raise_for_status(); cj = r.json()
+            cot_dates = pd.to_datetime([x['report_date_as_yyyy_mm_dd'] for x in cj])
+            cot_net = pd.Series([(float(x['other_rept_positions_long']) - float(x['other_rept_positions_short'])) / float(x['open_interest_all']) for x in cj], index=cot_dates)
+            cot_net = cot_net.sort_index(); cot_net4 = cot_net.diff(4)
+            c = dict(day=str(day.date()), dates=[str(t.date()) for t in idx],
+                     tlt=[None if pd.isna(x) else float(x) for x in tlt], spy=[None if pd.isna(x) else float(x) for x in spy],
+                     cot_dates=[str(t.date()) for t in cot_net4.index], cot_net=[None if pd.isna(x) else float(x) for x in cot_net4], at=str(pd.Timestamp.utcnow()))
+            dumpj(c, TLTSPYAUDOTH, indent=1)
+        except Exception:
+            return None
+    tltspy_ratio = tlt / spy
+    tltspy_chg10_pct = tltspy_ratio.pct_change(10).rolling(252, min_periods=120).rank(pct=True)
+    cot_net4_pct = cot_net4.rolling(52, min_periods=26).rank(pct=True)
+    cot_avail = cot_net4_pct.copy(); cot_avail.index = cot_avail.index + pd.Timedelta(days=3)
+    aud2_oth_chg4_pct = cot_avail.reindex(idx, method='ffill')
+    return pd.DataFrame(dict(tltspy_chg10_pct=tltspy_chg10_pct, aud2_oth_chg4_pct=aud2_oth_chg4_pct))
+
+def xlespy_cadfx_today(day):
+    """v1.25 Night V37: XLE (energy-sector ETF) + SPY daily closes, an energy-sector-vs-broad-market rotation
+    ratio brand new to this project, PLUS CFTC's weekly Traders in Financial Futures report for Canadian
+    Dollar futures (LEVERAGED-MONEY net position, 4-report SHIFT) - cached in docs/xlespycadfx_sp.json,
+    refreshed once per broker day (same once-a-day shape as sgoth_fy_today()). A 3-day publication lag is
+    applied to the COT data (report Tuesday, published the following Friday - same method as every prior COT
+    leg) so nothing is look-ahead. Returns a DataFrame indexed by date with xlespy_chg10_pct (252-day rolling
+    percentile of the 10-day % change in the XLE/SPY ratio - low = energy underperforming the index) and
+    cadfx_cot_chg4_pct (52-week rolling percentile of the 4-report SHIFT in the CAD leveraged-money net
+    position - low = positioning falling fast) for v37_flag() in sp_engine.py, or None on a fetch failure
+    (Night V37 then simply does not fire that night - same fail-safe shape as the other night-trigger
+    fetches)."""
+    c = loadj(XLESPYCADFX, {})
+    if c.get('day') == str(day.date()) and 'dates' in c:
+        idx = pd.to_datetime(c['dates'])
+        xle = pd.Series([np.nan if x is None else x for x in c['xle']], index=idx)
+        spy = pd.Series([np.nan if x is None else x for x in c['spy']], index=idx)
+        cot_dates = pd.to_datetime(c['cot_dates']); cot_net4 = pd.Series([np.nan if x is None else float(x) for x in c['cot_net']], index=cot_dates)
+    else:
+        try:
+            xle = _yahoo_daily_close('XLE'); spy = _yahoo_daily_close('SPY')
+            idx = xle.index.union(spy.index); xle = xle.reindex(idx); spy = spy.reindex(idx)
+            r = requests.get(COT_URL, params={
+                '$select': 'report_date_as_yyyy_mm_dd,lev_money_positions_long,lev_money_positions_short,open_interest_all',
+                '$where': f"market_and_exchange_names='{CAD_MKT}'",
+                '$order': 'report_date_as_yyyy_mm_dd ASC', '$limit': 5000}, timeout=20)
+            r.raise_for_status(); cj = r.json()
+            cot_dates = pd.to_datetime([x['report_date_as_yyyy_mm_dd'] for x in cj])
+            cot_net = pd.Series([(float(x['lev_money_positions_long']) - float(x['lev_money_positions_short'])) / float(x['open_interest_all']) for x in cj], index=cot_dates)
+            cot_net = cot_net.sort_index(); cot_net4 = cot_net.diff(4)
+            c = dict(day=str(day.date()), dates=[str(t.date()) for t in idx],
+                     xle=[None if pd.isna(x) else float(x) for x in xle], spy=[None if pd.isna(x) else float(x) for x in spy],
+                     cot_dates=[str(t.date()) for t in cot_net4.index], cot_net=[None if pd.isna(x) else float(x) for x in cot_net4], at=str(pd.Timestamp.utcnow()))
+            dumpj(c, XLESPYCADFX, indent=1)
+        except Exception:
+            return None
+    xlespy_ratio = xle / spy
+    xlespy_chg10_pct = xlespy_ratio.pct_change(10).rolling(252, min_periods=120).rank(pct=True)
+    cot_net4_pct = cot_net4.rolling(52, min_periods=26).rank(pct=True)
+    cot_avail = cot_net4_pct.copy(); cot_avail.index = cot_avail.index + pd.Timedelta(days=3)
+    cadfx_cot_chg4_pct = cot_avail.reindex(idx, method='ffill')
+    return pd.DataFrame(dict(xlespy_chg10_pct=xlespy_chg10_pct, cadfx_cot_chg4_pct=cadfx_cot_chg4_pct))
+
 def lasthour_stats(b):
     """v1.09 Night V4: b = one finished broker day's minute bars (o h l c v). Returns (ret, vol) for the 22:00-23:00 broker window
     (= 15:00-16:00 NY, the same window the backtest's lh_pct/lhvol_z were built from), or (None, None) if that window has no bars.
@@ -1455,6 +1545,10 @@ def compute(hist, b, day, now, picks, sp, jd):
                                             name='Night long (VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish)', src=27) + trades  # never with the other twenty-one: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25-V26 above did NOT
     elif jd.get('v28'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.24 Night V28: EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast night (gated below) -
                                             name='Night long (EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast)', src=28) + trades  # never with the other twenty-two: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25-V27 above did NOT
+    elif jd.get('v36'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.25 Night V36: TLT-SPY-flight-to-safety-rising-fast + AUD-Other-Reportables-COT-falling-fast night (gated below; V29-V35 skipped - not yet MT4-confirmed) -
+                                            name='Night long (TLT-SPY-flight-to-safety-rising-fast + AUD-Other-Reportables-COT-falling-fast)', src=36) + trades  # never with the other twenty-three: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25-V28 above did NOT
+    elif jd.get('v37'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.25 Night V37: XLE-SPY-energy-underperforming + CAD-leveraged-money-COT-falling-fast night (gated below) -
+                                            name='Night long (XLE-SPY-energy-underperforming + CAD-leveraged-money-COT-falling-fast)', src=37) + trades  # never with the other twenty-four: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25-V28, V36 above did NOT
     if not trades and S.tom_window(day) and np.isfinite(A) and now.hour * 60 + now.minute >= S.TOM_DECIDE:
         trades = S.tom_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod)) + trades                        # v1.07 row20: only once no other S&P leg has fired by 17:00 broker
     for t in trades:                                     # past the close time but no bar there yet: close at the last price
@@ -1699,6 +1793,24 @@ def main(feed=None, get=None, now=None):
         if jinfo: jd['v28_detail'] = jinfo
         if Jdf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27']:
             jd['v28_note'] = 'EURJPY-Legacy-noncommercial-COT/Bitcoin data unavailable this run - no Night V28 check'
+    # v1.25: V29-V35 (Rounds 87-94) are Python-estimate only, not yet MT4-confirmed - V36 picks up the v28
+    # chain directly, same "skip a not-yet-decided slot" convention as V24.
+    if 'v36' not in jd and 'v28' in jd:                     # v1.25 Night V36: decided once per day, only once stress+v3-v10+v12-v14+v16+v18-v23+v25-v28 are already known (V29-V35 skipped - not yet MT4-confirmed)
+        ok_time = now.hour * 60 + now.minute <= S.NIGHT_IN + 5
+        Tdf = None if (jd['stress'] or jd['v3'] or jd['v4'] or jd['v5'] or jd['v6'] or jd['v7'] or jd['v8'] or jd['v9'] or jd['v10'] or jd['v12'] or jd['v13'] or jd['v14'] or jd['v16'] or jd['v18'] or jd['v19'] or jd['v20'] or jd['v21'] or jd['v22'] or jd['v23'] or jd['v25'] or jd['v26'] or jd['v27'] or jd['v28']) else tltspy_audoth_today(day)
+        fired, tinfo = S.v36_flag(Tdf, day) if Tdf is not None else (False, {})
+        jd['v36'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28']
+        if tinfo: jd['v36_detail'] = tinfo
+        if Tdf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28']:
+            jd['v36_note'] = 'TLT-SPY/AUD-Other-Reportables-COT data unavailable this run - no Night V36 check'
+    if 'v37' not in jd and 'v36' in jd:                     # v1.25 Night V37: decided once per day, only once stress+v3-v10+v12-v14+v16+v18-v23+v25-v28+v36 are already known
+        ok_time = now.hour * 60 + now.minute <= S.NIGHT_IN + 5
+        Wdf = None if (jd['stress'] or jd['v3'] or jd['v4'] or jd['v5'] or jd['v6'] or jd['v7'] or jd['v8'] or jd['v9'] or jd['v10'] or jd['v12'] or jd['v13'] or jd['v14'] or jd['v16'] or jd['v18'] or jd['v19'] or jd['v20'] or jd['v21'] or jd['v22'] or jd['v23'] or jd['v25'] or jd['v26'] or jd['v27'] or jd['v28'] or jd['v36']) else xlespy_cadfx_today(day)
+        fired, winfo = S.v37_flag(Wdf, day) if Wdf is not None else (False, {})
+        jd['v37'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v36']
+        if winfo: jd['v37_detail'] = winfo
+        if Wdf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v36']:
+            jd['v37_note'] = 'XLE-SPY/CAD-leveraged-money-COT data unavailable this run - no Night V37 check'
     trades = compute(hist, b, day, now, picks, sp, jd)
     freeze_legs(jd, trades)
     rows = [row(t, b, now, sp) for t in trades]; drows = [r for r in rows if not r.get('night')]; nrow = [r for r in rows if r.get('night')]
@@ -1723,12 +1835,12 @@ def main(feed=None, get=None, now=None):
     else: state, msg = 'waiting', (f'Waiting for the first day signal (from {dubai(day + pd.Timedelta(minutes=16 * 60 + 40))} Dubai: 9:40 am New York move, '
                                    'Nasdaq signals; earlier: yesterday high/low sweep).')
     if nrow:                                             # v1.04 night leg (v1.08: or Night V3 - jd['v3']; v1.09: or Night V4 - jd['v4']; v1.10: or Night V5 - jd['v5']; v1.11: or Night V6 - jd['v6']; v1.12: or Night V7 - jd['v7']; v1.13: or Night V8 - jd['v8']; v1.14: or Night V9 - jd['v9']; v1.15: or Night V10 - jd['v10']; v1.16: or Night V12 - jd['v12']; v1.17: or Night V13 - jd['v13']; v1.18: or Night V14 - jd['v14']; v1.19: or Night V16 - jd['v16']; or Night V18 - jd['v18'])
-        n_ = nrow[0]; label = ('EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast' if jd.get('v28') else ('VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish' if jd.get('v27') else ('Feeder-Cattle-COT-rising-fast + credit-de-risking' if jd.get('v26') else ('Sugar-COT-net-long + financials-weak' if jd.get('v25') else ('Utilities-retail-COT-falling-fast + transports-weak' if jd.get('v23') else ('UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast' if jd.get('v22') else ('VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish' if jd.get('v21') else ('ES-asset-manager-COT-fast-bullish + staples-weak' if jd.get('v20') else ('Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long' if jd.get('v19') else ('Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence' if jd.get('v18') else ('UST5yr-COT-falling-fast + credit-de-risking' if jd.get('v16') else ('Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast' if jd.get('v14') else ('MSCI-EM-COT-extreme-long + communications-weak' if jd.get('v13') else ('DJIA-COT-bullish-fast + crypto-risk-off' if jd.get('v12') else ('bank-loan-weak + E-mini COT net-long' if jd.get('v10') else ('duration-curve-steepening + tech-weak' if jd.get('v9') else ('credit-de-risking + industrials-weak' if jd.get('v8') else ('materials-weak + communications-rally' if jd.get('v7') else ('dollar-basket-weak + Europe-shock' if jd.get('v6') else ('dollar-weak + breadth-narrow' if jd.get('v5') else ('weak-close + volume-spike' if jd.get('v4') else ('gold+WTI shock' if jd.get('v3') else 'high-fear night'))))))))))))))))))))))
+        n_ = nrow[0]; label = ('XLE-SPY-energy-underperforming + CAD-leveraged-money-COT-falling-fast' if jd.get('v37') else ('TLT-SPY-flight-to-safety-rising-fast + AUD-Other-Reportables-COT-falling-fast' if jd.get('v36') else ('EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast' if jd.get('v28') else ('VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish' if jd.get('v27') else ('Feeder-Cattle-COT-rising-fast + credit-de-risking' if jd.get('v26') else ('Sugar-COT-net-long + financials-weak' if jd.get('v25') else ('Utilities-retail-COT-falling-fast + transports-weak' if jd.get('v23') else ('UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast' if jd.get('v22') else ('VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish' if jd.get('v21') else ('ES-asset-manager-COT-fast-bullish + staples-weak' if jd.get('v20') else ('Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long' if jd.get('v19') else ('Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence' if jd.get('v18') else ('UST5yr-COT-falling-fast + credit-de-risking' if jd.get('v16') else ('Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast' if jd.get('v14') else ('MSCI-EM-COT-extreme-long + communications-weak' if jd.get('v13') else ('DJIA-COT-bullish-fast + crypto-risk-off' if jd.get('v12') else ('bank-loan-weak + E-mini COT net-long' if jd.get('v10') else ('duration-curve-steepening + tech-weak' if jd.get('v9') else ('credit-de-risking + industrials-weak' if jd.get('v8') else ('materials-weak + communications-rally' if jd.get('v7') else ('dollar-basket-weak + Europe-shock' if jd.get('v6') else ('dollar-weak + breadth-narrow' if jd.get('v5') else ('weak-close + volume-spike' if jd.get('v4') else ('gold+WTI shock' if jd.get('v3') else 'high-fear night'))))))))))))))))))))))))
         msg = (f"NIGHT BUY ({label}) at {n_['time']} Dubai, stop {n_['stop']}, " +
                (f"closes at {dubai(day + pd.Timedelta(minutes=S.NIGHT_OUT))} Dubai (10:00 am New York). " if n_['status'] == 'open' else f"closed ({n_['status']}). ") + msg)
         if state in ('none', 'waiting') and n_['status'] == 'open': state = 'buy'
     elif jd.get('stress_note'): msg += ' (' + jd['stress_note'] + '.)'
-    elif jd.get('stress') is False and jd.get('v3') is False and jd.get('v4') is False and jd.get('v5') is False and jd.get('v6') is False and jd.get('v7') is False and jd.get('v8') is False and jd.get('v9') is False and jd.get('v10') is False and jd.get('v12') is False and jd.get('v13') is False and jd.get('v14') is False and jd.get('v16') is False and jd.get('v18') is False and jd.get('v19') is False and jd.get('v20') is False and jd.get('v21') is False and jd.get('v22') is False and jd.get('v23') is False and jd.get('v25') is False and jd.get('v26') is False and jd.get('v27') is False and jd.get('v28') is False: msg += ' No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak, no duration-curve-steepening + tech-weak, no bank-loan-weak + E-mini COT net-long, no DJIA-COT-bullish-fast + crypto-risk-off, no MSCI-EM-COT-extreme-long + communications-weak, no Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast, no UST5yr-COT-falling-fast + credit-de-risking, no Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence, no Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long, no ES-asset-manager-COT-fast-bullish + staples-weak, no VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish, no UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast, no Utilities-retail-COT-falling-fast + transports-weak, no Sugar-COT-net-long + financials-weak, no Feeder-Cattle-COT-rising-fast + credit-de-risking, no VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish, no EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast).'
+    elif jd.get('stress') is False and jd.get('v3') is False and jd.get('v4') is False and jd.get('v5') is False and jd.get('v6') is False and jd.get('v7') is False and jd.get('v8') is False and jd.get('v9') is False and jd.get('v10') is False and jd.get('v12') is False and jd.get('v13') is False and jd.get('v14') is False and jd.get('v16') is False and jd.get('v18') is False and jd.get('v19') is False and jd.get('v20') is False and jd.get('v21') is False and jd.get('v22') is False and jd.get('v23') is False and jd.get('v25') is False and jd.get('v26') is False and jd.get('v27') is False and jd.get('v28') is False and jd.get('v36') is False and jd.get('v37') is False: msg += ' No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak, no duration-curve-steepening + tech-weak, no bank-loan-weak + E-mini COT net-long, no DJIA-COT-bullish-fast + crypto-risk-off, no MSCI-EM-COT-extreme-long + communications-weak, no Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast, no UST5yr-COT-falling-fast + credit-de-risking, no Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence, no Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long, no ES-asset-manager-COT-fast-bullish + staples-weak, no VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish, no UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast, no Utilities-retail-COT-falling-fast + transports-weak, no Sugar-COT-net-long + financials-weak, no Feeder-Cattle-COT-rising-fast + credit-de-risking, no VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish, no EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast, no TLT-SPY-flight-to-safety-rising-fast + AUD-Other-Reportables-COT-falling-fast, no XLE-SPY-energy-underperforming + CAD-leveraged-money-COT-falling-fast).'
     elif jd.get('v3_note'): msg += ' (' + jd['v3_note'] + '.)'
     elif jd.get('v4_note'): msg += ' (' + jd['v4_note'] + '.)'
     elif jd.get('v5_note'): msg += ' (' + jd['v5_note'] + '.)'

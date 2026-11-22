@@ -253,6 +253,8 @@ V25_SGOTH_MIN = 0.70; V25_FY_MAX = 0.20                               # v1.24 Ni
 V26_FCSW_MIN = 0.70; V26_CQ_MAX = 0.20                                # v1.24 Night V26: Feeder-Cattle Disaggregated Swap-Dealer COT 4-report-shift (52wk pctile, >=) / HYG-LQD (credit quality) ratio 10d change (252d pctile, <=) thresholds (Round 84 best)
 V27_VIXLCOMM_MIN = 0.85; V27_DXYFNR_MIN = 0.70                        # v1.24 Night V27: VIX-futures Legacy Commercial COT 4-report-shift (52wk pctile, >=) / US-Dollar-Index-futures Legacy Non-Reportables COT 4-report-shift (52wk pctile, >=) thresholds (Round 85 best)
 V28_EURJPYNCOMM_MAX = 0.30; V28_BT_MIN = 0.70                         # v1.24 Night V28: EUR/JPY-cross-futures Legacy Non-Commercial COT 4-report-shift (52wk pctile, <=) / Bitcoin own 10d change (252d pctile, >=) thresholds (Round 86 best)
+V36_TLTSPY_MIN = 0.70; V36_AUD2OTH_MAX = 0.20                         # v1.25 Night V36: TLT-SPY (20yr-Treasury-vs-equity flight-to-safety) ratio 10d change (252d pctile, >=) / Australian-Dollar-futures Other-Reportables COT 4-report-shift (52wk pctile, <=) thresholds (Round 95 best; V29-V35, Rounds 87-94, Python-estimate only, not yet MT4-confirmed, so not ported - V36 picks up the v28 chain directly, same "skip a not-yet-decided slot" convention as V24)
+V37_XLESPY_MAX = 0.30; V37_CADFX_MAX = 0.30                           # v1.25 Night V37: XLE-SPY (energy-sector-vs-market) ratio 10d change (252d pctile, <=) / Canadian-Dollar-futures leveraged-money COT 4-report-shift (52wk pctile, <=) thresholds (Round 96 best)
 
 def eod_minutes(day): return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
@@ -756,6 +758,50 @@ def v28_flag(J, day):
     if not (np.isfinite(row.eurjpyl_ncomm_chg4_pct) and np.isfinite(row.bt_chg10_pct)): return False, {}
     dd = dict(date=str(k.date()), eurjpyl_ncomm_chg4_pct=float(row.eurjpyl_ncomm_chg4_pct), bt_chg10_pct=float(row.bt_chg10_pct))
     return bool(row.eurjpyl_ncomm_chg4_pct <= V28_EURJPYNCOMM_MAX and row.bt_chg10_pct >= V28_BT_MIN), dd
+
+def v36_flag(T, day):
+    """v1.25 Night V36 trigger. T: DataFrame indexed by date (built by tltspy_audoth_today() in sp_run.py) with
+    columns tltspy_chg10_pct (252-day rolling percentile of the 10-day % change in the TLT/SPY ratio - 20+yr
+    Treasury ETF vs S&P 500, a flight-to-safety/duration-risk-appetite gauge, brand new instrument never used
+    by any prior leg - high = flight-to-safety rising fast) and aud2_oth_chg4_pct (52-week rolling percentile
+    of the 4-report SHIFT in the CFTC Traders-in-Financial-Futures OTHER-REPORTABLES net position in Australian
+    Dollar futures - a cohort never used on this currency before, weekly data with a 3-day publication lag
+    already applied so nothing is look-ahead - low = this cohort's AUD positioning falling fast). The broker
+    day `day`'s own NY-date row is day - 1 calendar day (same lag relationship as V4-V28's lookup: d = ny_date
+    + 1). Fires when both clear at once (tltspy_chg10_pct >= V36_TLTSPY_MIN AND aud2_oth_chg4_pct <=
+    V36_AUD2OTH_MAX) - Round 95's best, n=57-59 baked nights fire (MT4-confirmed 22 Nov: solo +$427.78 net
+    profit vs Control, max drawdown also down $1,475.29->$1,439.49 - checked for a look-ahead leak per the
+    profit-up/drawdown-down rule, same nv2t_ny=nv2t_date-1day lag convention and shared Range14D1() stop-sizing
+    function as every already-live leg, no leak found). V29-V35 (same batch's other queue slots, Rounds 87-94)
+    are Python-estimate only and not yet MT4-confirmed, so V36 picks up the v28 chain directly (same "skip a
+    not-yet-decided slot" convention as V24). Missing values (not enough rolling history yet, or no data that
+    day) mean it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if T is None or not len(T) or k not in T.index: return False, {}
+    row = T.loc[k]
+    if not (np.isfinite(row.tltspy_chg10_pct) and np.isfinite(row.aud2_oth_chg4_pct)): return False, {}
+    dd = dict(date=str(k.date()), tltspy_chg10_pct=float(row.tltspy_chg10_pct), aud2_oth_chg4_pct=float(row.aud2_oth_chg4_pct))
+    return bool(row.tltspy_chg10_pct >= V36_TLTSPY_MIN and row.aud2_oth_chg4_pct <= V36_AUD2OTH_MAX), dd
+
+def v37_flag(W, day):
+    """v1.25 Night V37 trigger. W: DataFrame indexed by date (built by xlespy_cadfx_today() in sp_run.py) with
+    columns xlespy_chg10_pct (252-day rolling percentile of the 10-day % change in the XLE/SPY ratio - energy
+    sector vs broad market, brand new instrument never used by any prior leg - low = energy underperforming
+    the index, falling/flat) and cadfx_cot_chg4_pct (52-week rolling percentile of the 4-report SHIFT in the
+    CFTC Traders-in-Financial-Futures LEVERAGED-MONEY net position in Canadian Dollar futures, weekly data
+    with a 3-day publication lag already applied so nothing is look-ahead - low = CAD leveraged-money
+    positioning falling fast). The broker day `day`'s own NY-date row is day - 1 calendar day (same lag
+    relationship as V4-V36's lookup: d = ny_date + 1). Fires when both clear at once (xlespy_chg10_pct <=
+    V37_XLESPY_MAX AND cadfx_cot_chg4_pct <= V37_CADFX_MAX) - Round 96's best, n=74 baked nights fire
+    (MT4-confirmed 22 Nov: solo +$286.86 net profit vs Control, max drawdown flat - not a look-ahead pattern).
+    Missing values (not enough rolling history yet, or no data that day) mean it simply never fires that
+    night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if W is None or not len(W) or k not in W.index: return False, {}
+    row = W.loc[k]
+    if not (np.isfinite(row.xlespy_chg10_pct) and np.isfinite(row.cadfx_cot_chg4_pct)): return False, {}
+    dd = dict(date=str(k.date()), xlespy_chg10_pct=float(row.xlespy_chg10_pct), cadfx_cot_chg4_pct=float(row.cadfx_cot_chg4_pct))
+    return bool(row.xlespy_chg10_pct <= V37_XLESPY_MAX and row.cadfx_cot_chg4_pct <= V37_CADFX_MAX), dd
 
 def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_done=False,
               name='Night long (high-fear night: VIX / VVIX)', src=1):
