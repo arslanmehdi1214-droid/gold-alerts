@@ -1,5 +1,5 @@
 {
- "updated": "Mon 23 Nov \u00b7 2:00 am",
+ "updated": "Mon 23 Nov \u00b7 2:12 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -1627,7 +1627,7 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
+   "price": 158.578,
    "change_pips": null,
    "atr_pips": 93.6,
    "entries": [],
@@ -3958,8 +3958,8 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": null,
-   "history_note": "history to 2026-11-22 (300 days) \u00b7 added 2026-11-20"
+   "live_spread_pips": 9.0,
+   "history_note": "history to 2026-11-22 (300 days)"
   },
   "DE40": {
    "code": "DE40",
@@ -5569,7 +5569,7 @@
    "feed_error": false,
    "epic": "OIL_CRUDE",
    "live_spread": null,
-   "history_note": "history to 2026-11-22 (60 days) \u00b7 added 2026-11-20"
+   "history_note": "history to 2026-11-22 (60 days)"
   },
   "US500": {
    "code": "US500",
@@ -7677,7 +7677,7 @@
    "picks_stale": false,
    "epic": "US500",
    "close_at": "12:30 am",
-   "history_note": "history to 2026-11-20 (42 days) \u00b7 added 2026-11-20"
+   "history_note": "history to 2026-11-20 (42 days)"
   },
   "US100": {
    "code": "US100",
@@ -9130,7 +9130,7 @@
    "feed_error": false,
    "epic": "US100",
    "close_at": "1:00 am",
-   "history_note": "history to 2026-11-20 (382 days) \u00b7 added 2026-11-20",
+   "history_note": "history to 2026-11-20 (382 days)",
    "fomc": null,
    "cpi": {
     "state": "closed",
@@ -9198,10 +9198,32 @@
    "regime": 0.496,
    "gap": null,
    "message": "Today is a SELL day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker). Side set by the v1.09 AUD rule (Australian-dollar hedge funds made a big 1-week move; on calm days we follow them). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; no target; stop moves to entry + 5 pips once +0.25 x stop in profit.",
-   "price": null,
-   "change": null,
+   "price": 1.30837,
+   "change": 0.00052,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:00 am",
+     1.30789,
+     1.30785,
+     1.30789,
+     1.30785
+    ],
+    [
+     "2:05 am",
+     1.30828,
+     1.30794,
+     1.30836,
+     1.30767
+    ],
+    [
+     "2:10 am",
+     1.30837,
+     1.30831,
+     1.30843,
+     1.30831
+    ]
+   ],
    "journal": {
     "since": "18 Nov 2026",
     "weekdays": 4,
@@ -10927,11 +10949,11 @@
      }
     ],
     "w4": {
-     "ready": false,
-     "have": 24,
+     "ready": true,
+     "have": 169,
      "need": 152,
-     "missing": 146,
-     "empty": 0
+     "missing": 0,
+     "empty": 1
     },
     "close": "11:30 pm"
    },
