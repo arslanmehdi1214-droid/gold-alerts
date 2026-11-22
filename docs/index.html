@@ -280,6 +280,7 @@ td{padding:9px 4px;border-bottom:1px solid var(--line)}td.r{text-align:right}
   <div class="dim" id="cpibox" style="margin-top:8px"></div>
   <div class="dim" id="tuesdaybox" style="margin-top:8px"></div>
   <div class="dim" id="bigupbox" style="margin-top:8px"></div>
+  <div class="dim" id="down3box" style="margin-top:8px"></div>
   <div class="dim" id="brentwbox" style="margin-top:8px"></div>
   <div class="hist" id="histbox"></div>
  </section>
@@ -532,6 +533,13 @@ function render(){
   else if(bu.state==='open'){const dp=(MK.find(x=>x.c==='US100')||{}).dp??1;
    bigupbox.innerHTML=`<b>Big Up Continuation</b> · long from ${bu.entry_time} @ ${f(bu.entry,dp)} · stop ${f(bu.stop,dp)} / target ${f(bu.target,dp)} (R=${f(bu.r,dp)})${bu.live!=null?` · <b class="${bu.live>=0?'pos':'neg'}">${sg(bu.live,dp)} pts</b>`:''}`}
   else bigupbox.innerHTML=`<b>Big Up Continuation</b> · ${bu.note}`
+ }catch(e){}
+ try{const d3=(M.US100||{}).down3;                  /* 22 Nov: 3 Down-Days Bounce #741 (DEMO WATCH, own journal, never auto-traded) */
+  if(!d3||!(SEL==='ALL'||SEL==='US100'))down3box.innerHTML='';
+  else{const dp=(MK.find(x=>x.c==='US100')||{}).dp??1,fw=d3.forward||{},
+   fwt=fw.n?`${fw.n} trade${fw.n>1?'s':''} · ${f(fw.target,0)}% hit target · ${f(fw.profit,0)}% closed in profit · ${sg(fw.pts,dp)} pts`:'no trades yet',
+   now=d3.state==='open'?`long from ${d3.entry_time} @ ${f(d3.entry,dp)} · stop ${f(d3.stop,dp)} / target ${f(d3.target,dp)} (R=${f(d3.r,dp)})${d3.live!=null?` · <b class="${d3.live>=0?'pos':'neg'}">${sg(d3.live,dp)} pts</b>`:''}`:d3.note;
+   down3box.innerHTML=`<b>3 Down-Days Bounce</b> <span class="tag">DEMO WATCH</span> · not live · ${now}<br>${d3.streak!=null?'Down closes in a row so far: '+d3.streak+' (needs 3) · ':''}Forward test so far: ${fwt}${d3.proof?` <span class="dim">· ${d3.proof}</span>`:''}`}
  }catch(e){}
  try{const bw=(M.BRENT||{}).watch,bb=((M.BRENT||{}).watch_backtest)||null;           /* 19 Nov: Brent WATCH rules W1-W5 (DEMO forward test, own journal; live v1.10 unchanged) */
   if(!bw||!(SEL==='ALL'||SEL==='BRENT'))brentwbox.innerHTML='';
