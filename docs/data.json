@@ -1,5 +1,5 @@
 {
- "updated": "Mon 23 Nov \u00b7 2:56 am",
+ "updated": "Mon 23 Nov \u00b7 3:02 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,14 +13,22 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": null,
+   "price": 3576.27,
    "close_at": "12:50 am",
-   "change": null,
+   "change": 16.79,
    "size": 0.1,
    "datr": 103.15,
    "open_now": 0,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "3:00 am",
+     3576.27,
+     3559.48,
+     3580.32,
+     3552.49
+    ]
+   ],
    "history": [
     {
      "date": "2026-11-23",
@@ -208,8 +216,8 @@
     "dollar_5d": "rose",
     "vix_5d": "rose",
     "tnx_5d": "fell",
-    "dollar_driven": null,
-    "corr": null,
+    "dollar_driven": false,
+    "corr": -0.497,
     "low_attention": false,
     "missing": [],
     "notes": []
@@ -1627,7 +1635,7 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 158.528,
+   "price": 158.638,
    "change_pips": null,
    "atr_pips": 93.6,
    "entries": [],
@@ -3958,7 +3966,7 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 8.5,
+   "live_spread_pips": 8.0,
    "history_note": "history to 2026-11-22 (300 days)"
   },
   "DE40": {
@@ -3997,10 +4005,18 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 83.117,
+   "change": -0.08,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "3:00 am",
+     83.12,
+     83.2,
+     83.29,
+     82.89
+    ]
+   ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 11,
@@ -5568,7 +5584,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": null,
+   "live_spread": 0.09,
    "history_note": "history to 2026-11-22 (60 days)"
   },
   "US500": {
@@ -5599,18 +5615,52 @@
    "what_note": "Tracks whether live S&P signals do as well as the v1.12 MT4 test (500109 + Night V3 + Night V4 + Night V5 + Night V6 + Night V7). Decision after about 3 months.",
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.12 rules)",
-   "state": "waiting",
-   "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
-   "price": null,
-   "change": null,
-   "entries": [],
-   "spark": [],
+   "state": "buy",
+   "message": "NIGHT BUY (high-fear night) at 3:01 am Dubai, stop 6815.1, closes at 7:00 pm Dubai (10:00 am New York). Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep).",
+   "price": 7007.2,
+   "change": 9.1,
+   "entries": [
+    {
+     "time": "3:01 am",
+     "side": "BUY",
+     "name": "Night long (high-fear night: VIX / VVIX)",
+     "src": "Night",
+     "leg": 0,
+     "night": true,
+     "price": 7003.6,
+     "entry": 7003.6,
+     "stop": 6815.1,
+     "stop0": 6815.1,
+     "stop_pts": 188.5,
+     "half_px": null,
+     "half": false,
+     "size": "full",
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "r": null,
+     "r_sized": null,
+     "live": 2.8,
+     "spread": 0.8
+    }
+   ],
+   "spark": [
+    [
+     "3:00 am",
+     7007.2,
+     6998.1,
+     7010.2,
+     6994.2
+    ]
+   ],
    "journal": {
     "since": "17 Nov 2026",
     "weekdays": 5,
-    "trades": 7,
-    "days": 80.0,
-    "perday": 1.4,
+    "trades": 8,
+    "days": 100.0,
+    "perday": 1.6,
     "closed": 7,
     "win": 57.1,
     "pf": 1.01,
@@ -5646,7 +5696,33 @@
      "rules": "v1.24",
      "label": "Mon 23 Nov",
      "side": null,
-     "trades": [],
+     "trades": [
+      {
+       "time": "3:01 am",
+       "side": "BUY",
+       "name": "Night long (high-fear night: VIX / VVIX)",
+       "src": "Night",
+       "leg": 0,
+       "night": true,
+       "price": 7003.6,
+       "entry": 7003.6,
+       "stop": 6815.1,
+       "stop0": 6815.1,
+       "stop_pts": 188.5,
+       "half_px": null,
+       "half": false,
+       "size": "full",
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "res_sized": null,
+       "r": null,
+       "r_sized": null,
+       "live": 2.8,
+       "spread": 0.8
+      }
+     ],
      "final": false
     },
     {
@@ -7709,10 +7785,18 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 25551.2,
+   "change": 39.8,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "3:00 am",
+     25551.2,
+     25511.4,
+     25619.9,
+     25499.4
+    ]
+   ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 26,
@@ -9198,8 +9282,8 @@
    "regime": 0.496,
    "gap": null,
    "message": "Today is a SELL day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker). Side set by the v1.09 AUD rule (Australian-dollar hedge funds made a big 1-week move; on calm days we follow them). CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight; no target; stop moves to entry + 5 pips once +0.25 x stop in profit.",
-   "price": 1.30906,
-   "change": 0.00121,
+   "price": 1.30902,
+   "change": 0.00117,
    "entries": [],
    "spark": [
     [
@@ -9281,10 +9365,17 @@
     ],
     [
      "2:55 am",
-     1.30906,
+     1.30915,
      1.30889,
-     1.30908,
-     1.30889
+     1.30919,
+     1.30874
+    ],
+    [
+     "3:00 am",
+     1.30902,
+     1.30906,
+     1.30916,
+     1.30873
     ]
    ],
    "journal": {
@@ -10645,10 +10736,18 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": null,
-   "change": null,
+   "price": 90.068,
+   "change": 0.19,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "3:00 am",
+     90.07,
+     89.88,
+     90.18,
+     89.78
+    ]
+   ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 11,
