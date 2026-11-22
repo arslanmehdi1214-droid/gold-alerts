@@ -226,6 +226,26 @@ def bigup_continuation_signal(DB, day, mult=BIGUP_MULT):
     ret = float(DB['c'].loc[d]) - float(DB['o'].loc[d])
     return ret > 0 and ret > mult * avg
 
+# -- 3 Down-Days Bounce (#741, NASDAQ_3DOWN_BOUNCE_v1.00, 22 Nov 2026) - DEMO / WATCH ONLY, not live. Today's close is lower than
+# yesterday's close, which is lower than the day before's, which is lower than the day before that (3 down closes in a row, close to close,
+# exactly the EA's own self-computing rule; it re-fires on every day of a longer streak) -> long at today's own RTH close, same stop/target
+# sizing as the other add-ons (0.35 x the raw lagged avg range, 1R target), force-close at the next trading day's RTH close (same
+# hold_day_check_exit as Tuesday / Big Up). MT4 (his run, 2018.01.02-2026.10.30, spread 18): pick <=2021 n=36 avgR +0.218 / 64% hit target /
+# 64% closed in profit; judge >=2022 n=115 avgR +0.061 / 55% hit target / 56% closed in profit. ~1-2 trades a month. --
+DOWN3_N = 3
+DOWN3_FROM = pd.Timestamp('2026-11-22')           # push day - first possible entry Mon 23 Nov
+
+def down3_streak(DB, day):
+    """number of consecutive down closes (close < previous close) ending at `day`'s own row (0 if day is not in DB)."""
+    d = pd.Timestamp(day)
+    if d not in DB.index: return 0
+    pos = DB.index.get_loc(d); c = DB['c'].values; n = 0
+    while pos - n >= 1 and float(c[pos - n]) < float(c[pos - n - 1]): n += 1
+    return n
+
+def down3_bounce_signal(DB, day, n=DOWN3_N):
+    return down3_streak(DB, day) >= n
+
 # -- shared exit check for Turnaround Tuesday / Big Up Continuation: unlike FOMC/CPI (fixed future deadline =
 # a known calendar date), their force-close deadline is "the RTH CLOSE of the next trading day after entry" -
 # not knowable in advance (weekends/holidays), so it's detected live: exit_day is simply the first `day` this

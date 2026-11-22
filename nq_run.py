@@ -18,6 +18,7 @@ FOMC_JOUR = os.path.join(HERE, 'docs', 'journal_nq_fomc.json')   # 8 Nov: FOMC-o
 CPI_JOUR = os.path.join(HERE, 'docs', 'journal_nq_cpi.json')         # 8 Nov: CPI-overnight's own small journal
 TUESDAY_JOUR = os.path.join(HERE, 'docs', 'journal_nq_tuesday.json') # 8 Nov: Turnaround Tuesday's own small journal
 BIGUP_JOUR = os.path.join(HERE, 'docs', 'journal_nq_bigup.json')     # 8 Nov: Big Up Continuation's own small journal
+DOWN3_JOUR = os.path.join(HERE, 'docs', 'journal_nq_down3.json')     # 22 Nov: 3 Down-Days Bounce (#741, DEMO WATCH) own small journal
 EPIC = os.environ.get('CAPITAL_EPIC_NQ', 'US100')
 MIN_SPREAD = 1.8                      # 22 Oct fix: the paper levels and results use exactly 1.8 index points (as the MT4 v1.02 test);
                                       # the live Capital.com spread is shown only (spread_live)
@@ -406,6 +407,69 @@ def bigup_card(J):
                      note=f"Big Up Continuation ({c['entry_day']}): {why}, {c['pts']:+.1f} pts.")
     return None
 
+# ---------------- 3 Down-Days Bounce #741 (22 Nov 2026) - DEMO / WATCH ONLY ----------------
+# Same shape as Big Up Continuation (own journal, long only, entry at today's own RTH close, 0.35 x raw lagged range stop, 1R target,
+# force-close at the next trading day's RTH close, never counted against v1.02's cap) but NOT live: shown on the page as a DEMO WATCH, never
+# put into entries[], so the auto-trader never copies it. Promote to live only after it holds up on new data (his rule).
+DOWN3_PROOF = ('MT4 (his run, 2018.01.02-2026.10.30, spread 18): pick (to 2021) 36 trades, avgR +0.218, 64% hit target, 64% closed in profit; '
+               'judge (2022 on) 115 trades, avgR +0.061, 55% hit target, 56% closed in profit')
+def down3_forward(J):
+    c = J.get('closed') or []
+    if not c: return dict(n=0)
+    return dict(n=len(c), target=round(100 * sum(1 for x in c if x['status'] == 'target') / len(c), 0),
+                profit=round(100 * sum(1 for x in c if x['pts'] > 0) / len(c), 0), pts=round(sum(x['pts'] for x in c), 1))
+
+def down3_run(hist, day, now, b, spread_live):
+    J = loadj(DOWN3_JOUR, dict(open=None, closed=[])); changed = False
+    allm = pd.concat([hist[hist.index < day], b]) if len(b) else hist[hist.index < day]
+    if J['open']:
+        o = J['open']; entry_day = pd.Timestamp(o['entry_day'])
+        if day > entry_day:
+            status, ex, ext = N.hold_day_check_exit(allm, o['entry_time'], o['entry'], o['sl'], o['tp'], day, now)
+            if status == 'open':
+                o['live'] = None if not len(allm) else round(float(allm.c.iloc[-1]) - o['entry'], 1)
+            else:
+                closed = dict(o, status=status, exit=round(ex, 1), exit_time=str(ext), pts=round(ex - o['entry'], 1))
+                J['closed'] = ([closed] + J['closed'])[:50]; J['open'] = None; changed = True
+        else:
+            o['live'] = None if not len(allm) else round(float(allm.c.iloc[-1]) - o['entry'], 1)
+    elif now >= day + pd.Timedelta(minutes=N.eod_minutes(day)) and day >= N.DOWN3_FROM:
+        key = str(day.date())
+        if not any(c.get('entry_day') == key for c in J['closed']):
+            eod_bar = b[b.index < day + pd.Timedelta(minutes=N.eod_minutes(day))]
+            if len(eod_bar):
+                DB = N.daily_range_atr(pd.concat([hist[hist.index < day], eod_bar]))
+                if N.down3_bounce_signal(DB, day):
+                    R = N.fomc_r(DB, day)
+                    if R:
+                        entry = round(float(eod_bar.c.iloc[-1]) + spread_live, 1)
+                        J['open'] = dict(entry_day=key, entry_time=str(eod_bar.index[-1]), entry=entry, streak=N.down3_streak(DB, day),
+                                          sl=round(entry - R, 1), tp=round(entry + N.FOMC_TP_MULT * R, 1), r=R, live=0.0)
+                        changed = True
+    if changed: dumpj(J, DOWN3_JOUR, indent=1)
+    # streak of finished days (how close it is to firing); today's own close decides the next entry
+    try:
+        DBh = N.daily_range_atr(hist[hist.index < day]); J['_streak'] = N.down3_streak(DBh, DBh.index[-1]) if len(DBh) else 0
+    except Exception:
+        J['_streak'] = None
+    return J
+
+def down3_card(J):
+    fw = down3_forward(J); base = dict(demo=True, proof=DOWN3_PROOF, forward=fw, streak=J.get('_streak'))
+    o = J.get('open')
+    if o:
+        return dict(base, state='open', entry_day=o['entry_day'], entry_time=o['entry_time'], entry=o['entry'],
+                     stop=o['sl'], target=o['tp'], r=o['r'], live=o.get('live'),
+                     note=f"3 Down-Days Bounce (DEMO WATCH): long from {o['entry_time']}, stop {o['sl']} / target {o['tp']} (R={o['r']}), "
+                          f"force-closes at the next trading day's RTH close if neither hits first.")
+    c = J['closed'][0] if J.get('closed') else None
+    if c:
+        why = {'target': 'hit target', 'stopped': 'hit stop', 'eod': 'force-closed at next-day close'}.get(c['status'], c['status'])
+        return dict(base, state='closed', entry_day=c['entry_day'], entry_time=c['entry_time'], entry=c['entry'],
+                     exit=c['exit'], exit_time=c['exit_time'], pts=c['pts'], r=c['r'],
+                     note=f"3 Down-Days Bounce, DEMO WATCH ({c['entry_day']}): {why}, {c['pts']:+.1f} pts. Waits for 3 down closes in a row.")
+    return dict(base, state='idle', note='3 Down-Days Bounce, DEMO WATCH: waits for 3 down closes in a row (about 1-2 trades a month); no trade yet.')
+
 def base_card(A=None, V=None):
     V = V or VARIANTS[0]
     note = ('14-day range ' + ('—' if A is None else f'{A:,.0f} pts') + ' · stop: buys 0.4 x range, sells ¼ range · sells ⅓ size · at +0.5 x risk close 25% (buys) / 15% (sells), '
@@ -472,6 +536,10 @@ def main(feed=None, get=None, now=None):
         if 'US100' in mk: mk['US100']['bigup'] = bigup_card(bigup_run(hist, day, now, b, MIN_SPREAD))
     except Exception as e:
         print('Nasdaq BigUp-Continuation check failed (non-fatal):', type(e).__name__, str(e)[:160])
+    try:                                           # 3 Down-Days Bounce #741 (22 Nov, DEMO WATCH): same non-fatal isolation
+        if 'US100' in mk: mk['US100']['down3'] = down3_card(down3_run(hist, day, now, b, MIN_SPREAD))
+    except Exception as e:
+        print('Nasdaq 3Down-Bounce check failed (non-fatal):', type(e).__name__, str(e)[:160])
     dumpj(old, PORTAL, indent=1)
     print(f'Nasdaq paper: {now} broker | bars {len(b)} | history to {hist.index[-1].date()} | added {added} | finished {fin} | failed {[V["code"] for V, _ in errs]}')
 
