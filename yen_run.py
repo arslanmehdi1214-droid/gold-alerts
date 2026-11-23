@@ -39,7 +39,7 @@ def set_rules(day):
     """v1.07 from V107_FROM, v1.06 from V106_FROM, v1.05 from V104_FROM, v1.03 before (engine switches + card labels)."""
     global RULES, BACKTEST
     d = str(pd.Timestamp(day).date())
-    Y.HA_TARGET = 0.03 if d >= V104_FROM else 0.0; Y.FLIP = d >= V104_FROM; Y.FLIP_MAX = 1; Y.HAM_HOUR = 7 if d >= V106_FROM else -1
+    Y.HA_TARGET = 0.03 if d >= V104_FROM else 0.0; Y.FLIP = d >= V104_FROM; Y.FLIP_MAX = 2; Y.HAM_HOUR = 7 if d >= V106_FROM else -1  # 23 Nov: Angle 113 FLIP_MAX 1->2 (was hardcoded here, overriding yen_engine.py's own default every run)
     Y.WGAP_ON = d >= V107_FROM
     RULES = 'v1.07' if d >= V107_FROM else ('v1.06' if d >= V106_FROM else ('v1.05' if d >= V104_FROM else 'v1.03'))
     BACKTEST = BT107 if d >= V107_FROM else (BT106 if d >= V106_FROM else (BT105 if d >= V104_FROM else BT103))

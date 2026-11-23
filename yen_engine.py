@@ -36,8 +36,8 @@ FIX_SPREAD = 0.010                                   # 22 Oct fix: ONE fixed spr
 EOD_GRACE = 600                                      # 23 Oct fix: with no bar at/after the close yet, book the day-end close at the last close only
                                                      # this many seconds after the close time (was: at once -> 17:59 close, then 18:00 open a minute later)
 QUIET = {2, 3, 4, 5, 6, 10}                          # EA signals 3,4,5,6,7,11 (inside-week / inside-day / quiet 5-day / squeeze 4pm / quiet 2-day / hourly squeeze)
-Q_STOP, Q_HALF, O_STOP, O_HALF = 0.25, 0.50, 0.75, 0.10   # stop = x 14-day range; half at + x risk (risk = stop distance incl. spread)
-PART, LOCK_PK, LOCK_FL, HA_W = 0.5, 2.0, 1.0, 1 / 3      # half part; day lock peak / floor in R; Heikin-Ashi 7am size
+Q_STOP, Q_HALF, O_STOP, O_HALF = 0.25, 0.40, 0.75, 0.07   # stop = x 14-day range; half at + x risk (risk = stop distance incl. spread) [23 Nov: Angles 109+111, Q_HALF 0.50->0.40, O_HALF 0.10->0.07, MT4-confirmed candidateB]
+PART, LOCK_PK, LOCK_FL, HA_W = 0.3, 2.0, 1.0, 1 / 3      # half part; day lock peak / floor in R; Heikin-Ashi 7am size [23 Nov: Angle 110/112, PART 0.5->0.3, MT4-confirmed candidateB]
 HA_TARGET = 0.50                                     # v1.04: Heikin-Ashi 7am closes the whole trade at + this x risk (0 = v1.03 half-close) [19 Nov: widened 0.03->0.50, best net/DD of sweep]
 HAM_HOUR = 7                                         # v1.06: signal 12 "HAM" - the EXACT same Heikin-Ashi scalp as signal 0 (weight/target below),
                                                      # fired again once more at this broker hour (do not use 6,8,9,14,15 - already used by other signals)
@@ -46,7 +46,7 @@ WGAP_MIN_ATR = 0.10                                  # gap vs the last finished 
 WGAP_STOP = 0.60                                     # WGAP's own real stop, x the 14-day range (not the quiet/other convention)
 WGAP_TARGET = 0.50                                   # WGAP closes the WHOLE trade at + this x risk - same tiny-target mechanism as S1/S12 [19 Nov: widened 0.03->0.50, best net/DD of sweep]
 FLIP = True                                          # v1.04: a quiet signal against the day's side closes open trades and switches the side
-FLIP_MAX = 1                                         # v1.05: at most this many flips a day that close open trades (0 = no limit = v1.04)
+FLIP_MAX = 2                                         # v1.05: at most this many flips a day that close open trades (0 = no limit = v1.04) [23 Nov: Angle 113, 1->2, MT4-confirmed candidateB]
 RISK_USD = 100.0                                     # v1.03 set file Risk_Dollars=100: a full-size stop = $100 (the MT4 backtest's size)
 KEEP_DAYS, KEEP_HOURS = 300, 600                      # history kept in the cache (enough for the 120-day rank, EMA30, 200-hour rank)
 
