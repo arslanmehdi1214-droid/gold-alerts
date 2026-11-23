@@ -1,5 +1,5 @@
 {
- "updated": "Tue 24 Nov \u00b7 2:00 am",
+ "updated": "Tue 24 Nov \u00b7 2:11 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -1627,7 +1627,7 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
+   "price": 158.943,
    "change_pips": null,
    "atr_pips": 92.7,
    "entries": [],
@@ -3954,8 +3954,8 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": null,
-   "history_note": "history to 2026-11-23 (300 days) \u00b7 added 2026-11-23"
+   "live_spread_pips": 9.0,
+   "history_note": "history to 2026-11-23 (300 days)"
   },
   "DE40": {
    "code": "DE40",
@@ -5576,7 +5576,7 @@
    "feed_error": false,
    "epic": "OIL_CRUDE",
    "live_spread": null,
-   "history_note": "history to 2026-11-23 (60 days) \u00b7 added 2026-11-23"
+   "history_note": "history to 2026-11-23 (60 days)"
   },
   "US500": {
    "code": "US500",
@@ -5608,10 +5608,25 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (Night-trade check: Cboe data not available - HTTPError: 403 Client Error: Forbidden for url: https://cdn-api.cboe.com/api/global/delayed_quotes/quotes/_VIX..)",
-   "price": null,
-   "change": null,
+   "price": 7250.4,
+   "change": -1.3,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     7250.1,
+     7251.7,
+     7251.8,
+     7249.4
+    ],
+    [
+     "2:10 am",
+     7250.4,
+     7250.2,
+     7250.4,
+     7250.2
+    ]
+   ],
    "journal": {
     "since": "23 Nov 2026",
     "weekdays": 2,
@@ -7757,7 +7772,7 @@
    "picks_stale": false,
    "epic": "US500",
    "close_at": "12:30 am",
-   "history_note": "history to 2026-11-23 (43 days) \u00b7 added 2026-11-23"
+   "history_note": "history to 2026-11-23 (43 days)"
   },
   "US100": {
    "code": "US100",
@@ -7789,10 +7804,25 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 26744.6,
+   "change": -3.2,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     26739.8,
+     26747.8,
+     26750.1,
+     26738.7
+    ],
+    [
+     "2:10 am",
+     26744.6,
+     26746.0,
+     26746.2,
+     26743.0
+    ]
+   ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 27,
@@ -9207,7 +9237,7 @@
    "feed_error": false,
    "epic": "US100",
    "close_at": "1:00 am",
-   "history_note": "history to 2026-11-23 (383 days) \u00b7 added 2026-11-23",
+   "history_note": "history to 2026-11-23 (383 days)",
    "fomc": null,
    "cpi": {
     "state": "closed",
@@ -9275,10 +9305,25 @@
    "regime": 0.68,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker). TUESDAY: stop moves to entry + 5 pips once +0.2 x stop in profit.",
-   "price": null,
-   "change": null,
+   "price": 1.3027,
+   "change": 0.00046,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     1.30277,
+     1.30224,
+     1.30277,
+     1.30224
+    ],
+    [
+     "2:10 am",
+     1.3027,
+     1.30277,
+     1.30277,
+     1.30268
+    ]
+   ],
    "journal": {
     "since": "23 Nov 2026",
     "weekdays": 2,
@@ -10714,10 +10759,25 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": null,
-   "change": null,
+   "price": 87.048,
+   "change": -0.08,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:00 am",
+     87.03,
+     87.13,
+     87.14,
+     87.03
+    ],
+    [
+     "2:05 am",
+     87.05,
+     87.05,
+     87.05,
+     87.05
+    ]
+   ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 12,
