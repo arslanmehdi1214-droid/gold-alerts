@@ -1,15 +1,15 @@
 {
- "balance": 1620.26,
+ "balance": 1617.97,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-23",
-  "pl": 67.65,
+  "pl": 63.07,
   "start_balance": 1597.62,
   "start_equity": 1597.62,
   "stopped": false
  },
- "open_positions": 5,
- "open_risk_aed": 102.4,
+ "open_positions": 6,
+ "open_risk_aed": 128.36,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-23|5:46 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -530,6 +530,25 @@
    "side": "BUY",
    "state": "open",
    "stop": 6815.1
+  },
+  "US500|2026-11-23|6:40 pm|SELL|S&P 9:40 am New York opening move": {
+   "desk_price": 7172.3,
+   "market": "US500",
+   "opened_at": "Mon 23 Nov 6:41 PM",
+   "part_x": 0.0,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-75f5-acb1-0495-7fc60004511e",
+    "level": 7152.6,
+    "open": true,
+    "size": 0.05,
+    "tp": null
+   },
+   "risk_aed": 25.96,
+   "risk_usd": 8.17,
+   "side": "SELL",
+   "state": "open",
+   "stop": 7313.7
   },
   "USDJPY|2026-11-19|2:00 pm|BUY|Week-so-far break": {
    "desk_price": 159.886,
