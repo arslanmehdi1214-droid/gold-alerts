@@ -1,15 +1,15 @@
 {
- "balance": 1602.87,
+ "balance": 1601.32,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-23",
-  "pl": 10.5,
+  "pl": 7.4,
   "start_balance": 1597.62,
   "start_equity": 1597.62,
   "stopped": false
  },
- "open_positions": 5,
- "open_risk_aed": 112.11,
+ "open_positions": 7,
+ "open_risk_aed": 141.63,
  "risk_usd": 8.168822328114365,
  "trades": {
   "GBPUSD|2026-11-19|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded": {
@@ -364,6 +364,32 @@
    "side": "SELL",
    "state": "closed",
    "stop": 25576.9
+  },
+  "US100|2026-11-23|4:50 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am": {
+   "desk_price": 25800.0,
+   "market": "US100",
+   "opened_at": "Mon 23 Nov 4:51 PM",
+   "part": {
+    "id": "00000000-75c5-f7e6-0495-7fc60004511e",
+    "level": 25808.7,
+    "open": true,
+    "size": 0.004,
+    "tp": 26014.3
+   },
+   "part_x": 0.25,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-75c5-f7f9-0495-7fc60004511e",
+    "level": 25810.1,
+    "open": true,
+    "size": 0.015,
+    "tp": null
+   },
+   "risk_aed": 29.52,
+   "risk_usd": 8.17,
+   "side": "BUY",
+   "state": "open",
+   "stop": 25376.9
   },
   "US500|2026-11-19|6:40 pm|SELL|S&P 9:40 am New York opening move": {
    "desk_price": 7381.1,
