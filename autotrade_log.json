@@ -1,19 +1,5 @@
 [
  {
-  "action": "part closed on demo",
-  "detail": "US100|2026-11-06|3:25 am|BUY|F2 sweep prev-day hi/lo by 0.1ATR from 1am back inside <30min -> reverse",
-  "market": "US100",
-  "ok": true,
-  "t": "Fri 6 Nov 4:04 AM"
- },
- {
-  "action": "stop moved",
-  "detail": "US100|2026-11-06|3:25 am|BUY|F2 sweep prev-day hi/lo by 0.1ATR from 1am back inside <30min -> reverse to 26479.0 (stop to entry: each position at its own fill price)",
-  "market": "US100",
-  "ok": true,
-  "t": "Fri 6 Nov 4:05 AM"
- },
- {
   "action": "stop moved",
   "detail": "US100|2026-11-06|3:25 am|BUY|F2 sweep prev-day hi/lo by 0.1ATR from 1am back inside <30min -> reverse to 26494.8",
   "market": "US100",
@@ -2798,5 +2784,19 @@
   "market": "BRENT",
   "ok": true,
   "t": "Mon 23 Nov 5:47 PM"
+ },
+ {
+  "action": "part closed on demo",
+  "detail": "US100|2026-11-23|4:50 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am",
+  "market": "US100",
+  "ok": true,
+  "t": "Mon 23 Nov 5:56 PM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "US100|2026-11-23|4:50 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am to 25801.8 (stop to entry: each position at its own fill price)",
+  "market": "US100",
+  "ok": true,
+  "t": "Mon 23 Nov 5:56 PM"
  }
 ]
