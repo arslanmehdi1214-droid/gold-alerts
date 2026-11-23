@@ -28,7 +28,13 @@ v1.08 (MT4 his run 9, 8 Nov 2026: 4,385 trades, net $19,717.63, max DD $1,517.42
 v1.09 (MT4 his run 10, 18 Nov 2026: 4,385 trades, net $22,745.74, max DD $1,420.31, net/DD 16.0, 63.0% closed in profit, every period up vs v1.08)
   = v1.08 + AUD calm flip: on CALM days (modes calm / calm_gap, after the gap rule) the side follows Australian-dollar leveraged funds'
   1-week change of net/OI (CFTC TFF 232741, report date + 6 days): 52-week percentile (strict, min 40) >= 0.9 -> BUY, <= 0.1 -> SELL;
-  0 = keep the side. Same stop / lock / no target as any calm day. 187 of 1,936 calm days flipped 2010-2026 (MT4 = Python)."""
+  0 = keep the side. Same stop / lock / no target as any calm day. 187 of 1,936 calm days flipped 2010-2026 (MT4 = Python).
+v1.12 (MT4 his run 14, 23 Nov 2026: 4,385 trades, net $27,346.73, max DD $1,667.28, 63.6% closed in profit, every period up vs v1.09;
+  run 13 with the macro vote: $28,610.70) = v1.09 + CALM-DAY VOTE (price-only, EA row 46 Vote_Use_Macro=false): on calm days NOT flipped
+  by the AUD rule, 3 fade votes known at 10:00 broker - B: 10:00 open in the top / bottom 10% of today's 00:00-09:59 range
+  ((o10-low)/(high-low)*2-1 >= 0.8 -> SELL, <= -0.8 -> BUY); C: yesterday's body (close-open)/(high-low) >= 0.8 -> SELL, <= -0.8 -> BUY;
+  D: (o10 - close 3 weekdays back) / 14-day range >= 1.2129 -> SELL, <= -1.1182 -> BUY. Sign of B+C+D against our side -> flip.
+  274 days changed vs v1.09 in MT4 (-$3,085 / 59.9% in profit -> +$1,516 / 70.4%)."""
 import numpy as np, pandas as pd
 
 Q1, Q2, Q3 = 0.10, 0.20, 0.25
@@ -104,6 +110,7 @@ BUSY_STOP, BUSY_TGT, LOCK_AT, LOCK_PX, DIV_X = 1.25, 1.5, 0.25, 0.0005, 0.3     
 CALM_TGT, TUE_LOCK_AT = 0.0, 0.2                 # v1.08: calm days no target; Tuesday lock at +0.2 x stop (any main layer)
 Q6, Q7 = 0.3, 0.1                                # v1.08 layers 6 / 7 thresholds
 Q_AUD = 0.10                                     # v1.09 AUD calm flip threshold
+VOTE_B, VOTE_C, VOTE_D_BUY, VOTE_D_SELL = 0.8, 0.8, -1.1182, 1.2129   # v1.12 calm vote (EA rows 47-50)
 
 def rank_pct(v, win=52, minp=26):
     """rolling 52-week percentile of the newest value = pandas rolling(52, min_periods=26).rank(pct=True) (average ties)."""
@@ -163,6 +170,24 @@ def aud_codes(W):
 def aud_flip(code, md, acode):
     """v1.09: on calm days (md calm / calm_gap) a non-zero AUD code that disagrees with our side replaces it. Returns (code, flipped)."""
     if code and acode and md in ('calm', 'calm_gap') and np.sign(acode) != np.sign(code): return int(np.sign(acode)) * abs(int(code)), True
+    return int(code), False
+
+def calm_vote(pre_h, pre_l, o10, prev, c3, A):
+    """v1.12 calm-day vote (EA CalmVote with Vote_Use_Macro=false). pre_h / pre_l = today's high / low before 10:00 broker,
+    o10 = 10:00 open, prev = yesterday's (o, h, l, c), c3 = close 3 weekdays back, A = 14-day range. Returns (sign of B+C+D, (b, c, d))."""
+    f = lambda x: x is not None and np.isfinite(x)
+    b = c = d = 0
+    if f(pre_h) and f(pre_l) and f(o10) and pre_h > pre_l:
+        ap = (o10 - pre_l) / (pre_h - pre_l) * 2 - 1; b = -1 if ap >= VOTE_B else 1 if ap <= -VOTE_B else 0
+    if prev is not None and all(f(x) for x in prev) and prev[1] > prev[2]:
+        pb = (prev[3] - prev[0]) / (prev[1] - prev[2]); c = -1 if pb >= VOTE_C else 1 if pb <= -VOTE_C else 0
+    if f(c3) and f(o10) and f(A) and A > 0:
+        m3 = (o10 - c3) / A; d = -1 if m3 >= VOTE_D_SELL else 1 if m3 <= VOTE_D_BUY else 0
+    return int(np.sign(b + c + d)), (b, c, d)
+
+def vote_flip(code, md, aflip, vote):
+    """v1.12: on calm days not already flipped by the AUD rule, a vote against our side replaces it. Returns (code, flipped)."""
+    if code and vote and not aflip and md in ('calm', 'calm_gap') and np.sign(vote) != np.sign(code): return int(np.sign(vote)) * abs(int(code)), True
     return int(code), False
 
 def eg_side(vals):
