@@ -1,15 +1,15 @@
 {
- "balance": 1643.79,
+ "balance": 1643.84,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-24",
-  "pl": -0.44,
+  "pl": -0.34,
   "start_balance": 1644.01,
   "start_equity": 1644.01,
   "stopped": false
  },
- "open_positions": 1,
- "open_risk_aed": 9.63,
+ "open_positions": 3,
+ "open_risk_aed": 30.35,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-23|5:46 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -215,6 +215,25 @@
    "side": "SELL",
    "state": "closed",
    "stop": 84.62
+  },
+  "OIL|2026-11-24|9:00 am|SELL|Side sell (weak close)": {
+   "desk_price": 79.32,
+   "market": "OIL",
+   "opened_at": "Tue 24 Nov 9:01 AM",
+   "part_x": 0.25,
+   "px_adj": 0.04,
+   "rest": {
+    "id": "00000000-761c-8cea-0495-7fc60004511e",
+    "level": 79.302,
+    "open": true,
+    "size": 1.0,
+    "tp": null
+   },
+   "risk_aed": 11.09,
+   "risk_usd": 2.04,
+   "side": "SELL",
+   "state": "open",
+   "stop": 82.34
   },
   "US100|2026-11-20|3:05 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am": {
    "desk_price": 26200.0,
@@ -534,6 +553,25 @@
    "side": "BUY",
    "state": "open",
    "stop": 158.278
+  },
+  "USDJPY|2026-11-24|9:00 am|BUY|HAM (Heikin-Ashi, 2nd hour)": {
+   "desk_price": 158.976,
+   "market": "USDJPY",
+   "opened_at": "Tue 24 Nov 9:01 AM",
+   "part": {
+    "id": "00000000-761c-8cbc-0495-7fc60004511e",
+    "level": 158.986,
+    "open": true,
+    "size": 600.0,
+    "tp": 159.017
+   },
+   "part_x": 1.0,
+   "px_adj": 0.0,
+   "risk_aed": 9.63,
+   "risk_usd": 2.72,
+   "side": "BUY",
+   "state": "open",
+   "stop": 158.281
   }
  },
  "untracked_seen": {}

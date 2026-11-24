@@ -1,5 +1,5 @@
 {
- "updated": "Tue 24 Nov \u00b7 9:00 am",
+ "updated": "Tue 24 Nov \u00b7 9:01 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 3633.07,
+   "price": 3633.66,
    "close_at": "12:50 am",
-   "change": -2.84,
+   "change": -2.25,
    "size": 0.1,
    "datr": 107.52,
    "open_now": 0,
@@ -520,10 +520,17 @@
     ],
     [
      "8:55 am",
-     3633.07,
+     3632.7,
      3635.14,
      3636.02,
      3631.45
+    ],
+    [
+     "9:00 am",
+     3633.66,
+     3632.69,
+     3633.67,
+     3630.11
     ]
    ],
    "history": [
@@ -2132,8 +2139,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 158.975,
-   "change_pips": -5.2,
+   "price": 158.974,
+   "change_pips": -5.3,
    "atr_pips": 92.7,
    "entries": [
     {
@@ -2161,7 +2168,36 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.0115,
+     "r_now": -0.013,
+     "rwf": null,
+     "spread": 1.0
+    },
+    {
+     "time": "9:00 am",
+     "side": "BUY",
+     "sig": "S12 HAM",
+     "name": "HAM (Heikin-Ashi, 2nd hour)",
+     "price": 158.976,
+     "entry": 158.986,
+     "stop": 158.281,
+     "stop0": 158.281,
+     "stop_pips": 70.5,
+     "half_px": 159.007,
+     "half": false,
+     "part": 1.0,
+     "half_time": null,
+     "size": "third",
+     "quiet": false,
+     "first": false,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "pips": null,
+     "usd": null,
+     "r": null,
+     "r_sized": null,
+     "usd_risk": null,
+     "r_now": -0.0173,
      "rwf": null,
      "spread": 1.0
     }
@@ -2663,16 +2699,23 @@
      158.985,
      158.986,
      158.959
+    ],
+    [
+     "9:00 am",
+     158.974,
+     158.976,
+     158.976,
+     158.966
     ]
    ],
    "journal": {
     "since": "05 Nov 2026",
     "weekdays": 14,
-    "trades": 38,
+    "trades": 39,
     "decided": 29,
     "direction": 55.2,
     "days": 100.0,
-    "perday": 2.71,
+    "perday": 2.79,
     "closed": 37,
     "win": 78.4,
     "pf": 0.8,
@@ -2716,7 +2759,36 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.0115,
+       "r_now": -0.013,
+       "rwf": null,
+       "spread": 1.0
+      },
+      {
+       "time": "9:00 am",
+       "side": "BUY",
+       "sig": "S12 HAM",
+       "name": "HAM (Heikin-Ashi, 2nd hour)",
+       "price": 158.976,
+       "entry": 158.986,
+       "stop": 158.281,
+       "stop0": 158.281,
+       "stop_pips": 70.5,
+       "half_px": 159.007,
+       "half": false,
+       "part": 1.0,
+       "half_time": null,
+       "size": "third",
+       "quiet": false,
+       "first": false,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "pips": null,
+       "usd": null,
+       "r": null,
+       "r_sized": null,
+       "usd_risk": null,
+       "r_now": -0.0173,
        "rwf": null,
        "spread": 1.0
       }
@@ -5056,9 +5128,32 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 79.312,
+   "price": 79.317,
    "change": -0.75,
-   "entries": [],
+   "entries": [
+    {
+     "time": "9:00 am",
+     "side": "SELL",
+     "name": "Side sell (weak close)",
+     "price": 79.32,
+     "stop": 82.34,
+     "stop0": 82.34,
+     "half_px": 78.82,
+     "half": false,
+     "part": 0.25,
+     "late": false,
+     "stop_usd": 3.02,
+     "size": 0.25,
+     "first": false,
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "rwf": null,
+     "spread": 0.04
+    }
+   ],
    "spark": [
     [
      "3:00 am",
@@ -5563,16 +5658,23 @@
      79.37,
      79.37,
      79.31
+    ],
+    [
+     "9:00 am",
+     79.32,
+     79.32,
+     79.32,
+     79.29
     ]
    ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 12,
-    "trades": 20,
+    "trades": 21,
     "decided": 16,
     "direction": 56.2,
-    "days": 91.7,
-    "perday": 1.67,
+    "days": 100.0,
+    "perday": 1.75,
     "closed": 20,
     "win": 80.0,
     "pf": 6.25,
@@ -5586,7 +5688,30 @@
      "rules": "v1.16",
      "label": "Tue 24 Nov",
      "side": null,
-     "trades": [],
+     "trades": [
+      {
+       "time": "9:00 am",
+       "side": "SELL",
+       "name": "Side sell (weak close)",
+       "price": 79.32,
+       "stop": 82.34,
+       "stop0": 82.34,
+       "half_px": 78.82,
+       "half": false,
+       "part": 0.25,
+       "late": false,
+       "stop_usd": 3.02,
+       "size": 0.25,
+       "first": false,
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "res_sized": null,
+       "rwf": null,
+       "spread": 0.04
+      }
+     ],
      "range_usd": 4.03,
      "traded": true,
      "final": false
@@ -7176,8 +7301,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (high-fear night, but the check ran after 6:06 pm New York - no night trade.)",
-   "price": 7251.0,
-   "change": -0.7,
+   "price": 7253.4,
+   "change": 1.7,
    "entries": [],
    "spark": [
     [
@@ -7759,6 +7884,13 @@
      7251.0,
      7253.9,
      7254.4,
+     7248.6
+    ],
+    [
+     "9:00 am",
+     7253.4,
+     7250.9,
+     7253.4,
      7248.6
     ]
    ],
@@ -10035,8 +10167,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 26747.6,
-   "change": -0.2,
+   "price": 26765.4,
+   "change": 17.6,
    "entries": [],
    "spark": [
     [
@@ -10619,6 +10751,13 @@
      26767.3,
      26769.4,
      26734.0
+    ],
+    [
+     "9:00 am",
+     26765.4,
+     26747.5,
+     26767.6,
+     26733.6
     ]
    ],
    "journal": {
@@ -12687,6 +12826,13 @@
      1.30385,
      1.30387,
      1.30372
+    ],
+    [
+     "9:00 am",
+     1.30386,
+     1.30385,
+     1.30386,
+     1.30382
     ]
    ],
    "journal": {
@@ -14124,8 +14270,8 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 86.347,
-   "change": -0.79,
+   "price": 86.33,
+   "change": -0.8,
    "entries": [],
    "spark": [
     [
@@ -14540,6 +14686,13 @@
      86.4,
      86.41,
      86.34
+    ],
+    [
+     "9:00 am",
+     86.33,
+     86.34,
+     86.34,
+     86.32
     ]
    ],
    "journal": {
