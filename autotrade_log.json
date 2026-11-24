@@ -1,13 +1,6 @@
 [
  {
   "action": "OPEN SELL rest",
-  "detail": "GOLD|2026-11-09|2:09 pm|SELL|FILL range fade size 0.19 at 4099.95 stop 4141.0 | trade risk 28.8 AED",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Mon 9 Nov 2:10 PM"
- },
- {
-  "action": "OPEN SELL rest",
   "detail": "OIL|2026-11-09|3:11 pm|SELL|Open \u00b1 \u00bd range size 2.3 at 88.065 stop 91.54 | trade risk 29.06 AED",
   "market": "OIL",
   "ok": true,
@@ -2798,5 +2791,12 @@
   "market": "US100",
   "ok": true,
   "t": "Tue 24 Nov 7:00 PM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "US100|2026-11-24|3:17 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am to 26201.8 (stop to entry: each position at its own fill price)",
+  "market": "US100",
+  "ok": true,
+  "t": "Tue 24 Nov 7:01 PM"
  }
 ]
