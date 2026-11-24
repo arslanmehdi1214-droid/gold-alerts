@@ -1,5 +1,5 @@
 {
- "updated": "Tue 24 Nov \u00b7 6:13 am",
+ "updated": "Tue 24 Nov \u00b7 6:24 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 3657.74,
+   "price": 3651.78,
    "close_at": "12:50 am",
-   "change": 21.83,
+   "change": 15.87,
    "size": 0.1,
    "datr": 107.52,
    "open_now": 0,
@@ -289,10 +289,24 @@
     ],
     [
      "6:10 am",
-     3657.74,
+     3659.91,
      3652.71,
-     3659.56,
+     3659.91,
      3651.86
+    ],
+    [
+     "6:15 am",
+     3656.52,
+     3660.0,
+     3660.66,
+     3655.16
+    ],
+    [
+     "6:20 am",
+     3651.78,
+     3656.51,
+     3657.1,
+     3651.61
     ]
    ],
    "history": [
@@ -1901,8 +1915,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 158.819,
-   "change_pips": -20.8,
+   "price": 158.869,
+   "change_pips": -15.8,
    "atr_pips": 92.7,
    "entries": [],
    "spark": [
@@ -2167,10 +2181,24 @@
     ],
     [
      "6:10 am",
-     158.819,
+     158.831,
      158.796,
      158.84,
      158.796
+    ],
+    [
+     "6:15 am",
+     158.863,
+     158.83,
+     158.867,
+     158.815
+    ],
+    [
+     "6:20 am",
+     158.869,
+     158.864,
+     158.881,
+     158.849
     ]
    ],
    "journal": {
@@ -4534,8 +4562,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 79.722,
-   "change": -0.34,
+   "price": 79.632,
+   "change": -0.43,
    "entries": [],
    "spark": [
     [
@@ -4806,10 +4834,24 @@
     ],
     [
      "6:10 am",
-     79.72,
+     79.77,
      79.74,
      79.78,
      79.7
+    ],
+    [
+     "6:15 am",
+     79.68,
+     79.76,
+     79.77,
+     79.68
+    ],
+    [
+     "6:20 am",
+     79.63,
+     79.69,
+     79.71,
+     79.62
     ]
    ],
    "journal": {
@@ -6390,7 +6432,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.045,
+   "live_spread": 0.04,
    "history_note": "history to 2026-11-23 (60 days)"
   },
   "US500": {
@@ -6422,9 +6464,9 @@
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
-   "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (Night-trade check: Cboe data not available - HTTPError: 403 Client Error: Forbidden for url: https://cdn-api.cboe.com/api/global/delayed_quotes/quotes/_VIX..)",
-   "price": 7243.9,
-   "change": -7.8,
+   "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (high-fear night, but the check ran after 6:06 pm New York - no night trade.)",
+   "price": 7243.0,
+   "change": -8.7,
    "entries": [],
    "spark": [
     [
@@ -6772,10 +6814,24 @@
     ],
     [
      "6:10 am",
-     7243.9,
+     7249.4,
      7247.3,
      7250.9,
      7243.4
+    ],
+    [
+     "6:15 am",
+     7245.3,
+     7249.3,
+     7249.3,
+     7245.1
+    ],
+    [
+     "6:20 am",
+     7243.0,
+     7245.1,
+     7250.0,
+     7242.6
     ]
    ],
    "journal": {
@@ -6796,6 +6852,102 @@
     {
      "picks_seen": {},
      "legs_frozen": [],
+     "stress": false,
+     "stress_note": "high-fear night, but the check ran after 6:06 pm New York - no night trade",
+     "v3": false,
+     "v4": false,
+     "v4_detail": {
+      "date": "2026-11-23",
+      "lh_pct": 0.5912698412698413,
+      "lhvol_z": 1.01642204094662
+     },
+     "v5": false,
+     "v5_detail": {
+      "date": "2026-11-23",
+      "dxy_chg5_pct": 0.753968253968254,
+      "rs_chg10_pct": 0.5317460317460317,
+      "rs_chg20_pct": 0.8888888888888888
+     },
+     "v6": false,
+     "v7": false,
+     "v7_detail": {
+      "date": "2026-11-23",
+      "mt_lvl_pct": 0.5,
+      "cm_chg10_pct": 0.6944444444444444
+     },
+     "v8": false,
+     "v8_detail": {
+      "date": "2026-11-23",
+      "cq_chg10_pct": 0.10714285714285714,
+      "in_chg10_pct": 0.5634920634920635
+     },
+     "v9": false,
+     "v9_detail": {
+      "date": "2026-11-23",
+      "du_chg10_pct": 0.5555555555555556,
+      "tk_chg10_pct": 0.3531746031746032
+     },
+     "v10": false,
+     "v10_detail": {
+      "date": "2026-11-23",
+      "bk_chg10_pct": 0.8611111111111112,
+      "es_cot_pct": 1.0
+     },
+     "v12": false,
+     "v13": false,
+     "v13_detail": {
+      "date": "2026-11-23",
+      "msciem_cot_pct": 0.11538461538461539,
+      "cm_chg10_pct": 0.6944444444444444
+     },
+     "v14": false,
+     "v14_detail": {
+      "date": "2026-11-23",
+      "brlfx_cot_chg4_pct": 0.9230769230769231,
+      "ust2y_cot_chg4_pct": 0.3269230769230769
+     },
+     "v16": false,
+     "v16_detail": {
+      "date": "2026-11-23",
+      "ust5y_cot_chg4_pct": 0.23076923076923078,
+      "cq_chg10_pct": 0.10714285714285714
+     },
+     "v18": false,
+     "v18_detail": {
+      "date": "2026-11-23",
+      "mbtc_cot_chg4_pct": 0.5,
+      "ng_lvl_pct": 0.7103174603174603
+     },
+     "v19": false,
+     "v19_detail": {
+      "date": "2026-11-23",
+      "ultbond_cot_pct": 0.40384615384615385,
+      "msciem_cot_pct": 0.11538461538461539
+     },
+     "v20": false,
+     "v20_detail": {
+      "date": "2026-11-23",
+      "es_am_chg4_pct": 0.15384615384615385,
+      "cp_chg10_pct": 0.8095238095238095
+     },
+     "v21": false,
+     "v21_detail": {
+      "date": "2026-11-23",
+      "vixf_oth_chg4_pct": 0.28846153846153844,
+      "chffx_cot_chg4_pct": 0.07692307692307693
+     },
+     "v22": false,
+     "v22_detail": {
+      "date": "2026-11-23",
+      "ust2y_nr_chg4_pct": 0.7307692307692307,
+      "msciem_cot_chg4_pct": 0.3269230769230769
+     },
+     "v23": false,
+     "v23_detail": {
+      "date": "2026-11-23",
+      "uti2_nr_chg4_pct": 0.3076923076923077,
+      "tr_chg10_pct": 0.49206349206349204
+     },
      "date": "2026-11-24",
      "rules": "v1.25",
      "label": "Tue 24 Nov",
@@ -8955,8 +9107,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 26718.4,
-   "change": -29.4,
+   "price": 26708.3,
+   "change": -39.5,
    "entries": [],
    "spark": [
     [
@@ -9304,10 +9456,24 @@
     ],
     [
      "6:10 am",
-     26718.4,
+     26758.4,
      26749.0,
      26768.8,
-     26718.4
+     26717.6
+    ],
+    [
+     "6:15 am",
+     26743.1,
+     26757.4,
+     26763.0,
+     26742.0
+    ],
+    [
+     "6:20 am",
+     26708.3,
+     26743.0,
+     26761.1,
+     26706.6
     ]
    ],
    "journal": {
@@ -10792,8 +10958,8 @@
    "regime": 0.68,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker). TUESDAY: stop moves to entry + 5 pips once +0.2 x stop in profit.",
-   "price": 1.30455,
-   "change": 0.00231,
+   "price": 1.30454,
+   "change": 0.0023,
    "entries": [],
    "spark": [
     [
@@ -11141,10 +11307,24 @@
     ],
     [
      "6:10 am",
-     1.30455,
+     1.30457,
      1.30441,
      1.30463,
      1.30441
+    ],
+    [
+     "6:15 am",
+     1.30437,
+     1.30458,
+     1.30465,
+     1.30435
+    ],
+    [
+     "6:20 am",
+     1.30454,
+     1.30438,
+     1.30463,
+     1.30433
     ]
    ],
    "journal": {
@@ -12582,8 +12762,8 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 86.627,
-   "change": -0.51,
+   "price": 86.587,
+   "change": -0.55,
    "entries": [],
    "spark": [
     [
@@ -12763,10 +12943,24 @@
     ],
     [
      "6:10 am",
-     86.63,
+     86.68,
      86.64,
      86.68,
      86.6
+    ],
+    [
+     "6:15 am",
+     86.59,
+     86.67,
+     86.68,
+     86.58
+    ],
+    [
+     "6:20 am",
+     86.59,
+     86.59,
+     86.61,
+     86.52
     ]
    ],
    "journal": {
