@@ -1,19 +1,5 @@
 [
  {
-  "action": "error",
-  "detail": "HTTPError: 429 Client Error:  for url: https://demo-api-capital.backend-capital.com/api/v1/session",
-  "market": "ALL",
-  "ok": false,
-  "t": "Sat 7 Nov 7:11 PM"
- },
- {
-  "action": "OPEN BUY rest",
-  "detail": "US500|2026-11-09|3:01 am|BUY|Night long (high-fear night: VIX / VVIX) size 0.06 at 7362.5 stop 7224.2 | trade risk 27.98 AED",
-  "market": "US500",
-  "ok": true,
-  "t": "Mon 9 Nov 3:02 AM"
- },
- {
   "action": "OPEN BUY part",
   "detail": "USDJPY|2026-11-09|8:00 am|BUY|Heikin-Ashi 7am size 600.0 at 158.301 stop 157.594 target 158.308 | trade risk 9.51 AED",
   "market": "USDJPY",
@@ -2798,5 +2784,19 @@
   "market": "USDJPY",
   "ok": true,
   "t": "Tue 24 Nov 1:57 PM"
+ },
+ {
+  "action": "part closed on demo",
+  "detail": "USDJPY|2026-11-24|1:56 pm|BUY|Inside-day break",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Tue 24 Nov 2:55 PM"
+ },
+ {
+  "action": "rest closed on demo",
+  "detail": "USDJPY|2026-11-24|1:56 pm|BUY|Inside-day break",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Tue 24 Nov 2:55 PM"
  }
 ]
