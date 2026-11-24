@@ -1,15 +1,15 @@
 {
- "balance": 1642.29,
+ "balance": 1643.45,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-24",
-  "pl": -3.8,
+  "pl": -1.48,
   "start_balance": 1644.01,
   "start_equity": 1644.01,
   "stopped": false
  },
- "open_positions": 3,
- "open_risk_aed": 68.18,
+ "open_positions": 4,
+ "open_risk_aed": 102.48,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-23|5:46 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -50,6 +50,25 @@
    "side": "BUY",
    "state": "open",
    "stop": 82.16
+  },
+  "BRENT|2026-11-24|12:22 pm|SELL|Rule C \u00b7 20-day range break": {
+   "desk_price": 86.3,
+   "market": "BRENT",
+   "opened_at": "Tue 24 Nov 12:23 PM",
+   "part_x": 0.0,
+   "px_adj": 0.04,
+   "rest": {
+    "id": "00000000-761e-2d55-0495-7fc60004511e",
+    "level": 86.357,
+    "open": true,
+    "size": 1.0,
+    "tp": null
+   },
+   "risk_aed": 34.3,
+   "risk_usd": 8.17,
+   "side": "SELL",
+   "state": "open",
+   "stop": 95.64
   },
   "GBPUSD|2026-11-20|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded": {
    "desk_price": 1.31138,
