@@ -1,19 +1,5 @@
 [
  {
-  "action": "OPEN BUY rest",
-  "detail": "USDJPY|2026-11-06|1:58 pm|BUY|Inside-week break size 3000.0 at 158.352 stop 158.122 | trade risk 29.97 AED",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Fri 6 Nov 1:59 PM"
- },
- {
-  "action": "close part",
-  "detail": "USDJPY|2026-11-06|1:58 pm|BUY|Inside-week break (desk: close_now) ",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Fri 6 Nov 4:00 PM"
- },
- {
   "action": "close rest",
   "detail": "USDJPY|2026-11-06|1:58 pm|BUY|Inside-week break (desk: close_now) ",
   "market": "USDJPY",
@@ -2798,5 +2784,19 @@
   "market": "GBPUSD",
   "ok": true,
   "t": "Tue 24 Nov 1:46 AM"
+ },
+ {
+  "action": "OPEN BUY part",
+  "detail": "USDJPY|2026-11-24|8:00 am|BUY|Heikin-Ashi 7am size 600.0 at 158.986 stop 158.278 target 159.004 | trade risk 9.63 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Tue 24 Nov 8:01 AM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "USDJPY|2026-11-24|8:00 am|BUY|Heikin-Ashi 7am 159.004 -> 159.017 ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Tue 24 Nov 8:01 AM"
  }
 ]
