@@ -1,14 +1,14 @@
 {
- "balance": 1713.07,
+ "balance": 1713.45,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-24",
-  "pl": 124.35,
+  "pl": 97.18,
   "start_balance": 1644.01,
   "start_equity": 1644.01,
   "stopped": false
  },
- "open_positions": 5,
+ "open_positions": 4,
  "open_risk_aed": 135.65,
  "risk_usd": 8.168822328114365,
  "trades": {
@@ -115,9 +115,10 @@
    "market": "GBPUSD",
    "opened_at": "Tue 24 Nov 12:01 PM",
    "part": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-761d-f4b9-0495-7fc60004511e",
     "level": 1.30359,
-    "open": true,
+    "open": false,
     "size": 900.0,
     "tp": 1.31204
    },
@@ -126,7 +127,7 @@
    "risk_aed": 27.93,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 1.30424
   },
   "GOLD|2026-11-20|2:01 pm|BUY|FILL range fade": {
