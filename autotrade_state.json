@@ -1,15 +1,15 @@
 {
- "balance": 1691.88,
+ "balance": 1692.21,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-24",
-  "pl": 126.56,
+  "pl": 127.22,
   "start_balance": 1644.01,
   "start_equity": 1644.01,
   "stopped": false
  },
- "open_positions": 6,
- "open_risk_aed": 179.09,
+ "open_positions": 5,
+ "open_risk_aed": 135.65,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-23|5:46 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -220,16 +220,17 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: target hit",
     "id": "00000000-761f-d982-0495-7fc60004511e",
     "level": 3628.4,
-    "open": true,
+    "open": false,
     "size": 0.22,
     "tp": null
    },
    "risk_aed": 43.44,
    "risk_usd": 12.25,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 3683.08
   },
   "GOLD|2026-11-24|7:16 pm|SELL|U2 round": {
