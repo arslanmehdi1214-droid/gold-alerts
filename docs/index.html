@@ -546,6 +546,7 @@ function render(){
   else{const sm=bw.summary&&bw.summary.all||{},nx=(bw.next||[]).map(n=>`${n.rule} ${n.side} ${n.label}`).join(' · '),w4=bw.w4,bt=(bb&&bb.rules||[]).map(r=>`${r.code} ${r.trades} trades +$${f(r.net,0)}`).join(' · ');
    brentwbox.innerHTML=`<b>Brent watch W1-W5</b> <span class="tag">DEMO</span> · ${sm.trades?sm.trades+' trade'+(sm.trades>1?'s':'')+(sm.closed?' · '+f(sm.win,0)+'% closed in profit':''):'no trades yet'} · next: ${(bw.next||[])[0]?bw.next[0].rule+' '+bw.next[0].side+' '+bw.next[0].label:'-'}`}
  }catch(e){}
+ cpibox.innerHTML='';tuesdaybox.innerHTML='';bigupbox.innerHTML='';down3box.innerHTML='';brentwbox.innerHTML='';   /* 24 Nov: add-on watch lines hidden on the page at his request (data + journals keep running) */
  const now=new Date();
  const DKeys=[...new Set(G.map(g=>dkey(g.t)))].sort();
  if(!DKeys.length)DKeys.push(dkey(now));
