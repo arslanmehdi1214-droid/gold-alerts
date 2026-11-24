@@ -1,15 +1,15 @@
 {
- "balance": 1653.31,
+ "balance": 1653.75,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-24",
-  "pl": 18.26,
+  "pl": 19.14,
   "start_balance": 1644.01,
   "start_equity": 1644.01,
   "stopped": false
  },
- "open_positions": 3,
- "open_risk_aed": 63.46,
+ "open_positions": 5,
+ "open_risk_aed": 93.37,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-23|5:46 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -612,6 +612,32 @@
    "side": "SELL",
    "state": "closed",
    "stop": 159.247
+  },
+  "USDJPY|2026-11-24|1:56 pm|BUY|Inside-day break": {
+   "desk_price": 159.497,
+   "market": "USDJPY",
+   "opened_at": "Tue 24 Nov 1:57 PM",
+   "part": {
+    "id": "00000000-761f-3087-0495-7fc60004511e",
+    "level": 159.535,
+    "open": true,
+    "size": 1600.0,
+    "tp": 159.604
+   },
+   "part_x": 0.3,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-761f-3097-0495-7fc60004511e",
+    "level": 159.535,
+    "open": true,
+    "size": 4000.0,
+    "tp": null
+   },
+   "risk_aed": 29.91,
+   "risk_usd": 8.17,
+   "side": "BUY",
+   "state": "open",
+   "stop": 159.265
   },
   "USDJPY|2026-11-24|8:00 am|BUY|Heikin-Ashi 7am": {
    "desk_price": 158.973,
