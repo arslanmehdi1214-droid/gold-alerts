@@ -1,5 +1,5 @@
 {
- "updated": "Wed 25 Nov \u00b7 2:22 am",
+ "updated": "Wed 25 Nov \u00b7 2:29 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -1627,7 +1627,7 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 159.239,
+   "price": 159.257,
    "change_pips": null,
    "atr_pips": 88.9,
    "entries": [],
@@ -4025,7 +4025,7 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 7.5,
+   "live_spread_pips": 8.0,
    "history_note": "history to 2026-11-24 (300 days)"
   },
   "DE40": {
@@ -5707,8 +5707,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (Night-trade check: Cboe data not available - HTTPError: 403 Client Error: Forbidden for url: https://cdn-api.cboe.com/api/global/delayed_quotes/quotes/_VIX..)",
-   "price": 7196.3,
-   "change": 0.7,
+   "price": 7197.6,
+   "change": 2.0,
    "entries": [],
    "spark": [
     [
@@ -5734,10 +5734,17 @@
     ],
     [
      "2:20 am",
+     7195.2,
      7196.3,
      7196.3,
-     7196.3,
-     7195.4
+     7193.1
+    ],
+    [
+     "2:25 am",
+     7197.6,
+     7195.4,
+     7197.6,
+     7194.3
     ]
    ],
    "journal": {
@@ -8061,8 +8068,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 26224.2,
-   "change": 15.2,
+   "price": 26248.2,
+   "change": 39.2,
    "entries": [],
    "spark": [
     [
@@ -8088,10 +8095,17 @@
     ],
     [
      "2:20 am",
-     26224.2,
+     26218.4,
      26228.2,
      26230.1,
-     26223.6
+     26215.7
+    ],
+    [
+     "2:25 am",
+     26248.2,
+     26218.6,
+     26248.3,
+     26218.6
     ]
    ],
    "journal": {
@@ -9573,8 +9587,8 @@
    "regime": 0.68,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker).",
-   "price": 1.31116,
-   "change": 0.00049,
+   "price": 1.31109,
+   "change": 0.00042,
    "entries": [],
    "spark": [
     [
@@ -9600,10 +9614,17 @@
     ],
     [
      "2:20 am",
-     1.31116,
+     1.31105,
      1.31115,
-     1.31117,
+     1.31118,
      1.31103
+    ],
+    [
+     "2:25 am",
+     1.31109,
+     1.31106,
+     1.31118,
+     1.31105
     ]
    ],
    "journal": {
@@ -11104,7 +11125,7 @@
    },
    "state": "waiting",
    "message": "Wednesday - checking the 10:00\u219214:00 broker move against its 60-day spread (enters 14:00 broker if big enough).",
-   "price": 88.47,
+   "price": 88.462,
    "change": -0.24,
    "entries": [],
    "spark": [
@@ -11142,6 +11163,13 @@
      88.47,
      88.47,
      88.47
+    ],
+    [
+     "2:25 am",
+     88.46,
+     88.44,
+     88.47,
+     88.44
     ]
    ],
    "journal": {
