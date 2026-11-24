@@ -1,6 +1,38 @@
 {
  "start": "2026-11-23",
- "days": [],
+ "days": [
+  {
+   "date": "2026-11-24",
+   "rules": "v1.13W",
+   "label": "Tue 24 Nov",
+   "side": "BUY",
+   "trades": [
+    {
+     "time": "12:00 pm",
+     "side": "BUY",
+     "name": "W5 \u00b7 day before Brent options expiry buy (DEMO forward test)",
+     "rule": "WLTD4",
+     "tag": "WLTD4",
+     "price": 86.83,
+     "entry": 86.83,
+     "stop": 82.16,
+     "stop0": 82.16,
+     "stop_usd": 4.67,
+     "status": "open",
+     "size": "full",
+     "part": 1.0,
+     "half": false,
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "demo": true,
+     "nostop": false
+    }
+   ],
+   "range_usd": 4.67
+  }
+ ],
  "summary": {
   "WM4": {
    "trades": 0,
@@ -27,13 +59,13 @@
    "net": null
   },
   "WLTD4": {
-   "trades": 0,
+   "trades": 1,
    "closed": 0,
    "win": null,
    "net": null
   },
   "all": {
-   "trades": 0,
+   "trades": 1,
    "closed": 0,
    "win": null,
    "net": null

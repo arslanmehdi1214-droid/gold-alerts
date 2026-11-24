@@ -1,26 +1,5 @@
 [
  {
-  "action": "close rest",
-  "detail": "US500|2026-11-06|6:40 pm|BUY|S&P 9:40 am New York opening move (desk: eod) ",
-  "market": "US500",
-  "ok": true,
-  "t": "Sat 7 Nov 12:31 AM"
- },
- {
-  "action": "close rest",
-  "detail": "GOLD|2026-11-06|11:01 am|BUY|U2 round (desk: close_now) ",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Sat 7 Nov 12:50 AM"
- },
- {
-  "action": "close part",
-  "detail": "GBPUSD|2026-11-06|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded (desk: eod) ",
-  "market": "GBPUSD",
-  "ok": true,
-  "t": "Sat 7 Nov 1:46 AM"
- },
- {
   "action": "error",
   "detail": "HTTPError: 429 Client Error:  for url: https://demo-api-capital.backend-capital.com/api/v1/session",
   "market": "ALL",
@@ -2798,5 +2777,26 @@
   "market": "OIL",
   "ok": true,
   "t": "Tue 24 Nov 11:04 AM"
+ },
+ {
+  "action": "OPEN BUY part",
+  "detail": "GBPUSD|2026-11-24|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded size 900.0 at 1.30359 stop 1.29529 target 1.31219 | trade risk 27.93 AED",
+  "market": "GBPUSD",
+  "ok": true,
+  "t": "Tue 24 Nov 12:01 PM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "GBPUSD|2026-11-24|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded 1.31219 -> 1.31204 ",
+  "market": "GBPUSD",
+  "ok": true,
+  "t": "Tue 24 Nov 12:01 PM"
+ },
+ {
+  "action": "OPEN BUY rest",
+  "detail": "BRENT|2026-11-24|12:00 pm|BUY|WLTD4 size 1.7 at 86.612 stop 82.16 | trade risk 29.16 AED",
+  "market": "BRENT",
+  "ok": true,
+  "t": "Tue 24 Nov 12:01 PM"
  }
 ]
