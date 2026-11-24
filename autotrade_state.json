@@ -1,14 +1,14 @@
 {
- "balance": 1661.59,
+ "balance": 1661.23,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-24",
-  "pl": 66.41,
+  "pl": 65.69,
   "start_balance": 1644.01,
   "start_equity": 1644.01,
   "stopped": false
  },
- "open_positions": 6,
+ "open_positions": 5,
  "open_risk_aed": 135.25,
  "risk_usd": 8.168822328114365,
  "trades": {
@@ -431,16 +431,17 @@
    "part_x": 0.25,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: be",
     "id": "00000000-7620-27db-0495-7fc60004511e",
     "level": 26195.3,
-    "open": true,
+    "open": false,
     "size": 0.013,
     "tp": null
    },
    "risk_aed": 28.72,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 26201.8
   },
   "US500|2026-11-20|11:41 am|BUY|S&P yesterday low swept (10am scan), back inside -> reverse": {
