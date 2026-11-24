@@ -4,13 +4,6 @@
   "detail": "HTTPError: 429 Client Error:  for url: https://demo-api-capital.backend-capital.com/api/v1/session",
   "market": "ALL",
   "ok": false,
-  "t": "Sat 7 Nov 6:21 PM"
- },
- {
-  "action": "error",
-  "detail": "HTTPError: 429 Client Error:  for url: https://demo-api-capital.backend-capital.com/api/v1/session",
-  "market": "ALL",
-  "ok": false,
   "t": "Sat 7 Nov 6:46 PM"
  },
  {
@@ -2798,5 +2791,12 @@
   "market": "BRENT",
   "ok": true,
   "t": "Tue 24 Nov 12:23 PM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "OIL|2026-11-24|9:00 am|SELL|Side sell (weak close) to 79.32 (stop to entry: each position at its own fill price)",
+  "market": "OIL",
+  "ok": true,
+  "t": "Tue 24 Nov 12:46 PM"
  }
 ]
