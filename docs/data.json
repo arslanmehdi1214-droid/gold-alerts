@@ -1,5 +1,5 @@
 {
- "updated": "Tue 24 Nov \u00b7 4:34 am",
+ "updated": "Tue 24 Nov \u00b7 4:45 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 3650.98,
+   "price": 3657.4,
    "close_at": "12:50 am",
-   "change": 15.07,
+   "change": 21.49,
    "size": 0.1,
    "datr": 107.52,
    "open_now": 0,
@@ -149,10 +149,24 @@
     ],
     [
      "4:30 am",
-     3650.98,
+     3653.68,
      3645.32,
-     3654.05,
+     3657.07,
      3643.19
+    ],
+    [
+     "4:35 am",
+     3656.43,
+     3653.67,
+     3657.05,
+     3651.67
+    ],
+    [
+     "4:40 am",
+     3657.4,
+     3656.41,
+     3660.06,
+     3653.08
     ]
    ],
    "history": [
@@ -1887,10 +1901,24 @@
     ],
     [
      "4:30 am",
-     159.067,
+     159.066,
      159.019,
-     159.07,
+     159.081,
      159.002
+    ],
+    [
+     "4:35 am",
+     159.054,
+     159.065,
+     159.082,
+     159.048
+    ],
+    [
+     "4:40 am",
+     159.067,
+     159.055,
+     159.079,
+     159.038
     ]
    ],
    "journal": {
@@ -4254,7 +4282,7 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 80.217,
+   "price": 80.212,
    "change": 0.15,
    "entries": [],
    "spark": [
@@ -4386,10 +4414,24 @@
     ],
     [
      "4:30 am",
-     80.22,
+     80.19,
      80.21,
      80.23,
-     80.2
+     80.19
+    ],
+    [
+     "4:35 am",
+     80.17,
+     80.2,
+     80.2,
+     80.15
+    ],
+    [
+     "4:40 am",
+     80.21,
+     80.17,
+     80.22,
+     80.17
     ]
    ],
    "journal": {
@@ -6003,8 +6045,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (Night-trade check: Cboe data not available - HTTPError: 403 Client Error: Forbidden for url: https://cdn-api.cboe.com/api/global/delayed_quotes/quotes/_VIX..)",
-   "price": 7251.1,
-   "change": -0.6,
+   "price": 7252.9,
+   "change": 1.2,
    "entries": [],
    "spark": [
     [
@@ -6212,10 +6254,24 @@
     ],
     [
      "4:30 am",
-     7251.1,
+     7246.9,
      7256.4,
      7257.9,
-     7248.8
+     7246.9
+    ],
+    [
+     "4:35 am",
+     7249.6,
+     7247.0,
+     7252.3,
+     7243.8
+    ],
+    [
+     "4:40 am",
+     7252.9,
+     7249.5,
+     7254.3,
+     7248.5
     ]
    ],
    "journal": {
@@ -8395,8 +8451,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 26748.4,
-   "change": 0.6,
+   "price": 26760.9,
+   "change": 13.1,
    "entries": [],
    "spark": [
     [
@@ -8604,10 +8660,24 @@
     ],
     [
      "4:30 am",
-     26748.4,
+     26720.1,
      26769.4,
      26787.1,
-     26731.5
+     26719.1
+    ],
+    [
+     "4:35 am",
+     26739.5,
+     26720.4,
+     26751.9,
+     26699.8
+    ],
+    [
+     "4:40 am",
+     26760.9,
+     26738.9,
+     26769.6,
+     26734.3
     ]
    ],
    "journal": {
@@ -10092,8 +10162,8 @@
    "regime": 0.68,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker). TUESDAY: stop moves to entry + 5 pips once +0.2 x stop in profit.",
-   "price": 1.30352,
-   "change": 0.00128,
+   "price": 1.30358,
+   "change": 0.00134,
    "entries": [],
    "spark": [
     [
@@ -10301,10 +10371,24 @@
     ],
     [
      "4:30 am",
-     1.30352,
+     1.30353,
      1.30325,
-     1.30352,
+     1.30364,
      1.30322
+    ],
+    [
+     "4:35 am",
+     1.30362,
+     1.30352,
+     1.30366,
+     1.30348
+    ],
+    [
+     "4:40 am",
+     1.30358,
+     1.3036,
+     1.30363,
+     1.30343
     ]
    ],
    "journal": {
@@ -11741,7 +11825,7 @@
     "note": "DEMO / FORWARD TEST ONLY - no target, they close on time (21:30 broker); % = closed in profit, not hit target. Live v1.10 rules unchanged."
    },
    "state": "none",
-   "message": "Brent paper update failed at 4:34 am Dubai (FeedError: newest closed price bar (2:59 am Dubai) is 94 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
+   "message": "Brent paper update failed at 4:45 am Dubai (FeedError: newest closed price bar (2:59 am Dubai) is 105 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
    "price": 86.952,
    "change": -0.18,
    "entries": [],
