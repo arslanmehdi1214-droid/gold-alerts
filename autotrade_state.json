@@ -1,15 +1,15 @@
 {
- "balance": 1721.59,
+ "balance": 1720.38,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-24",
-  "pl": 108.26,
+  "pl": 105.84,
   "start_balance": 1644.01,
   "start_equity": 1644.01,
   "stopped": false
  },
- "open_positions": 2,
- "open_risk_aed": 72.19,
+ "open_positions": 1,
+ "open_risk_aed": 43.84,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-23|5:46 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -378,16 +378,17 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: eod",
     "id": "00000000-7622-5566-0495-7fc60004511e",
     "level": 7172.5,
-    "open": true,
+    "open": false,
     "size": 0.05,
     "tp": null
    },
    "risk_aed": 28.35,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 7008.0
   },
   "USDJPY|2026-11-23|3:05 am|SELL|WGAP (weekend-gap fade)": {
