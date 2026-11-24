@@ -520,13 +520,13 @@ function render(){
   if(!cp)cpibox.innerHTML='';
   else if(cp.state==='open'){const dp=(MK.find(x=>x.c==='US100')||{}).dp??1;
    cpibox.innerHTML=`<b>CPI overnight</b> · long from ${cp.entry_time} @ ${f(cp.entry,dp)} · stop ${f(cp.stop,dp)} / target ${f(cp.target,dp)} (R=${f(cp.r,dp)})${cp.live!=null?` · <b class="${cp.live>=0?'pos':'neg'}">${sg(cp.live,dp)} pts</b>`:''} · release ${cp.decision_date}`}
-  else cpibox.innerHTML=`<b>CPI overnight</b> · ${cp.note}`
+  else cpibox.innerHTML=`<b>CPI overnight</b> · ${String(cp.note||'').replace(/^CPI overnight\s*/,'')}`
  }catch(e){}
  try{const tu=(M.US100||{}).tuesday;                 /* 8 Nov: Turnaround Tuesday (own journal, independent of the v1.02 card above) */
   if(!tu)tuesdaybox.innerHTML='';
   else if(tu.state==='open'){const dp=(MK.find(x=>x.c==='US100')||{}).dp??1;
    tuesdaybox.innerHTML=`<b>Turnaround Tuesday</b> · long from ${tu.entry_time} @ ${f(tu.entry,dp)} · stop ${f(tu.stop,dp)} / target ${f(tu.target,dp)} (R=${f(tu.r,dp)})${tu.live!=null?` · <b class="${tu.live>=0?'pos':'neg'}">${sg(tu.live,dp)} pts</b>`:''}`}
-  else tuesdaybox.innerHTML=`<b>Turnaround Tuesday</b> · ${tu.note}`
+  else tuesdaybox.innerHTML=`<b>Turnaround Tuesday</b> · ${String(tu.note||'').replace(/^Turnaround Tuesday\s*/,'')}`
  }catch(e){}
  try{const bu=(M.US100||{}).bigup;                   /* 8 Nov: Big Up Continuation (own journal, independent of the v1.02 card above) */
   if(!bu)bigupbox.innerHTML='';
@@ -539,12 +539,12 @@ function render(){
   else{const dp=(MK.find(x=>x.c==='US100')||{}).dp??1,fw=d3.forward||{},
    fwt=fw.n?`${fw.n} trade${fw.n>1?'s':''} · ${f(fw.target,0)}% hit target · ${f(fw.profit,0)}% closed in profit · ${sg(fw.pts,dp)} pts`:'no trades yet',
    now=d3.state==='open'?`long from ${d3.entry_time} @ ${f(d3.entry,dp)} · stop ${f(d3.stop,dp)} / target ${f(d3.target,dp)} (R=${f(d3.r,dp)})${d3.live!=null?` · <b class="${d3.live>=0?'pos':'neg'}">${sg(d3.live,dp)} pts</b>`:''}`:d3.note;
-   down3box.innerHTML=`<b>3 Down-Days Bounce</b> <span class="tag">DEMO WATCH</span> · not live · ${now}<br>${d3.streak!=null?'Down closes in a row so far: '+d3.streak+' (needs 3) · ':''}Forward test so far: ${fwt}${d3.proof?` <span class="dim">· ${d3.proof}</span>`:''}`}
+   down3box.innerHTML=`<b>3 Down-Days Bounce</b> <span class="tag">DEMO WATCH</span> · not live · ${d3.state==='open'?now:'no open trade'+(d3.streak!=null?' ('+d3.streak+' of 3 down closes)':'')}${fw.n?' · forward: '+fwt:''}`}
  }catch(e){}
  try{const bw=(M.BRENT||{}).watch,bb=((M.BRENT||{}).watch_backtest)||null;           /* 19 Nov: Brent WATCH rules W1-W5 (DEMO forward test, own journal; live v1.10 unchanged) */
   if(!bw||!(SEL==='ALL'||SEL==='BRENT'))brentwbox.innerHTML='';
   else{const sm=bw.summary&&bw.summary.all||{},nx=(bw.next||[]).map(n=>`${n.rule} ${n.side} ${n.label}`).join(' · '),w4=bw.w4,bt=(bb&&bb.rules||[]).map(r=>`${r.code} ${r.trades} trades +$${f(r.net,0)}`).join(' · ');
-   brentwbox.innerHTML=`<b>Brent watch rules W1-W5</b> <span class="tag">DEMO FORWARD TEST</span> · ${(M.BRENT||{}).version||''} · live rules unchanged · no target, they close on time${bw.close?' ('+bw.close+')':''}<br>Next: ${nx||'-'} · W4: ${!w4?'checking':w4.ready?'ready (150 closes loaded)':'warming up - '+w4.have+' of '+w4.need+' daily closes loaded'}<br>Forward test so far: ${sm.trades?sm.trades+' trade'+(sm.trades>1?'s':'')+(sm.closed?' · '+f(sm.win,0)+'% closed in profit':'' ):'no trades yet'}${bt?` <span class="dim">· MT4 proof (0.30 lot, 2018-26): ${bt}</span>`:''}`}
+   brentwbox.innerHTML=`<b>Brent watch W1-W5</b> <span class="tag">DEMO</span> · ${sm.trades?sm.trades+' trade'+(sm.trades>1?'s':'')+(sm.closed?' · '+f(sm.win,0)+'% closed in profit':''):'no trades yet'} · next: ${(bw.next||[])[0]?bw.next[0].rule+' '+bw.next[0].side+' '+bw.next[0].label:'-'}`}
  }catch(e){}
  const now=new Date();
  const DKeys=[...new Set(G.map(g=>dkey(g.t)))].sort();
