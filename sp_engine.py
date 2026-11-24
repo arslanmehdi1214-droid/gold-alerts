@@ -255,6 +255,8 @@ V27_VIXLCOMM_MIN = 0.85; V27_DXYFNR_MIN = 0.70                        # v1.24 Ni
 V28_EURJPYNCOMM_MAX = 0.30; V28_BT_MIN = 0.70                         # v1.24 Night V28: EUR/JPY-cross-futures Legacy Non-Commercial COT 4-report-shift (52wk pctile, <=) / Bitcoin own 10d change (252d pctile, >=) thresholds (Round 86 best)
 V36_TLTSPY_MIN = 0.70; V36_AUD2OTH_MAX = 0.20                         # v1.25 Night V36: TLT-SPY (20yr-Treasury-vs-equity flight-to-safety) ratio 10d change (252d pctile, >=) / Australian-Dollar-futures Other-Reportables COT 4-report-shift (52wk pctile, <=) thresholds (Round 95 best; V29-V35, Rounds 87-94, Python-estimate only, not yet MT4-confirmed, so not ported - V36 picks up the v28 chain directly, same "skip a not-yet-decided slot" convention as V24)
 V37_XLESPY_MAX = 0.30; V37_CADFX_MAX = 0.30                           # v1.25 Night V37: XLE-SPY (energy-sector-vs-market) ratio 10d change (252d pctile, <=) / Canadian-Dollar-futures leveraged-money COT 4-report-shift (52wk pctile, <=) thresholds (Round 96 best)
+V39_IWMSPY_MAX = 0.15; V39_DTB3_MAX = 0.20                            # v1.26 Night V39: IWM-SPY (small-cap-vs-large-cap breadth) ratio LEVEL (252d pctile, <=) / 3-month T-bill yield 10d change (252d pctile, <=) thresholds (Round 98 best; MT4-confirmed 23 Nov: solo +$166.36 net profit vs Control, drawdown flat)
+V43_MTUMSPY_MIN = 0.85; V43_MXN2OTH_MAX = 0.20                        # v1.26 Night V43: MTUM-SPY (momentum-factor-vs-market) ratio 10d change (252d pctile, >=) / Mexican-Peso-futures Other-Reportables COT 4-report-shift (52wk pctile, <=) thresholds (Round 102 best; MT4-confirmed 23 Nov: solo +$317.41 net profit vs Control, drawdown flat, best of the V39-V43 batch - V40/V41/V42 Python-estimate legs not ported, same "skip a not-yet-decided/failed slot" convention as V24/V29-V35/V38: V43 picks up the v37 chain directly)
 
 def eod_minutes(day): return 22 * 60 + 50 if pd.Timestamp(day).dayofweek == 4 else 23 * 60
 
@@ -802,6 +804,48 @@ def v37_flag(W, day):
     if not (np.isfinite(row.xlespy_chg10_pct) and np.isfinite(row.cadfx_cot_chg4_pct)): return False, {}
     dd = dict(date=str(k.date()), xlespy_chg10_pct=float(row.xlespy_chg10_pct), cadfx_cot_chg4_pct=float(row.cadfx_cot_chg4_pct))
     return bool(row.xlespy_chg10_pct <= V37_XLESPY_MAX and row.cadfx_cot_chg4_pct <= V37_CADFX_MAX), dd
+
+def v39_flag(I, day):
+    """v1.26 Night V39 trigger. I: DataFrame indexed by date (built by iwmspy_dtb3_today() in sp_run.py) with
+    columns iwmspy_lvl_pct (252-day rolling percentile of the IWM/SPY ratio LEVEL itself - small-cap Russell
+    2000 ETF vs the S&P 500, brand new instrument never used by any prior leg, a cap-size breadth gauge
+    distinct from every cap-weight-CONCENTRATION ratio already used - low = small-caps badly lagging large-
+    caps, a classic risk-off breadth signal) and dtb3_chg10_pct (252-day rolling percentile of the 10-day
+    LEVEL change in the FRED 3-month T-bill secondary-market rate - already-used FRED rates data, new angle -
+    low = short-term yields falling fast). The broker day `day`'s own NY-date row is day - 1 calendar day
+    (same lag relationship as V4-V37's lookup: d = ny_date + 1). Fires when both clear at once (iwmspy_lvl_pct
+    <= V39_IWMSPY_MAX AND dtb3_chg10_pct <= V39_DTB3_MAX) - Round 98's best, n=65 baked nights fire (MT4-
+    confirmed 23 Nov: solo +$166.36 net profit vs Control, max drawdown flat - PASS). Missing values (not
+    enough rolling history yet, or no data that day) mean it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if I is None or not len(I) or k not in I.index: return False, {}
+    row = I.loc[k]
+    if not (np.isfinite(row.iwmspy_lvl_pct) and np.isfinite(row.dtb3_chg10_pct)): return False, {}
+    dd = dict(date=str(k.date()), iwmspy_lvl_pct=float(row.iwmspy_lvl_pct), dtb3_chg10_pct=float(row.dtb3_chg10_pct))
+    return bool(row.iwmspy_lvl_pct <= V39_IWMSPY_MAX and row.dtb3_chg10_pct <= V39_DTB3_MAX), dd
+
+def v43_flag(M, day):
+    """v1.26 Night V43 trigger. M: DataFrame indexed by date (built by mtumspy_mxnoth_today() in sp_run.py)
+    with columns mtumspy_chg10_pct (252-day rolling percentile of the 10-day % change in the MTUM/SPY ratio -
+    systematic multi-sector momentum-factor ETF vs the S&P 500, brand new factor-rotation instrument family
+    never used by any prior leg - high = momentum/trend-following behavior running hot) and mxn2_oth_chg4_pct
+    (52-week rolling percentile of the 4-report SHIFT in the CFTC Traders-in-Financial-Futures OTHER-
+    REPORTABLES net position in Mexican Peso futures, weekly data with a 3-day publication lag already
+    applied so nothing is look-ahead - low = this cohort's MXN positioning falling fast). The broker day
+    `day`'s own NY-date row is day - 1 calendar day (same lag relationship as V4-V39's lookup: d = ny_date +
+    1). Fires when both clear at once (mtumspy_chg10_pct >= V43_MTUMSPY_MIN AND mxn2_oth_chg4_pct <=
+    V43_MXN2OTH_MAX) - Round 102's best, n=50 baked nights fire (MT4-confirmed 23 Nov: solo +$317.41 net
+    profit vs Control, max drawdown flat, PF up to 1.35 - best pass of the V39-V43 batch). V40-V42 (same
+    batch's other queue slots, Rounds 99-101) tested net profit down or drawdown worse in MT4 and are not
+    ported, so V43 picks up the v39 chain directly (same "skip a not-yet-decided/failed slot" convention as
+    V24/V29-V35/V38). Missing values (not enough rolling history yet, or no data that day) mean it simply
+    never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if M is None or not len(M) or k not in M.index: return False, {}
+    row = M.loc[k]
+    if not (np.isfinite(row.mtumspy_chg10_pct) and np.isfinite(row.mxn2_oth_chg4_pct)): return False, {}
+    dd = dict(date=str(k.date()), mtumspy_chg10_pct=float(row.mtumspy_chg10_pct), mxn2_oth_chg4_pct=float(row.mxn2_oth_chg4_pct))
+    return bool(row.mtumspy_chg10_pct >= V43_MTUMSPY_MIN and row.mxn2_oth_chg4_pct <= V43_MXN2OTH_MAX), dd
 
 def night_leg(b, A, day, sp=COST, entry_min=NIGHT_IN, exit_min=NIGHT_OUT, now_done=False,
               name='Night long (high-fear night: VIX / VVIX)', src=1):
