@@ -2120,7 +2120,17 @@
    "picks_seen": {
     "2026-11-24 13:17:00|1": "2026-11-24 13:18:11.647440"
    },
-   "legs_frozen": [],
+   "legs_frozen": [
+    {
+     "t": "2026-11-24 16:40:00",
+     "dir": 1,
+     "src": 1,
+     "name": "S&P 9:40 am New York opening move",
+     "leg": 1,
+     "entry": 7162.4,
+     "sd": 154.35
+    }
+   ],
    "stress": false,
    "stress_note": "high-fear night, but the check ran after 6:06 pm New York - no night trade",
    "v3": false,
@@ -2220,17 +2230,43 @@
    "date": "2026-11-24",
    "rules": "v1.26",
    "label": "Tue 24 Nov",
-   "side": null,
-   "trades": [],
+   "side": "BUY",
+   "trades": [
+    {
+     "time": "6:40 pm",
+     "side": "BUY",
+     "name": "S&P 9:40 am New York opening move",
+     "src": "S&P",
+     "leg": 1,
+     "night": false,
+     "price": 7162.4,
+     "entry": 7162.4,
+     "stop": 7008.0,
+     "stop0": 7008.0,
+     "stop_pts": 154.3,
+     "half_px": null,
+     "half": false,
+     "size": "full",
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "r": null,
+     "r_sized": null,
+     "live": 9.7,
+     "spread": 0.8
+    }
+   ],
    "final": false
   }
  ],
  "summary": {
   "since": "24 Nov 2026",
   "weekdays": 1,
-  "trades": 0,
-  "days": 0.0,
-  "perday": 0.0,
+  "trades": 1,
+  "days": 100.0,
+  "perday": 1.0,
   "closed": 0,
   "win": null,
   "pf": null,
