@@ -1,19 +1,5 @@
 [
  {
-  "action": "OPEN SELL part",
-  "detail": "US100|2026-11-06|9:36 pm|SELL|US+10 H1 U2 only when vol high (>1.1) size 0.002 at 26964.7 stop 27181.4 target 26889.2 | trade risk 9.3 AED",
-  "market": "US100",
-  "ok": true,
-  "t": "Fri 6 Nov 9:37 PM"
- },
- {
-  "action": "OPEN SELL rest",
-  "detail": "US100|2026-11-06|9:36 pm|SELL|US+10 H1 U2 only when vol high (>1.1) size 0.011 at 26966.2 stop 27181.4 | trade risk 9.3 AED",
-  "market": "US100",
-  "ok": true,
-  "t": "Fri 6 Nov 9:37 PM"
- },
- {
   "action": "part closed on demo",
   "detail": "US100|2026-11-06|9:36 pm|SELL|US+10 H1 U2 only when vol high (>1.1)",
   "market": "US100",
@@ -2798,5 +2784,19 @@
   "market": "OIL",
   "ok": true,
   "t": "Tue 24 Nov 9:01 AM"
+ },
+ {
+  "action": "close part",
+  "detail": "USDJPY|2026-11-24|8:00 am|BUY|Heikin-Ashi 7am (desk: target) ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Tue 24 Nov 9:04 AM"
+ },
+ {
+  "action": "close part",
+  "detail": "USDJPY|2026-11-24|9:00 am|BUY|HAM (Heikin-Ashi, 2nd hour) (desk: target) ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Tue 24 Nov 9:04 AM"
  }
 ]
