@@ -33,7 +33,7 @@ BACKTEST_F = dict(direction='53.2%', days='97%', perday='1.33', win='—', pf='1
                          'MT4 replay of the same trades (his run): 2,308 trades, PF 1.16, net +17,109 pts')
 VARIANTS = [dict(code='US100', name='Nasdaq 100', S=N.SET, jour=JOUR, stats=BACKTEST,
                  what='Tracks whether live Nasdaq signals do as well as the v1.02 backtest. Decision after about 3 months.')]
-REMOVED = ['US100F']                  # cards taken off the page on 18 Oct 2026
+REMOVED = ['US100F', 'DE40']           # cards taken off the page: US100F on 18 Oct 2026, the empty DE40 'IN TESTING' card on 25 Nov 2026 (his yes)
 
 def loadj(p, d):
     try: return json.load(open(p))
