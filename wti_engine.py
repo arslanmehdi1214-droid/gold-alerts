@@ -1,4 +1,5 @@
-"""v1.16 rules (= v1.15 + first sell part-close 0.06 (row 65), buy part-close 0.03 (row 24), last entry 3:30 pm (row 32), close 9:00 pm broker (rows 34/35), decay 120 min (row 51); his MT4 stack5 run 8 Nov 2026)
+"""v1.18 rules (= v1.16 + P['first_sell_banks']: on a supply-hold day the day's first sell part-closes normally (level k1 0.06), later sells stay held; his MT4 test A 22 Nov 2026 = row 72 Supply_First_Sell_Banks: green days 88.77%, closed in profit 95.14%, net +$34,375, PF 1.92, DD $5,635)
+v1.16 rules (= v1.15 + first sell part-close 0.06 (row 65), buy part-close 0.03 (row 24), last entry 3:30 pm (row 32), close 9:00 pm broker (rows 34/35), decay 120 min (row 51); his MT4 stack5 run 8 Nov 2026)
 v1.15 rules (= v1.14 + P['nobe']: after a part-closed ladder SELL closes at break-even, no new ladder sell that day; his MT4 run 7 Nov 2026)
 WTI_DAYTRADE v1.07 rules (= v1.06 + P['later_buys_off']: a BUY only as the day's FIRST trade, later buy signals skipped; his MT4 run 26 Oct 2026)
 v1.06 rules (= v1.05 + P['expiry_first_only']: on the WTI option-expiry day only the day's FIRST trade; + P['hold_sells']: production rose in the last
@@ -188,7 +189,7 @@ def run_day(P, t, O, H, L, C, now=None, spread=None, final=False):
             if SK is not None and d < 0 and SK[m] <= P['skew'][0]: k = min(k, P['skew'][1])   # v1.12: weak-flow ladder sell -> easier first target from the start
             if P.get('k1') and len(legs) == 0 and d < 0: k = min(k, P['k1'])      # v1.16: the day's first sell gets part-close level k1 (his MT4 row 65, 0.06)
             hp = e + d * k * rk                                             # half level in the order's own price (buy: bid, sell: ask)
-            nohalf = bool(d < 0 and P.get('hold_sells'))                    # v1.06: supply day -> sells keep the whole trade (no part, no stop move)
+            nohalf = bool(d < 0 and P.get('hold_sells') and not (P.get('first_sell_banks') and len(legs) == 0))   # v1.06: supply day -> sells keep the whole trade (no part, no stop move); v1.18 (his MT4 row 72): the day's FIRST sell part-closes normally, later sells stay held
             legs.append(dict(i=m, t=t[m], dir=d, px=float(px), level=float(lv), fam=nm, name=FAM_NAME[nm], sd=sd, sp=sp, e=e, w=w,
                              stop0=float(stop_b), stop=float(stop_b), half_px=(None if nohalf else float(hp if d > 0 else hp - sp)), half=False, bank=0.0, q=1.0,
                              on=True, exit=None, exit_i=None, why=None, late=bool(hm[m] >= LAST_ENTRY), first=(len(legs) == 0), weak=weak))
