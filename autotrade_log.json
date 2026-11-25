@@ -1,19 +1,5 @@
 [
  {
-  "action": "close rest",
-  "detail": "US500|2026-11-09|3:01 am|BUY|Night long (high-fear night: VIX / VVIX) (desk: eod) ",
-  "market": "US500",
-  "ok": true,
-  "t": "Mon 9 Nov 7:01 PM"
- },
- {
-  "action": "OPEN BUY rest",
-  "detail": "US500|2026-11-09|7:01 pm|BUY|S&P big day move by 10 am New York -> follow size 0.08 at 7506.2 stop 7403.6 | trade risk 27.97 AED",
-  "market": "US500",
-  "ok": true,
-  "t": "Mon 9 Nov 7:02 PM"
- },
- {
   "action": "OPEN BUY rest",
   "detail": "US500|2026-11-09|7:01 pm|BUY|S&P big day move by 10 am New York -> follow (2nd leg) size 0.08 at 7506.2 stop 7403.6 | trade risk 27.97 AED",
   "market": "US500",
@@ -2798,5 +2784,19 @@
   "market": "OIL",
   "ok": true,
   "t": "Wed 25 Nov 6:13 AM"
+ },
+ {
+  "action": "OPEN SELL part",
+  "detail": "USDJPY|2026-11-25|8:00 am|SELL|Heikin-Ashi 7am size 600.0 at 159.291 stop 159.963 target 158.949 | trade risk 9.35 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Wed 25 Nov 8:01 AM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "USDJPY|2026-11-25|8:00 am|SELL|Heikin-Ashi 7am 158.949 -> 158.953 ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Wed 25 Nov 8:01 AM"
  }
 ]
