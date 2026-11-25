@@ -2262,7 +2262,17 @@
   },
   {
    "picks_seen": {},
-   "legs_frozen": [],
+   "legs_frozen": [
+    {
+     "t": "2026-11-25 10:01:00",
+     "dir": 1,
+     "src": 1,
+     "name": "S&P yesterday low swept (10am scan), back inside -> reverse",
+     "leg": 1,
+     "entry": 7131.6,
+     "sd": 148.875
+    }
+   ],
    "stress": false,
    "stress_note": "high-fear night, but the check ran after 6:06 pm New York - no night trade",
    "v3": false,
@@ -2368,17 +2378,43 @@
    "date": "2026-11-25",
    "rules": "v1.26",
    "label": "Wed 25 Nov",
-   "side": null,
-   "trades": [],
+   "side": "BUY",
+   "trades": [
+    {
+     "time": "12:01 pm",
+     "side": "BUY",
+     "name": "S&P yesterday low swept (10am scan), back inside -> reverse",
+     "src": "S&P",
+     "leg": 1,
+     "night": false,
+     "price": 7131.6,
+     "entry": 7131.6,
+     "stop": 6982.7,
+     "stop0": 6982.7,
+     "stop_pts": 148.9,
+     "half_px": null,
+     "half": false,
+     "size": "full",
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "r": null,
+     "r_sized": null,
+     "live": 2.7,
+     "spread": 0.8
+    }
+   ],
    "final": false
   }
  ],
  "summary": {
   "since": "24 Nov 2026",
   "weekdays": 2,
-  "trades": 1,
-  "days": 50.0,
-  "perday": 0.5,
+  "trades": 2,
+  "days": 100.0,
+  "perday": 1.0,
   "closed": 1,
   "win": 100.0,
   "pf": null,

@@ -1,5 +1,5 @@
 {
- "updated": "Wed 25 Nov \u00b7 12:01 pm",
+ "updated": "Wed 25 Nov \u00b7 12:02 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 3525.55,
+   "price": 3526.35,
    "close_at": "12:50 am",
-   "change": -34.34,
+   "change": -33.54,
    "size": 0.1,
    "datr": 106.18,
    "open_now": 0,
@@ -779,9 +779,9 @@
     ],
     [
      "12:00 pm",
-     3525.55,
+     3526.35,
      3523.22,
-     3526.43,
+     3527.34,
      3522.48
     ]
    ],
@@ -2391,8 +2391,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 159.213,
-   "change_pips": -6.1,
+   "price": 159.257,
+   "change_pips": -1.7,
    "atr_pips": 88.9,
    "entries": [
     {
@@ -2420,7 +2420,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.096,
+     "r_now": 0.03,
      "rwf": 1,
      "spread": 1.0
     },
@@ -3206,10 +3206,10 @@
     ],
     [
      "12:00 pm",
-     159.213,
+     159.257,
      159.217,
-     159.222,
-     159.206
+     159.267,
+     159.202
     ]
    ],
    "journal": {
@@ -3263,7 +3263,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.096,
+       "r_now": 0.03,
        "rwf": 1,
        "spread": 1.0
       },
@@ -5664,7 +5664,7 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 1.9,
+   "live_spread_pips": 1.2,
    "history_note": "history to 2026-11-24 (300 days)"
   },
   "DE40": {
@@ -5703,8 +5703,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Supply day: hold the whole sell (no part-close), the stop stays where it is; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 79.922,
-   "change": -1.42,
+   "price": 79.952,
+   "change": -1.39,
    "entries": [
     {
      "time": "6:12 am",
@@ -6488,7 +6488,7 @@
     ],
     [
      "12:00 pm",
-     79.92,
+     79.95,
      79.95,
      79.99,
      79.89
@@ -8154,11 +8154,37 @@
    "what_note": "Tracks whether live S&P signals do as well as the v1.12 MT4 test (500109 + Night V3 + Night V4 + Night V5 + Night V6 + Night V7). Decision after about 3 months.",
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.12 rules)",
-   "state": "waiting",
-   "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (high-fear night, but the check ran after 6:06 pm New York - no night trade.)",
-   "price": 7131.8,
-   "change": -63.8,
-   "entries": [],
+   "state": "buy",
+   "message": "PAPER BUY day: 1 trade today (1 running). Only BUY signals count today (max 3; no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop). Each trade keeps its stop, no half-close; everything closes at 12:30 am Dubai (3:30 pm New York). (high-fear night, but the check ran after 6:06 pm New York - no night trade.)",
+   "price": 7135.1,
+   "change": -60.5,
+   "entries": [
+    {
+     "time": "12:01 pm",
+     "side": "BUY",
+     "name": "S&P yesterday low swept (10am scan), back inside -> reverse",
+     "src": "S&P",
+     "leg": 1,
+     "night": false,
+     "price": 7131.6,
+     "entry": 7131.6,
+     "stop": 6982.7,
+     "stop0": 6982.7,
+     "stop_pts": 148.9,
+     "half_px": null,
+     "half": false,
+     "size": "full",
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "r": null,
+     "r_sized": null,
+     "live": 2.7,
+     "spread": 0.8
+    }
+   ],
    "spark": [
     [
      "2:05 am",
@@ -8995,18 +9021,18 @@
     ],
     [
      "12:00 pm",
-     7131.8,
+     7135.1,
      7126.7,
-     7132.3,
+     7136.6,
      7126.7
     ]
    ],
    "journal": {
     "since": "24 Nov 2026",
     "weekdays": 2,
-    "trades": 1,
-    "days": 50.0,
-    "perday": 0.5,
+    "trades": 2,
+    "days": 100.0,
+    "perday": 1.0,
     "closed": 1,
     "win": 100.0,
     "pf": null,
@@ -9018,7 +9044,17 @@
    "jdays": [
     {
      "picks_seen": {},
-     "legs_frozen": [],
+     "legs_frozen": [
+      {
+       "t": "2026-11-25 10:01:00",
+       "dir": 1,
+       "src": 1,
+       "name": "S&P yesterday low swept (10am scan), back inside -> reverse",
+       "leg": 1,
+       "entry": 7131.6,
+       "sd": 148.875
+      }
+     ],
      "stress": false,
      "stress_note": "high-fear night, but the check ran after 6:06 pm New York - no night trade",
      "v3": false,
@@ -9124,8 +9160,34 @@
      "date": "2026-11-25",
      "rules": "v1.26",
      "label": "Wed 25 Nov",
-     "side": null,
-     "trades": [],
+     "side": "BUY",
+     "trades": [
+      {
+       "time": "12:01 pm",
+       "side": "BUY",
+       "name": "S&P yesterday low swept (10am scan), back inside -> reverse",
+       "src": "S&P",
+       "leg": 1,
+       "night": false,
+       "price": 7131.6,
+       "entry": 7131.6,
+       "stop": 6982.7,
+       "stop0": 6982.7,
+       "stop_pts": 148.9,
+       "half_px": null,
+       "half": false,
+       "size": "full",
+       "status": "open",
+       "exit": null,
+       "exit_time": null,
+       "res": null,
+       "res_sized": null,
+       "r": null,
+       "r_sized": null,
+       "live": 2.7,
+       "spread": 0.8
+      }
+     ],
      "final": false
     },
     {
@@ -11424,8 +11486,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 25736.1,
-   "change": -472.9,
+   "price": 25753.2,
+   "change": -455.8,
    "entries": [],
    "spark": [
     [
@@ -12263,9 +12325,9 @@
     ],
     [
      "12:00 pm",
-     25736.1,
+     25753.2,
      25715.7,
-     25736.5,
+     25759.2,
      25713.5
     ]
    ],
@@ -13748,8 +13810,8 @@
    "regime": 0.68,
    "gap": null,
    "message": "PAPER BUY at 1.30682 (12:00 pm Dubai). Stop 1.29835, target 1.31529 - close the WHOLE trade at the target; otherwise it closes at 1:45 am Dubai.",
-   "price": 1.30735,
-   "change": -0.00332,
+   "price": 1.30747,
+   "change": -0.0032,
    "entries": [
     {
      "time": "12:00 pm",
@@ -13775,7 +13837,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": 3.8,
+     "live": 5.0,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.29835 \u00b7 target 1.31529 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
     }
@@ -14616,9 +14678,9 @@
     ],
     [
      "12:00 pm",
-     1.30735,
+     1.30747,
      1.30682,
-     1.30738,
+     1.30756,
      1.30681
     ]
    ],
@@ -14668,7 +14730,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": 3.8,
+       "live": 5.0,
        "spread": 1.5,
        "next": "Hold \u00b7 stop 1.29835 \u00b7 target 1.31529 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
       }
@@ -16160,8 +16222,8 @@
    },
    "state": "waiting",
    "message": "Wednesday - checking the 10:00\u219214:00 broker move against its 60-day spread (enters 14:00 broker if big enough).",
-   "price": 87.176,
-   "change": -1.53,
+   "price": 87.236,
+   "change": -1.47,
    "entries": [],
    "spark": [
     [
@@ -16831,9 +16893,9 @@
     ],
     [
      "12:00 pm",
-     87.18,
+     87.24,
      87.19,
-     87.26,
+     87.27,
      87.14
     ]
    ],

@@ -1,13 +1,6 @@
 [
  {
   "action": "close rest",
-  "detail": "US500|2026-11-09|7:01 pm|BUY|S&P big day move by 10 am New York -> follow (desk: eod) ",
-  "market": "US500",
-  "ok": true,
-  "t": "Tue 10 Nov 12:31 AM"
- },
- {
-  "action": "close rest",
   "detail": "US500|2026-11-09|7:01 pm|BUY|S&P big day move by 10 am New York -> follow (2nd leg) (desk: eod) ",
   "market": "US500",
   "ok": true,
@@ -2798,5 +2791,12 @@
   "market": "GBPUSD",
   "ok": true,
   "t": "Wed 25 Nov 12:01 PM"
+ },
+ {
+  "action": "OPEN BUY rest",
+  "detail": "US500|2026-11-25|12:01 pm|BUY|S&P yesterday low swept (10am scan), back inside -> reverse size 0.05 at 7133.2 stop 6982.7 | trade risk 27.34 AED",
+  "market": "US500",
+  "ok": true,
+  "t": "Wed 25 Nov 12:02 PM"
  }
 ]
