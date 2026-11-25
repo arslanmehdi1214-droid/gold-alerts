@@ -3210,8 +3210,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 158.939,
-   "change_pips": -33.5,
+   "price": 158.911,
+   "change_pips": -36.3,
    "atr_pips": 88.9,
    "entries": [
     {
@@ -4746,10 +4746,10 @@
     ],
     [
      "8:35 pm",
-     158.939,
+     158.911,
      158.951,
      158.989,
-     158.939
+     158.911
     ]
    ],
    "journal": {
@@ -7204,14 +7204,8 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 0.9,
+   "live_spread_pips": 1.2,
    "history_note": "history to 2026-11-24 (300 days)"
-  },
-  "DE40": {
-   "code": "DE40",
-   "name": "Germany 40 (DAX)",
-   "status": "IN TESTING",
-   "note": "Passed on RoboForex ECN cost. Capital.com cost not checked yet."
   },
   "OIL": {
    "code": "OIL",
@@ -7243,8 +7237,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Supply day: hold the whole sell (no part-close), the stop stays where it is; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 82.832,
-   "change": 1.48,
+   "price": 82.997,
+   "change": 1.65,
    "entries": [
     {
      "time": "6:12 am",
@@ -8749,9 +8743,9 @@
     ],
     [
      "8:35 pm",
-     82.83,
+     83.0,
      82.81,
-     82.88,
+     83.04,
      82.74
     ]
    ],
@@ -10417,8 +10411,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
    "message": "PAPER BUY day: 1 trade today (0 running). Only BUY signals count today (max 3; no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop). Each trade keeps its stop, no half-close; everything closes at 12:30 am Dubai (3:30 pm New York). (high-fear night, but the check ran after 6:06 pm New York - no night trade.)",
-   "price": 6996.4,
-   "change": -199.2,
+   "price": 6992.9,
+   "change": -202.7,
    "entries": [
     {
      "time": "12:01 pm",
@@ -12003,10 +11997,10 @@
     ],
     [
      "8:35 pm",
-     6996.4,
+     6992.9,
      6999.4,
      7004.1,
-     6995.0
+     6991.9
     ]
    ],
    "journal": {
@@ -14471,8 +14465,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "2 paper trades today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 25053.5,
-   "change": -1155.5,
+   "price": 25036.9,
+   "change": -1172.1,
    "entries": [
     {
      "time": "2:11 pm",
@@ -16088,10 +16082,10 @@
     ],
     [
      "8:35 pm",
-     25053.5,
+     25036.9,
      25065.9,
      25089.9,
-     25041.5
+     25035.1
     ]
    ],
    "journal": {
@@ -17588,14 +17582,29 @@
    },
    "bigup": null,
    "down3": {
-    "demo": true,
+    "live": true,
+    "tag": "N741",
     "proof": "MT4 (his run, 2018.01.02-2026.10.30, spread 18): pick (to 2021) 36 trades, avgR +0.218, 64% hit target, 64% closed in profit; judge (2022 on) 115 trades, avgR +0.061, 55% hit target, 56% closed in profit",
     "forward": {
      "n": 0
     },
     "streak": 1,
     "state": "idle",
-    "note": "3 Down-Days Bounce, DEMO WATCH: waits for 3 down closes in a row (about 1-2 trades a month); no trade yet."
+    "note": "3 Down-Days Bounce, LIVE: waits for 3 down closes in a row (about 1-2 trades a month); no trade yet."
+   },
+   "wtirel": {
+    "live": true,
+    "tag": "N754",
+    "proof": "MT4 (his run, 318 trigger dates 2019-10-31..2026-11-05): n=265 trades, avg +$0.071/trade (pick +$0.110, judge +$0.057), 50.6% hit target. Live rule = 5-day sum of (NDX return - spot WTI return) above a fixed cut-off 0.0453, rebuilt on public closes: 93% of his MT4 dates are caught, 78% of the rule's days are his dates (Python, 25 Nov - not MT4)",
+    "forward": {
+     "n": 0
+    },
+    "rel": 0.007,
+    "rel_day": "2026-11-24",
+    "threshold": 0.0453,
+    "last_check": null,
+    "state": "idle",
+    "note": "NDX-vs-WTI Continuation, LIVE: waits for rel (5-day NDX minus WTI) > 0.0453; no trade yet."
    }
   },
   "GBPUSD": {
@@ -17630,8 +17639,8 @@
    "regime": 0.68,
    "gap": null,
    "message": "PAPER BUY at 1.30682 (12:00 pm Dubai). Stop 1.29835, target 1.31529 - close the WHOLE trade at the target; otherwise it closes at 1:45 am Dubai.",
-   "price": 1.3077,
-   "change": -0.00297,
+   "price": 1.3078,
+   "change": -0.00287,
    "entries": [
     {
      "time": "12:00 pm",
@@ -17657,7 +17666,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": 7.3,
+     "live": 8.3,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.29835 \u00b7 target 1.31529 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
     }
@@ -19219,10 +19228,10 @@
     ],
     [
      "8:35 pm",
-     1.3077,
+     1.3078,
      1.3077,
      1.30804,
-     1.30767
+     1.30765
     ]
    ],
    "journal": {
@@ -19271,7 +19280,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": 7.3,
+       "live": 8.3,
        "spread": 1.5,
        "next": "Hold \u00b7 stop 1.29835 \u00b7 target 1.31529 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
       }
@@ -20765,8 +20774,8 @@
    },
    "state": "buy",
    "message": "Today's signals: BUY (A). Stop 1.0x the 20-day range (rule C: 2.0x), no target; closes 11:30 pm Dubai if not stopped first. Watch (DEMO forward test): BUY (WM4); closes 11:30 pm Dubai.",
-   "price": 90.834,
-   "change": 2.13,
+   "price": 91.014,
+   "change": 2.31,
    "entries": [
     {
      "time": "4:00 pm",
@@ -22200,9 +22209,9 @@
     ],
     [
      "8:35 pm",
-     90.83,
+     91.01,
      90.75,
-     90.86,
+     91.06,
      90.69
     ]
    ],
