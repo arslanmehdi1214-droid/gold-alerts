@@ -1,5 +1,5 @@
 {
- "updated": "Wed 25 Nov \u00b7 12:05 pm",
+ "updated": "Wed 25 Nov \u00b7 12:06 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 3520.4,
+   "price": 3517.91,
    "close_at": "12:50 am",
-   "change": -39.49,
+   "change": -41.98,
    "size": 0.1,
    "datr": 106.18,
    "open_now": 0,
@@ -779,10 +779,17 @@
     ],
     [
      "12:00 pm",
-     3520.4,
+     3519.78,
      3523.22,
      3527.34,
-     3519.94
+     3519.78
+    ],
+    [
+     "12:05 pm",
+     3517.91,
+     3519.76,
+     3519.85,
+     3516.97
     ]
    ],
    "history": [
@@ -2391,8 +2398,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "sell",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 159.231,
-   "change_pips": -4.3,
+   "price": 159.256,
+   "change_pips": -1.8,
    "atr_pips": 88.9,
    "entries": [
     {
@@ -2420,7 +2427,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.069,
+     "r_now": 0.0315,
      "rwf": 1,
      "spread": 1.0
     },
@@ -3210,6 +3217,13 @@
      159.217,
      159.284,
      159.202
+    ],
+    [
+     "12:05 pm",
+     159.256,
+     159.232,
+     159.256,
+     159.229
     ]
    ],
    "journal": {
@@ -3263,7 +3277,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.069,
+       "r_now": 0.0315,
        "rwf": 1,
        "spread": 1.0
       },
@@ -5703,8 +5717,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Supply day: hold the whole sell (no part-close), the stop stays where it is; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 79.892,
-   "change": -1.45,
+   "price": 79.957,
+   "change": -1.39,
    "entries": [
     {
      "time": "6:12 am",
@@ -6492,6 +6506,13 @@
      79.95,
      80.02,
      79.88
+    ],
+    [
+     "12:05 pm",
+     79.96,
+     79.9,
+     79.97,
+     79.89
     ]
    ],
    "journal": {
@@ -8123,7 +8144,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.032,
+   "live_spread": 0.047,
    "history_note": "history to 2026-11-24 (60 days)"
   },
   "US500": {
@@ -8156,8 +8177,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "buy",
    "message": "PAPER BUY day: 1 trade today (1 running). Only BUY signals count today (max 3; no 2nd/3rd trade from 11:00 am New York or once the day is up half a stop). Each trade keeps its stop, no half-close; everything closes at 12:30 am Dubai (3:30 pm New York). (high-fear night, but the check ran after 6:06 pm New York - no night trade.)",
-   "price": 7130.7,
-   "change": -64.9,
+   "price": 7130.1,
+   "change": -65.5,
    "entries": [
     {
      "time": "12:01 pm",
@@ -8181,7 +8202,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -1.7,
+     "live": -2.3,
      "spread": 0.8
     }
    ],
@@ -9025,6 +9046,13 @@
      7126.7,
      7136.6,
      7126.7
+    ],
+    [
+     "12:05 pm",
+     7130.1,
+     7130.4,
+     7131.9,
+     7129.4
     ]
    ],
    "journal": {
@@ -9184,7 +9212,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -1.7,
+       "live": -2.3,
        "spread": 0.8
       }
      ],
@@ -11486,8 +11514,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 25719.6,
-   "change": -489.4,
+   "price": 25720.6,
+   "change": -488.4,
    "entries": [],
    "spark": [
     [
@@ -12329,6 +12357,13 @@
      25715.7,
      25759.2,
      25713.5
+    ],
+    [
+     "12:05 pm",
+     25720.6,
+     25719.5,
+     25736.8,
+     25717.7
     ]
    ],
    "journal": {
@@ -13810,8 +13845,8 @@
    "regime": 0.68,
    "gap": null,
    "message": "PAPER BUY at 1.30682 (12:00 pm Dubai). Stop 1.29835, target 1.31529 - close the WHOLE trade at the target; otherwise it closes at 1:45 am Dubai.",
-   "price": 1.30712,
-   "change": -0.00355,
+   "price": 1.30722,
+   "change": -0.00345,
    "entries": [
     {
      "time": "12:00 pm",
@@ -13837,7 +13872,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": 1.5,
+     "live": 2.5,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.29835 \u00b7 target 1.31529 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
     }
@@ -14682,6 +14717,13 @@
      1.30682,
      1.30791,
      1.30681
+    ],
+    [
+     "12:05 pm",
+     1.30722,
+     1.30711,
+     1.30723,
+     1.30696
     ]
    ],
    "journal": {
@@ -14730,7 +14772,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": 1.5,
+       "live": 2.5,
        "spread": 1.5,
        "next": "Hold \u00b7 stop 1.29835 \u00b7 target 1.31529 (close the WHOLE trade there) \u00b7 no half-close, no stop move \u00b7 closes at 1:45 am Dubai"
       }
@@ -16222,8 +16264,8 @@
    },
    "state": "waiting",
    "message": "Wednesday - checking the 10:00\u219214:00 broker move against its 60-day spread (enters 14:00 broker if big enough).",
-   "price": 87.186,
-   "change": -1.52,
+   "price": 87.244,
+   "change": -1.46,
    "entries": [],
    "spark": [
     [
@@ -16897,6 +16939,13 @@
      87.19,
      87.3,
      87.14
+    ],
+    [
+     "12:05 pm",
+     87.24,
+     87.19,
+     87.26,
+     87.19
     ]
    ],
    "journal": {
