@@ -1,12 +1,5 @@
 [
  {
-  "action": "OPEN BUY rest",
-  "detail": "US100|2026-11-10|4:33 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am size 0.018 at 27800.9 stop 27455.7 | trade risk 29.08 AED",
-  "market": "US100",
-  "ok": true,
-  "t": "Tue 10 Nov 4:34 PM"
- },
- {
   "action": "OPEN BUY part",
   "detail": "USDJPY|2026-11-10|5:30 pm|BUY|Squeeze 4pm size 2800.0 at 158.367 stop 158.018 target 158.377 | trade risk 29.76 AED",
   "market": "USDJPY",
@@ -2798,5 +2791,12 @@
   "market": "US500",
   "ok": true,
   "t": "Wed 25 Nov 6:44 PM"
+ },
+ {
+  "action": "rest closed on demo",
+  "detail": "US100|2026-11-25|6:30 pm|SELL|J30 U8 only when vol high (>1.1)",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 25 Nov 6:57 PM"
  }
 ]
