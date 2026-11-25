@@ -1,5 +1,5 @@
 {
- "updated": "Thu 26 Nov \u00b7 2:00 am",
+ "updated": "Thu 26 Nov \u00b7 2:11 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -1627,7 +1627,7 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
+   "price": 159.135,
    "change_pips": null,
    "atr_pips": 87.9,
    "entries": [],
@@ -4050,8 +4050,8 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": null,
-   "history_note": "history to 2026-11-25 (300 days) \u00b7 added 2026-11-25"
+   "live_spread_pips": 8.0,
+   "history_note": "history to 2026-11-25 (300 days)"
   },
   "OIL": {
    "code": "OIL",
@@ -5666,7 +5666,7 @@
    "feed_error": false,
    "epic": "OIL_CRUDE",
    "live_spread": null,
-   "history_note": "history to 2026-11-25 (60 days) \u00b7 added 2026-11-25"
+   "history_note": "history to 2026-11-25 (60 days)"
   },
   "US500": {
    "code": "US500",
@@ -5698,10 +5698,25 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (Night-trade check: Cboe data not available - HTTPError: 403 Client Error: Forbidden for url: https://cdn-api.cboe.com/api/global/delayed_quotes/quotes/_VIX..)",
-   "price": null,
-   "change": null,
+   "price": 7173.8,
+   "change": -1.5,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     7173.4,
+     7175.3,
+     7175.3,
+     7173.4
+    ],
+    [
+     "2:10 am",
+     7173.8,
+     7173.8,
+     7173.8,
+     7173.8
+    ]
+   ],
    "journal": {
     "since": "24 Nov 2026",
     "weekdays": 3,
@@ -8142,7 +8157,7 @@
    "picks_stale": false,
    "epic": "US500",
    "close_at": "12:30 am",
-   "history_note": "history to 2026-11-25 (45 days) \u00b7 added 2026-11-25"
+   "history_note": "history to 2026-11-25 (45 days)"
   },
   "US100": {
    "code": "US100",
@@ -8174,10 +8189,25 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 25950.4,
+   "change": -1.0,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     25949.3,
+     25951.4,
+     25958.8,
+     25943.3
+    ],
+    [
+     "2:10 am",
+     25950.4,
+     25950.1,
+     25950.4,
+     25947.9
+    ]
+   ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 29,
@@ -9614,7 +9644,7 @@
    "feed_error": false,
    "epic": "US100",
    "close_at": "1:00 am",
-   "history_note": "history to 2026-11-25 (385 days) \u00b7 added 2026-11-25",
+   "history_note": "history to 2026-11-25 (385 days)",
    "fomc": null,
    "cpi": {
     "state": "closed",
@@ -9703,10 +9733,25 @@
    "regime": 0.704,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker). NEWS-FREE day (no high-impact UK/US news on the calendar): calm rules - no target; stop moves to entry + 5 pips once +0.2 x stop in profit; at 10:00 the side can switch by the price vote (v1.13).",
-   "price": null,
-   "change": null,
+   "price": 1.31132,
+   "change": -0.00015,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:05 am",
+     1.31125,
+     1.31147,
+     1.31147,
+     1.31094
+    ],
+    [
+     "2:10 am",
+     1.31132,
+     1.31132,
+     1.31132,
+     1.31132
+    ]
+   ],
    "journal": {
     "since": "25 Nov 2026",
     "weekdays": 2,
@@ -11271,10 +11316,25 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": null,
-   "change": null,
+   "price": 92.444,
+   "change": 0.07,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "2:00 am",
+     92.44,
+     92.37,
+     92.44,
+     92.37
+    ],
+    [
+     "2:05 am",
+     92.44,
+     92.44,
+     92.47,
+     92.44
+    ]
+   ],
    "journal": {
     "since": "09 Nov 2026",
     "weekdays": 14,
