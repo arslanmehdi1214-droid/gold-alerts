@@ -1,19 +1,5 @@
 [
  {
-  "action": "rest closed on demo",
-  "detail": "GOLD|2026-11-09|2:09 pm|SELL|FILL range fade",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Tue 10 Nov 12:15 AM"
- },
- {
-  "action": "close rest",
-  "detail": "US500|2026-11-09|6:40 pm|BUY|S&P 9:40 am New York opening move (desk: eod) ",
-  "market": "US500",
-  "ok": true,
-  "t": "Tue 10 Nov 12:31 AM"
- },
- {
   "action": "close rest",
   "detail": "US500|2026-11-09|7:01 pm|BUY|S&P big day move by 10 am New York -> follow (desk: eod) ",
   "market": "US500",
@@ -2798,5 +2784,19 @@
   "market": "USDJPY",
   "ok": true,
   "t": "Wed 25 Nov 11:35 AM"
+ },
+ {
+  "action": "OPEN BUY part",
+  "detail": "GBPUSD|2026-11-25|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded size 900.0 at 1.30765 stop 1.29835 target 1.31529 | trade risk 28.0 AED",
+  "market": "GBPUSD",
+  "ok": true,
+  "t": "Wed 25 Nov 12:01 PM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "GBPUSD|2026-11-25|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded 1.31529 -> 1.31612 ",
+  "market": "GBPUSD",
+  "ok": true,
+  "t": "Wed 25 Nov 12:01 PM"
  }
 ]
