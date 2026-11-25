@@ -1,15 +1,15 @@
 {
- "balance": 1637.59,
+ "balance": 1639.84,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-25",
-  "pl": -89.51,
+  "pl": -56.44,
   "start_balance": 1723.53,
   "start_equity": 1723.53,
   "stopped": false
  },
- "open_positions": 6,
- "open_risk_aed": 179.29,
+ "open_positions": 5,
+ "open_risk_aed": 149.77,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-23|5:46 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -319,16 +319,17 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-76ed-a241-0495-7fc60004511e",
     "level": 3463.47,
-    "open": true,
+    "open": false,
     "size": 0.15,
     "tp": null
    },
    "risk_aed": 29.52,
    "risk_usd": 8.17,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 3515.14
   },
   "OIL|2026-11-23|3:12 pm|SELL|Whole dollar": {
