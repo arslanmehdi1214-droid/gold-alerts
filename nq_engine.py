@@ -246,6 +246,41 @@ def down3_streak(DB, day):
 def down3_bounce_signal(DB, day, n=DOWN3_N):
     return down3_streak(DB, day) >= n
 
+# -- NDX-outperforms-WTI Continuation (#754, NASDAQ_WTIREL_CONTINUE_v1.00, 25 Nov 2026) - LIVE (his call 25 Nov, demo forward test skipped).
+# rel = rolling 5-day SUM of (NDX 1-day return - spot-WTI 1-day return), computed through TODAY's own close (no extra lag - the Nasdaq chat's
+# "lagged 1 day" is the date shift of its own MT4 list; checked 25 Nov against his 318 MT4 dates on FRED closes: no lag = 93% of his dates, 78%
+# of the rule's days are his dates, avg next-day +16.5 bps vs +20.8 bps on his list; lag 1 = 70% / 58%). Fires when rel > a FIXED cut-off
+# (80th percentile of all FRED history to 25 Nov 2026 = 0.0453; the Nasdaq chat's own figure was 0.042852 - recomputed on today's data as it asked)
+# -> long at today's own RTH close, same stop/target sizing as the other add-ons (0.35 x raw lagged range, 1R), force-close at the next trading
+# day's RTH close (hold_day_check_exit). WTI = the desk's own "settle" (the 21:30 broker bar's open = 2:30 pm New York settlement, same as FRED spot).
+WTIREL_THR = 0.0453
+WTIREL_N = 5
+WTIREL_FROM = pd.Timestamp('2026-11-25')          # push day - first possible entry tonight at the RTH close
+
+def rth_close_series(m):
+    """Close of the Nasdaq cash session per broker day: the close of the last minute bar BEFORE the day-end (23:00 broker, Fri 22:50) = the 4:00 pm
+    New York close (same moment as the research closes). (The stored days' own last bar is 23:59 - NOT used here.)"""
+    mins = m.index.hour * 60 + m.index.minute
+    end = np.where(m.index.dayofweek == 4, 22 * 60 + 50, 23 * 60)
+    r = m[mins < end]
+    return r.groupby(r.index.normalize()).c.last()
+
+def wtirel_value(ndx_close, wti_settle, n=WTIREL_N):
+    """ndx_close / wti_settle: pandas Series indexed by broker day (oldest first). Days where either is missing are dropped (as in the research,
+    a holiday gap makes that return span both days). Returns the rolling n-day sum of (NDX return - WTI return) at the LAST common day, or None."""
+    df = pd.concat([ndx_close.rename('n'), wti_settle.rename('w')], axis=1, join='inner').dropna()
+    df = df[df.w.abs() > 0] if len(df) else df
+    if len(df) < n + 1: return None, None
+    rn = df.n.pct_change(); rw = df.w.diff() / df.w.shift().abs()
+    rel = (rn - rw).iloc[-n:]
+    return float(rel.sum()), df.index[-1]
+
+def wtirel_signal(ndx_close, wti_settle, day, thr=WTIREL_THR):
+    """(fired, rel). Only valid when the last common day IS `day` (otherwise today's WTI settle is missing -> (None, rel))."""
+    rel, last = wtirel_value(ndx_close, wti_settle)
+    if rel is None or last is None or pd.Timestamp(last) != pd.Timestamp(day): return None, rel
+    return rel > thr, rel
+
 # -- shared exit check for Turnaround Tuesday / Big Up Continuation: unlike FOMC/CPI (fixed future deadline =
 # a known calendar date), their force-close deadline is "the RTH CLOSE of the next trading day after entry" -
 # not knowable in advance (weekends/holidays), so it's detected live: exit_day is simply the first `day` this

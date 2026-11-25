@@ -18,7 +18,9 @@ FOMC_JOUR = os.path.join(HERE, 'docs', 'journal_nq_fomc.json')   # 8 Nov: FOMC-o
 CPI_JOUR = os.path.join(HERE, 'docs', 'journal_nq_cpi.json')         # 8 Nov: CPI-overnight's own small journal
 TUESDAY_JOUR = os.path.join(HERE, 'docs', 'journal_nq_tuesday.json') # 8 Nov: Turnaround Tuesday's own small journal
 BIGUP_JOUR = os.path.join(HERE, 'docs', 'journal_nq_bigup.json')     # 8 Nov: Big Up Continuation's own small journal
-DOWN3_JOUR = os.path.join(HERE, 'docs', 'journal_nq_down3.json')     # 22 Nov: 3 Down-Days Bounce (#741, DEMO WATCH) own small journal
+DOWN3_JOUR = os.path.join(HERE, 'docs', 'journal_nq_down3.json')     # 22 Nov: 3 Down-Days Bounce (#741; LIVE from 25 Nov) own small journal
+WTIREL_JOUR = os.path.join(HERE, 'docs', 'journal_nq_wtirel.json')   # 25 Nov: NDX-outperforms-WTI Continuation (#754, LIVE) own small journal
+WTI_HIST = os.path.join(HERE, 'docs', 'wti_hist.json')               # the oil desk's finished days: [date, open, high, low, close, settle]
 EPIC = os.environ.get('CAPITAL_EPIC_NQ', 'US100')
 MIN_SPREAD = 1.8                      # 22 Oct fix: the paper levels and results use exactly 1.8 index points (as the MT4 v1.02 test);
                                       # the live Capital.com spread is shown only (spread_live)
@@ -407,10 +409,10 @@ def bigup_card(J):
                      note=f"Big Up Continuation ({c['entry_day']}): {why}, {c['pts']:+.1f} pts.")
     return None
 
-# ---------------- 3 Down-Days Bounce #741 (22 Nov 2026) - DEMO / WATCH ONLY ----------------
+# ---------------- 3 Down-Days Bounce #741 (22 Nov 2026; LIVE since 25 Nov 2026, his call: demo watch skipped) ----------------
 # Same shape as Big Up Continuation (own journal, long only, entry at today's own RTH close, 0.35 x raw lagged range stop, 1R target,
-# force-close at the next trading day's RTH close, never counted against v1.02's cap) but NOT live: shown on the page as a DEMO WATCH, never
-# put into entries[], so the auto-trader never copies it. Promote to live only after it holds up on new data (his rule).
+# force-close at the next trading day's RTH close, never counted against v1.02's cap). 25 Nov: promoted to LIVE (his call, skipping the demo forward test):
+# the card carries tag N741 and the auto-trader (autotrade.py overnight rows) opens / holds / closes it on the demo account - never touches v1.02's rows.
 DOWN3_PROOF = ('MT4 (his run, 2018.01.02-2026.10.30, spread 18): pick (to 2021) 36 trades, avgR +0.218, 64% hit target, 64% closed in profit; '
                'judge (2022 on) 115 trades, avgR +0.061, 55% hit target, 56% closed in profit')
 def down3_forward(J):
@@ -455,20 +457,111 @@ def down3_run(hist, day, now, b, spread_live):
     return J
 
 def down3_card(J):
-    fw = down3_forward(J); base = dict(demo=True, proof=DOWN3_PROOF, forward=fw, streak=J.get('_streak'))
+    fw = down3_forward(J); base = dict(live=True, tag='N741', proof=DOWN3_PROOF, forward=fw, streak=J.get('_streak'))
     o = J.get('open')
     if o:
         return dict(base, state='open', entry_day=o['entry_day'], entry_time=o['entry_time'], entry=o['entry'],
                      stop=o['sl'], target=o['tp'], r=o['r'], live=o.get('live'),
-                     note=f"3 Down-Days Bounce (DEMO WATCH): long from {o['entry_time']}, stop {o['sl']} / target {o['tp']} (R={o['r']}), "
+                     note=f"3 Down-Days Bounce (LIVE): long from {o['entry_time']}, stop {o['sl']} / target {o['tp']} (R={o['r']}), "
                           f"force-closes at the next trading day's RTH close if neither hits first.")
     c = J['closed'][0] if J.get('closed') else None
     if c:
         why = {'target': 'hit target', 'stopped': 'hit stop', 'eod': 'force-closed at next-day close'}.get(c['status'], c['status'])
         return dict(base, state='closed', entry_day=c['entry_day'], entry_time=c['entry_time'], entry=c['entry'],
                      exit=c['exit'], exit_time=c['exit_time'], pts=c['pts'], r=c['r'],
-                     note=f"3 Down-Days Bounce, DEMO WATCH ({c['entry_day']}): {why}, {c['pts']:+.1f} pts. Waits for 3 down closes in a row.")
-    return dict(base, state='idle', note='3 Down-Days Bounce, DEMO WATCH: waits for 3 down closes in a row (about 1-2 trades a month); no trade yet.')
+                     note=f"3 Down-Days Bounce, LIVE ({c['entry_day']}): {why}, {c['pts']:+.1f} pts. Waits for 3 down closes in a row.")
+    return dict(base, state='idle', note='3 Down-Days Bounce, LIVE: waits for 3 down closes in a row (about 1-2 trades a month); no trade yet.')
+
+
+# ---------------- NDX-outperforms-WTI Continuation #754 (25 Nov 2026) - LIVE (his call: demo forward test skipped) ----------------
+# Own journal, long only, entry at today's own RTH close when rel (5-day sum of NDX return minus spot-WTI return, no extra lag) > WTIREL_THR,
+# 0.35 x raw lagged range stop, 1R target, force-close at the next trading day's RTH close. Never touches v1.02 / #741 (own journal, own tag N754).
+WTIREL_PROOF = ('MT4 (his run, 318 trigger dates 2019-10-31..2026-11-05): n=265 trades, avg +$0.071/trade (pick +$0.110, judge +$0.057), 50.6% hit target. '
+                'Live rule = 5-day sum of (NDX return - spot WTI return) above a fixed cut-off 0.0453, rebuilt on public closes: 93% of his MT4 dates are caught, '
+                '78% of the rule\'s days are his dates (Python, 25 Nov - not MT4)')
+WTIREL_LATE_MIN = 30            # no entry later than 30 min after the RTH close (the price would no longer be the close)
+
+def wti_settles(today_settle=None, day=None):
+    """The oil desk's finished days -> Series settle by broker day (days without a settlement bar dropped); + today's own settle when given."""
+    H = loadj(WTI_HIST, {}); rows = H.get('days') or []
+    s = pd.Series({pd.Timestamp(r[0]): float(r[5]) for r in rows if len(r) > 5 and r[5] is not None}).sort_index()
+    if today_settle is not None and day is not None: s.loc[pd.Timestamp(day)] = float(today_settle)
+    return s.sort_index()
+
+def wti_settle_today(feed, day):
+    """Today's WTI settlement = the open of the first OIL_CRUDE minute bar 21:30-21:35 broker (same as the oil desk's 'settle'); None when not there."""
+    if feed is None or not hasattr(feed, 'bars'): return None
+    to_utc = lambda b: (pd.Timestamp(b) - pd.Timedelta(hours=7)).tz_localize(F.NY, ambiguous=False, nonexistent='shift_forward').tz_convert('UTC').tz_localize(None)
+    d = feed.bars('MINUTE', to_utc(day + pd.Timedelta(hours=21, minutes=25)), to_utc(day + pd.Timedelta(hours=21, minutes=40)), pd.Timedelta(minutes=900),
+                  epic=os.environ.get('CAPITAL_EPIC_WTI', 'OIL_CRUDE'))
+    if not len(d): return None
+    hm = d.index.hour * 60 + d.index.minute; sel = d[(hm >= 21 * 60 + 30) & (hm <= 21 * 60 + 35)]
+    return float(sel.o.iloc[0]) if len(sel) else None
+
+def wtirel_run(hist, day, now, b, spread_live, feed=None):
+    J = loadj(WTIREL_JOUR, dict(open=None, closed=[], last=None)); changed = False
+    allm = pd.concat([hist[hist.index < day], b]) if len(b) else hist[hist.index < day]
+    if J['open']:
+        o = J['open']; entry_day = pd.Timestamp(o['entry_day'])
+        if day > entry_day:
+            status, ex, ext = N.hold_day_check_exit(allm, o['entry_time'], o['entry'], o['sl'], o['tp'], day, now)
+            if status == 'open':
+                o['live'] = None if not len(allm) else round(float(allm.c.iloc[-1]) - o['entry'], 1)
+            else:
+                closed = dict(o, status=status, exit=round(ex, 1), exit_time=str(ext), pts=round(ex - o['entry'], 1))
+                J['closed'] = ([closed] + J['closed'])[:50]; J['open'] = None; changed = True
+        else:
+            o['live'] = None if not len(allm) else round(float(allm.c.iloc[-1]) - o['entry'], 1)
+    elif day >= N.WTIREL_FROM and now >= day + pd.Timedelta(minutes=N.eod_minutes(day)):
+        key = str(day.date()); last = J.get('last') or {}
+        if last.get('day') != key and not any(c.get('entry_day') == key for c in J['closed']):
+            eod_at = day + pd.Timedelta(minutes=N.eod_minutes(day))
+            eod_bar = b[b.index < eod_at]
+            if now > eod_at + pd.Timedelta(minutes=WTIREL_LATE_MIN):
+                J['last'] = dict(day=key, fired=None, why='missed: WTI settle or prices not available within 30 min of the close'); changed = True
+            elif len(eod_bar):
+                tw = wti_settle_today(feed, day)
+                if tw is not None:
+                    DB = N.daily_range_atr(pd.concat([hist[hist.index < day], eod_bar]))
+                    fired, rel = N.wtirel_signal(N.rth_close_series(pd.concat([hist[hist.index < day], eod_bar])), wti_settles(tw, day), day)
+                    if fired is not None:
+                        J['last'] = dict(day=key, rel=round(rel, 5), thr=N.WTIREL_THR, fired=bool(fired), wti=round(tw, 3)); changed = True
+                        if fired:
+                            R = N.fomc_r(DB, day)
+                            if R:
+                                entry = round(float(eod_bar.c.iloc[-1]) + spread_live, 1)
+                                J['open'] = dict(entry_day=key, entry_time=str(eod_bar.index[-1]), entry=entry, rel=round(rel, 5),
+                                                  sl=round(entry - R, 1), tp=round(entry + N.FOMC_TP_MULT * R, 1), r=R, live=0.0)
+    if changed: dumpj(J, WTIREL_JOUR, indent=1)
+    try:                                           # how close it is: rel through the last finished day (info only)
+        rel, ld = N.wtirel_value(N.rth_close_series(hist[hist.index < day]), wti_settles())
+        J['_rel'] = None if rel is None else round(rel, 4); J['_rel_day'] = None if ld is None else str(pd.Timestamp(ld).date())
+    except Exception:
+        J['_rel'] = None
+    return J
+
+def wtirel_forward(J):
+    c = J.get('closed') or []
+    if not c: return dict(n=0)
+    return dict(n=len(c), target=round(100 * sum(1 for x in c if x['status'] == 'target') / len(c), 0),
+                profit=round(100 * sum(1 for x in c if x['pts'] > 0) / len(c), 0), pts=round(sum(x['pts'] for x in c), 1))
+
+def wtirel_card(J):
+    base = dict(live=True, tag='N754', proof=WTIREL_PROOF, forward=wtirel_forward(J), rel=J.get('_rel'), rel_day=J.get('_rel_day'), threshold=N.WTIREL_THR,
+                last_check=J.get('last'))
+    o = J.get('open')
+    if o:
+        return dict(base, state='open', entry_day=o['entry_day'], entry_time=o['entry_time'], entry=o['entry'],
+                     stop=o['sl'], target=o['tp'], r=o['r'], live_pts=o.get('live'),
+                     note=f"NDX-vs-WTI Continuation (LIVE): long from {o['entry_time']}, stop {o['sl']} / target {o['tp']} (R={o['r']}), "
+                          f"force-closes at the next trading day's RTH close if neither hits first.")
+    c = J['closed'][0] if J.get('closed') else None
+    if c:
+        why = {'target': 'hit target', 'stopped': 'hit stop', 'eod': 'force-closed at next-day close'}.get(c['status'], c['status'])
+        return dict(base, state='closed', entry_day=c['entry_day'], entry_time=c['entry_time'], entry=c['entry'],
+                     exit=c['exit'], exit_time=c['exit_time'], pts=c['pts'], r=c['r'],
+                     note=f"NDX-vs-WTI Continuation, LIVE ({c['entry_day']}): {why}, {c['pts']:+.1f} pts. Waits for NDX to beat WTI over 5 days (rel > {N.WTIREL_THR}).")
+    return dict(base, state='idle', note=f"NDX-vs-WTI Continuation, LIVE: waits for rel (5-day NDX minus WTI) > {N.WTIREL_THR}; no trade yet.")
 
 def base_card(A=None, V=None):
     V = V or VARIANTS[0]
@@ -536,10 +629,14 @@ def main(feed=None, get=None, now=None):
         if 'US100' in mk: mk['US100']['bigup'] = bigup_card(bigup_run(hist, day, now, b, MIN_SPREAD))
     except Exception as e:
         print('Nasdaq BigUp-Continuation check failed (non-fatal):', type(e).__name__, str(e)[:160])
-    try:                                           # 3 Down-Days Bounce #741 (22 Nov, DEMO WATCH): same non-fatal isolation
+    try:                                           # 3 Down-Days Bounce #741 (22 Nov; LIVE from 25 Nov): same non-fatal isolation
         if 'US100' in mk: mk['US100']['down3'] = down3_card(down3_run(hist, day, now, b, MIN_SPREAD))
     except Exception as e:
         print('Nasdaq 3Down-Bounce check failed (non-fatal):', type(e).__name__, str(e)[:160])
+    try:                                           # NDX-vs-WTI Continuation #754 (25 Nov, LIVE): same non-fatal isolation
+        if 'US100' in mk: mk['US100']['wtirel'] = wtirel_card(wtirel_run(hist, day, now, b, MIN_SPREAD, feed))
+    except Exception as e:
+        print('Nasdaq NDX-vs-WTI check failed (non-fatal):', type(e).__name__, str(e)[:160])
     dumpj(old, PORTAL, indent=1)
     print(f'Nasdaq paper: {now} broker | bars {len(b)} | history to {hist.index[-1].date()} | added {added} | finished {fin} | failed {[V["code"] for V, _ in errs]}')
 

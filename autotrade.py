@@ -161,6 +161,36 @@ def day_end(code, bnow, winter):
           'BRENT': (21, 30)}.get(code, (23, 0))                          # 6 Nov: Brent v1.04 closes everything at 21:30 broker (his spec's own fixed exit time, no fri/winter variation)
     return bnow.replace(hour=hm[0], minute=hm[1], second=0, microsecond=0)
 GROUPS = ({'US100', 'US500'},)                                           # moves together: one risk cap per group (Silver dropped 4 Nov)
+# 25 Nov 2026 (his call: #741 and #754 go live): the two overnight Nasdaq add-ons are journal + card entries of the Nasdaq desk (markets.US100.down3 / .wtirel,
+# own journals, entry at the RTH close, force-close at the NEXT trading day's RTH close). Here each card becomes one extra desk-style row for the US100 market:
+# opened once (age <= MAX_AGE_MIN, with the stop and the 1R take-profit at Capital.com so it holds without the desk), closed when the card closes, and
+# exempt from the "earlier day" / day-end watchdog - their own watchdog closes them at the next trading day's RTH close + 2 min. v1.02's rows are untouched.
+OVERNIGHT = {'down3': 'N741', 'wtirel': 'N754'}
+def dubai_clock(btxt):
+    """Desk broker timestamp '2026-11-25 22:59:00' -> Dubai clock text '12:59 am' (broker = New York + 7 h)."""
+    from zoneinfo import ZoneInfo
+    b = dt.datetime.fromisoformat(str(btxt)[:19]); ny = (b - dt.timedelta(hours=7)).replace(tzinfo=ZoneInfo('America/New_York'))
+    return ny.astimezone(DUBAI).strftime('%I:%M %p').lstrip('0').lower()
+def overnight_rows(m):
+    """Desk-style rows for the open / last closed trade of each overnight add-on card of a market (an open card -> status 'open'; closed -> 'closed')."""
+    out = []
+    for key, tag in OVERNIGHT.items():
+        c = (m or {}).get(key) or {}
+        if c.get('state') not in ('open', 'closed') or c.get('entry') is None or not c.get('entry_time') or not c.get('entry_day'): continue
+        try: row = dict(time=dubai_clock(c['entry_time']), side='BUY', tag=tag, _day=str(c['entry_day']), _overnight=True, price=float(c['entry']), entry=float(c['entry']))
+        except Exception: continue
+        if c['state'] == 'open':
+            if c.get('stop') is None or c.get('target') is None: continue
+            row.update(status='open', stop=float(c['stop']), stop0=float(c['stop']), half_px=float(c['target']), part=1.0, size='full')
+        else:
+            row.update(status='closed')
+        out.append(row)
+    return out
+def overnight_deadline(entry_day, code):
+    """Watchdog deadline of an overnight trade: the next trading (week)day's day-end close + 2 min, on the broker clock."""
+    d = dt.datetime.strptime(entry_day, '%Y-%m-%d') + dt.timedelta(days=1)
+    while d.weekday() >= 5: d += dt.timedelta(days=1)
+    return day_end(code, d, False) + dt.timedelta(minutes=2)
 def group_of(code): return next((g for g in GROUPS if code in g), {code})
 def utc_of(txt):
     """Capital.com 'createdDateUTC' ('2026-10-22T08:05:12.345') -> aware UTC datetime (None if missing)."""
@@ -189,7 +219,7 @@ def weight(code, e):
     s = str(s).lower()
     return 1.0 if s in ('full', '1', '1.0') else (1 / 3 if s in ('third', '1/3', '⅓') else 1.0)
 def key_of(code, e, day):
-    return '|'.join(str(x) for x in (code, day, e.get('time'), e.get('side'), e.get('tag') or e.get('name') or e.get('sig') or ''))
+    return '|'.join(str(x) for x in (code, e.get('_day') or day, e.get('time'), e.get('side'), e.get('tag') or e.get('name') or e.get('sig') or ''))
 def rnd_size(x, rules):
     inc = rules['inc'] or 0.01; n = int(x / inc + 1e-9) * inc
     return round(n, 6)
@@ -314,7 +344,7 @@ def run_once(api=None, portal=PORTAL, now=None):
             m = mk.get(code) or {}
             if m.get('feed_error') in (False, 'False') and isinstance(m.get('entries'), list): counted.add(code)   # minutes that count for "desk row gone"
             if m.get('feed_error') in (True, 'True'): continue        # desk not sure of its prices: change nothing this minute
-            for e in m.get('entries') or []:
+            for e in (m.get('entries') or []) + (overnight_rows(m) if code == 'US100' else []):
                 k = key_of(code, e, today); seen.add(k); tr = T.get(k); status = e.get('status')
                 if tr is None:
                     if k in open_keys: continue                        # 22 Oct: same key twice in one pass -> open once
@@ -338,6 +368,16 @@ def run_once(api=None, portal=PORTAL, now=None):
         # ... and desk row vanished for GONE_MIN counted minutes in a row (the desk re-drew its day) -> close
         for k, tr in T.items():
             if tr.get('state') != 'open': continue
+            if tr.get('overnight'):                                  # 25 Nov: #741 / #754 are held overnight on purpose - their own deadline
+                dl = overnight_deadline(k.split('|')[1], tr['market'])
+                if bnow >= dl: closes.append((k, tr, f'watchdog: past the next trading day close {dl:%d %b %I:%M %p} broker')); continue
+                if k in seen:
+                    if tr.get('missing'): tr['missing'] = 0
+                    continue
+                if tr['market'] in counted:
+                    tr['missing'] = tr.get('missing', 0) + 1
+                    if tr['missing'] >= GONE_MIN: closes.append((k, tr, f'desk row gone {GONE_MIN} minutes'))
+                continue
             if k.split('|')[1] < today: closes.append((k, tr, 'left over from an earlier day')); continue
             end = day_end(tr['market'], bnow, winter)
             if bnow >= end + dt.timedelta(minutes=2): closes.append((k, tr, f'watchdog: past day-end {end:%I:%M %p} broker')); continue
@@ -382,7 +422,7 @@ def run_once(api=None, portal=PORTAL, now=None):
         n_open = len(open_ids())
         for code, cfg, e, k in opens[:MAX_NEW_PER_PASS]:
             if n_open >= MAX_OPEN_TOTAL: skip(code, k, 'too many open positions'); continue
-            if bnow >= day_end(code, bnow, winter): skip(code, k, 'after the day-end close'); continue
+            if not e.get('_overnight') and bnow >= day_end(code, bnow, winter): skip(code, k, 'after the day-end close'); continue
             if st['day'].get('stopped'): skip(code, k, f'daily loss stop (day P/L {st["day"].get("pl")} AED)'); continue
             rules = api.market_rules(cfg['epic']); pl = plan(code, cfg, e, rules)
             if pl is None: skip(code, k, 'zero stop distance'); continue
@@ -394,7 +434,7 @@ def run_once(api=None, portal=PORTAL, now=None):
             if len(g) > 1 and gt > GROUP_AED: skip(code, k, f'{"+".join(sorted(g))} open risk would be {gt:.2f} AED > {GROUP_AED:.0f}'); continue
             side, stop, tp, real_aed = pl['side'], pl['stop'], pl['tp'], pl['real_aed']
             T[k] = dict(market=code, state='open', side=side, stop=float(e['stop']), desk_price=pl['px'], opened_at=stamp,
-                        risk_usd=round(RISK_USD * weight(code, e), 2), risk_aed=real_aed, px_adj=pl['adj'], part_x=pl['part'])
+                        risk_usd=round(RISK_USD * weight(code, e), 2), risk_aed=real_aed, px_adj=pl['adj'], part_x=pl['part'], overnight=bool(e.get('_overnight')))
             unknown = False
             for role, sz, prof in (('part', pl['p_size'], tp), ('rest', pl['r_size'], None)):
                 if sz <= 0: continue
