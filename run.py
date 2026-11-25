@@ -13,6 +13,7 @@ STATE = os.path.join(HERE, 'sent.json'); PORTAL = os.path.join(HERE, 'docs', 'da
 JOURNAL = os.path.join(HERE, 'docs', 'journal.json'); INPUTS = os.path.join(HERE, 'docs', 'inputs.json')
 BACKTEST_V210 = dict(direction='—', days='72–73% green', perday='1.7', win='79–81%', pnl='—', source='MT4 backtest v2.10, his run 2020–2026 (worst day −2.1R)')
 BACKTEST = dict(direction='—', days='49% green (53% of trade days)', perday='1.5', win='0% hit target · 51% closed in profit', pnl='—', source='MT4 backtest v2.15, his run 21 Oct 2020–2026 ($247/day 2020–22, $263/day 2023–26 at $1,000 risk; worst day −$4,681)')
+BACKTEST_V222 = dict(direction='—', days='—', perday='—', win='—', pnl='$465,836 net', source='MT4 backtest v2.22 (DT223_GOLD_N4N11GATE.set, Gold chat agreed-best), his run 2 Jan 2018–30 Oct 2026: net $465,836.05, profit factor 1.31, max drawdown 4.57%, 3,643 trades. Days-green and win figures not given for this run. Card v2.24 adds volume sizing (MT4 passed, run numbers not given)')
 BACKTEST_V211 = dict(direction='—', days='45–46% green', perday='1.5', win='47–50%', pnl='—', source='MT4 backtest v2.11, his runs 20 Oct 2020–2026 ($162/day 2020–22, $189/day 2023–26 at $1,000 risk; worst day −3.6R)')
 
 def dubai(t): return F.broker_to_dubai(pd.Timestamp(t)).strftime('%-I:%M %p').lower()
@@ -486,7 +487,7 @@ def write_pages(now, day, m1, rows, skipped, inp, reg, src, eod, datr, acts=(), 
                 inputs=dict(dollar_1d=inp.get('dollar_1d'), dollar_5d=inp.get('dollar_5d'), vix_5d=inp.get('vix_5d'), tnx_5d=inp.get('tnx_5d'),
                             dollar_driven=(None if reg is None else bool(reg)), corr=inp.get('corr'), low_attention=(None if inp.get('attn') == 9 else bool(inp.get('attn', 0))), missing=list(missing),
                             notes=inp.get('notes', [])),
-                stats=(BACKTEST if V215 else BACKTEST_V211 if V211 else BACKTEST_V210), journal=J['summary'])
+                stats=(BACKTEST_V222 if V222 else BACKTEST if V215 else BACKTEST_V211 if V211 else BACKTEST_V210), journal=J['summary'])
     data = dict(updated=F.broker_to_dubai(now).strftime('%a %d %b · %-I:%M %p').replace('AM', 'am').replace('PM', 'pm'),
                 source=src, markets=dict(GOLD=gold, **others))
     dumpj(data, PORTAL, indent=1)
