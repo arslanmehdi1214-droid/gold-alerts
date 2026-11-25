@@ -1,15 +1,15 @@
 {
- "balance": 1668.76,
+ "balance": 1669.35,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-25",
-  "pl": -91.08,
+  "pl": -61.34,
   "start_balance": 1723.53,
   "start_equity": 1723.53,
   "stopped": false
  },
- "open_positions": 11,
- "open_risk_aed": 226.49,
+ "open_positions": 9,
+ "open_risk_aed": 196.68,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-23|5:46 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -471,25 +471,27 @@
    "market": "US100",
    "opened_at": "Wed 25 Nov 2:12 PM",
    "part": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-76ea-277b-0495-7fc60004511e",
     "level": 25579.7,
-    "open": true,
+    "open": false,
     "size": 0.004,
     "tp": 25828.2
    },
    "part_x": 0.25,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "Capital.com stop/target",
     "id": "00000000-76ea-278a-0495-7fc60004511e",
     "level": 25579.4,
-    "open": true,
+    "open": false,
     "size": 0.014,
     "tp": null
    },
    "risk_aed": 29.81,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 25149.0
   },
   "US100|2026-11-25|6:30 pm|SELL|J30 U8 only when vol high (>1.1)": {

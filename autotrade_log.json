@@ -1,19 +1,5 @@
 [
  {
-  "action": "OPEN SELL rest",
-  "detail": "BRENT|2026-11-10|12:33 pm|SELL|Rule C \u00b7 20-day range break size 1.0 at 89.391 stop 99.12 | trade risk 35.11 AED",
-  "market": "BRENT",
-  "ok": true,
-  "t": "Tue 10 Nov 12:34 PM"
- },
- {
-  "action": "stop moved",
-  "detail": "GBPUSD|2026-11-10|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend to 1.34472",
-  "market": "GBPUSD",
-  "ok": true,
-  "t": "Tue 10 Nov 1:01 PM"
- },
- {
   "action": "OPEN BUY part",
   "detail": "US100|2026-11-10|4:33 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am size 0.005 at 27801.4 stop 27455.7 target 27974.8 | trade risk 29.08 AED",
   "market": "US100",
@@ -2798,5 +2784,19 @@
   "market": "US100",
   "ok": true,
   "t": "Wed 25 Nov 6:35 PM"
+ },
+ {
+  "action": "part closed on demo",
+  "detail": "US100|2026-11-25|2:11 pm|BUY|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 25 Nov 6:36 PM"
+ },
+ {
+  "action": "rest closed on demo",
+  "detail": "US100|2026-11-25|2:11 pm|BUY|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 25 Nov 6:36 PM"
  }
 ]
