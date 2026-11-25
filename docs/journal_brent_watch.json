@@ -31,11 +31,42 @@
     }
    ],
    "range_usd": 4.67
+  },
+  {
+   "date": "2026-11-25",
+   "rules": "v1.13W",
+   "label": "Wed 25 Nov",
+   "side": "BUY",
+   "trades": [
+    {
+     "time": "5:00 pm",
+     "side": "BUY",
+     "name": "W1 \u00b7 month-end buy (DEMO forward test)",
+     "rule": "WM4",
+     "tag": "WM4",
+     "price": 89.63,
+     "entry": 89.63,
+     "stop": 80.32,
+     "stop0": 80.32,
+     "stop_usd": 9.31,
+     "status": "open",
+     "size": "full",
+     "part": 1.0,
+     "half": false,
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "demo": true,
+     "nostop": true
+    }
+   ],
+   "range_usd": 4.66
   }
  ],
  "summary": {
   "WM4": {
-   "trades": 0,
+   "trades": 1,
    "closed": 0,
    "win": null,
    "net": null
@@ -65,7 +96,7 @@
    "net": 2.18
   },
   "all": {
-   "trades": 1,
+   "trades": 2,
    "closed": 1,
    "win": 100.0,
    "net": 2.18
