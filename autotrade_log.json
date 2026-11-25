@@ -1,19 +1,5 @@
 [
  {
-  "action": "OPEN SELL part",
-  "detail": "GBPUSD|2026-11-10|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend size 1100.0 at 1.3455 stop 1.3521 target 1.33834 | trade risk 27.79 AED",
-  "market": "GBPUSD",
-  "ok": true,
-  "t": "Tue 10 Nov 12:01 PM"
- },
- {
-  "action": "target moved to fill + desk distance",
-  "detail": "GBPUSD|2026-11-10|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend 1.33834 -> 1.33862 ",
-  "market": "GBPUSD",
-  "ok": true,
-  "t": "Tue 10 Nov 12:01 PM"
- },
- {
   "action": "OPEN SELL rest",
   "detail": "BRENT|2026-11-10|12:33 pm|SELL|Rule C \u00b7 20-day range break size 1.0 at 89.391 stop 99.12 | trade risk 35.11 AED",
   "market": "BRENT",
@@ -2798,5 +2784,19 @@
   "market": "GOLD",
   "ok": true,
   "t": "Wed 25 Nov 6:32 PM"
+ },
+ {
+  "action": "part closed on demo",
+  "detail": "US100|2026-11-25|6:30 pm|SELL|J30 U8 only when vol high (>1.1)",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 25 Nov 6:35 PM"
+ },
+ {
+  "action": "stop moved",
+  "detail": "US100|2026-11-25|6:30 pm|SELL|J30 U8 only when vol high (>1.1) to 25337.4 (stop to entry: each position at its own fill price)",
+  "market": "US100",
+  "ok": true,
+  "t": "Wed 25 Nov 6:35 PM"
  }
 ]
