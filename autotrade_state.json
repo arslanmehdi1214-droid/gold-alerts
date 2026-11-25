@@ -1,15 +1,15 @@
 {
- "balance": 1632.23,
+ "balance": 1631.78,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-25",
-  "pl": -41.11,
+  "pl": -42.01,
   "start_balance": 1723.53,
   "start_equity": 1723.53,
   "stopped": false
  },
- "open_positions": 4,
- "open_risk_aed": 120.25,
+ "open_positions": 1,
+ "open_risk_aed": 28.0,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-23|5:46 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -79,16 +79,17 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: exit",
     "id": "00000000-76eb-559f-0495-7fc60004511e",
     "level": 89.061,
-    "open": true,
+    "open": false,
     "size": 1.7,
     "tp": null
    },
    "risk_aed": 29.03,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 84.18
   },
   "BRENT|2026-11-25|5:00 pm|BUY|WM4": {
@@ -98,16 +99,17 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: exit",
     "id": "00000000-76ec-0e12-0495-7fc60004511e",
     "level": 89.921,
-    "open": true,
+    "open": false,
     "size": 1.0,
     "tp": null
    },
    "risk_aed": 34.19,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 80.32
   },
   "BRENT|2026-11-25|9:00 pm|BUY|Rule F \u00b7 day before holiday (buy)": {
@@ -118,16 +120,17 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: exit",
     "id": "00000000-76f0-15e5-0495-7fc60004511e",
     "level": 90.809,
-    "open": true,
+    "open": false,
     "size": 1.7,
     "tp": null
    },
    "risk_aed": 29.03,
    "risk_usd": 8.17,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 86.08
   },
   "GBPUSD|2026-11-23|12:00 pm|SELL|Layer 2 \u00b7 small traders crowded": {

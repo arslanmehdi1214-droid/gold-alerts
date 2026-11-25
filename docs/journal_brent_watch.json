@@ -49,14 +49,14 @@
      "stop": 80.32,
      "stop0": 80.32,
      "stop_usd": 9.31,
-     "status": "open",
+     "status": "exit",
      "size": "full",
      "part": 1.0,
      "half": false,
-     "exit": null,
-     "exit_time": null,
-     "res": null,
-     "res_sized": null,
+     "exit": 92.12,
+     "exit_time": "11:30 pm",
+     "res": 2.445,
+     "res_sized": 2.445,
      "demo": true,
      "nostop": true
     }
@@ -67,9 +67,9 @@
  "summary": {
   "WM4": {
    "trades": 1,
-   "closed": 0,
-   "win": null,
-   "net": null
+   "closed": 1,
+   "win": 100.0,
+   "net": 2.44
   },
   "WM1": {
    "trades": 0,
@@ -97,9 +97,9 @@
   },
   "all": {
    "trades": 2,
-   "closed": 1,
+   "closed": 2,
    "win": 100.0,
-   "net": 2.18
+   "net": 4.62
   }
  }
 }
