@@ -14,7 +14,10 @@ reportables at a 52-week extreme (CFTC pound report, other-reportable columns). 
 v1.09 (18 Nov 2026, MT4 his run 10): on calm days the side follows Australian-dollar hedge funds' big 1-week move (top / bottom 10% of
 52 weeks) - weekly CFTC AUD report cached in docs/cftc_aud.json (optional: without it the desk trades exactly v1.08).
 v1.12 (23 Nov 2026, MT4 his run 14): calm days not flipped by AUD -> 3 price votes at 10:00 (gbp_engine.calm_vote: 10:00 vs the 00:00-09:59 range,
-yesterday's candle body, 3-day move) can flip the side. Needs daily open/close too - daily() now keeps o / c from the hourly bars."""
+yesterday's candle body, 3-day move) can flip the side. Needs daily open/close too - daily() now keeps o / c from the hourly bars.
+v1.13 (25 Nov 2026, MT4 his run 15): NORMAL days (layers 1-3) with no High-impact GBP or USD event in the Forex Factory week calendar
+(docs/calendar.json, saved hourly by the calendar workflow; direct fetch as a fallback) get calm rules: no target, lock at +0.2 x stop,
+and the v1.12 price vote can flip the side at 10:00 (mode 'nonews'). Calendar missing / not covering today -> v1.12 rules."""
 import os, json, time, requests, numpy as np, pandas as pd
 import feeds as F, gbp_engine as E
 DEADLINE = time.time() + 240          # loop.py resets this every minute; the GBP part never holds up gold
@@ -23,12 +26,25 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 JOUR = os.path.join(HERE, 'docs', 'journal_gbp.json'); PORTAL = os.path.join(HERE, 'docs', 'data.json')
 CFTC = os.path.join(HERE, 'docs', 'cftc_gbp.json'); CFTC_EUR = os.path.join(HERE, 'docs', 'cftc_eur.json'); CFTC_AUD = os.path.join(HERE, 'docs', 'cftc_aud.json'); HIST = os.path.join(HERE, 'docs', 'gbp_daily.json'); HIST_KEEP = 500          # days kept (regime needs 250 + 14)
 CFTC_URL = 'https://publicreporting.cftc.gov/resource/gpe5-46if.json'
+CAL = os.path.join(HERE, 'docs', 'calendar.json'); FF_URL = 'https://nfs.faireconomy.media/ff_calendar_thisweek.json'   # v1.13 news calendar
 EPIC = os.environ.get('CAPITAL_EPIC_GBP', 'GBPUSD'); EPIC_EUR = os.environ.get('CAPITAL_EPIC_EUR', 'EURUSD')
-RULES = 'v1.12'
+RULES = 'v1.13'
 PASS = dict(pf=1.10, months=3)
-BACKTEST = dict(direction='—', days='98% of weekdays traded, 1 trade a day (2 on ~22 days a year: + holiday sell / FOMC buy) · profit days 63.7%', perday='1.06', win='3.5% hit target · 63.6% closed in profit', pf='1.37',
-                net='+$27,346.73 at 0.10 lot (net/DD 16.4)',
-                source='MT4 test GBP_CROWD v1.12 price vote (his run 14, 23 Nov 2026, spread 1.8 pips), 2010-08..2026-06-19, 4,385 trades (4,059 main + 326 half-size holiday/FOMC); max DD $1,667.28; v1.09 same data: $22,746 / DD $1,420')
+BACKTEST = dict(direction='—', days='98% of weekdays traded, 1 trade a day (2 on ~22 days a year: + holiday sell / FOMC buy) · profit days 64.5%', perday='1.06', win='3.3% hit target · 64.5% closed in profit', pf='1.38',
+                net='+$28,212.42 at 0.10 lot (net/DD 18.4)',
+                source='MT4 test GBP_CROWD v1.13 news-free days (his run 15, 25 Nov 2026, spread 1.8 pips), 2010-08..2026-06-19, 4,385 trades (4,059 main + 326 half-size holiday/FOMC); max DD $1,534.88; v1.12 same data: $27,346.73 / DD $1,667.28; v1.09: $22,746 / DD $1,420')
+
+_CALF = {}                             # v1.13 fallback: direct calendar fetch, at most every 30 min
+def cal_events(fget=None, day=None):
+    """v1.13: the Forex Factory week calendar - docs/calendar.json first; if that does not cover today, a direct fetch (cached 30 min)."""
+    ev = loadj(CAL, [])
+    if day is not None and E.no_news(ev, day) is not None: return ev, None
+    if time.time() - _CALF.get('t', 0) >= 1800:
+        try:
+            new = fget() if fget is not None else requests.get(FF_URL, timeout=10, headers={'User-Agent': 'Mozilla/5.0 (signal-desk)'}).json()
+            _CALF.update(t=time.time(), ev=new if isinstance(new, list) else [])
+        except Exception as ex: _CALF.update(t=time.time(), ev=[]); return ev, f'news calendar fetch failed ({type(ex).__name__})'
+    return (_CALF.get('ev') or ev), None
 
 class FeedError(RuntimeError):
     pass
@@ -221,11 +237,12 @@ def base_card(A=None, rep=None, code=0, md=None, pct=None, hol=False, fom=False,
            4: 'layer 4 (pound stretched vs euro)', 5: 'layer 5 (euro hedge funds trend)', 8: 'layer 6 (euro asset managers moving)',
            9: 'layer 7 (pound corporates crowded)'}.get(abs(code), 'no layer on')
     note = (f"Today: {'BUY' if code > 0 else 'SELL' if code < 0 else 'NO TRADE'} · {lay} · CFTC report of {rp} · 14-day range "
-            + ('—' if A is None else f'{A * 1e4:.0f} pips') + ('' if pct is None else f" · market {'BUSY' if md == 'busy' else 'CALM' if md in ('calm', 'calm_gap') else 'normal'} (range at {100 * pct:.0f}% of its last 250 days)")
+            + ('—' if A is None else f'{A * 1e4:.0f} pips') + ('' if pct is None else f" · market {'BUSY' if md == 'busy' else 'CALM' if md in ('calm', 'calm_gap') else 'NEWS-FREE normal' if md == 'nonews' else 'normal'} (range at {100 * pct:.0f}% of its last 250 days)")
             + (' · BUSY rules: stop 1.25 x range, target 1.5 x stop · ' if md == 'busy' else
                f" · CALM rules: stop 1.0 x range, NO target (closes at the day end), move the stop to entry + 5 pips once +{'0.2' if day_is_tue else '0.25'} x stop in profit; side set at 10:00 against any big overnight GBP-vs-EUR gap, then by a big 1-week move of AUD hedge funds (v1.09), else by the 10:00 price vote (v1.12) · " if md in ('calm', 'calm_gap') else
+               ' · NEWS-FREE day (no high-impact UK/US news on the calendar): CALM rules - stop 1.0 x range, NO target (closes at the day end), move the stop to entry + 5 pips once +0.2 x stop in profit; the 10:00 price vote can switch the side (v1.13) · ' if md == 'nonews' else
                ' · stop 1.0 x range, target 1.0 x stop (close the whole trade there), no half-close · ')
-            + ('TUESDAY: move the stop to entry + 5 pips once +0.2 x stop in profit · ' if (code and day_is_tue and md not in ('calm', 'calm_gap')) else '')
+            + ('TUESDAY: move the stop to entry + 5 pips once +0.2 x stop in profit · ' if (code and day_is_tue and md not in ('calm', 'calm_gap', 'nonews')) else '')
             + ('DAY AFTER A UK/US HOLIDAY: extra HALF-size SELL at 10:00, stop 1.5 x range, no target · ' if hol else '')
             + ('FED DECISION DAY: extra HALF-size BUY at 10:00, stop 1.0 x range, no target, closed at 20:55 broker before the statement · ' if fom else '')
             + 'one trade a day at 10:00 broker (11:00 am Dubai in summer, 12:00 pm in winter) · everything closes at 23:45 broker '
@@ -236,7 +253,7 @@ def base_card(A=None, rep=None, code=0, md=None, pct=None, hol=False, fom=False,
                 cost_note='Results are pips per trade after the spread (at least 1.5 pips). 0.01 lot = 1,000 units = $0.10 per pip.',
                 net_label='Net pips (v1.12 rules, holiday sell / FOMC buy at half size)')
 
-def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eur=None, eoget=None):
+def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eur=None, eoget=None, fget=None):
     global DEADLINE; DEADLINE = time.time() + 75     # own 75 s time budget per market
     now = now or F.broker_now(); day = now.normalize()
     old = loadj(PORTAL, {}); mk = old.setdefault('markets', {})
@@ -315,8 +332,16 @@ def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eu
         dv = E.gap_div(first_open(b, day), first_open(b, t_in), e0, e10_, A, eA)
     code, kS, kT, lk, md = E.mode(code, pct, dv)
     code_gap = code; code, aflip = E.aud_flip(code, md, acode)              # v1.09: calm day -> AUD hedge funds' big 1-week move sets the side
+    nonews = None                                                         # v1.13: normal day (layers 1-3) with no high-impact GBP/USD news -> calm rules
+    if md == 'normal' and abs(code) in (1, 2, 3) and np.isfinite(pct):
+        try:
+            ev, fnote = cal_events(fget, day); nonews = E.no_news(ev, day)
+            if fnote: cnote = (cnote + '; ' if cnote else '') + fnote
+            if nonews is None: cnote = (cnote + '; ' if cnote else '') + 'news calendar does not cover today - v1.12 rules today'
+        except Exception as ex: cnote = (cnote + '; ' if cnote else '') + f'news calendar unavailable ({type(ex).__name__}) - v1.12 rules today'
+        if nonews: md, kT, lk = 'nonews', E.CALM_TGT, True
     vote, vparts, vflip = 0, (0, 0, 0), False                             # v1.12: calm day not AUD-flipped -> 3 price votes at 10:00
-    if md in ('calm', 'calm_gap') and not aflip and code != 0 and now >= t_in + pd.Timedelta(minutes=1):
+    if md in ('calm', 'calm_gap', 'nonews') and not aflip and code != 0 and now >= t_in + pd.Timedelta(minutes=1):
         try:
             pre = b[b.index < t_in]; o10 = first_open(b, t_in)
             dw = dd[dd.index < day].sort_index()
@@ -325,7 +350,7 @@ def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eu
             vote, vparts = E.calm_vote(float(pre.h.max()) if len(pre) else np.nan, float(pre.l.min()) if len(pre) else np.nan, o10, prev, c3, A)
             code, vflip = E.vote_flip(code, md, aflip, vote)
         except Exception as ex: cnote = (cnote + '; ' if cnote else '') + f'calm vote unavailable ({type(ex).__name__}) - v1.09 side today'
-    la = E.LOCK_AT
+    la = E.NONEWS_LOCK_AT if md == 'nonews' else E.LOCK_AT              # v1.13: news-free day locks at +0.2 x stop
     if code != 0 and day.dayofweek == 1: lk, la = True, E.TUE_LOCK_AT        # v1.08 Tuesday: any main trade locks at +0.2 x stop, target unchanged
     A0 = A                                                                # v1.05 holiday sell uses today's own range
     jd = next((d for d in J['days'] if d['date'] == str(day.date())), None)
@@ -351,7 +376,7 @@ def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eu
               final=(bool(t is None and now >= t_in + pd.Timedelta(minutes=E.ENTRY_LATE + 1)) or bool(t and t['status'] != 'open')) and not (ht and ht['status'] == 'open') and not (ft and ft['status'] == 'open'),
               code=int(code), report=None if rep is None else str(pd.Timestamp(rep).date()), mode=md,
               regime=None if not np.isfinite(pct) else round(pct, 3), gap=None if not np.isfinite(dv) else round(dv, 3), code_before_gap=int(code0),
-              aud_code=int(acode), aud_flip=bool(aflip), vote=int(vote), vote_parts=[int(x) for x in vparts], vote_flip=bool(vflip))
+              aud_code=int(acode), aud_flip=bool(aflip), vote=int(vote), vote_parts=[int(x) for x in vparts], vote_flip=bool(vflip), nonews=nonews)
     if t: nd['frozen'] = dict(code=int(code), A=float(A), k=float(kS), t=float(kT), lock=bool(lk), mode=md, la=float(la), aud_flip=bool(aflip), vote_flip=bool(vflip))
     J['days'] = sorted([d for d in J['days'] if d['date'] != str(day.date())] + [nd], key=lambda d: d['date'])
     J['summary'] = summary(J, day); dumpj(J, JOUR, indent=1)
@@ -367,11 +392,11 @@ def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eu
             msg = (f"PAPER {r0['side']} at {r0['price']:.5f} ({r0['time']} Dubai). Stop {r0['stop']:.5f}, target {r0['half_px']:.5f} - "
                    f"close the WHOLE trade at the target; otherwise it closes at {dubai(t_out)} Dubai.") if r0['half_px'] is not None else (
                    f"PAPER {r0['side']} at {r0['price']:.5f} ({r0['time']} Dubai). Stop {r0['stop']:.5f}, no target - it closes at {dubai(t_out)} Dubai.")
-            lkw = 'TUESDAY' if (day.dayofweek == 1 and md not in ('calm', 'calm_gap')) else 'CALM day'
+            lkw = 'NEWS-FREE day' if md == 'nonews' else 'TUESDAY' if (day.dayofweek == 1 and md not in ('calm', 'calm_gap')) else 'CALM day'
             if t.get('lock') and not t.get('locked'): msg += f" {lkw}: when price reaches {t['lock_px']:.5f}, move the stop to {t['lock_stop']:.5f} (entry + 5 pips)."
             elif t.get('locked'): msg += f" Stop now locked at {t['stop']:.5f} (entry + 5 pips) since {dubai(t['locked_t'])} Dubai."
             if aflip: msg += " (Side set by the v1.09 AUD rule: Australian-dollar hedge funds made a big 1-week move - on calm days we follow them.)"
-            elif vflip: msg += " (Side switched at 10:00 by the v1.12 calm-day price vote: price stretched overnight / yesterday / over 3 days - trading the snap-back.)"
+            elif vflip: msg += " (Side switched at 10:00 by the " + ('v1.13 news-free-day' if md == 'nonews' else 'v1.12 calm-day') + " price vote: price stretched overnight / yesterday / over 3 days - trading the snap-back.)"
             elif md == 'calm_gap' and np.sign(code) != np.sign(code0): msg += ' (Side switched at 10:00: GBP ran away from EUR overnight - trading the snap-back.)'
             if md == 'busy': msg += ' BUSY day: wider stop (1.25 x range) and target 1.5 x stop.'
         elif st0 == 'stopped' and t.get('locked'): msg = f"Locked stop hit at {r0['exit_time']} Dubai: {r0['pips']:+.1f} pips. Done for today."
@@ -384,6 +409,7 @@ def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eu
         state, msg = 'waiting', f"Today is a {side} day ({E.LAYER_NAME[abs(code)].split(' · ')[1]}). The trade opens at {dubai(t_in)} Dubai (10:00 broker)."
         if aflip: msg += ' Side set by the v1.09 AUD rule (Australian-dollar hedge funds made a big 1-week move; on calm days we follow them).'
         if md in ('calm', 'calm_gap'): msg += f" CALM market: at 10:00 the side can switch if GBP runs away from EUR overnight, or by the v1.12 price vote; no target; stop moves to entry + 5 pips once +{0.2 if day.dayofweek == 1 else 0.25} x stop in profit."
+        elif md == 'nonews': msg += ' NEWS-FREE day (no high-impact UK/US news on the calendar): calm rules - no target; stop moves to entry + 5 pips once +0.2 x stop in profit; at 10:00 the side can switch by the price vote (v1.13).'
         elif day.dayofweek == 1: msg += ' TUESDAY: stop moves to entry + 5 pips once +0.2 x stop in profit.'
         elif md == 'busy': msg += ' BUSY market: stop 1.25 x range, target 1.5 x stop.'
 
@@ -411,7 +437,7 @@ def main(feed=None, get=None, getd=None, cget=None, now=None, eget=None, cget_eu
                                   eur_amcp=None if (CA is None or amrep is None or not np.isfinite(CA.loc[amrep, 'amcp'])) else round(float(CA.loc[amrep, 'amcp']), 3),
                                   gbp_orp=None if (CO is None or orrep is None or not np.isfinite(CO.loc[orrep, 'orp'])) else round(float(CO.loc[orrep, 'orp']), 3),
                                   aud_chgp=None if (CU is None or arep is None or not np.isfinite(CU.loc[arep, 'audcp'])) else round(float(CU.loc[arep, 'audcp']), 3),
-                                  aud_code=int(acode), aud_flip=bool(aflip), vote=int(vote), vote_parts=[int(x) for x in vparts], vote_flip=bool(vflip)),
+                                  aud_code=int(acode), aud_flip=bool(aflip), vote=int(vote), vote_parts=[int(x) for x in vparts], vote_flip=bool(vflip), nonews=nonews),
                         eurgbp_z=None if not np.isfinite(egz) else round(egz, 2))
     dumpj(old, PORTAL, indent=1)
     print(f'GBP paper: {now} broker | bars {len(b)} | code {code} report {None if rep is None else pd.Timestamp(rep).date()} | A {A * 1e4 if np.isfinite(A) else None} pips | trade {None if not t else t["status"]}')

@@ -187,8 +187,23 @@ def calm_vote(pre_h, pre_l, o10, prev, c3, A):
 
 def vote_flip(code, md, aflip, vote):
     """v1.12: on calm days not already flipped by the AUD rule, a vote against our side replaces it. Returns (code, flipped)."""
-    if code and vote and not aflip and md in ('calm', 'calm_gap') and np.sign(vote) != np.sign(code): return int(np.sign(vote)) * abs(int(code)), True
+    if code and vote and not aflip and md in ('calm', 'calm_gap', 'nonews') and np.sign(vote) != np.sign(code): return int(np.sign(vote)) * abs(int(code)), True   # v1.13: also news-free days
     return int(code), False
+
+NONEWS_LOCK_AT = 0.2                             # v1.13 (25 Nov 2026, MT4 his run 15): news-free normal day -> calm rules, lock at +0.2 x stop
+
+def no_news(events, day):
+    """v1.13: True = no High-impact GBP or USD event on `day` in the Forex Factory week calendar (docs/calendar.json);
+    False = there is one; None = the calendar does not cover the day (rule off -> v1.12 rules).
+    Day key = the event's calendar date in Asia/Tehran time, the same key the MT4 date list was built from (Forex Factory history file)."""
+    key = str(pd.Timestamp(day).date()); seen = set(); hit = False
+    for e in events or []:
+        try: k = str(pd.Timestamp(e['date']).tz_convert('Asia/Tehran').date())
+        except Exception: continue
+        seen.add(k)
+        if k == key and str(e.get('impact', '')).lower().startswith('high') and e.get('country') in ('GBP', 'USD'): hit = True
+    if not seen or not (min(seen) <= key <= max(seen)): return None
+    return not hit
 
 def eg_side(vals):
     """vals = EUR/GBP at 10:00 broker on the trading days BEFORE today, oldest first. Uses the newest 20 (= pandas rolling(20) z of
