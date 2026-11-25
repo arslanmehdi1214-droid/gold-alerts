@@ -722,13 +722,13 @@ function renderRep(one){anbSet();if(HSHOW){renderAllHist(one);return}
 function anbSet(){try{anb.classList.toggle('on',HSHOW)}catch(e){}}
 function renderAllHist(one){
  if(document.activeElement&&(document.activeElement.id==='rpf'||document.activeElement.id==='rpt'))return;
- const RT=one?HR:'analytics',[a,b]=rRange(),R=rAll(one).filter(r=>r.cl&&(!a||r.cl>=a)&&(!b||r.cl<=b)).sort((x,y)=>x.cl-y.cl);
+ const RT=one?HR:'analytics',[a,b]=rRange(),RP=rAll(one).filter(r=>r.cl&&(!a||r.cl>=a)&&(!b||r.cl<=b)).sort((x,y)=>x.cl-y.cl);let R=RP,real=false;if(RT==='analytics'&&realOK()){R=realR(one,a,b);real=true}   /* 25 Nov: Analytics = REAL Capital.com demo deals (docs/demo_hist.json); the desk's paper results stay as one small line */
  const pills=[['today','Today'],['yday','Yesterday'],['24h','24H'],['7d','7D'],['30d','30D'],['90d','90D'],['ytd','YTD'],['all','All'],['custom','Custom']];
- let h=`<div class="rp-top"><h3 class="rp-ttl">${one?one.n:'All markets'} · analytics</h3>${one?`<div class="rp-tabs">${[['transactions','Transactions'],['trades','Trades'],['analytics','Analytics']].map(([k,v])=>`<button data-rt="${k}" class="${HR===k?'on':''}">${v}</button>`).join('')}</div>`:''}
+ let h=`<div class="rp-top"><h3 class="rp-ttl">${one?one.n:'All markets'} · analytics${real?' <small class="dim">· real Capital.com demo account</small>':''}</h3>${one?`<div class="rp-tabs">${[['transactions','Transactions'],['trades','Trades'],['analytics','Analytics']].map(([k,v])=>`<button data-rt="${k}" class="${HR===k?'on':''}">${v}</button>`).join('')}</div>`:''}
   <div class="rp-pills">${pills.map(([k,v])=>`<button data-rp="${k}" class="${HP===k?'on':''}">${v}</button>`).join('')}</div><button class="rp-x" data-rclose>Close</button></div>`;
  if(HP==='custom')h+=`<div class="rp-cust">From <input type="date" id="rpf" value="${HCF}"> to <input type="date" id="rpt" value="${HCT}"> <button data-rapply>Apply</button></div>`;
- if(RT==='analytics')h+=rAnalytics(R,one);else if(RT==='transactions')h+=rTrans(R);else h+=rTrades(R);
- h+=`<div class="hnote">${one?one.n+' only · source: '+one.n+' desk journal (paper trades),':'All desk markets together · source: each market\'s own desk journal (paper trades),'} each trade at 0.01 lot after the spread, in AED. Win rate here = FULL TARGET reached (whole trade closes at one level); a part-profit level (part banked, rest to entry/day-end) is tracked separately, never counted as a target; closed in profit is shown separately. Times = Dubai.</div>`;
+ if(RT==='analytics')h+=rAnalytics(R,one,real?RP:null);else if(RT==='transactions')h+=rTrans(R);else h+=rTrades(R);
+ h+=real?`<div class="hnote">Source: your real Capital.com demo account (every closed deal, in AED; a trade closed in two parts counts as two deals, like Capital.com's own list). Today / Yesterday follow the account's trading day. ${realFrom()} "Desk paper" = what the desk's own simulated journals say, shown only for comparison. Times = Dubai.</div>`:`<div class="hnote">${one?one.n+' only · source: '+one.n+' desk journal (paper trades),':'All desk markets together · source: each market\'s own desk journal (paper trades),'} each trade at 0.01 lot after the spread, in AED. Win rate here = FULL TARGET reached (whole trade closes at one level); a part-profit level (part banked, rest to entry/day-end) is tracked separately, never counted as a target; closed in profit is shown separately. Times = Dubai.</div>`;
  histbox.innerHTML=h;
  histbox.querySelectorAll('[data-rt]').forEach(x=>x.onclick=()=>{HR=x.dataset.rt;HAM=false;renderHist()});
  histbox.querySelectorAll('[data-rp]').forEach(x=>x.onclick=()=>{HP=x.dataset.rp;HAM=false;renderHist()});
@@ -737,8 +737,20 @@ function renderAllHist(one){
  histbox.querySelectorAll('[data-rtop]').forEach(x=>x.onchange=()=>{HTOP=x.value;renderHist()});
  histbox.querySelectorAll('[data-rms]').forEach(x=>x.onchange=()=>{HMS=x.value;renderHist()});
  histbox.querySelectorAll('[data-amore]').forEach(x=>x.onclick=()=>{HAM=!HAM;renderHist()})}
-function rAnalytics(R,one){
- if(!R.length)return '<div class="dim" style="padding:14px 0">No closed trades in this period</div>';
+let DEMO_HIST=null;
+async function pullHist(){try{const j=await jget('demo_hist.json?t='+Date.now(),8000);if(j&&Array.isArray(j.tx)){const n0=DEMO_HIST?DEMO_HIST.tx.length:-1;DEMO_HIST=j;if(HSHOW&&j.tx.length!==n0)renderHist()}}catch(e){}}
+const realOK=()=>!!(DEMO_HIST&&Array.isArray(DEMO_HIST.tx)&&DEMO_HIST.tx.length);
+function realFrom(){if(!realOK())return '';const f0=DEMO_HIST.tx[0].t,d=new Date(/Z|[+-]\d\d:?\d\d$/.test(String(f0))?f0:f0+'Z');return 'Real history saved from '+d.toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'Asia/Dubai'})+(DEMO_HIST.bf_done?'.':' (older days still loading).')}
+function realR(one,a,b){const cur=(DEMO_HIST&&DEMO_HIST.currency)||'AED',out=[],bs=DEMO&&DEMO.day_start_utc?new Date(DEMO.day_start_utc):null;
+ (DEMO_HIST.tx||[]).forEach(x=>{const ts=String(x.t||''),d=new Date(/Z|[+-]\d\d:?\d\d$/.test(ts)?ts:ts+'Z');if(isNaN(d))return;
+  const m=MK.find(z=>z.ep===x.name)||{n:x.name||'?',c:x.name||'?'};if(one&&m.c!==one.c)return;
+  const cl=new Date(+d+4*36e5);   /* Dubai wall time as a UTC-coded date, same as the desk journals */
+  if(HP==='today'&&bs){if(d<bs)return}else if(HP==='yday'&&bs){if(d>=bs||d<new Date(+bs-864e5))return}else{if(a&&cl<a)return;if(b&&cl>b)return}
+  const aed=demoMoney(x.amount,x.currency||cur)[0];if(aed==null||isNaN(aed))return;
+  out.push({m,t:{side:''},d:cl.toISOString().slice(0,10),op:null,cl,aed,has:false,hit:false,phas:false,phit:false,hold:null,real:true})});
+ return out.sort((p,q)=>p.cl-q.cl)}
+function rAnalytics(R,one,RP){
+ if(!R.length)return '<div class="dim" style="padding:14px 0">No closed trades in this period'+(RP?' on the Capital.com demo account':'')+'</div>';
  const n=R.length,pl=R.reduce((s,r)=>s+r.aed,0),win=R.filter(r=>r.aed>0),los=R.filter(r=>r.aed<0),gw=win.reduce((s,r)=>s+r.aed,0),gl=-los.reduce((s,r)=>s+r.aed,0);
  const tg=R.filter(r=>r.has),th=tg.filter(r=>r.hit),hr=tg.length?th.length/tg.length:null,cp=win.length/n,pf=gl>0?gw/gl:null;
  const pg=R.filter(r=>r.phas),ph=pg.filter(r=>r.phit);
@@ -750,17 +762,17 @@ function rAnalytics(R,one){
  return `<div class="rp-grid">
  <div class="rp-card rp-ov"><h4>Overview</h4><div class="rp-ovg">
   <div><div class="rp-lab">Win rate · closed in profit</div><svg viewBox="0 0 120 120" class="rp-donut"><circle cx="60" cy="60" r="52" class="bg"/><circle cx="60" cy="60" r="52" class="fg" stroke-dasharray="${cp*C} ${C}" transform="rotate(-90 60 60)"/><text x="60" y="66">${(cp*100).toFixed(0)}%</text></svg>
-   <div class="rp-sm">${win.length} won · ${los.length} lost (of ${n})</div><div class="rp-sm dim">Hit the full target: ${th.length} of ${tg.length} (only trades that had a target)</div></div>
+   <div class="rp-sm">${win.length} won · ${los.length} lost (of ${n})</div>${RP?'':`<div class="rp-sm dim">Hit the full target: ${th.length} of ${tg.length} (only trades that had a target)</div>`}</div>
   <div><div class="rp-lab">Net profit / loss</div><div class="rp-big ${pl>=0?'pos':'neg'}">${pl>=0?'+':'−'}AED${f(Math.abs(pl),2)}</div>
    <div class="rp-sm"><span class="pos">Made +AED${f(gw,2)}</span> · <span class="neg">Lost −AED${f(gl,2)}</span></div>
-   <div class="rp-lab" style="margin-top:14px">Total trades</div><div class="rp-big">${n}</div></div>
+   <div class="rp-lab" style="margin-top:14px">${RP?'Closed deals':'Total trades'}</div><div class="rp-big">${n}</div></div>
   <div><div class="rp-lab">Profit factor</div><div class="rp-big ${pf!=null&&pf<1?'neg':'pos'}">${pf==null?'—':f(pf,2)}</div><div class="rp-sm">${pf==null?'no losing trade yet':'Made AED'+f(pf,2)+' per AED1 lost'}</div></div>
-  <div><div class="rp-lab">Trade sentiment</div><div class="rp-sent"><span>Short</span><span>Long</span></div><div class="rp-bar"><i style="width:${n?sh/n*100:50}%"></i><b></b></div><div class="rp-sent"><b class="neg">${sh}</b><b class="pos">${lg}</b></div></div></div></div>
+  ${RP?(()=>{const pn=RP.length,pp=RP.reduce((s,r)=>s+r.aed,0),pw=RP.filter(r=>r.aed>0).length;return `<div><div class="rp-lab">Desk paper (simulated)</div><div class="rp-big ${pp>=0?'pos':'neg'}" style="font-size:20px">${pn?(pp>=0?'+':'−')+'AED'+f(Math.abs(pp),2):'—'}</div><div class="rp-sm dim">${pn?pn+' trades · '+Math.round(pw/pn*100)+'% closed in profit':'no paper trades in this period'}</div><div class="rp-sm dim">for comparison only</div></div>`})():`<div><div class="rp-lab">Trade sentiment</div><div class="rp-sent"><span>Short</span><span>Long</span></div><div class="rp-bar"><i style="width:${n?sh/n*100:50}%"></i><b></b></div><div class="rp-sent"><b class="neg">${sh}</b><b class="pos">${lg}</b></div></div>`}</div></div>
  <div class="rp-card${one?' rp-ov':''}"><div class="rp-h"><h4>Top trades</h4><select data-rtop><option value="profit" ${HTOP==='profit'?'selected':''}>Profit</option><option value="loss" ${HTOP==='loss'?'selected':''}>Loss</option></select></div>
-  <div class="rp-th"><span>Market</span><span>Profit &amp; Loss</span></div>${top.map(r=>`<div class="rp-row"><span><b>${r.m.n}</b><small>${rD(r.cl)} ${rT(r.cl)} · ${r.t.side}</small></span>${rA(r.aed)}</div>`).join('')}</div>
+  <div class="rp-th"><span>Market</span><span>Profit &amp; Loss</span></div>${top.map(r=>`<div class="rp-row"><span><b>${r.m.n}</b><small>${rD(r.cl)} ${rT(r.cl)}${r.t.side?' · '+r.t.side:''}</small></span>${rA(r.aed)}</div>`).join('')}</div>
 ${one?'':`<div class="rp-card"><div class="rp-h"><h4>Your markets</h4><select data-rms><option value="most" ${HMS==='most'?'selected':''}>Most profitable</option><option value="least" ${HMS==='least'?'selected':''}>Least profitable</option><option value="traded" ${HMS==='traded'?'selected':''}>Most traded</option></select></div>
   <div class="rp-th rp3"><span>Market</span><span>Trades</span><span>Profit &amp; Loss</span></div>${mk.map(x=>`<div class="rp-row rp3"><span><b>${x.m.n}</b></span><span><em class="rp-n">${x.n}</em></span>${rA(x.pl)}</div>`).join('')}</div>`}
- <div class="rp-card"><h4>Average holding time</h4><div class="rp-kv"><span>Profitable</span><b>${rHm(av(win))}</b></div><div class="rp-kv"><span>Loss making</span><b>${rHm(av(los))}</b></div><div class="rp-kv"><span>Combined</span><b>${rHm(av(R))}</b></div></div>
+ ${RP?'':`<div class="rp-card"><h4>Average holding time</h4><div class="rp-kv"><span>Profitable</span><b>${rHm(av(win))}</b></div><div class="rp-kv"><span>Loss making</span><b>${rHm(av(los))}</b></div><div class="rp-kv"><span>Combined</span><b>${rHm(av(R))}</b></div></div>`}
  <div class="rp-card"><h4>Average return</h4><div class="rp-kv"><span>Profitable trades</span>${rA(win.length?gw/win.length:0)}</div><div class="rp-kv"><span>Loss-making trades</span>${rA(los.length?-gl/los.length:0)}</div><div class="rp-kv"><span>All trades</span>${rA(pl/n)}</div></div>
  </div>`}
 function rTrans(R){
@@ -840,6 +852,6 @@ function renderDemo(){
 }
 buildT();render();applySel();tick();loadDesk();loadCal();setInterval(loadDesk,60000);loadHist();setInterval(loadHist,5*60000);setInterval(loadCal,30*60000);setInterval(tick,1000);
 pullLive();setInterval(pullLive,WORKER_URL?3000:5000);
-pullDemoMap().then(pullDemo);setInterval(pullDemo,5000);setInterval(pullDemoMap,60000);pullSkips();setInterval(pullSkips,60000);
+pullHist();setInterval(pullHist,120000);pullDemoMap().then(pullDemo);setInterval(pullDemo,5000);setInterval(pullDemoMap,60000);pullSkips();setInterval(pullSkips,60000);
 const fixH=()=>document.documentElement.style.setProperty('--hh',document.querySelector('header').offsetHeight+'px');fixH();addEventListener('resize',fixH);
 </script></body></html>
