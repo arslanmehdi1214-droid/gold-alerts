@@ -1,5 +1,5 @@
 {
- "updated": "Wed 25 Nov \u00b7 6:39 am",
+ "updated": "Wed 25 Nov \u00b7 6:40 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 3562.72,
+   "price": 3560.56,
    "close_at": "12:50 am",
-   "change": 2.83,
+   "change": 0.67,
    "size": 0.1,
    "datr": 106.18,
    "open_now": 0,
@@ -324,10 +324,10 @@
     ],
     [
      "6:35 am",
-     3562.72,
+     3560.56,
      3568.8,
      3569.76,
-     3562.54
+     3560.37
     ]
    ],
    "history": [
@@ -1936,8 +1936,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 159.222,
-   "change_pips": -5.2,
+   "price": 159.217,
+   "change_pips": -5.7,
    "atr_pips": 88.9,
    "entries": [],
    "spark": [
@@ -2237,10 +2237,10 @@
     ],
     [
      "6:35 am",
-     159.222,
+     159.217,
      159.229,
      159.239,
-     159.214
+     159.211
     ]
    ],
    "journal": {
@@ -4675,8 +4675,8 @@
    "net_label": "Net $ per barrel (v1.16)",
    "state": "sell",
    "message": "PAPER SELL day \u2014 later signals today are SELL only. Supply day: hold the whole sell (no part-close), the stop stays where it is; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 80.627,
-   "change": -0.72,
+   "price": 80.617,
+   "change": -0.73,
    "entries": [
     {
      "time": "6:12 am",
@@ -5005,7 +5005,7 @@
     ],
     [
      "6:35 am",
-     80.63,
+     80.62,
      80.61,
      80.66,
      80.54
@@ -6640,7 +6640,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.045,
+   "live_spread": 0.04,
    "history_note": "history to 2026-11-24 (60 days)"
   },
   "US500": {
@@ -6672,9 +6672,9 @@
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
-   "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (Night-trade check: Cboe data not available - HTTPError: 403 Client Error: Forbidden for url: https://cdn-api.cboe.com/api/global/delayed_quotes/quotes/_VIX..)",
-   "price": 7161.4,
-   "change": -34.2,
+   "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (high-fear night, but the check ran after 6:06 pm New York - no night trade.)",
+   "price": 7161.9,
+   "change": -33.7,
    "entries": [],
    "spark": [
     [
@@ -7057,7 +7057,7 @@
     ],
     [
      "6:35 am",
-     7161.4,
+     7161.9,
      7160.3,
      7165.4,
      7157.7
@@ -7081,6 +7081,108 @@
     {
      "picks_seen": {},
      "legs_frozen": [],
+     "stress": false,
+     "stress_note": "high-fear night, but the check ran after 6:06 pm New York - no night trade",
+     "v3": false,
+     "v3_detail": {
+      "date": "2026-11-23",
+      "gc_pct": 0.9761904761904762,
+      "cl_pct": 0.8452380952380952,
+      "combo_min": 0.8452380952380952
+     },
+     "v4": false,
+     "v4_detail": {
+      "date": "2026-11-24",
+      "lh_pct": 0.9682539682539683,
+      "lhvol_z": 0.6615665191009544
+     },
+     "v5": false,
+     "v5_detail": {
+      "date": "2026-11-24",
+      "dxy_chg5_pct": 0.5912698412698413,
+      "rs_chg10_pct": 0.6388888888888888,
+      "rs_chg20_pct": 0.9563492063492064
+     },
+     "v6": false,
+     "v7": false,
+     "v7_detail": {
+      "date": "2026-11-24",
+      "mt_lvl_pct": 0.5912698412698413,
+      "cm_chg10_pct": 0.7619047619047619
+     },
+     "v8": false,
+     "v8_detail": {
+      "date": "2026-11-24",
+      "cq_chg10_pct": 0.07539682539682539,
+      "in_chg10_pct": 0.5238095238095238
+     },
+     "v9": false,
+     "v9_detail": {
+      "date": "2026-11-24",
+      "du_chg10_pct": 0.6309523809523809,
+      "tk_chg10_pct": 0.1626984126984127
+     },
+     "v10": false,
+     "v10_detail": {
+      "date": "2026-11-24",
+      "bk_chg10_pct": 0.6825396825396826,
+      "es_cot_pct": 1.0
+     },
+     "v12": false,
+     "v13": false,
+     "v13_detail": {
+      "date": "2026-11-24",
+      "msciem_cot_pct": 0.11538461538461539,
+      "cm_chg10_pct": 0.7619047619047619
+     },
+     "v14": false,
+     "v14_detail": {
+      "date": "2026-11-24",
+      "brlfx_cot_chg4_pct": 0.9230769230769231,
+      "ust2y_cot_chg4_pct": 0.3269230769230769
+     },
+     "v16": false,
+     "v16_detail": {
+      "date": "2026-11-24",
+      "ust5y_cot_chg4_pct": 0.23076923076923078,
+      "cq_chg10_pct": 0.07539682539682539
+     },
+     "v18": false,
+     "v18_detail": {
+      "date": "2026-11-24",
+      "mbtc_cot_chg4_pct": 0.5,
+      "ng_lvl_pct": 0.7301587301587301
+     },
+     "v19": false,
+     "v19_detail": {
+      "date": "2026-11-24",
+      "ultbond_cot_pct": 0.40384615384615385,
+      "msciem_cot_pct": 0.11538461538461539
+     },
+     "v20": false,
+     "v20_detail": {
+      "date": "2026-11-24",
+      "es_am_chg4_pct": 0.15384615384615385,
+      "cp_chg10_pct": 0.8650793650793651
+     },
+     "v21": false,
+     "v21_detail": {
+      "date": "2026-11-24",
+      "vixf_oth_chg4_pct": 0.28846153846153844,
+      "chffx_cot_chg4_pct": 0.07692307692307693
+     },
+     "v22": false,
+     "v22_detail": {
+      "date": "2026-11-24",
+      "ust2y_nr_chg4_pct": 0.7307692307692307,
+      "msciem_cot_chg4_pct": 0.3269230769230769
+     },
+     "v23": false,
+     "v23_detail": {
+      "date": "2026-11-24",
+      "uti2_nr_chg4_pct": 0.3076923076923077,
+      "tr_chg10_pct": 0.4801587301587302
+     },
      "date": "2026-11-25",
      "rules": "v1.26",
      "label": "Wed 25 Nov",
@@ -9384,8 +9486,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 25940.7,
-   "change": -268.3,
+   "price": 25944.1,
+   "change": -264.9,
    "entries": [],
    "spark": [
     [
@@ -9768,7 +9870,7 @@
     ],
     [
      "6:35 am",
-     25940.7,
+     25944.1,
      25932.8,
      25967.2,
      25916.6
@@ -11253,8 +11355,8 @@
    "regime": 0.68,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker).",
-   "price": 1.31059,
-   "change": -8e-05,
+   "price": 1.31073,
+   "change": 6e-05,
    "entries": [],
    "spark": [
     [
@@ -11637,7 +11739,7 @@
     ],
     [
      "6:35 am",
-     1.31059,
+     1.31073,
      1.31085,
      1.31088,
      1.31058
@@ -13141,8 +13243,8 @@
    },
    "state": "waiting",
    "message": "Wednesday - checking the 10:00\u219214:00 broker move against its 60-day spread (enters 14:00 broker if big enough).",
-   "price": 87.906,
-   "change": -0.8,
+   "price": 87.886,
+   "change": -0.82,
    "entries": [],
    "spark": [
     [
@@ -13357,7 +13459,7 @@
     ],
     [
      "6:35 am",
-     87.91,
+     87.89,
      87.87,
      87.94,
      87.8
