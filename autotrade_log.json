@@ -1,19 +1,5 @@
 [
  {
-  "action": "skip",
-  "detail": "OIL|2026-11-10|5:00 am|BUY|Last week's high/low: real risk 16.93 AED after lot rounding > 1.4x target 10.0 AED",
-  "market": "OIL",
-  "ok": false,
-  "t": "Tue 10 Nov 5:01 AM"
- },
- {
-  "action": "OPEN SELL rest",
-  "detail": "GOLD|2026-11-10|8:00 am|SELL|N2 near100 size 0.18 at 4110.08 stop 4154.48 | trade risk 28.8 AED",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Tue 10 Nov 8:01 AM"
- },
- {
   "action": "OPEN SELL part",
   "detail": "USDJPY|2026-11-10|8:00 am|SELL|Heikin-Ashi 7am size 600.0 at 157.952 stop 158.653 target 157.934 | trade risk 9.74 AED",
   "market": "USDJPY",
@@ -2798,5 +2784,19 @@
   "market": "GOLD",
   "ok": true,
   "t": "Wed 25 Nov 3:33 PM"
+ },
+ {
+  "action": "close rest",
+  "detail": "GOLD|2026-11-25|3:32 pm|BUY|FILL range fade (desk: reversed) ",
+  "market": "GOLD",
+  "ok": true,
+  "t": "Wed 25 Nov 4:00 PM"
+ },
+ {
+  "action": "OPEN SELL rest",
+  "detail": "GOLD|2026-11-25|3:59 pm|SELL|U2 round size 0.15 at 3492.31 stop 3547.71 | trade risk 29.52 AED",
+  "market": "GOLD",
+  "ok": true,
+  "t": "Wed 25 Nov 4:00 PM"
  }
 ]
