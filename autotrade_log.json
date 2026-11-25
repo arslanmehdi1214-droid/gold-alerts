@@ -1,19 +1,5 @@
 [
  {
-  "action": "OPEN BUY rest",
-  "detail": "US500|2026-11-09|7:01 pm|BUY|S&P big day move by 10 am New York -> follow (2nd leg) size 0.08 at 7506.2 stop 7403.6 | trade risk 27.97 AED",
-  "market": "US500",
-  "ok": true,
-  "t": "Mon 9 Nov 7:02 PM"
- },
- {
-  "action": "close rest",
-  "detail": "OIL|2026-11-09|3:11 pm|SELL|Open \u00b1 \u00bd range (desk: close_now) ",
-  "market": "OIL",
-  "ok": true,
-  "t": "Mon 9 Nov 11:00 PM"
- },
- {
   "action": "close rest",
   "detail": "OIL|2026-11-09|3:17 pm|SELL|Open \u00b1 0.7 range (desk: close_now) ",
   "market": "OIL",
@@ -2798,5 +2784,19 @@
   "market": "USDJPY",
   "ok": true,
   "t": "Wed 25 Nov 8:01 AM"
+ },
+ {
+  "action": "OPEN SELL part",
+  "detail": "USDJPY|2026-11-25|11:29 am|SELL|EMA10 break size 500.0 at 159.106 stop 159.775 target 159.051 | trade risk 29.69 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Wed 25 Nov 11:30 AM"
+ },
+ {
+  "action": "OPEN SELL rest",
+  "detail": "USDJPY|2026-11-25|11:29 am|SELL|EMA10 break size 1400.0 at 159.106 stop 159.775 | trade risk 29.69 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Wed 25 Nov 11:30 AM"
  }
 ]
