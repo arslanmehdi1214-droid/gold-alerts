@@ -1459,19 +1459,42 @@
   {
    "date": "2026-11-25",
    "label": "Wed 25 Nov",
-   "side": null,
-   "trades": [],
+   "side": "BUY",
+   "trades": [
+    {
+     "time": "3:32 pm",
+     "side": "BUY",
+     "tag": "FILL range fade",
+     "price": 3516.26,
+     "stop": 3463.17,
+     "stop0": 3463.17,
+     "half_px": null,
+     "half": false,
+     "half_time": null,
+     "size": 0.1,
+     "status": "open",
+     "first": true,
+     "exit": null,
+     "exit_time": null,
+     "pnl": null,
+     "pnl_oz": null,
+     "size_x": 1.5,
+     "rwf": null,
+     "next": "Hold to the stop 3463.17 or the day-end close \u00b7 no half-close \u00b7 size x1.5",
+     "late": false
+    }
+   ],
    "skipped": 0,
    "final": false
   }
  ],
  "summary": {
   "since": "03 Oct 2026",
-  "trades": 58,
+  "trades": 59,
   "direction": 37.5,
   "decided": 16,
-  "days": 94.7,
-  "perday": 1.53,
+  "days": 97.4,
+  "perday": 1.55,
   "avg_pnl": 3.66,
   "closed": 58,
   "total_pnl_01": 21.25
