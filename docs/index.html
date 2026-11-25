@@ -707,7 +707,8 @@ function rAll(only){const out=[];HMK.filter(m=>!only||m.c===only.c).forEach(m=>{
   const has=full,hit=full&&t.status==='target',phas=partSch,phit=partSch&&!!t.half;
   out.push({m,t,d:d.date,op,cl,aed:u*AED,has,hit,phas,phit,hold:op&&cl?Math.max(0,(cl-op)/6e4):null})}))});return out}
 function rRange(){const n=rNow(),day=864e5;let a=null,b=null;
- if(HP==='24h')a=new Date(n-day);else if(HP==='7d')a=new Date(n-7*day);else if(HP==='30d')a=new Date(n-30*day);else if(HP==='90d')a=new Date(n-90*day);
+ if(HP==='today')a=new Date(Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate()));else if(HP==='yday'){a=new Date(Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate()-1));b=new Date(Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate()-1,23,59,59))}
+ else if(HP==='24h')a=new Date(n-day);else if(HP==='7d')a=new Date(n-7*day);else if(HP==='30d')a=new Date(n-30*day);else if(HP==='90d')a=new Date(n-90*day);
  else if(HP==='ytd')a=new Date(Date.UTC(n.getUTCFullYear(),0,1));else if(HP==='custom'){if(HCF)a=new Date(HCF+'T00:00:00Z');if(HCT)b=new Date(HCT+'T23:59:59Z')}
  return [a,b]}
 const rD=d=>{const n=rNow(),k=d.toISOString().slice(0,10),t=n.toISOString().slice(0,10),y=new Date(n-864e5).toISOString().slice(0,10);return k===t?'Today':k===y?'Yesterday':d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'})};
@@ -722,7 +723,7 @@ function anbSet(){try{anb.classList.toggle('on',HSHOW)}catch(e){}}
 function renderAllHist(one){
  if(document.activeElement&&(document.activeElement.id==='rpf'||document.activeElement.id==='rpt'))return;
  const RT=one?HR:'analytics',[a,b]=rRange(),R=rAll(one).filter(r=>r.cl&&(!a||r.cl>=a)&&(!b||r.cl<=b)).sort((x,y)=>x.cl-y.cl);
- const pills=[['24h','24H'],['7d','7D'],['30d','30D'],['90d','90D'],['ytd','YTD'],['all','All'],['custom','Custom']];
+ const pills=[['today','Today'],['yday','Yesterday'],['24h','24H'],['7d','7D'],['30d','30D'],['90d','90D'],['ytd','YTD'],['all','All'],['custom','Custom']];
  let h=`<div class="rp-top"><h3 class="rp-ttl">${one?one.n:'All markets'} · analytics</h3>${one?`<div class="rp-tabs">${[['transactions','Transactions'],['trades','Trades'],['analytics','Analytics']].map(([k,v])=>`<button data-rt="${k}" class="${HR===k?'on':''}">${v}</button>`).join('')}</div>`:''}
   <div class="rp-pills">${pills.map(([k,v])=>`<button data-rp="${k}" class="${HP===k?'on':''}">${v}</button>`).join('')}</div><button class="rp-x" data-rclose>Close</button></div>`;
  if(HP==='custom')h+=`<div class="rp-cust">From <input type="date" id="rpf" value="${HCF}"> to <input type="date" id="rpt" value="${HCT}"> <button data-rapply>Apply</button></div>`;
@@ -748,11 +749,11 @@ function rAnalytics(R,one){
  const mk=Object.values(bm).sort((x,y)=>HMS==='least'?x.pl-y.pl:HMS==='traded'?y.n-x.n:y.pl-x.pl);
  return `<div class="rp-grid">
  <div class="rp-card rp-ov"><h4>Overview</h4><div class="rp-ovg">
-  <div><div class="rp-lab">Win rate · hit target</div><svg viewBox="0 0 120 120" class="rp-donut"><circle cx="60" cy="60" r="52" class="bg"/><circle cx="60" cy="60" r="52" class="fg" stroke-dasharray="${arc} ${C}" transform="rotate(-90 60 60)"/><text x="60" y="66">${hr==null?'—':(hr*100).toFixed(1)+'%'}</text></svg>
-   <div class="rp-sm">${th.length} of ${tg.length} trades with a target</div>${pg.length?`<div class="rp-sm dim">part-profit only (not a target): ${ph.length} of ${pg.length}</div>`:''}</div>
-  <div><div class="rp-lab">Profit and loss</div><div class="rp-big ${pl>=0?'pos':'neg'}">${pl>=0?'+':'−'}AED${f(Math.abs(pl),2)}</div>
-   <div class="rp-lab" style="margin-top:14px">Total trades</div><div class="rp-big">${n}</div>
-   <div class="rp-lab" style="margin-top:14px">Closed in profit</div><div class="rp-mid">${(cp*100).toFixed(1)}% <span class="dim">(${win.length} of ${n})</span></div></div>
+  <div><div class="rp-lab">Win rate · closed in profit</div><svg viewBox="0 0 120 120" class="rp-donut"><circle cx="60" cy="60" r="52" class="bg"/><circle cx="60" cy="60" r="52" class="fg" stroke-dasharray="${cp*C} ${C}" transform="rotate(-90 60 60)"/><text x="60" y="66">${(cp*100).toFixed(0)}%</text></svg>
+   <div class="rp-sm">${win.length} won · ${los.length} lost (of ${n})</div><div class="rp-sm dim">Hit the full target: ${th.length} of ${tg.length} (only trades that had a target)</div></div>
+  <div><div class="rp-lab">Net profit / loss</div><div class="rp-big ${pl>=0?'pos':'neg'}">${pl>=0?'+':'−'}AED${f(Math.abs(pl),2)}</div>
+   <div class="rp-sm"><span class="pos">Made +AED${f(gw,2)}</span> · <span class="neg">Lost −AED${f(gl,2)}</span></div>
+   <div class="rp-lab" style="margin-top:14px">Total trades</div><div class="rp-big">${n}</div></div>
   <div><div class="rp-lab">Profit factor</div><div class="rp-big ${pf!=null&&pf<1?'neg':'pos'}">${pf==null?'—':f(pf,2)}</div><div class="rp-sm">${pf==null?'no losing trade yet':'Made AED'+f(pf,2)+' per AED1 lost'}</div></div>
   <div><div class="rp-lab">Trade sentiment</div><div class="rp-sent"><span>Short</span><span>Long</span></div><div class="rp-bar"><i style="width:${n?sh/n*100:50}%"></i><b></b></div><div class="rp-sent"><b class="neg">${sh}</b><b class="pos">${lg}</b></div></div></div></div>
  <div class="rp-card${one?' rp-ov':''}"><div class="rp-h"><h4>Top trades</h4><select data-rtop><option value="profit" ${HTOP==='profit'?'selected':''}>Profit</option><option value="loss" ${HTOP==='loss'?'selected':''}>Loss</option></select></div>
