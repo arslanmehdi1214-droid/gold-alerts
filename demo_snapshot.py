@@ -56,6 +56,56 @@ def build(api, now=None):
                 positions=positions, closed_today=closed, realized_today=realized, day_start_utc=start.strftime('%Y-%m-%dT%H:%M:%S.000Z'),
                 errors=errors, snapshot=True)
 
+HIST = os.path.join(A.HERE, 'docs', 'demo_hist.json')
+HIST_KEEP_DAYS = 120          # closed deals older than this are dropped from the saved history
+HIST_BACKFILL_DAYS = 30       # one-time look-back (done a few days per pass, read-only)
+
+def _hist_load():
+    try:
+        with open(HIST) as f: j = json.load(f)
+        if isinstance(j, dict) and isinstance(j.get('tx'), list): return j
+    except Exception: pass
+    return dict(tx=[], bf_from=None, bf_done=False, bf_fail=0)
+
+def _tx_row(x):
+    return dict(t=x.get('dateUtc') or x.get('t'), name=x.get('instrumentName') or x.get('name'), amount=_f(x.get('size') if 'size' in x else x.get('amount')),
+                currency=x.get('currency'), note=x.get('note'), ref=x.get('reference') or x.get('ref'))
+
+def update_hist(api, body, now=None):
+    """25 Nov: the dashboard's Analytics now shows the REAL Capital.com demo results. Keeps docs/demo_hist.json = every closed deal
+    (same fields as closed_today) - merged from each pass's closed_today (no extra API call), plus a one-time read-only look-back of
+    HIST_BACKFILL_DAYS days done a few days per pass. Read-only on the demo server; any failure only goes into 'errors'."""
+    now = now or dt.datetime.now(dt.timezone.utc)
+    h = _hist_load(); tx = h['tx']; seen = {(r.get('ref'), r.get('t'), r.get('amount')) for r in tx}; added = 0
+    for x in body.get('closed_today') or []:
+        r = _tx_row(x); k = (r['ref'], r['t'], r['amount'])
+        if k not in seen and r['t'] and r['amount'] is not None: tx.append(r); seen.add(k); added += 1
+    errs = []
+    if not h.get('bf_done') and h.get('bf_fail', 0) < 6:
+        iso = lambda d: d.strftime('%Y-%m-%dT%H:%M:%S')
+        end = dt.datetime.fromisoformat(h['bf_from']).replace(tzinfo=dt.timezone.utc) if h.get('bf_from') else broker_day_start_utc(now)
+        floor = now - dt.timedelta(days=HIST_BACKFILL_DAYS)
+        for _ in range(4):                                                    # at most 4 one-day windows per pass
+            if end <= floor: h['bf_done'] = True; break
+            beg = end - dt.timedelta(days=1)
+            try:
+                t = _get(api, '/api/v1/history/transactions?type=TRADE&from=%s&to=%s' % (iso(beg), iso(end - dt.timedelta(seconds=1))))
+                for x in t.get('transactions', []):
+                    r = _tx_row(x); k = (r['ref'], r['t'], r['amount'])
+                    if k not in seen and r['t'] and r['amount'] is not None: tx.append(r); seen.add(k); added += 1
+                end = beg; h['bf_from'] = iso(end); h['bf_fail'] = 0
+            except Exception as e:
+                h['bf_fail'] = h.get('bf_fail', 0) + 1; errs.append('backfill %s: %s' % (iso(beg)[:10], str(e)[:100])); break
+    cut = (now - dt.timedelta(days=HIST_KEEP_DAYS)).strftime('%Y-%m-%dT%H:%M:%S')
+    tx = [r for r in tx if str(r.get('t') or '') >= cut]; tx.sort(key=lambda r: str(r.get('t') or ''))
+    out = dict(at=now.strftime('%Y-%m-%dT%H:%M:%S.000Z'), currency=(body.get('account') or {}).get('currency'), tx=tx,
+               bf_from=h.get('bf_from'), bf_done=bool(h.get('bf_done')), bf_fail=h.get('bf_fail', 0), errors=errs[-3:])
+    if added or errs or not os.path.exists(HIST):
+        tmp = HIST + '.tmp'
+        with open(tmp, 'w') as f: json.dump(out, f, separators=(',', ':'))
+        os.replace(tmp, HIST)
+    return '%d deals saved (+%d)%s' % (len(tx), added, '' if not errs else ', ' + errs[-1])
+
 def write(api=None):
     if os.environ.get('CAPITAL_DEMO', '1') != '1': return 'off'              # never anything but the demo
     api = api or A.Demo()
@@ -64,7 +114,10 @@ def write(api=None):
     tmp = OUT + '.tmp'
     with open(tmp, 'w') as f: json.dump(body, f, separators=(',', ':'))
     os.replace(tmp, OUT)
-    return 'saved %d open, %d closed today' % (len(body['positions']), len(body['closed_today']))
+    msg = 'saved %d open, %d closed today' % (len(body['positions']), len(body['closed_today']))
+    try: msg += ' | history: ' + update_hist(api, body)                       # never lets a history problem touch the live copy above
+    except Exception as e: msg += ' | history error: %s %s' % (type(e).__name__, str(e)[:100])
+    return msg
 
 if __name__ == '__main__':
     print(write())
