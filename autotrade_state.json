@@ -1,15 +1,15 @@
 {
- "balance": 1627.68,
+ "balance": 1627.98,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-26",
-  "pl": 0.06,
+  "pl": 0.66,
   "start_balance": 1627.65,
   "start_equity": 1627.65,
   "stopped": false
  },
- "open_positions": 2,
- "open_risk_aed": 18.28,
+ "open_positions": 3,
+ "open_risk_aed": 46.94,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-23|5:46 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -192,6 +192,26 @@
    "side": "BUY",
    "state": "closed",
    "stop": 1.29835
+  },
+  "GBPUSD|2026-11-26|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded": {
+   "desk_price": 1.31032,
+   "market": "GBPUSD",
+   "opened_at": "Thu 26 Nov 12:01 PM",
+   "overnight": false,
+   "part_x": 0.0,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-76f9-2440-0495-7fc60004511e",
+    "level": 1.31065,
+    "open": true,
+    "size": 900.0,
+    "tp": null
+   },
+   "risk_aed": 28.66,
+   "risk_usd": 8.17,
+   "side": "BUY",
+   "state": "open",
+   "stop": 1.30165
   },
   "GOLD|2026-11-22|2:01 pm|BUY|FILL range fade": {
    "at": "Sun 22 Nov 2:00 AM",
