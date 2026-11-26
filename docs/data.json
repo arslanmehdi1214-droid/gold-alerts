@@ -1,5 +1,5 @@
 {
- "updated": "Thu 26 Nov \u00b7 11:15 pm",
+ "updated": "Thu 26 Nov \u00b7 11:16 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -1751,6 +1751,13 @@
      3566.9,
      3567.22,
      3566.77
+    ],
+    [
+     "11:15 pm",
+     3566.93,
+     3566.92,
+     3566.96,
+     3566.87
     ]
    ],
    "history": [
@@ -3359,8 +3366,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 159.263,
-   "change_pips": 11.2,
+   "price": 159.262,
+   "change_pips": 11.1,
    "atr_pips": 87.9,
    "entries": [
     {
@@ -5145,6 +5152,13 @@
      159.263,
      159.267,
      159.261
+    ],
+    [
+     "11:15 pm",
+     159.262,
+     159.262,
+     159.263,
+     159.26
     ]
    ],
    "journal": {
@@ -7686,8 +7700,8 @@
    "net_label": "Net $ per barrel (v1.18)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 84.509,
-   "change": 0.82,
+   "price": 84.534,
+   "change": 0.85,
    "entries": [
     {
      "time": "2:53 pm",
@@ -9413,6 +9427,13 @@
      84.56,
      84.6,
      84.51
+    ],
+    [
+     "11:15 pm",
+     84.53,
+     84.52,
+     84.54,
+     84.51
     ]
    ],
    "journal": {
@@ -11048,7 +11069,7 @@
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
-   "message": "S&P paper update failed at 11:15 pm Dubai (FeedError: price bars missing between 11:08 pm-11:13 pm Dubai) \u2014 shows the last good update; retries every minute.",
+   "message": "S&P paper update failed at 11:16 pm Dubai (FeedError: price bars missing between 11:08 pm-11:13 pm Dubai) \u2014 shows the last good update; retries every minute.",
    "price": 7221.4,
    "change": 46.1,
    "entries": [],
@@ -20507,6 +20528,13 @@
      1.31057,
      1.31063,
      1.3105
+    ],
+    [
+     "11:15 pm",
+     1.3105,
+     1.31049,
+     1.3105,
+     1.31049
     ]
    ],
    "journal": {
@@ -22112,7 +22140,7 @@
     "note": "DEMO / FORWARD TEST ONLY - no target, they close on time (21:30 broker); % = closed in profit, not hit target. Live v1.10 rules unchanged."
    },
    "state": "none",
-   "message": "Brent paper update failed at 11:15 pm Dubai (FeedError: newest closed price bar (10:29 pm Dubai) is 45 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
+   "message": "Brent paper update failed at 11:16 pm Dubai (FeedError: newest closed price bar (10:29 pm Dubai) is 46 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
    "price": 92.789,
    "change": 0.42,
    "entries": [],
