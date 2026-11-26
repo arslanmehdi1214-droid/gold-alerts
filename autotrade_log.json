@@ -1,12 +1,5 @@
 [
  {
-  "action": "close rest",
-  "detail": "BRENT|2026-11-10|12:33 pm|SELL|Rule C \u00b7 20-day range break (desk: closed (conflict)) ",
-  "market": "BRENT",
-  "ok": true,
-  "t": "Tue 10 Nov 9:01 PM"
- },
- {
   "action": "OPEN BUY part",
   "detail": "US100|2026-11-10|10:54 pm|BUY|US+10 H1 U2 only when vol high (>1.1) size 0.005 at 27609.6 stop 27260.9 target 27780.0 | trade risk 29.08 AED",
   "market": "US100",
@@ -2798,5 +2791,12 @@
   "market": "OIL",
   "ok": false,
   "t": "Thu 26 Nov 3:13 PM"
+ },
+ {
+  "action": "close rest",
+  "detail": "OIL|2026-11-26|2:53 pm|BUY|Whole dollar (desk: be) ",
+  "market": "OIL",
+  "ok": true,
+  "t": "Thu 26 Nov 3:14 PM"
  }
 ]

@@ -1,15 +1,15 @@
 {
- "balance": 1627.79,
+ "balance": 1626.34,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-26",
-  "pl": 0.28,
+  "pl": -2.62,
   "start_balance": 1627.65,
   "start_equity": 1627.65,
   "stopped": false
  },
- "open_positions": 5,
- "open_risk_aed": 88.67,
+ "open_positions": 4,
+ "open_risk_aed": 75.85,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-23|5:46 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -473,16 +473,17 @@
    "part_x": 0.25,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "desk: be",
     "id": "00000000-76fa-7a9d-0495-7fc60004511e",
     "level": 84.124,
-    "open": true,
+    "open": false,
     "size": 1.0,
     "tp": null
    },
    "risk_aed": 12.82,
    "risk_usd": 2.72,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 80.53
   },
   "US100|2026-11-23|4:50 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am": {
