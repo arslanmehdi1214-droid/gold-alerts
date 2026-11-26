@@ -1,5 +1,5 @@
 {
- "updated": "Thu 26 Nov \u00b7 10:30 pm",
+ "updated": "Thu 26 Nov \u00b7 10:31 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "sell",
    "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 3568.48,
+   "price": 3568.49,
    "close_at": "12:50 am",
-   "change": -20.2,
+   "change": -20.19,
    "size": 0.1,
    "datr": 111.43,
    "open_now": 1,
@@ -1684,10 +1684,17 @@
     ],
     [
      "10:25 pm",
-     3568.48,
+     3568.3,
      3568.13,
      3568.91,
      3568.11
+    ],
+    [
+     "10:30 pm",
+     3568.49,
+     3568.29,
+     3568.56,
+     3568.29
     ]
    ],
    "history": [
@@ -5019,6 +5026,13 @@
      159.289,
      159.291,
      159.278
+    ],
+    [
+     "10:30 pm",
+     159.281,
+     159.28,
+     159.282,
+     159.28
     ]
    ],
    "journal": {
@@ -7560,8 +7574,8 @@
    "net_label": "Net $ per barrel (v1.18)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 84.526,
-   "change": 0.84,
+   "price": 84.484,
+   "change": 0.8,
    "entries": [
     {
      "time": "2:53 pm",
@@ -9224,6 +9238,13 @@
      84.41,
      84.53,
      84.38
+    ],
+    [
+     "10:30 pm",
+     84.48,
+     84.52,
+     84.55,
+     84.48
     ]
    ],
    "journal": {
@@ -10859,7 +10880,7 @@
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
-   "message": "S&P paper update failed at 10:30 pm Dubai (FeedError: newest closed price bar (10:23 pm Dubai) is 6 min old) \u2014 shows the last good update; retries every minute.",
+   "message": "S&P paper update failed at 10:31 pm Dubai (FeedError: newest closed price bar (10:23 pm Dubai) is 7 min old) \u2014 shows the last good update; retries every minute.",
    "price": 7221.4,
    "change": 46.1,
    "entries": [],
@@ -15142,8 +15163,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 26177.8,
-   "change": 226.4,
+   "price": 26177.7,
+   "change": 226.3,
    "entries": [
     {
      "time": "4:03 pm",
@@ -16889,6 +16910,13 @@
      26177.6,
      26177.8,
      26177.6
+    ],
+    [
+     "10:30 pm",
+     26177.7,
+     26177.7,
+     26177.7,
+     26177.7
     ]
    ],
    "journal": {
@@ -18445,8 +18473,8 @@
    "regime": 0.704,
    "gap": null,
    "message": "Locked stop hit at 6:40 pm Dubai: +3.5 pips. Done for today.",
-   "price": 1.31078,
-   "change": -0.00069,
+   "price": 1.31077,
+   "change": -0.0007,
    "entries": [
     {
      "time": "12:00 pm",
@@ -20192,6 +20220,13 @@
      1.31077,
      1.31079,
      1.31074
+    ],
+    [
+     "10:30 pm",
+     1.31077,
+     1.31077,
+     1.31078,
+     1.31077
     ]
    ],
    "journal": {
