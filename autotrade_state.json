@@ -1,15 +1,15 @@
 {
- "balance": 1621.46,
+ "balance": 1620.52,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-27",
-  "pl": 0.14,
+  "pl": -1.74,
   "start_balance": 1621.32,
   "start_equity": 1619.72,
   "stopped": false
  },
- "open_positions": 3,
- "open_risk_aed": 38.83,
+ "open_positions": 0,
+ "open_risk_aed": 0,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-23|5:46 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -342,16 +342,17 @@
    "part_x": 0.0,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "left over from an earlier day",
     "id": "00000000-76fa-342b-0495-7fc60004511e",
     "level": 3562.21,
-    "open": true,
+    "open": false,
     "size": 0.14,
     "tp": null
    },
    "risk_aed": 28.91,
    "risk_usd": 8.17,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 3618.41
   },
   "OIL|2026-11-23|3:12 pm|SELL|Whole dollar": {
@@ -593,25 +594,27 @@
    "opened_at": "Thu 26 Nov 4:04 PM",
    "overnight": false,
    "part": {
+    "closed_by": "left over from an earlier day",
     "id": "00000000-76fa-fa4e-0495-7fc60004511e",
     "level": 26224.6,
-    "open": true,
+    "open": false,
     "size": 0.001,
     "tp": 26065.0
    },
    "part_x": 0.15,
    "px_adj": 0.0,
    "rest": {
+    "closed_by": "left over from an earlier day",
     "id": "00000000-76fa-fa5d-0495-7fc60004511e",
     "level": 26224.7,
-    "open": true,
+    "open": false,
     "size": 0.009,
     "tp": null
    },
    "risk_aed": 9.92,
    "risk_usd": 2.72,
    "side": "SELL",
-   "state": "open",
+   "state": "closed",
    "stop": 26470.0
   },
   "US500|2026-11-23|3:01 am|BUY|Night long (high-fear night: VIX / VVIX)": {
