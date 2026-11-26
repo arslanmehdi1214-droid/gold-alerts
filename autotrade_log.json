@@ -1,250 +1,5 @@
 [
  {
-  "action": "OPEN BUY part",
-  "detail": "US100|2026-11-19|2:01 pm|BUY|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm size 0.005 at 27610.6 stop 27213.6 target 27795.9 | trade risk 29.8 AED",
-  "market": "US100",
-  "ok": true,
-  "t": "Thu 19 Nov 2:02 PM"
- },
- {
-  "action": "OPEN BUY rest",
-  "detail": "US100|2026-11-19|2:01 pm|BUY|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm size 0.016 at 27610.7 stop 27213.6 | trade risk 29.8 AED",
-  "market": "US100",
-  "ok": true,
-  "t": "Thu 19 Nov 2:02 PM"
- },
- {
-  "action": "OPEN BUY rest",
-  "detail": "GOLD|2026-11-19|3:22 pm|BUY|FILL range fade size 0.16 at 3727.03 stop 3675.61 | trade risk 29.69 AED",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Thu 19 Nov 3:23 PM"
- },
- {
-  "action": "stop moved",
-  "detail": "OIL|2026-11-19|5:54 am|BUY|Last week's high/low to 83.02 (stop to entry: each position at its own fill price)",
-  "market": "OIL",
-  "ok": true,
-  "t": "Thu 19 Nov 4:49 PM"
- },
- {
-  "action": "close rest",
-  "detail": "OIL|2026-11-19|5:54 am|BUY|Last week's high/low (desk: be) ",
-  "market": "OIL",
-  "ok": true,
-  "t": "Thu 19 Nov 5:01 PM"
- },
- {
-  "action": "OPEN BUY part",
-  "detail": "USDJPY|2026-11-19|5:08 pm|BUY|Squeeze 4pm size 2900.0 at 159.974 stop 159.742 target 160.087 | trade risk 29.8 AED",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Thu 19 Nov 5:09 PM"
- },
- {
-  "action": "OPEN BUY rest",
-  "detail": "USDJPY|2026-11-19|5:08 pm|BUY|Squeeze 4pm size 3000.0 at 159.974 stop 159.742 | trade risk 29.8 AED",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Thu 19 Nov 5:09 PM"
- },
- {
-  "action": "part closed on demo",
-  "detail": "USDJPY|2026-11-19|2:00 pm|BUY|Week-so-far break",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Thu 19 Nov 5:10 PM"
- },
- {
-  "action": "OPEN SELL rest",
-  "detail": "US500|2026-11-19|6:40 pm|SELL|S&P 9:40 am New York opening move size 0.06 at 7389.8 stop 7505.6 | trade risk 27.43 AED",
-  "market": "US500",
-  "ok": true,
-  "t": "Thu 19 Nov 6:41 PM"
- },
- {
-  "action": "close rest",
-  "detail": "GOLD|2026-11-19|3:22 pm|BUY|FILL range fade (desk: reversed) ",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Thu 19 Nov 7:30 PM"
- },
- {
-  "action": "OPEN SELL rest",
-  "detail": "GOLD|2026-11-19|7:29 pm|SELL|N6 bigrange size 0.24 at 3686.56 stop 3744.32 | trade risk 44.98 AED",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Thu 19 Nov 7:30 PM"
- },
- {
-  "action": "part closed on demo",
-  "detail": "US100|2026-11-19|2:01 pm|BUY|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm",
-  "market": "US100",
-  "ok": true,
-  "t": "Thu 19 Nov 7:31 PM"
- },
- {
-  "action": "rest closed on demo",
-  "detail": "US100|2026-11-19|2:01 pm|BUY|REV H2 round $400 break, close beyond, then retest -> follow, from 1pm",
-  "market": "US100",
-  "ok": true,
-  "t": "Thu 19 Nov 7:31 PM"
- },
- {
-  "action": "part closed on demo",
-  "detail": "USDJPY|2026-11-19|5:08 pm|BUY|Squeeze 4pm",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Thu 19 Nov 7:32 PM"
- },
- {
-  "action": "rest closed on demo",
-  "detail": "USDJPY|2026-11-19|5:08 pm|BUY|Squeeze 4pm",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Thu 19 Nov 7:32 PM"
- },
- {
-  "action": "close rest",
-  "detail": "USDJPY|2026-11-19|2:00 pm|BUY|Week-so-far break (desk: close_now) ",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Thu 19 Nov 8:00 PM"
- },
- {
-  "action": "OPEN SELL part",
-  "detail": "US100|2026-11-19|9:02 pm|SELL|US+10 H1 U2 only when vol high (>1.1) size 0.001 at 26748.7 stop 27007.5 target 26642.5 | trade risk 9.83 AED",
-  "market": "US100",
-  "ok": true,
-  "t": "Thu 19 Nov 9:03 PM"
- },
- {
-  "action": "OPEN SELL rest",
-  "detail": "US100|2026-11-19|9:02 pm|SELL|US+10 H1 U2 only when vol high (>1.1) size 0.01 at 26745.8 stop 27007.5 | trade risk 9.83 AED",
-  "market": "US100",
-  "ok": true,
-  "t": "Thu 19 Nov 9:03 PM"
- },
- {
-  "action": "part closed on demo",
-  "detail": "US100|2026-11-19|9:02 pm|SELL|US+10 H1 U2 only when vol high (>1.1)",
-  "market": "US100",
-  "ok": true,
-  "t": "Thu 19 Nov 9:06 PM"
- },
- {
-  "action": "stop moved",
-  "detail": "US100|2026-11-19|9:02 pm|SELL|US+10 H1 U2 only when vol high (>1.1) to 26764.2 (stop to entry: each position at its own fill price)",
-  "market": "US100",
-  "ok": true,
-  "t": "Thu 19 Nov 9:06 PM"
- },
- {
-  "action": "rest closed on demo",
-  "detail": "US100|2026-11-19|9:02 pm|SELL|US+10 H1 U2 only when vol high (>1.1)",
-  "market": "US100",
-  "ok": true,
-  "t": "Thu 19 Nov 9:08 PM"
- },
- {
-  "action": "close rest",
-  "detail": "US500|2026-11-19|6:40 pm|SELL|S&P 9:40 am New York opening move (desk: eod) ",
-  "market": "US500",
-  "ok": true,
-  "t": "Fri 20 Nov 12:31 AM"
- },
- {
-  "action": "close rest",
-  "detail": "GOLD|2026-11-19|7:29 pm|SELL|N6 bigrange (desk: close_now) ",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Fri 20 Nov 12:50 AM"
- },
- {
-  "action": "close rest",
-  "detail": "GBPUSD|2026-11-19|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded (desk: eod) ",
-  "market": "GBPUSD",
-  "ok": true,
-  "t": "Fri 20 Nov 1:46 AM"
- },
- {
-  "action": "OPEN BUY rest",
-  "detail": "US500|2026-11-20|3:01 am|BUY|Night long (gold+WTI overnight shock) size 0.04 at 7175.3 stop 7000.6 | trade risk 25.66 AED",
-  "market": "US500",
-  "ok": true,
-  "t": "Fri 20 Nov 3:02 AM"
- },
- {
-  "action": "OPEN BUY rest",
-  "detail": "OIL|2026-11-20|6:51 am|BUY|Last week's high/low size 1.0 at 82.993 stop 78.56 | trade risk 16.23 AED",
-  "market": "OIL",
-  "ok": true,
-  "t": "Fri 20 Nov 6:52 AM"
- },
- {
-  "action": "OPEN SELL part",
-  "detail": "USDJPY|2026-11-20|8:00 am|SELL|Heikin-Ashi 7am size 600.0 at 159.217 stop 159.885 target 159.207 | trade risk 9.11 AED",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Fri 20 Nov 8:01 AM"
- },
- {
-  "action": "target moved to fill + desk distance",
-  "detail": "USDJPY|2026-11-20|8:00 am|SELL|Heikin-Ashi 7am 159.207 -> 159.197 ",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Fri 20 Nov 8:01 AM"
- },
- {
-  "action": "part closed on demo",
-  "detail": "USDJPY|2026-11-20|8:00 am|SELL|Heikin-Ashi 7am",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Fri 20 Nov 8:09 AM"
- },
- {
-  "action": "OPEN SELL part",
-  "detail": "USDJPY|2026-11-20|9:00 am|SELL|HAM (Heikin-Ashi, 2nd hour) size 600.0 at 159.141 stop 159.794 target 159.116 | trade risk 9.11 AED",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Fri 20 Nov 9:01 AM"
- },
- {
-  "action": "target moved to fill + desk distance",
-  "detail": "USDJPY|2026-11-20|9:00 am|SELL|HAM (Heikin-Ashi, 2nd hour) 159.116 -> 159.121 ",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Fri 20 Nov 9:01 AM"
- },
- {
-  "action": "part closed on demo",
-  "detail": "USDJPY|2026-11-20|9:00 am|SELL|HAM (Heikin-Ashi, 2nd hour)",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Fri 20 Nov 9:09 AM"
- },
- {
-  "action": "OPEN SELL part",
-  "detail": "USDJPY|2026-11-20|11:00 am|SELL|EMA10 break size 900.0 at 159.194 stop 159.866 target 159.142 | trade risk 28.84 AED",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Fri 20 Nov 11:01 AM"
- },
- {
-  "action": "OPEN SELL rest",
-  "detail": "USDJPY|2026-11-20|11:00 am|SELL|EMA10 break size 1000.0 at 159.196 stop 159.866 | trade risk 28.84 AED",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Fri 20 Nov 11:01 AM"
- },
- {
-  "action": "part closed on demo",
-  "detail": "USDJPY|2026-11-20|11:00 am|SELL|EMA10 break",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Fri 20 Nov 11:23 AM"
- },
- {
   "action": "stop moved",
   "detail": "USDJPY|2026-11-20|11:00 am|SELL|EMA10 break to 159.208 (stop to entry: each position at its own fill price)",
   "market": "USDJPY",
@@ -2798,5 +2553,250 @@
   "market": "US100",
   "ok": false,
   "t": "Fri 27 Nov 1:41 AM"
+ },
+ {
+  "action": "close part",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:42 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:42 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "GOLD|2026-11-26|2:17 pm|SELL|G14 sq2husd (watchdog: past day-end 10:50 PM broker) {\"errorCode\":\"Rejected. GOLD is currently closed. Timetable in place: UTC; Mon - 21:59, 23:00 -; Tue - 21:59, 23:00 -; Wed - 21:59, 23:00 -; Thu - 19:30, 23:00 ",
+  "market": "GOLD",
+  "ok": false,
+  "t": "Fri 27 Nov 1:42 AM"
+ },
+ {
+  "action": "close part",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (watchdog: past day-end 11:00 PM broker) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:42 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (watchdog: past day-end 11:00 PM broker) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:42 AM"
+ },
+ {
+  "action": "close part",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:43 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:43 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "GOLD|2026-11-26|2:17 pm|SELL|G14 sq2husd (watchdog: past day-end 10:50 PM broker) {\"errorCode\":\"Rejected. GOLD is currently closed. Timetable in place: UTC; Mon - 21:59, 23:00 -; Tue - 21:59, 23:00 -; Wed - 21:59, 23:00 -; Thu - 19:30, 23:00 ",
+  "market": "GOLD",
+  "ok": false,
+  "t": "Fri 27 Nov 1:43 AM"
+ },
+ {
+  "action": "close part",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (watchdog: past day-end 11:00 PM broker) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:43 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (watchdog: past day-end 11:00 PM broker) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:43 AM"
+ },
+ {
+  "action": "close part",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:44 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:44 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "GOLD|2026-11-26|2:17 pm|SELL|G14 sq2husd (watchdog: past day-end 10:50 PM broker) {\"errorCode\":\"Rejected. GOLD is currently closed. Timetable in place: UTC; Mon - 21:59, 23:00 -; Tue - 21:59, 23:00 -; Wed - 21:59, 23:00 -; Thu - 19:30, 23:00 ",
+  "market": "GOLD",
+  "ok": false,
+  "t": "Fri 27 Nov 1:44 AM"
+ },
+ {
+  "action": "close part",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (watchdog: past day-end 11:00 PM broker) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:44 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (watchdog: past day-end 11:00 PM broker) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:44 AM"
+ },
+ {
+  "action": "close part",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:45 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:45 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "GOLD|2026-11-26|2:17 pm|SELL|G14 sq2husd (watchdog: past day-end 10:50 PM broker) {\"errorCode\":\"Rejected. GOLD is currently closed. Timetable in place: UTC; Mon - 21:59, 23:00 -; Tue - 21:59, 23:00 -; Wed - 21:59, 23:00 -; Thu - 19:30, 23:00 ",
+  "market": "GOLD",
+  "ok": false,
+  "t": "Fri 27 Nov 1:45 AM"
+ },
+ {
+  "action": "close part",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (watchdog: past day-end 11:00 PM broker) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:45 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (watchdog: past day-end 11:00 PM broker) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:45 AM"
+ },
+ {
+  "action": "close part",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:46 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:46 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "GOLD|2026-11-26|2:17 pm|SELL|G14 sq2husd (watchdog: past day-end 10:50 PM broker) {\"errorCode\":\"Rejected. GOLD is currently closed. Timetable in place: UTC; Mon - 21:59, 23:00 -; Tue - 21:59, 23:00 -; Wed - 21:59, 23:00 -; Thu - 19:30, 23:00 ",
+  "market": "GOLD",
+  "ok": false,
+  "t": "Fri 27 Nov 1:46 AM"
+ },
+ {
+  "action": "close part",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (watchdog: past day-end 11:00 PM broker) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:46 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (watchdog: past day-end 11:00 PM broker) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:46 AM"
+ },
+ {
+  "action": "close part",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:47 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:47 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "GOLD|2026-11-26|2:17 pm|SELL|G14 sq2husd (watchdog: past day-end 10:50 PM broker) {\"errorCode\":\"Rejected. GOLD is currently closed. Timetable in place: UTC; Mon - 21:59, 23:00 -; Tue - 21:59, 23:00 -; Wed - 21:59, 23:00 -; Thu - 19:30, 23:00 ",
+  "market": "GOLD",
+  "ok": false,
+  "t": "Fri 27 Nov 1:47 AM"
+ },
+ {
+  "action": "close part",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (watchdog: past day-end 11:00 PM broker) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:47 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (watchdog: past day-end 11:00 PM broker) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:47 AM"
+ },
+ {
+  "action": "close part",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:48 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:48 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "GOLD|2026-11-26|2:17 pm|SELL|G14 sq2husd (watchdog: past day-end 10:50 PM broker) {\"errorCode\":\"Rejected. GOLD is currently closed. Timetable in place: UTC; Mon - 21:59, 23:00 -; Tue - 21:59, 23:00 -; Wed - 21:59, 23:00 -; Thu - 19:30, 23:00 ",
+  "market": "GOLD",
+  "ok": false,
+  "t": "Fri 27 Nov 1:48 AM"
+ },
+ {
+  "action": "close part",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (watchdog: past day-end 11:00 PM broker) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:48 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (watchdog: past day-end 11:00 PM broker) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
+  "market": "US100",
+  "ok": false,
+  "t": "Fri 27 Nov 1:48 AM"
  }
 ]
