@@ -19,7 +19,7 @@
    "actions_day": "2026-11-26",
    "feed_error": true,
    "state": "sell",
-   "message": "Price data incomplete at 12:20 am Dubai (newest closed minute bar is 50 min old) - the page shows the last good update; it retries every minute.",
+   "message": "Price data incomplete at 12:21 am Dubai (newest closed minute bar is 51 min old) - the page shows the last good update; it retries every minute.",
    "price": 3566.27,
    "close_at": "12:50 am",
    "change": -22.41,
@@ -5257,6 +5257,13 @@
      159.263,
      159.264,
      159.262
+    ],
+    [
+     "12:20 am",
+     159.263,
+     159.264,
+     159.264,
+     159.263
     ]
    ],
    "journal": {
@@ -11181,7 +11188,7 @@
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
-   "message": "S&P paper update failed at 12:20 am Dubai (FeedError: newest closed price bar (12:14 am Dubai) is 5 min old) \u2014 shows the last good update; retries every minute.",
+   "message": "S&P paper update failed at 12:21 am Dubai (FeedError: price bars missing between 12:14 am-12:20 am Dubai) \u2014 shows the last good update; retries every minute.",
    "price": 7222.5,
    "change": 47.2,
    "entries": [],
@@ -15520,8 +15527,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 26185.1,
-   "change": 233.7,
+   "price": 26185.0,
+   "change": 233.6,
    "entries": [
     {
      "time": "4:03 pm",
@@ -17414,6 +17421,13 @@
      26185.2,
      26185.2,
      26185.1
+    ],
+    [
+     "12:20 am",
+     26185.0,
+     26185.4,
+     26185.4,
+     26181.4
     ]
    ],
    "journal": {
@@ -18970,8 +18984,8 @@
    "regime": 0.704,
    "gap": null,
    "message": "Locked stop hit at 6:40 pm Dubai: +3.5 pips. Done for today.",
-   "price": 1.31066,
-   "change": -0.00081,
+   "price": 1.31065,
+   "change": -0.00082,
    "entries": [
     {
      "time": "12:00 pm",
@@ -20871,6 +20885,13 @@
      1.31065,
      1.31067,
      1.31064
+    ],
+    [
+     "12:20 am",
+     1.31065,
+     1.31067,
+     1.31067,
+     1.31065
     ]
    ],
    "journal": {
@@ -22476,7 +22497,7 @@
     "note": "DEMO / FORWARD TEST ONLY - no target, they close on time (21:30 broker); % = closed in profit, not hit target. Live v1.10 rules unchanged."
    },
    "state": "none",
-   "message": "Brent paper update failed at 12:20 am Dubai (FeedError: newest closed price bar (10:29 pm Dubai) is 110 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
+   "message": "Brent paper update failed at 12:21 am Dubai (FeedError: newest closed price bar (10:29 pm Dubai) is 111 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
    "price": 92.789,
    "change": 0.42,
    "entries": [],
