@@ -1,33 +1,5 @@
 [
  {
-  "action": "close rest",
-  "detail": "US500|2026-11-10|6:40 pm|BUY|S&P 9:40 am New York opening move (desk: eod) ",
-  "market": "US500",
-  "ok": true,
-  "t": "Wed 11 Nov 12:31 AM"
- },
- {
-  "action": "close rest",
-  "detail": "GOLD|2026-11-10|8:00 am|SELL|N2 near100 (desk: close_now) ",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Wed 11 Nov 12:50 AM"
- },
- {
-  "action": "close rest",
-  "detail": "GOLD|2026-11-10|8:40 pm|SELL|U8 pivot (desk: close_now) ",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Wed 11 Nov 12:50 AM"
- },
- {
-  "action": "part closed on demo",
-  "detail": "US100|2026-11-10|10:54 pm|BUY|US+10 H1 U2 only when vol high (>1.1)",
-  "market": "US100",
-  "ok": true,
-  "t": "Wed 11 Nov 12:52 AM"
- },
- {
   "action": "stop moved",
   "detail": "US100|2026-11-10|10:54 pm|BUY|US+10 H1 U2 only when vol high (>1.1) to 27607.0 (stop to entry: each position at its own fill price)",
   "market": "US100",
@@ -2798,5 +2770,33 @@
   "market": "US100",
   "ok": true,
   "t": "Thu 26 Nov 4:04 PM"
+ },
+ {
+  "action": "close part",
+  "detail": "USDJPY|2026-11-26|8:00 am|BUY|Heikin-Ashi 7am (desk: reversed) ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Thu 26 Nov 5:01 PM"
+ },
+ {
+  "action": "close part",
+  "detail": "USDJPY|2026-11-26|9:00 am|BUY|HAM (Heikin-Ashi, 2nd hour) (desk: reversed) ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Thu 26 Nov 5:01 PM"
+ },
+ {
+  "action": "OPEN SELL part",
+  "detail": "USDJPY|2026-11-26|5:00 pm|SELL|Squeeze 4pm size 1600.0 at 159.274 stop 159.477 target 159.155 | trade risk 29.7 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Thu 26 Nov 5:01 PM"
+ },
+ {
+  "action": "OPEN SELL rest",
+  "detail": "USDJPY|2026-11-26|5:00 pm|SELL|Squeeze 4pm size 4000.0 at 159.273 stop 159.477 | trade risk 29.7 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Thu 26 Nov 5:01 PM"
  }
 ]

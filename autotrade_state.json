@@ -1,15 +1,15 @@
 {
- "balance": 1625.34,
+ "balance": 1625.51,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-26",
-  "pl": -3.78,
+  "pl": -3.44,
   "start_balance": 1627.65,
   "start_equity": 1627.65,
   "stopped": false
  },
  "open_positions": 6,
- "open_risk_aed": 85.77,
+ "open_risk_aed": 97.19,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-23|5:46 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -841,15 +841,43 @@
    "state": "closed",
    "stop": 159.963
   },
+  "USDJPY|2026-11-26|5:00 pm|SELL|Squeeze 4pm": {
+   "desk_price": 159.247,
+   "market": "USDJPY",
+   "opened_at": "Thu 26 Nov 5:01 PM",
+   "overnight": false,
+   "part": {
+    "id": "00000000-76fb-7605-0495-7fc60004511e",
+    "level": 159.274,
+    "open": true,
+    "size": 1600.0,
+    "tp": 159.155
+   },
+   "part_x": 0.3,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-76fb-7614-0495-7fc60004511e",
+    "level": 159.273,
+    "open": true,
+    "size": 4000.0,
+    "tp": null
+   },
+   "risk_aed": 29.7,
+   "risk_usd": 8.17,
+   "side": "SELL",
+   "state": "open",
+   "stop": 159.477
+  },
   "USDJPY|2026-11-26|8:00 am|BUY|Heikin-Ashi 7am": {
    "desk_price": 159.152,
    "market": "USDJPY",
    "opened_at": "Thu 26 Nov 8:01 AM",
    "overnight": false,
    "part": {
+    "closed_by": "desk: reversed",
     "id": "00000000-76f7-8e07-0495-7fc60004511e",
     "level": 159.174,
-    "open": true,
+    "open": false,
     "size": 600.0,
     "tp": 159.519
    },
@@ -858,7 +886,7 @@
    "risk_aed": 9.14,
    "risk_usd": 2.72,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 158.492
   },
   "USDJPY|2026-11-26|9:00 am|BUY|HAM (Heikin-Ashi, 2nd hour)": {
@@ -867,9 +895,10 @@
    "opened_at": "Thu 26 Nov 9:01 AM",
    "overnight": false,
    "part": {
+    "closed_by": "desk: reversed",
     "id": "00000000-76f7-ec59-0495-7fc60004511e",
     "level": 159.176,
-    "open": true,
+    "open": false,
     "size": 600.0,
     "tp": 159.521
    },
@@ -878,7 +907,7 @@
    "risk_aed": 9.14,
    "risk_usd": 2.72,
    "side": "BUY",
-   "state": "open",
+   "state": "closed",
    "stop": 158.512
   }
  },
