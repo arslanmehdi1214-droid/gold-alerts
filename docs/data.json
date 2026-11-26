@@ -1,5 +1,5 @@
 {
- "updated": "Fri 27 Nov \u00b7 2:59 am",
+ "updated": "Fri 27 Nov \u00b7 3:01 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -10,17 +10,25 @@
    "version": "v2.24",
    "actions": [],
    "actions_day": "2026-11-27",
-   "feed_error": true,
+   "feed_error": false,
    "state": "waiting",
-   "message": "Price feed problem at 3:00 am Dubai (HTTPError) - the page shows the last good update; it retries every minute.",
-   "price": null,
+   "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
+   "price": 3564.98,
    "close_at": "12:50 am",
-   "change": null,
+   "change": -2.31,
    "size": 0.1,
    "datr": 109.79,
    "open_now": 0,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "3:00 am",
+     3564.98,
+     3567.29,
+     3568.12,
+     3564.98
+    ]
+   ],
    "history": [
     {
      "date": "2026-11-27",
@@ -208,8 +216,8 @@
     "dollar_5d": "fell",
     "vix_5d": "fell",
     "tnx_5d": "fell",
-    "dollar_driven": null,
-    "corr": null,
+    "dollar_driven": false,
+    "corr": -0.304,
     "low_attention": false,
     "missing": [],
     "notes": []
@@ -1627,7 +1635,7 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 159.213,
+   "price": 159.254,
    "change_pips": null,
    "atr_pips": 81.2,
    "entries": [],
@@ -4154,10 +4162,18 @@
    "net_label": "Net $ per barrel (v1.18)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 84.423,
+   "change": 0.07,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "3:00 am",
+     84.42,
+     84.36,
+     84.42,
+     84.31
+    ]
+   ],
    "journal": {
     "since": "26 Nov 2026",
     "weekdays": 2,
@@ -5691,7 +5707,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": null,
+   "live_spread": 0.045,
    "history_note": "history to 2026-11-26 (60 days)"
   },
   "US500": {
@@ -5724,10 +5740,18 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (Night-trade check: Cboe data not available - HTTPError: 403 Client Error: Forbidden for url: https://cdn-api.cboe.com/api/global/delayed_quotes/quotes/_VIX..)",
-   "price": null,
-   "change": null,
+   "price": 7227.8,
+   "change": -3.3,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "3:00 am",
+     7227.8,
+     7231.1,
+     7231.1,
+     7226.9
+    ]
+   ],
    "journal": {
     "since": "26 Nov 2026",
     "weekdays": 2,
@@ -8314,10 +8338,18 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": null,
-   "change": null,
+   "price": 26206.3,
+   "change": -9.5,
    "entries": [],
-   "spark": [],
+   "spark": [
+    [
+     "3:00 am",
+     26206.3,
+     26215.8,
+     26222.3,
+     26205.7
+    ]
+   ],
    "journal": {
     "since": "19 Oct 2026",
     "weekdays": 30,
@@ -9838,8 +9870,8 @@
    "regime": 0.556,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker). NEWS-FREE day (no high-impact UK/US news on the calendar): calm rules - no target; stop moves to entry + 5 pips once +0.2 x stop in profit; at 10:00 the side can switch by the price vote (v1.13). Day after a UK/US holiday: an extra HALF-size SELL opens at 12:00 pm Dubai.",
-   "price": 1.31028,
-   "change": -0.00023,
+   "price": 1.31034,
+   "change": -0.00017,
    "entries": [],
    "spark": [
     [
@@ -9918,6 +9950,13 @@
      1.31044,
      1.31052,
      1.31027
+    ],
+    [
+     "3:00 am",
+     1.31034,
+     1.31032,
+     1.31045,
+     1.31023
     ]
    ],
    "journal": {
