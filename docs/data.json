@@ -17,9 +17,9 @@
     }
    ],
    "actions_day": "2026-11-26",
-   "feed_error": false,
+   "feed_error": true,
    "state": "sell",
-   "message": "SELL day \u2014 up to 2 SELL trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
+   "message": "Price feed problem at 5:40 pm Dubai (ReadTimeout) - the page shows the last good update; it retries every minute.",
    "price": 3570.15,
    "close_at": "12:50 am",
    "change": -18.53,
@@ -6748,8 +6748,8 @@
    "net_label": "Net $ per barrel (v1.18)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 84.249,
-   "change": 0.56,
+   "price": 84.279,
+   "change": 0.59,
    "entries": [
     {
      "time": "2:53 pm",
@@ -8002,7 +8002,7 @@
     ],
     [
      "5:35 pm",
-     84.25,
+     84.28,
      84.19,
      84.29,
      84.18
@@ -9642,8 +9642,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (high-fear night, but the check ran after 6:06 pm New York - no night trade.)",
-   "price": 7237.9,
-   "change": 62.6,
+   "price": 7237.5,
+   "change": 62.2,
    "entries": [],
    "spark": [
     [
@@ -10950,7 +10950,7 @@
     ],
     [
      "5:35 pm",
-     7237.9,
+     7237.5,
      7234.9,
      7239.3,
      7233.8
@@ -13532,8 +13532,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
    "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
-   "price": 26253.3,
-   "change": 301.9,
+   "price": 26253.2,
+   "change": 301.8,
    "entries": [
     {
      "time": "4:03 pm",
@@ -13558,7 +13558,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": -18.4,
+     "live": -18.3,
      "rwf": null,
      "spread": 1.8,
      "spread_live": 1.8
@@ -14869,7 +14869,7 @@
     ],
     [
      "5:35 pm",
-     26253.3,
+     26253.2,
      26238.8,
      26264.1,
      26232.6
@@ -14920,7 +14920,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": -18.4,
+       "live": -18.3,
        "rwf": null,
        "spread": 1.8,
        "spread_live": 1.8
@@ -16429,8 +16429,8 @@
    "regime": 0.704,
    "gap": null,
    "message": "PAPER BUY at 1.31032 (12:00 pm Dubai). Stop 1.30165, no target - it closes at 1:45 am Dubai. NEWS-FREE day: when price reaches 1.31205, move the stop to 1.31082 (entry + 5 pips).",
-   "price": 1.31094,
-   "change": -0.00053,
+   "price": 1.31092,
+   "change": -0.00055,
    "entries": [
     {
      "time": "12:00 pm",
@@ -16456,7 +16456,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": 4.7,
+     "live": 4.5,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.30165 \u00b7 no target \u00b7 when price reaches 1.31205, MOVE THE STOP to 1.31082 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 1:45 am Dubai"
     }
@@ -17766,7 +17766,7 @@
     ],
     [
      "5:35 pm",
-     1.31094,
+     1.31092,
      1.31082,
      1.31103,
      1.31076
@@ -17818,7 +17818,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": 4.7,
+       "live": 4.5,
        "spread": 1.5,
        "next": "Hold \u00b7 stop 1.30165 \u00b7 no target \u00b7 when price reaches 1.31205, MOVE THE STOP to 1.31082 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 1:45 am Dubai"
       }
@@ -19376,8 +19376,8 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 91.919,
-   "change": -0.45,
+   "price": 91.931,
+   "change": -0.44,
    "entries": [],
    "spark": [
     [
@@ -20516,7 +20516,7 @@
     ],
     [
      "5:35 pm",
-     91.92,
+     91.93,
      91.83,
      91.98,
      91.81
