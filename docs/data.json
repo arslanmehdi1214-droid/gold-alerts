@@ -19,7 +19,7 @@
    "actions_day": "2026-11-26",
    "feed_error": true,
    "state": "sell",
-   "message": "Price data incomplete at 12:01 am Dubai (newest closed minute bar is 31 min old) - the page shows the last good update; it retries every minute.",
+   "message": "Price data incomplete at 12:10 am Dubai (newest closed minute bar is 40 min old) - the page shows the last good update; it retries every minute.",
    "price": 3566.27,
    "close_at": "12:50 am",
    "change": -22.41,
@@ -3380,8 +3380,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 159.252,
-   "change_pips": 10.1,
+   "price": 159.261,
+   "change_pips": 11.0,
    "atr_pips": 87.9,
    "entries": [
     {
@@ -5232,10 +5232,17 @@
     ],
     [
      "12:00 am",
-     159.252,
+     159.253,
      159.262,
      159.262,
      159.251
+    ],
+    [
+     "12:05 am",
+     159.261,
+     159.254,
+     159.271,
+     159.254
     ]
    ],
    "journal": {
@@ -11160,7 +11167,7 @@
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
-   "message": "S&P paper update failed at 12:01 am Dubai (FeedError: newest closed price bar (11:44 pm Dubai) is 16 min old) \u2014 shows the last good update; retries every minute.",
+   "message": "S&P paper update failed at 12:10 am Dubai (FeedError: newest closed price bar (11:44 pm Dubai) is 25 min old) \u2014 shows the last good update; retries every minute.",
    "price": 7222.5,
    "change": 47.2,
    "entries": [],
@@ -15493,14 +15500,14 @@
     "pf": 1.1,
     "months": 3
    },
-   "day_note": "14-day range \u2014 \u00b7 stop: buys 0.4 x range, sells \u00bc range \u00b7 sells \u2153 size \u00b7 at +0.5 x risk close 25% (buys) / 15% (sells), stop to entry, then trail the rest 0.45 x range behind its best price \u00b7 no new trades from 10:00 pm broker (Fri 8:00 pm) \u00b7 day lock +3R/+1.5R \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
+   "day_note": "14-day range 1,073 pts \u00b7 stop: buys 0.4 x range, sells \u00bc range \u00b7 sells \u2153 size \u00b7 at +0.5 x risk close 25% (buys) / 15% (sells), stop to entry, then trail the rest 0.45 x range (= 483 pts) behind its best price \u00b7 no new trades from 10:00 pm broker (Fri 8:00 pm) \u00b7 day lock +3R/+1.5R \u00b7 max 2 trades a day \u00b7 close 11:00 pm broker (Fri 10:50 pm) = 12:00 am Dubai, 1:00 am in winter",
    "what_note": "Tracks whether live Nasdaq signals do as well as the v1.02 backtest. Decision after about 3 months.",
    "cost_note": "Results are index points for the whole trade at its v1.02 size (sells \u2153, the 25% / 15% part included), after a fixed 1.8-point spread (as in the MT4 test; entry, stop and part levels use it too). Capital.com's live spread is shown for reference only.",
    "net_label": "Net points (v1.02 rules)",
    "state": "sell",
-   "message": "Nasdaq paper update failed at 12:01 am Dubai (FeedError: price bars missing between 11:46 pm-11:55 pm Dubai) \u2014 shows the last good update; retries every minute.",
-   "price": 26184.2,
-   "change": 232.8,
+   "message": "1 paper trade today (1 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 1:00 am Dubai close. At most 2 trades a day.",
+   "price": 26185.0,
+   "change": 233.6,
    "entries": [
     {
      "time": "4:03 pm",
@@ -15525,7 +15532,7 @@
      "res_sized": null,
      "r": null,
      "r_sized": null,
-     "live": 4.7,
+     "live": 4.4,
      "rwf": null,
      "spread": 1.8,
      "spread_live": 1.8
@@ -17344,6 +17351,41 @@
      26183.6,
      26184.2,
      26183.6
+    ],
+    [
+     "11:40 pm",
+     26184.6,
+     26188.1,
+     26188.1,
+     26184.6
+    ],
+    [
+     "11:45 pm",
+     26184.3,
+     26184.3,
+     26184.3,
+     26184.3
+    ],
+    [
+     "11:55 pm",
+     26184.6,
+     26184.4,
+     26184.6,
+     26184.4
+    ],
+    [
+     "12:00 am",
+     26184.9,
+     26184.7,
+     26184.9,
+     26184.7
+    ],
+    [
+     "12:05 am",
+     26185.0,
+     26185.0,
+     26185.0,
+     26184.9
     ]
    ],
    "journal": {
@@ -17391,7 +17433,7 @@
        "res_sized": null,
        "r": null,
        "r_sized": null,
-       "live": 4.7,
+       "live": 4.4,
        "rwf": null,
        "spread": 1.8,
        "spread_live": 1.8
@@ -18808,7 +18850,7 @@
      "final": true
     }
    ],
-   "feed_error": true,
+   "feed_error": false,
    "epic": "US100",
    "close_at": "1:00 am",
    "history_note": "history to 2026-11-25 (385 days)",
@@ -18900,8 +18942,8 @@
    "regime": 0.704,
    "gap": null,
    "message": "Locked stop hit at 6:40 pm Dubai: +3.5 pips. Done for today.",
-   "price": 1.31074,
-   "change": -0.00073,
+   "price": 1.31066,
+   "change": -0.00081,
    "entries": [
     {
      "time": "12:00 pm",
@@ -20776,10 +20818,17 @@
     ],
     [
      "12:00 am",
-     1.31074,
      1.31077,
-     1.31078,
-     1.31071
+     1.31077,
+     1.31084,
+     1.31068
+    ],
+    [
+     "12:05 am",
+     1.31066,
+     1.31076,
+     1.31076,
+     1.31063
     ]
    ],
    "journal": {
@@ -22385,7 +22434,7 @@
     "note": "DEMO / FORWARD TEST ONLY - no target, they close on time (21:30 broker); % = closed in profit, not hit target. Live v1.10 rules unchanged."
    },
    "state": "none",
-   "message": "Brent paper update failed at 12:01 am Dubai (FeedError: newest closed price bar (10:29 pm Dubai) is 91 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
+   "message": "Brent paper update failed at 12:10 am Dubai (FeedError: newest closed price bar (10:29 pm Dubai) is 100 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
    "price": 92.789,
    "change": 0.42,
    "entries": [],
