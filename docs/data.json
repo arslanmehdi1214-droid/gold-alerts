@@ -19,7 +19,7 @@
    "actions_day": "2026-11-26",
    "feed_error": true,
    "state": "sell",
-   "message": "Price data incomplete at 1:19 am Dubai (newest closed minute bar is 109 min old) - the page shows the last good update; it retries every minute.",
+   "message": "Price data incomplete at 1:30 am Dubai (newest closed minute bar is 120 min old) - the page shows the last good update; it retries every minute.",
    "price": 3566.27,
    "close_at": "12:50 am",
    "change": -22.41,
@@ -3380,8 +3380,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER SELL day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 8:00 pm Dubai close.",
-   "price": 159.282,
-   "change_pips": 13.1,
+   "price": 159.279,
+   "change_pips": 12.8,
    "atr_pips": 87.9,
    "entries": [
     {
@@ -5341,6 +5341,20 @@
      159.281,
      159.285,
      159.28
+    ],
+    [
+     "1:20 am",
+     159.276,
+     159.281,
+     159.281,
+     159.275
+    ],
+    [
+     "1:25 am",
+     159.279,
+     159.275,
+     159.279,
+     159.275
     ]
    ],
    "journal": {
@@ -19138,11 +19152,9 @@
     "rel_day": "2026-11-25",
     "threshold": 0.0453,
     "last_check": {
-     "day": "2026-11-25",
-     "rel": -0.05099,
-     "thr": 0.0453,
-     "fired": false,
-     "wti": 83.382
+     "day": "2026-11-26",
+     "fired": null,
+     "why": "missed: WTI settle or prices not available within 30 min of the close"
     },
     "state": "idle",
     "note": "NDX-vs-WTI Continuation, LIVE: waits for rel (5-day NDX minus WTI) > 0.0453; no trade yet."
@@ -19180,8 +19192,8 @@
    "regime": 0.704,
    "gap": null,
    "message": "Locked stop hit at 6:40 pm Dubai: +3.5 pips. Done for today.",
-   "price": 1.31074,
-   "change": -0.00073,
+   "price": 1.31068,
+   "change": -0.00079,
    "entries": [
     {
      "time": "12:00 pm",
@@ -21165,6 +21177,20 @@
      1.31066,
      1.31074,
      1.31066
+    ],
+    [
+     "1:20 am",
+     1.31076,
+     1.31073,
+     1.31077,
+     1.31069
+    ],
+    [
+     "1:25 am",
+     1.31068,
+     1.31077,
+     1.31077,
+     1.31065
     ]
    ],
    "journal": {
@@ -22770,7 +22796,7 @@
     "note": "DEMO / FORWARD TEST ONLY - no target, they close on time (21:30 broker); % = closed in profit, not hit target. Live v1.10 rules unchanged."
    },
    "state": "none",
-   "message": "Brent paper update failed at 1:19 am Dubai (FeedError: newest closed price bar (10:29 pm Dubai) is 170 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
+   "message": "Brent paper update failed at 1:30 am Dubai (FeedError: newest closed price bar (10:29 pm Dubai) is 181 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
    "price": 92.789,
    "change": 0.42,
    "entries": [],
