@@ -1,12 +1,5 @@
 [
  {
-  "action": "part closed on demo",
-  "detail": "USDJPY|2026-11-11|8:00 am|BUY|Heikin-Ashi 7am",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Wed 11 Nov 11:29 AM"
- },
- {
   "action": "OPEN SELL part",
   "detail": "GBPUSD|2026-11-11|12:00 pm|SELL|Layer 5 \u00b7 euro hedge funds trend size 1000.0 at 1.33285 stop 1.34062 target 1.32532 | trade risk 28.09 AED",
   "market": "GBPUSD",
@@ -2798,5 +2791,12 @@
   "market": "GOLD",
   "ok": false,
   "t": "Fri 27 Nov 12:55 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "GOLD|2026-11-26|2:17 pm|SELL|G14 sq2husd (watchdog: past day-end 10:50 PM broker) {\"errorCode\":\"Rejected. GOLD is currently closed. Timetable in place: UTC; Mon - 21:59, 23:00 -; Tue - 21:59, 23:00 -; Wed - 21:59, 23:00 -; Thu - 19:30, 23:00 ",
+  "market": "GOLD",
+  "ok": false,
+  "t": "Fri 27 Nov 12:56 AM"
  }
 ]
