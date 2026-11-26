@@ -1,12 +1,5 @@
 [
  {
-  "action": "OPEN SELL rest",
-  "detail": "GOLD|2026-11-10|8:40 pm|SELL|U8 pivot size 0.18 at 4020.15 stop 4063.45 | trade risk 28.8 AED",
-  "market": "GOLD",
-  "ok": true,
-  "t": "Tue 10 Nov 8:41 PM"
- },
- {
   "action": "close rest",
   "detail": "BRENT|2026-11-10|12:33 pm|SELL|Rule C \u00b7 20-day range break (desk: closed (conflict)) ",
   "market": "BRENT",
@@ -2798,5 +2791,12 @@
   "market": "OIL",
   "ok": true,
   "t": "Thu 26 Nov 2:54 PM"
+ },
+ {
+  "action": "move stop rest FAILED",
+  "detail": "OIL|2026-11-26|2:53 pm|BUY|Whole dollar to 84.06: {\"errorCode\":\"error.invalid.stoploss.maxvalue: 83.936\"}",
+  "market": "OIL",
+  "ok": false,
+  "t": "Thu 26 Nov 3:13 PM"
  }
 ]
