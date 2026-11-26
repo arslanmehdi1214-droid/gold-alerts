@@ -253,7 +253,10 @@ V25_SGOTH_MIN = 0.70; V25_FY_MAX = 0.20                               # v1.24 Ni
 V26_FCSW_MIN = 0.70; V26_CQ_MAX = 0.20                                # v1.24 Night V26: Feeder-Cattle Disaggregated Swap-Dealer COT 4-report-shift (52wk pctile, >=) / HYG-LQD (credit quality) ratio 10d change (252d pctile, <=) thresholds (Round 84 best)
 V27_VIXLCOMM_MIN = 0.85; V27_DXYFNR_MIN = 0.70                        # v1.24 Night V27: VIX-futures Legacy Commercial COT 4-report-shift (52wk pctile, >=) / US-Dollar-Index-futures Legacy Non-Reportables COT 4-report-shift (52wk pctile, >=) thresholds (Round 85 best)
 V28_EURJPYNCOMM_MAX = 0.30; V28_BT_MIN = 0.70                         # v1.24 Night V28: EUR/JPY-cross-futures Legacy Non-Commercial COT 4-report-shift (52wk pctile, <=) / Bitcoin own 10d change (252d pctile, >=) thresholds (Round 86 best)
-V36_TLTSPY_MIN = 0.70; V36_AUD2OTH_MAX = 0.20                         # v1.25 Night V36: TLT-SPY (20yr-Treasury-vs-equity flight-to-safety) ratio 10d change (252d pctile, >=) / Australian-Dollar-futures Other-Reportables COT 4-report-shift (52wk pctile, <=) thresholds (Round 95 best; V29-V35, Rounds 87-94, Python-estimate only, not yet MT4-confirmed, so not ported - V36 picks up the v28 chain directly, same "skip a not-yet-decided slot" convention as V24)
+V29_ICSA_MAX = 0.30; V29_EURJPY_MAX = 0.20                            # v1.27 Night V29: US Initial Jobless Claims 4-week change (52wk pctile, <=) / EUR/JPY-cross-futures Legacy Non-Commercial COT 4-report-shift (52wk pctile, <=) thresholds (Round 87 best; MT4-confirmed 26 Nov as part of the V29+V30+V32 add-on - see V32 note for the full combined verdict)
+V30_VVIX_MAX = 0.15; V30_DF_MAX = 0.30                                # v1.27 Night V30: CBOE VVIX (vol-of-vol) 10d change (252d pctile, <=) / ITA-SPY (defense/aerospace-vs-market, Round 62's "df_") ratio 10d change (252d pctile, <=) thresholds (Round 88 best; MT4-confirmed 26 Nov as part of the V29+V30+V32 add-on)
+V32_SPYRSP_MIN = 0.70; V32_EURJPY_MAX = 0.20                          # v1.27 Night V32: SPY-RSP (mega-cap-concentration) ratio 10d change (252d pctile, >=) / EUR/JPY-cross-futures Legacy Non-Commercial COT 4-report-shift (52wk pctile, <=) thresholds (Round 91 best; MT4-confirmed 26 Nov: V29+V30+V32 added onto the True Live Control (500181) -> 500182, net +$21.52, max drawdown improved $1,587.07->$1,577.27 (both metrics up, clean PASS), 3,150 total trades (+25 vs Control), 55.30% profit trades flat vs Control - pure frequency gain, no accuracy/WR change. V31/V33-V35 (same batch's other queue slots, Rounds 89/92-94) are Python-estimate only, not yet MT4-confirmed, so V36 picks up the v32 chain directly, same "skip a not-yet-decided slot" convention as V24)
+V36_TLTSPY_MIN = 0.70; V36_AUD2OTH_MAX = 0.20                         # v1.25 Night V36: TLT-SPY (20yr-Treasury-vs-equity flight-to-safety) ratio 10d change (252d pctile, >=) / Australian-Dollar-futures Other-Reportables COT 4-report-shift (52wk pctile, <=) thresholds (Round 95 best; V31/V33-V35, Rounds 89/92-94, Python-estimate only, not yet MT4-confirmed, so not ported - V36 picks up the v32 chain directly, same "skip a not-yet-decided slot" convention as V24)
 V37_XLESPY_MAX = 0.30; V37_CADFX_MAX = 0.30                           # v1.25 Night V37: XLE-SPY (energy-sector-vs-market) ratio 10d change (252d pctile, <=) / Canadian-Dollar-futures leveraged-money COT 4-report-shift (52wk pctile, <=) thresholds (Round 96 best)
 V39_IWMSPY_MAX = 0.15; V39_DTB3_MAX = 0.20                            # v1.26 Night V39: IWM-SPY (small-cap-vs-large-cap breadth) ratio LEVEL (252d pctile, <=) / 3-month T-bill yield 10d change (252d pctile, <=) thresholds (Round 98 best; MT4-confirmed 23 Nov: solo +$166.36 net profit vs Control, drawdown flat)
 V43_MTUMSPY_MIN = 0.85; V43_MXN2OTH_MAX = 0.20                        # v1.26 Night V43: MTUM-SPY (momentum-factor-vs-market) ratio 10d change (252d pctile, >=) / Mexican-Peso-futures Other-Reportables COT 4-report-shift (52wk pctile, <=) thresholds (Round 102 best; MT4-confirmed 23 Nov: solo +$317.41 net profit vs Control, drawdown flat, best of the V39-V43 batch - V40/V41/V42 Python-estimate legs not ported, same "skip a not-yet-decided/failed slot" convention as V24/V29-V35/V38: V43 picks up the v37 chain directly)
@@ -760,6 +763,72 @@ def v28_flag(J, day):
     if not (np.isfinite(row.eurjpyl_ncomm_chg4_pct) and np.isfinite(row.bt_chg10_pct)): return False, {}
     dd = dict(date=str(k.date()), eurjpyl_ncomm_chg4_pct=float(row.eurjpyl_ncomm_chg4_pct), bt_chg10_pct=float(row.bt_chg10_pct))
     return bool(row.eurjpyl_ncomm_chg4_pct <= V28_EURJPYNCOMM_MAX and row.bt_chg10_pct >= V28_BT_MIN), dd
+
+def v29_flag(N, day):
+    """v1.27 Night V29 trigger. N: DataFrame indexed by date (built by icsaeurjpy_today() in sp_run.py) with
+    columns icsa_chg4_pct (52-week rolling percentile of the 4-week CHANGE in FRED's weekly Initial Jobless
+    Claims series - first use of FRED macro-liquidity data in this project, a 5-day publication lag already
+    applied so nothing is look-ahead - low = claims falling/flat) and eurjpyl_ncomm_chg4_pct (52-week rolling
+    percentile of the 4-report SHIFT in the EUR/JPY-cross-futures LEGACY NON-COMMERCIAL net position - the same
+    cross-rate COT leg already used by live V28, weekly data with a 3-day publication lag already applied so
+    nothing is look-ahead - low = speculative positioning falling fast). The broker day `day`'s own NY-date row
+    is day - 1 calendar day (same lag relationship as V4-V28's lookup: d = ny_date + 1). Fires when both clear
+    at once (icsa_chg4_pct <= V29_ICSA_MAX AND eurjpyl_ncomm_chg4_pct <= V29_EURJPY_MAX) - Round 87's best,
+    n=43 baked nights fire (MT4-confirmed 26 Nov as part of the V29+V30+V32 add-on - see V32_flag's docstring
+    for the full combined verdict). Missing values (not enough rolling history yet, or no data that day) mean
+    it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if N is None or not len(N) or k not in N.index: return False, {}
+    row = N.loc[k]
+    if not (np.isfinite(row.icsa_chg4_pct) and np.isfinite(row.eurjpyl_ncomm_chg4_pct)): return False, {}
+    dd = dict(date=str(k.date()), icsa_chg4_pct=float(row.icsa_chg4_pct), eurjpyl_ncomm_chg4_pct=float(row.eurjpyl_ncomm_chg4_pct))
+    return bool(row.icsa_chg4_pct <= V29_ICSA_MAX and row.eurjpyl_ncomm_chg4_pct <= V29_EURJPY_MAX), dd
+
+def v30_flag(V, day):
+    """v1.27 Night V30 trigger. V: DataFrame indexed by date (built by vvixdf_today() in sp_run.py) with
+    columns vvix_chg10_pct (252-day rolling percentile of the CBOE VVIX index's own 10-day % change - first use
+    of CBOE VVIX (vol-of-vol) in this project - low = vol-of-vol falling/flat) and df_chg10_pct (252-day
+    rolling percentile of the 10-day % change in the ITA/SPY ratio - defense/aerospace-sector ETF vs the S&P
+    500, Round 62's "df_" naming, an already-used feature in this project - low = defense/aerospace
+    underperforming, falling). The broker day `day`'s own NY-date row is day - 1 calendar day (same lag
+    relationship as V4-V29's lookup: d = ny_date + 1). Fires when both clear at once (vvix_chg10_pct <=
+    V30_VVIX_MAX AND df_chg10_pct <= V30_DF_MAX) - Round 88's best, n=55 baked nights fire, best year-spread
+    (8/9) of this stack (MT4-confirmed 26 Nov as part of the V29+V30+V32 add-on - see V32_flag's docstring for
+    the full combined verdict). Missing values (not enough rolling history yet, or no data that day) mean it
+    simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if V is None or not len(V) or k not in V.index: return False, {}
+    row = V.loc[k]
+    if not (np.isfinite(row.vvix_chg10_pct) and np.isfinite(row.df_chg10_pct)): return False, {}
+    dd = dict(date=str(k.date()), vvix_chg10_pct=float(row.vvix_chg10_pct), df_chg10_pct=float(row.df_chg10_pct))
+    return bool(row.vvix_chg10_pct <= V30_VVIX_MAX and row.df_chg10_pct <= V30_DF_MAX), dd
+
+def v32_flag(P, day):
+    """v1.27 Night V32 trigger. P: DataFrame indexed by date (built by spyrspeurjpy_today() in sp_run.py) with
+    columns spyrsp_chg10_pct (252-day rolling percentile of the 10-day % change in the SPY/RSP ratio - cap-
+    weighted vs equal-weighted S&P 500, Round 91's mega-cap-concentration gauge, brand new instrument never
+    used by any prior leg - high = mega-cap-concentration rising fast) and eurjpyl_ncomm_chg4_pct (52-week
+    rolling percentile of the 4-report SHIFT in the EUR/JPY-cross-futures LEGACY NON-COMMERCIAL net position -
+    the same cross-rate COT leg already used by live V28/V29, weekly data with a 3-day publication lag already
+    applied so nothing is look-ahead - low = speculative positioning falling fast). The broker day `day`'s own
+    NY-date row is day - 1 calendar day (same lag relationship as V4-V30's lookup: d = ny_date + 1). Fires when
+    both clear at once (spyrsp_chg10_pct >= V32_SPYRSP_MIN AND eurjpyl_ncomm_chg4_pct <= V32_EURJPY_MAX) -
+    Round 91's best, n=68 baked nights fire, one of the best net-new diversification scores of this whole
+    project (48.53%) though only 4/9 years (flagged honestly, not hidden). MT4-confirmed 26 Nov: V29+V30+V32
+    added onto the True Live Control (500181, net $22,136.59, max DD $1,587.07/0.16%, 3,125 trades) ->
+    500182 (net $22,158.11, max DD $1,577.27/0.16%, 3,150 trades, 55.30% profit trades) - net +$21.52 AND max
+    drawdown improved $9.80, both metrics up, clean PASS per the profit-up/drawdown-down rule; the gain is pure
+    added trade frequency (+25 trades), not an accuracy/win-rate change (profit-trades% flat at 55.30%). V31
+    (Round 89, vix_corr moderate 0.40, flagged honestly) and V33-V35 (Rounds 92-94) are the same batch's other
+    queue slots, Python-estimate only and not yet MT4-confirmed, so V36 picks up the v32 chain directly (same
+    "skip a not-yet-decided slot" convention as V24). Missing values (not enough rolling history yet, or no
+    data that day) mean it simply never fires that night."""
+    d = pd.Timestamp(day).normalize(); k = d - pd.Timedelta(days=1)
+    if P is None or not len(P) or k not in P.index: return False, {}
+    row = P.loc[k]
+    if not (np.isfinite(row.spyrsp_chg10_pct) and np.isfinite(row.eurjpyl_ncomm_chg4_pct)): return False, {}
+    dd = dict(date=str(k.date()), spyrsp_chg10_pct=float(row.spyrsp_chg10_pct), eurjpyl_ncomm_chg4_pct=float(row.eurjpyl_ncomm_chg4_pct))
+    return bool(row.spyrsp_chg10_pct >= V32_SPYRSP_MIN and row.eurjpyl_ncomm_chg4_pct <= V32_EURJPY_MAX), dd
 
 def v36_flag(T, day):
     """v1.25 Night V36 trigger. T: DataFrame indexed by date (built by tltspy_audoth_today() in sp_run.py) with

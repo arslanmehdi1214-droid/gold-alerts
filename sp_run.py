@@ -15,7 +15,7 @@ PICK_LATE = pd.Timedelta(minutes=3)   # 22 Oct fix: a Nasdaq pick first seen mor
 EPIC = os.environ.get('CAPITAL_EPIC_SP', 'US500')
 MIN_SPREAD = S.COST                   # the paper result never uses less than 0.8 index points per leg (as in the MT4 test)
 PASS = dict(green=40.0, pf=1.15, months=3)
-RULES = 'v1.26'
+RULES = 'v1.27'
 BACKTEST_104 = dict(direction='—', days='44.5% profit days / 87% traded', perday='1.37', win='53.4%', pf='1.32', net='+$16,896 at $100 risk per leg',
                 source='MT4 test SP500_DAYTRADE v1.04 (his run 24 Oct, spread 0.8 pt), 2020-01-01..2026-09-30, 2,416 trades (2,135 day + 281 night); '
                        'worst day -$315; net/DD 8.83; max DD $1,914')
@@ -234,6 +234,9 @@ CAD_MKT = 'CANADIAN DOLLAR - CHICAGO MERCANTILE EXCHANGE'
 IWMSPYDTB3 = os.path.join(HERE, 'docs', 'iwmspydtb3_sp.json')  # v1.26: cached IWM/SPY daily closes + FRED 3-month T-bill rate (DTB3) for the Night V39 trigger
 MTUMSPYMXNOTH = os.path.join(HERE, 'docs', 'mtumspymxnoth_sp.json')  # v1.26: cached MTUM/SPY daily closes + CFTC COT Mexican-Peso (TFF, OTHER-REPORTABLES net position, 4-report SHIFT) for the Night V43 trigger
 MXN_MKT = 'MEXICAN PESO - CHICAGO MERCANTILE EXCHANGE'
+ICSAEURJPY = os.path.join(HERE, 'docs', 'icsaeurjpy_sp.json')  # v1.27: cached FRED ICSA (initial jobless claims, weekly) + CFTC COT EUR/JPY-cross-futures (Legacy, NON-COMMERCIAL net position, 4-report SHIFT) for the Night V29 trigger
+VVIXDF = os.path.join(HERE, 'docs', 'vvixdf_sp.json')  # v1.27: cached CBOE VVIX (vol-of-vol index) + ITA/SPY (defense/aerospace-vs-broad-market ratio, Round 62's "df_") daily closes for the Night V30 trigger
+SPYRSPEURJPY = os.path.join(HERE, 'docs', 'spyrspeurjpy_sp.json')  # v1.27: cached SPY/RSP (mega-cap-concentration ratio) daily closes + CFTC COT EUR/JPY-cross-futures (Legacy, NON-COMMERCIAL net position, 4-report SHIFT) for the Night V32 trigger
 FRED_URL = 'https://fred.stlouisfed.org/graph/fredgraph.csv?id={}'   # free, no API key needed
 
 def _cboe_series(sym, col):
@@ -1252,6 +1255,126 @@ def mtumspy_mxnoth_today(day):
     mxn2_oth_chg4_pct = cot_avail.reindex(idx, method='ffill')
     return pd.DataFrame(dict(mtumspy_chg10_pct=mtumspy_chg10_pct, mxn2_oth_chg4_pct=mxn2_oth_chg4_pct))
 
+def icsaeurjpy_today(day):
+    """v1.27 Night V29: FRED's weekly Initial Jobless Claims series (ICSA, labor-market stress, first use of
+    FRED macro-liquidity data in this project - published the following Thursday for the Saturday-dated survey
+    week, a 5-day publication lag applied here so nothing is look-ahead) PLUS CFTC's weekly LEGACY Commitments
+    of Traders report for EUR/JPY cross-rate futures (NON-COMMERCIAL net position, 4-report SHIFT - the same
+    series already used by live V28/eurjpyncomm_bt_today(), refetched independently here under its own cache so
+    V29 does not depend on V28's cache) - cached in docs/icsaeurjpy_sp.json, refreshed once per broker day (same
+    once-a-day shape as eurjpyncomm_bt_today()). A 3-day publication lag is applied to the COT data (report
+    Tuesday, published the following Friday - same method as every prior COT leg) so nothing is look-ahead.
+    Returns a DataFrame indexed by date with icsa_chg4_pct (52-week rolling percentile of the 4-week CHANGE in
+    initial jobless claims - low = claims falling/flat) and eurjpyl_ncomm_chg4_pct (52-week rolling percentile
+    of the 4-report SHIFT in the EUR/JPY-cross Non-Commercial net position - low = speculative positioning
+    falling fast) for v29_flag() in sp_engine.py, or None on a fetch failure (Night V29 then simply does not
+    fire that night - same fail-safe shape as the other night-trigger fetches)."""
+    c = loadj(ICSAEURJPY, {})
+    if c.get('day') == str(day.date()) and 'dates' in c:
+        idx = pd.to_datetime(c['dates'])
+        icsa = pd.Series([np.nan if x is None else x for x in c['icsa']], index=pd.to_datetime(c['icsa_dates']))
+        cot_dates = pd.to_datetime(c['cot_dates']); cot_net4 = pd.Series([np.nan if x is None else float(x) for x in c['cot_net']], index=cot_dates)
+    else:
+        try:
+            idx = _yahoo_daily_close('SPY').index
+            icsa = _fred_daily_close('ICSA'); icsa.index = icsa.index + pd.Timedelta(days=5)
+            r = requests.get(LEGACY_URL, params={
+                '$select': 'report_date_as_yyyy_mm_dd,noncomm_positions_long_all,noncomm_positions_short_all,open_interest_all',
+                '$where': f"market_and_exchange_names='{EURJPYL_MKT}'",
+                '$order': 'report_date_as_yyyy_mm_dd ASC', '$limit': 5000}, timeout=20)
+            r.raise_for_status(); cj = r.json()
+            cot_dates = pd.to_datetime([x['report_date_as_yyyy_mm_dd'] for x in cj])
+            cot_net = pd.Series([(float(x['noncomm_positions_long_all']) - float(x['noncomm_positions_short_all'])) / float(x['open_interest_all']) for x in cj], index=cot_dates)
+            cot_net = cot_net.sort_index(); cot_net4 = cot_net.diff(4)
+            c = dict(day=str(day.date()), dates=[str(t.date()) for t in idx],
+                     icsa_dates=[str(t.date()) for t in icsa.index], icsa=[None if pd.isna(x) else float(x) for x in icsa],
+                     cot_dates=[str(t.date()) for t in cot_net4.index], cot_net=[None if pd.isna(x) else float(x) for x in cot_net4], at=str(pd.Timestamp.utcnow()))
+            dumpj(c, ICSAEURJPY, indent=1)
+        except Exception:
+            return None
+    icsa_chg4_pct = icsa.diff(4).rolling(52, min_periods=26).rank(pct=True).reindex(idx, method='ffill')
+    cot_net4_pct = cot_net4.rolling(52, min_periods=26).rank(pct=True)
+    cot_avail = cot_net4_pct.copy(); cot_avail.index = cot_avail.index + pd.Timedelta(days=3)
+    eurjpyl_ncomm_chg4_pct = cot_avail.reindex(idx, method='ffill')
+    return pd.DataFrame(dict(icsa_chg4_pct=icsa_chg4_pct, eurjpyl_ncomm_chg4_pct=eurjpyl_ncomm_chg4_pct))
+
+def vvixdf_today(day):
+    """v1.27 Night V30: CBOE's VVIX index (vol-of-vol - stress in the vol market itself, first use of CBOE
+    VVIX in this project, fetched via the same CBOE daily-prices CSV endpoint already used by stress_today()'s
+    VIX/VIX3M/VVIX fetch) PLUS ITA (defense/aerospace-sector ETF) + SPY daily closes, a geopolitical-risk-on
+    ratio brand new to this project (Round 62's "df_" naming) - cached in docs/vvixdf_sp.json, refreshed once
+    per broker day (same once-a-day shape as xlespy_cadfx_today()). Returns a DataFrame indexed by date with
+    vvix_chg10_pct (252-day rolling percentile of VVIX's own 10-day % change - low = vol-of-vol falling/flat)
+    and df_chg10_pct (252-day rolling percentile of the 10-day % change in the ITA/SPY ratio - low = this
+    already-used feature falling) for v30_flag() in sp_engine.py, or None on a fetch failure (Night V30 then
+    simply does not fire that night - same fail-safe shape as the other night-trigger fetches)."""
+    c = loadj(VVIXDF, {})
+    if c.get('day') == str(day.date()) and 'dates' in c:
+        idx = pd.to_datetime(c['dates'])
+        vvix = pd.Series([np.nan if x is None else x for x in c['vvix']], index=pd.to_datetime(c['vvix_dates']))
+        ita = pd.Series([np.nan if x is None else x for x in c['ita']], index=idx)
+        spy = pd.Series([np.nan if x is None else x for x in c['spy']], index=idx)
+    else:
+        try:
+            ita = _yahoo_daily_close('ITA'); spy = _yahoo_daily_close('SPY')
+            idx = ita.index.union(spy.index); ita = ita.reindex(idx); spy = spy.reindex(idx)
+            vvix = _cboe_series('VVIX', 'VVIX')
+            c = dict(day=str(day.date()), dates=[str(t.date()) for t in idx],
+                     ita=[None if pd.isna(x) else float(x) for x in ita], spy=[None if pd.isna(x) else float(x) for x in spy],
+                     vvix_dates=[str(t.date()) for t in vvix.index], vvix=[None if pd.isna(x) else float(x) for x in vvix], at=str(pd.Timestamp.utcnow()))
+            dumpj(c, VVIXDF, indent=1)
+        except Exception:
+            return None
+    vvix_chg10_pct = vvix.pct_change(10).rolling(252, min_periods=120).rank(pct=True).reindex(idx, method='ffill')
+    df_ratio = ita / spy
+    df_chg10_pct = df_ratio.pct_change(10).rolling(252, min_periods=120).rank(pct=True)
+    return pd.DataFrame(dict(vvix_chg10_pct=vvix_chg10_pct, df_chg10_pct=df_chg10_pct))
+
+def spyrspeurjpy_today(day):
+    """v1.27 Night V32: SPY (cap-weighted S&P 500 ETF) + RSP (equal-weighted S&P 500 ETF) daily closes, a
+    mega-cap-concentration ratio brand new to this project (Round 91's "spyrsp_" - not how many stocks are
+    moving, but whether the index's move is mega-cap-concentrated) PLUS CFTC's weekly LEGACY Commitments of
+    Traders report for EUR/JPY cross-rate futures (NON-COMMERCIAL net position, 4-report SHIFT - the same
+    series already used by live V28/V29, refetched independently here under its own cache so V32 does not
+    depend on their caches) - cached in docs/spyrspeurjpy_sp.json, refreshed once per broker day (same once-a-
+    day shape as eurjpyncomm_bt_today()). A 3-day publication lag is applied to the COT data (report Tuesday,
+    published the following Friday - same method as every prior COT leg) so nothing is look-ahead. Returns a
+    DataFrame indexed by date with spyrsp_chg10_pct (252-day rolling percentile of the 10-day % change in the
+    SPY/RSP ratio - high = mega-cap-concentration rising fast) and eurjpyl_ncomm_chg4_pct (52-week rolling
+    percentile of the 4-report SHIFT in the EUR/JPY-cross Non-Commercial net position - low = speculative
+    positioning falling fast) for v32_flag() in sp_engine.py, or None on a fetch failure (Night V32 then simply
+    does not fire that night - same fail-safe shape as the other night-trigger fetches)."""
+    c = loadj(SPYRSPEURJPY, {})
+    if c.get('day') == str(day.date()) and 'dates' in c:
+        idx = pd.to_datetime(c['dates'])
+        spy = pd.Series([np.nan if x is None else x for x in c['spy']], index=idx)
+        rsp = pd.Series([np.nan if x is None else x for x in c['rsp']], index=idx)
+        cot_dates = pd.to_datetime(c['cot_dates']); cot_net4 = pd.Series([np.nan if x is None else float(x) for x in c['cot_net']], index=cot_dates)
+    else:
+        try:
+            spy = _yahoo_daily_close('SPY'); rsp = _yahoo_daily_close('RSP')
+            idx = spy.index.union(rsp.index); spy = spy.reindex(idx); rsp = rsp.reindex(idx)
+            r = requests.get(LEGACY_URL, params={
+                '$select': 'report_date_as_yyyy_mm_dd,noncomm_positions_long_all,noncomm_positions_short_all,open_interest_all',
+                '$where': f"market_and_exchange_names='{EURJPYL_MKT}'",
+                '$order': 'report_date_as_yyyy_mm_dd ASC', '$limit': 5000}, timeout=20)
+            r.raise_for_status(); cj = r.json()
+            cot_dates = pd.to_datetime([x['report_date_as_yyyy_mm_dd'] for x in cj])
+            cot_net = pd.Series([(float(x['noncomm_positions_long_all']) - float(x['noncomm_positions_short_all'])) / float(x['open_interest_all']) for x in cj], index=cot_dates)
+            cot_net = cot_net.sort_index(); cot_net4 = cot_net.diff(4)
+            c = dict(day=str(day.date()), dates=[str(t.date()) for t in idx],
+                     spy=[None if pd.isna(x) else float(x) for x in spy], rsp=[None if pd.isna(x) else float(x) for x in rsp],
+                     cot_dates=[str(t.date()) for t in cot_net4.index], cot_net=[None if pd.isna(x) else float(x) for x in cot_net4], at=str(pd.Timestamp.utcnow()))
+            dumpj(c, SPYRSPEURJPY, indent=1)
+        except Exception:
+            return None
+    spyrsp_ratio = spy / rsp
+    spyrsp_chg10_pct = spyrsp_ratio.pct_change(10).rolling(252, min_periods=120).rank(pct=True)
+    cot_net4_pct = cot_net4.rolling(52, min_periods=26).rank(pct=True)
+    cot_avail = cot_net4_pct.copy(); cot_avail.index = cot_avail.index + pd.Timedelta(days=3)
+    eurjpyl_ncomm_chg4_pct = cot_avail.reindex(idx, method='ffill')
+    return pd.DataFrame(dict(spyrsp_chg10_pct=spyrsp_chg10_pct, eurjpyl_ncomm_chg4_pct=eurjpyl_ncomm_chg4_pct))
+
 def lasthour_stats(b):
     """v1.09 Night V4: b = one finished broker day's minute bars (o h l c v). Returns (ret, vol) for the 22:00-23:00 broker window
     (= 15:00-16:00 NY, the same window the backtest's lh_pct/lhvol_z were built from), or (None, None) if that window has no bars.
@@ -1621,14 +1744,20 @@ def compute(hist, b, day, now, picks, sp, jd):
                                             name='Night long (VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish)', src=27) + trades  # never with the other twenty-one: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25-V26 above did NOT
     elif jd.get('v28'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.24 Night V28: EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast night (gated below) -
                                             name='Night long (EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast)', src=28) + trades  # never with the other twenty-two: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25-V27 above did NOT
-    elif jd.get('v36'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.25 Night V36: TLT-SPY-flight-to-safety-rising-fast + AUD-Other-Reportables-COT-falling-fast night (gated below; V29-V35 skipped - not yet MT4-confirmed) -
-                                            name='Night long (TLT-SPY-flight-to-safety-rising-fast + AUD-Other-Reportables-COT-falling-fast)', src=36) + trades  # never with the other twenty-three: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25-V28 above did NOT
+    elif jd.get('v29'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.27 Night V29: jobless-claims-falling-flat + EURJPY-Legacy-noncommercial-COT-falling-fast night (gated below) -
+                                            name='Night long (jobless-claims-falling-flat + EURJPY-Legacy-noncommercial-COT-falling-fast)', src=29) + trades  # never with the other twenty-three: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25-V28 above did NOT
+    elif jd.get('v30'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.27 Night V30: VVIX-vol-of-vol-falling-flat + defense-aerospace-vs-market-falling night (gated below) -
+                                            name='Night long (VVIX-vol-of-vol-falling-flat + defense-aerospace-vs-market-falling)', src=30) + trades  # never with the other twenty-four: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25-V28, V29 above did NOT
+    elif jd.get('v32'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.27 Night V32: SPY-RSP-mega-cap-concentration-rising-fast + EURJPY-Legacy-noncommercial-COT-falling-fast night (gated below; V31 skipped - not yet MT4-confirmed) -
+                                            name='Night long (SPY-RSP-mega-cap-concentration-rising-fast + EURJPY-Legacy-noncommercial-COT-falling-fast)', src=32) + trades  # never with the other twenty-five: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25-V28, V29-V30 above did NOT
+    elif jd.get('v36'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.25 Night V36: TLT-SPY-flight-to-safety-rising-fast + AUD-Other-Reportables-COT-falling-fast night (gated below; V33-V35 skipped - not yet MT4-confirmed) -
+                                            name='Night long (TLT-SPY-flight-to-safety-rising-fast + AUD-Other-Reportables-COT-falling-fast)', src=36) + trades  # never with the other twenty-six: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25-V28, V29-V30, V32 above did NOT
     elif jd.get('v37'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.25 Night V37: XLE-SPY-energy-underperforming + CAD-leveraged-money-COT-falling-fast night (gated below) -
-                                            name='Night long (XLE-SPY-energy-underperforming + CAD-leveraged-money-COT-falling-fast)', src=37) + trades  # never with the other twenty-four: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25-V28, V36 above did NOT
+                                            name='Night long (XLE-SPY-energy-underperforming + CAD-leveraged-money-COT-falling-fast)', src=37) + trades  # never with the other twenty-seven: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25-V28, V29-V30, V32, V36 above did NOT
     elif jd.get('v39'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.26 Night V39: IWM-SPY-small-cap-breadth-weak + 3mo-T-bill-yield-falling-fast night (gated below; V38 skipped - noise-level) -
-                                            name='Night long (IWM-SPY-small-cap-breadth-weak + 3mo-T-bill-yield-falling-fast)', src=39) + trades  # never with the other twenty-five: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25-V28, V36-V37 above did NOT
+                                            name='Night long (IWM-SPY-small-cap-breadth-weak + 3mo-T-bill-yield-falling-fast)', src=39) + trades  # never with the other twenty-eight: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25-V28, V29-V30, V32, V36-V37 above did NOT
     elif jd.get('v43'): trades = S.night_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod),               # v1.26 Night V43: MTUM-SPY-momentum-running-hot + MXN-Other-Reportables-COT-falling-fast night (gated below; V40-V42 skipped - not MT4-confirmed) -
-                                            name='Night long (MTUM-SPY-momentum-running-hot + MXN-Other-Reportables-COT-falling-fast)', src=43) + trades  # never with the other twenty-six: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25-V28, V36-V37, V39 above did NOT
+                                            name='Night long (MTUM-SPY-momentum-running-hot + MXN-Other-Reportables-COT-falling-fast)', src=43) + trades  # never with the other twenty-nine: only fires when stress, V3-V10, V12-V14, V16, V18-V23, V25-V28, V29-V30, V32, V36-V37, V39 above did NOT
     if not trades and S.tom_window(day) and np.isfinite(A) and now.hour * 60 + now.minute >= S.TOM_DECIDE:
         trades = S.tom_leg(b[['o', 'h', 'l', 'c']], A, day, sp, now_done=bool(now >= eod)) + trades                        # v1.07 row20: only once no other S&P leg has fired by 17:00 broker
     for t in trades:                                     # past the close time but no bar there yet: close at the last price
@@ -1873,43 +2002,69 @@ def main(feed=None, get=None, now=None):
         if jinfo: jd['v28_detail'] = jinfo
         if Jdf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27']:
             jd['v28_note'] = 'EURJPY-Legacy-noncommercial-COT/Bitcoin data unavailable this run - no Night V28 check'
-    # v1.25: V29-V35 (Rounds 87-94) are Python-estimate only, not yet MT4-confirmed - V36 picks up the v28
-    # chain directly, same "skip a not-yet-decided slot" convention as V24.
-    if 'v36' not in jd and 'v28' in jd:                     # v1.25 Night V36: decided once per day, only once stress+v3-v10+v12-v14+v16+v18-v23+v25-v28 are already known (V29-V35 skipped - not yet MT4-confirmed)
+    if 'v29' not in jd and 'v28' in jd:                     # v1.27 Night V29: decided once per day, only once stress+v3-v10+v12-v14+v16+v18-v23+v25-v28 are already known (MT4-confirmed 26 Nov as part of the V29+V30+V32 add-on: net +$21.52 vs True Live Control, max drawdown improved $9.80, PASS - pure frequency gain, +25 trades, no accuracy/WR change)
         ok_time = now.hour * 60 + now.minute <= S.NIGHT_IN + 5
-        Tdf = None if (jd['stress'] or jd['v3'] or jd['v4'] or jd['v5'] or jd['v6'] or jd['v7'] or jd['v8'] or jd['v9'] or jd['v10'] or jd['v12'] or jd['v13'] or jd['v14'] or jd['v16'] or jd['v18'] or jd['v19'] or jd['v20'] or jd['v21'] or jd['v22'] or jd['v23'] or jd['v25'] or jd['v26'] or jd['v27'] or jd['v28']) else tltspy_audoth_today(day)
+        Ndf = None if (jd['stress'] or jd['v3'] or jd['v4'] or jd['v5'] or jd['v6'] or jd['v7'] or jd['v8'] or jd['v9'] or jd['v10'] or jd['v12'] or jd['v13'] or jd['v14'] or jd['v16'] or jd['v18'] or jd['v19'] or jd['v20'] or jd['v21'] or jd['v22'] or jd['v23'] or jd['v25'] or jd['v26'] or jd['v27'] or jd['v28']) else icsaeurjpy_today(day)
+        fired, ninfo = S.v29_flag(Ndf, day) if Ndf is not None else (False, {})
+        jd['v29'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28']
+        if ninfo: jd['v29_detail'] = ninfo
+        if Ndf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28']:
+            jd['v29_note'] = 'Jobless-claims/EURJPY-Legacy-noncommercial-COT data unavailable this run - no Night V29 check'
+    if 'v30' not in jd and 'v29' in jd:                     # v1.27 Night V30: decided once per day, only once stress+v3-v10+v12-v14+v16+v18-v23+v25-v28+v29 are already known
+        ok_time = now.hour * 60 + now.minute <= S.NIGHT_IN + 5
+        Vdf = None if (jd['stress'] or jd['v3'] or jd['v4'] or jd['v5'] or jd['v6'] or jd['v7'] or jd['v8'] or jd['v9'] or jd['v10'] or jd['v12'] or jd['v13'] or jd['v14'] or jd['v16'] or jd['v18'] or jd['v19'] or jd['v20'] or jd['v21'] or jd['v22'] or jd['v23'] or jd['v25'] or jd['v26'] or jd['v27'] or jd['v28'] or jd['v29']) else vvixdf_today(day)
+        fired, vinfo = S.v30_flag(Vdf, day) if Vdf is not None else (False, {})
+        jd['v30'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v29']
+        if vinfo: jd['v30_detail'] = vinfo
+        if Vdf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v29']:
+            jd['v30_note'] = 'VVIX/ITA-SPY data unavailable this run - no Night V30 check'
+    # v1.27: V31 (Round 89) is Python-estimate only, not yet MT4-confirmed - V32 picks up the v30 chain
+    # directly, same "skip a not-yet-decided slot" convention as V24/V38/V40-V42.
+    if 'v32' not in jd and 'v30' in jd:                     # v1.27 Night V32: decided once per day, only once stress+v3-v10+v12-v14+v16+v18-v23+v25-v28+v29-v30 are already known (V31 skipped - not yet MT4-confirmed)
+        ok_time = now.hour * 60 + now.minute <= S.NIGHT_IN + 5
+        Pdf = None if (jd['stress'] or jd['v3'] or jd['v4'] or jd['v5'] or jd['v6'] or jd['v7'] or jd['v8'] or jd['v9'] or jd['v10'] or jd['v12'] or jd['v13'] or jd['v14'] or jd['v16'] or jd['v18'] or jd['v19'] or jd['v20'] or jd['v21'] or jd['v22'] or jd['v23'] or jd['v25'] or jd['v26'] or jd['v27'] or jd['v28'] or jd['v29'] or jd['v30']) else spyrspeurjpy_today(day)
+        fired, pinfo = S.v32_flag(Pdf, day) if Pdf is not None else (False, {})
+        jd['v32'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v29'] and not jd['v30']
+        if pinfo: jd['v32_detail'] = pinfo
+        if Pdf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v29'] and not jd['v30']:
+            jd['v32_note'] = 'SPY-RSP/EURJPY-Legacy-noncommercial-COT data unavailable this run - no Night V32 check'
+    # v1.25/v1.27: V33-V35 (Rounds 92-94) are Python-estimate only, not yet MT4-confirmed - V36 picks up the
+    # v32 chain directly, same "skip a not-yet-decided slot" convention as V24/V31/V38/V40-V42.
+    if 'v36' not in jd and 'v32' in jd:                     # v1.27 Night V36: decided once per day, only once stress+v3-v10+v12-v14+v16+v18-v23+v25-v28+v29-v30+v32 are already known (V31/V33-V35 skipped - not yet MT4-confirmed)
+        ok_time = now.hour * 60 + now.minute <= S.NIGHT_IN + 5
+        Tdf = None if (jd['stress'] or jd['v3'] or jd['v4'] or jd['v5'] or jd['v6'] or jd['v7'] or jd['v8'] or jd['v9'] or jd['v10'] or jd['v12'] or jd['v13'] or jd['v14'] or jd['v16'] or jd['v18'] or jd['v19'] or jd['v20'] or jd['v21'] or jd['v22'] or jd['v23'] or jd['v25'] or jd['v26'] or jd['v27'] or jd['v28'] or jd['v29'] or jd['v30'] or jd['v32']) else tltspy_audoth_today(day)
         fired, tinfo = S.v36_flag(Tdf, day) if Tdf is not None else (False, {})
-        jd['v36'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28']
+        jd['v36'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v29'] and not jd['v30'] and not jd['v32']
         if tinfo: jd['v36_detail'] = tinfo
-        if Tdf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28']:
+        if Tdf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v29'] and not jd['v30'] and not jd['v32']:
             jd['v36_note'] = 'TLT-SPY/AUD-Other-Reportables-COT data unavailable this run - no Night V36 check'
-    if 'v37' not in jd and 'v36' in jd:                     # v1.25 Night V37: decided once per day, only once stress+v3-v10+v12-v14+v16+v18-v23+v25-v28+v36 are already known
+    if 'v37' not in jd and 'v36' in jd:                     # v1.27 Night V37: decided once per day, only once stress+v3-v10+v12-v14+v16+v18-v23+v25-v28+v29-v30+v32+v36 are already known
         ok_time = now.hour * 60 + now.minute <= S.NIGHT_IN + 5
-        Wdf = None if (jd['stress'] or jd['v3'] or jd['v4'] or jd['v5'] or jd['v6'] or jd['v7'] or jd['v8'] or jd['v9'] or jd['v10'] or jd['v12'] or jd['v13'] or jd['v14'] or jd['v16'] or jd['v18'] or jd['v19'] or jd['v20'] or jd['v21'] or jd['v22'] or jd['v23'] or jd['v25'] or jd['v26'] or jd['v27'] or jd['v28'] or jd['v36']) else xlespy_cadfx_today(day)
+        Wdf = None if (jd['stress'] or jd['v3'] or jd['v4'] or jd['v5'] or jd['v6'] or jd['v7'] or jd['v8'] or jd['v9'] or jd['v10'] or jd['v12'] or jd['v13'] or jd['v14'] or jd['v16'] or jd['v18'] or jd['v19'] or jd['v20'] or jd['v21'] or jd['v22'] or jd['v23'] or jd['v25'] or jd['v26'] or jd['v27'] or jd['v28'] or jd['v29'] or jd['v30'] or jd['v32'] or jd['v36']) else xlespy_cadfx_today(day)
         fired, winfo = S.v37_flag(Wdf, day) if Wdf is not None else (False, {})
-        jd['v37'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v36']
+        jd['v37'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v29'] and not jd['v30'] and not jd['v32'] and not jd['v36']
         if winfo: jd['v37_detail'] = winfo
-        if Wdf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v36']:
+        if Wdf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v29'] and not jd['v30'] and not jd['v32'] and not jd['v36']:
             jd['v37_note'] = 'XLE-SPY/CAD-leveraged-money-COT data unavailable this run - no Night V37 check'
     # v1.26: V38 (Round 97) was noise-level in MT4, not ported - V39 picks up the v37 chain directly, same
-    # "skip a not-yet-decided/failed slot" convention as V24/V29-V35.
-    if 'v39' not in jd and 'v37' in jd:                     # v1.26 Night V39: decided once per day, only once stress+v3-v10+v12-v14+v16+v18-v23+v25-v28+v36-v37 are already known (V38 skipped - noise-level)
+    # "skip a not-yet-decided/failed slot" convention as V24/V31/V33-V35.
+    if 'v39' not in jd and 'v37' in jd:                     # v1.27 Night V39: decided once per day, only once stress+v3-v10+v12-v14+v16+v18-v23+v25-v28+v29-v30+v32+v36-v37 are already known (V38 skipped - noise-level)
         ok_time = now.hour * 60 + now.minute <= S.NIGHT_IN + 5
-        Idf = None if (jd['stress'] or jd['v3'] or jd['v4'] or jd['v5'] or jd['v6'] or jd['v7'] or jd['v8'] or jd['v9'] or jd['v10'] or jd['v12'] or jd['v13'] or jd['v14'] or jd['v16'] or jd['v18'] or jd['v19'] or jd['v20'] or jd['v21'] or jd['v22'] or jd['v23'] or jd['v25'] or jd['v26'] or jd['v27'] or jd['v28'] or jd['v36'] or jd['v37']) else iwmspy_dtb3_today(day)
+        Idf = None if (jd['stress'] or jd['v3'] or jd['v4'] or jd['v5'] or jd['v6'] or jd['v7'] or jd['v8'] or jd['v9'] or jd['v10'] or jd['v12'] or jd['v13'] or jd['v14'] or jd['v16'] or jd['v18'] or jd['v19'] or jd['v20'] or jd['v21'] or jd['v22'] or jd['v23'] or jd['v25'] or jd['v26'] or jd['v27'] or jd['v28'] or jd['v29'] or jd['v30'] or jd['v32'] or jd['v36'] or jd['v37']) else iwmspy_dtb3_today(day)
         fired, iinfo = S.v39_flag(Idf, day) if Idf is not None else (False, {})
-        jd['v39'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v36'] and not jd['v37']
+        jd['v39'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v29'] and not jd['v30'] and not jd['v32'] and not jd['v36'] and not jd['v37']
         if iinfo: jd['v39_detail'] = iinfo
-        if Idf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v36'] and not jd['v37']:
+        if Idf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v29'] and not jd['v30'] and not jd['v32'] and not jd['v36'] and not jd['v37']:
             jd['v39_note'] = 'IWM-SPY/3mo-T-bill-yield data unavailable this run - no Night V39 check'
     # v1.26: V40-V42 (Rounds 99-101) tested net profit down or drawdown worse in MT4, not ported - V43 picks
-    # up the v39 chain directly, same "skip a not-yet-decided/failed slot" convention as V24/V29-V35/V38.
-    if 'v43' not in jd and 'v39' in jd:                     # v1.26 Night V43: decided once per day, only once stress+v3-v10+v12-v14+v16+v18-v23+v25-v28+v36-v37+v39 are already known (V40-V42 skipped - not MT4-confirmed)
+    # up the v39 chain directly, same "skip a not-yet-decided/failed slot" convention as V24/V31/V33-V35/V38.
+    if 'v43' not in jd and 'v39' in jd:                     # v1.27 Night V43: decided once per day, only once stress+v3-v10+v12-v14+v16+v18-v23+v25-v28+v29-v30+v32+v36-v37+v39 are already known (V40-V42 skipped - not MT4-confirmed)
         ok_time = now.hour * 60 + now.minute <= S.NIGHT_IN + 5
-        Mdf = None if (jd['stress'] or jd['v3'] or jd['v4'] or jd['v5'] or jd['v6'] or jd['v7'] or jd['v8'] or jd['v9'] or jd['v10'] or jd['v12'] or jd['v13'] or jd['v14'] or jd['v16'] or jd['v18'] or jd['v19'] or jd['v20'] or jd['v21'] or jd['v22'] or jd['v23'] or jd['v25'] or jd['v26'] or jd['v27'] or jd['v28'] or jd['v36'] or jd['v37'] or jd['v39']) else mtumspy_mxnoth_today(day)
+        Mdf = None if (jd['stress'] or jd['v3'] or jd['v4'] or jd['v5'] or jd['v6'] or jd['v7'] or jd['v8'] or jd['v9'] or jd['v10'] or jd['v12'] or jd['v13'] or jd['v14'] or jd['v16'] or jd['v18'] or jd['v19'] or jd['v20'] or jd['v21'] or jd['v22'] or jd['v23'] or jd['v25'] or jd['v26'] or jd['v27'] or jd['v28'] or jd['v29'] or jd['v30'] or jd['v32'] or jd['v36'] or jd['v37'] or jd['v39']) else mtumspy_mxnoth_today(day)
         fired, minfo = S.v43_flag(Mdf, day) if Mdf is not None else (False, {})
-        jd['v43'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v36'] and not jd['v37'] and not jd['v39']
+        jd['v43'] = bool(fired) and ok_time and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v29'] and not jd['v30'] and not jd['v32'] and not jd['v36'] and not jd['v37'] and not jd['v39']
         if minfo: jd['v43_detail'] = minfo
-        if Mdf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v36'] and not jd['v37'] and not jd['v39']:
+        if Mdf is None and not jd['stress'] and not jd['v3'] and not jd['v4'] and not jd['v5'] and not jd['v6'] and not jd['v7'] and not jd['v8'] and not jd['v9'] and not jd['v10'] and not jd['v12'] and not jd['v13'] and not jd['v14'] and not jd['v16'] and not jd['v18'] and not jd['v19'] and not jd['v20'] and not jd['v21'] and not jd['v22'] and not jd['v23'] and not jd['v25'] and not jd['v26'] and not jd['v27'] and not jd['v28'] and not jd['v29'] and not jd['v30'] and not jd['v32'] and not jd['v36'] and not jd['v37'] and not jd['v39']:
             jd['v43_note'] = 'MTUM-SPY/MXN-Other-Reportables-COT data unavailable this run - no Night V43 check'
     trades = compute(hist, b, day, now, picks, sp, jd)
     freeze_legs(jd, trades)
@@ -1935,12 +2090,12 @@ def main(feed=None, get=None, now=None):
     else: state, msg = 'waiting', (f'Waiting for the first day signal (from {dubai(day + pd.Timedelta(minutes=16 * 60 + 40))} Dubai: 9:40 am New York move, '
                                    'Nasdaq signals; earlier: yesterday high/low sweep).')
     if nrow:                                             # v1.04 night leg (v1.08: or Night V3 - jd['v3']; v1.09: or Night V4 - jd['v4']; v1.10: or Night V5 - jd['v5']; v1.11: or Night V6 - jd['v6']; v1.12: or Night V7 - jd['v7']; v1.13: or Night V8 - jd['v8']; v1.14: or Night V9 - jd['v9']; v1.15: or Night V10 - jd['v10']; v1.16: or Night V12 - jd['v12']; v1.17: or Night V13 - jd['v13']; v1.18: or Night V14 - jd['v14']; v1.19: or Night V16 - jd['v16']; or Night V18 - jd['v18'])
-        n_ = nrow[0]; label = ('MTUM-SPY-momentum-running-hot + MXN-Other-Reportables-COT-falling-fast' if jd.get('v43') else ('IWM-SPY-small-cap-breadth-weak + 3mo-T-bill-yield-falling-fast' if jd.get('v39') else ('XLE-SPY-energy-underperforming + CAD-leveraged-money-COT-falling-fast' if jd.get('v37') else ('TLT-SPY-flight-to-safety-rising-fast + AUD-Other-Reportables-COT-falling-fast' if jd.get('v36') else ('EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast' if jd.get('v28') else ('VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish' if jd.get('v27') else ('Feeder-Cattle-COT-rising-fast + credit-de-risking' if jd.get('v26') else ('Sugar-COT-net-long + financials-weak' if jd.get('v25') else ('Utilities-retail-COT-falling-fast + transports-weak' if jd.get('v23') else ('UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast' if jd.get('v22') else ('VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish' if jd.get('v21') else ('ES-asset-manager-COT-fast-bullish + staples-weak' if jd.get('v20') else ('Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long' if jd.get('v19') else ('Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence' if jd.get('v18') else ('UST5yr-COT-falling-fast + credit-de-risking' if jd.get('v16') else ('Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast' if jd.get('v14') else ('MSCI-EM-COT-extreme-long + communications-weak' if jd.get('v13') else ('DJIA-COT-bullish-fast + crypto-risk-off' if jd.get('v12') else ('bank-loan-weak + E-mini COT net-long' if jd.get('v10') else ('duration-curve-steepening + tech-weak' if jd.get('v9') else ('credit-de-risking + industrials-weak' if jd.get('v8') else ('materials-weak + communications-rally' if jd.get('v7') else ('dollar-basket-weak + Europe-shock' if jd.get('v6') else ('dollar-weak + breadth-narrow' if jd.get('v5') else ('weak-close + volume-spike' if jd.get('v4') else ('gold+WTI shock' if jd.get('v3') else 'high-fear night'))))))))))))))))))))))))))
+        n_ = nrow[0]; label = ('MTUM-SPY-momentum-running-hot + MXN-Other-Reportables-COT-falling-fast' if jd.get('v43') else ('IWM-SPY-small-cap-breadth-weak + 3mo-T-bill-yield-falling-fast' if jd.get('v39') else ('XLE-SPY-energy-underperforming + CAD-leveraged-money-COT-falling-fast' if jd.get('v37') else ('TLT-SPY-flight-to-safety-rising-fast + AUD-Other-Reportables-COT-falling-fast' if jd.get('v36') else ('SPY-RSP-mega-cap-concentration-rising-fast + EURJPY-Legacy-noncommercial-COT-falling-fast' if jd.get('v32') else ('VVIX-vol-of-vol-falling-flat + defense-aerospace-vs-market-falling' if jd.get('v30') else ('jobless-claims-falling-flat + EURJPY-Legacy-noncommercial-COT-falling-fast' if jd.get('v29') else ('EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast' if jd.get('v28') else ('VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish' if jd.get('v27') else ('Feeder-Cattle-COT-rising-fast + credit-de-risking' if jd.get('v26') else ('Sugar-COT-net-long + financials-weak' if jd.get('v25') else ('Utilities-retail-COT-falling-fast + transports-weak' if jd.get('v23') else ('UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast' if jd.get('v22') else ('VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish' if jd.get('v21') else ('ES-asset-manager-COT-fast-bullish + staples-weak' if jd.get('v20') else ('Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long' if jd.get('v19') else ('Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence' if jd.get('v18') else ('UST5yr-COT-falling-fast + credit-de-risking' if jd.get('v16') else ('Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast' if jd.get('v14') else ('MSCI-EM-COT-extreme-long + communications-weak' if jd.get('v13') else ('DJIA-COT-bullish-fast + crypto-risk-off' if jd.get('v12') else ('bank-loan-weak + E-mini COT net-long' if jd.get('v10') else ('duration-curve-steepening + tech-weak' if jd.get('v9') else ('credit-de-risking + industrials-weak' if jd.get('v8') else ('materials-weak + communications-rally' if jd.get('v7') else ('dollar-basket-weak + Europe-shock' if jd.get('v6') else ('dollar-weak + breadth-narrow' if jd.get('v5') else ('weak-close + volume-spike' if jd.get('v4') else ('gold+WTI shock' if jd.get('v3') else 'high-fear night')))))))))))))))))))))))))))))
         msg = (f"NIGHT BUY ({label}) at {n_['time']} Dubai, stop {n_['stop']}, " +
                (f"closes at {dubai(day + pd.Timedelta(minutes=S.NIGHT_OUT))} Dubai (10:00 am New York). " if n_['status'] == 'open' else f"closed ({n_['status']}). ") + msg)
         if state in ('none', 'waiting') and n_['status'] == 'open': state = 'buy'
     elif jd.get('stress_note'): msg += ' (' + jd['stress_note'] + '.)'
-    elif jd.get('stress') is False and jd.get('v3') is False and jd.get('v4') is False and jd.get('v5') is False and jd.get('v6') is False and jd.get('v7') is False and jd.get('v8') is False and jd.get('v9') is False and jd.get('v10') is False and jd.get('v12') is False and jd.get('v13') is False and jd.get('v14') is False and jd.get('v16') is False and jd.get('v18') is False and jd.get('v19') is False and jd.get('v20') is False and jd.get('v21') is False and jd.get('v22') is False and jd.get('v23') is False and jd.get('v25') is False and jd.get('v26') is False and jd.get('v27') is False and jd.get('v28') is False and jd.get('v36') is False and jd.get('v37') is False and jd.get('v39') is False and jd.get('v43') is False: msg += ' No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak, no duration-curve-steepening + tech-weak, no bank-loan-weak + E-mini COT net-long, no DJIA-COT-bullish-fast + crypto-risk-off, no MSCI-EM-COT-extreme-long + communications-weak, no Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast, no UST5yr-COT-falling-fast + credit-de-risking, no Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence, no Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long, no ES-asset-manager-COT-fast-bullish + staples-weak, no VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish, no UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast, no Utilities-retail-COT-falling-fast + transports-weak, no Sugar-COT-net-long + financials-weak, no Feeder-Cattle-COT-rising-fast + credit-de-risking, no VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish, no EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast, no TLT-SPY-flight-to-safety-rising-fast + AUD-Other-Reportables-COT-falling-fast, no XLE-SPY-energy-underperforming + CAD-leveraged-money-COT-falling-fast, no IWM-SPY-small-cap-breadth-weak + 3mo-T-bill-yield-falling-fast, no MTUM-SPY-momentum-running-hot + MXN-Other-Reportables-COT-falling-fast).'
+    elif jd.get('stress') is False and jd.get('v3') is False and jd.get('v4') is False and jd.get('v5') is False and jd.get('v6') is False and jd.get('v7') is False and jd.get('v8') is False and jd.get('v9') is False and jd.get('v10') is False and jd.get('v12') is False and jd.get('v13') is False and jd.get('v14') is False and jd.get('v16') is False and jd.get('v18') is False and jd.get('v19') is False and jd.get('v20') is False and jd.get('v21') is False and jd.get('v22') is False and jd.get('v23') is False and jd.get('v25') is False and jd.get('v26') is False and jd.get('v27') is False and jd.get('v28') is False and jd.get('v29') is False and jd.get('v30') is False and jd.get('v32') is False and jd.get('v36') is False and jd.get('v37') is False and jd.get('v39') is False and jd.get('v43') is False: msg += ' No night trade today (not a high-fear night, no gold+WTI shock, no weak-close + volume spike, no dollar-weak + breadth-narrow, no dollar-basket-weak + Europe-shock, no materials-weak + communications-rally, no credit-de-risking + industrials-weak, no duration-curve-steepening + tech-weak, no bank-loan-weak + E-mini COT net-long, no DJIA-COT-bullish-fast + crypto-risk-off, no MSCI-EM-COT-extreme-long + communications-weak, no Brazilian-Real-COT-bullish-fast + UST-2yr-COT-falling-fast, no UST5yr-COT-falling-fast + credit-de-risking, no Micro-Bitcoin-COT-slow + nat-gas-vs-WTI-divergence, no Ultra-T-Bond-COT-extreme-long + MSCI-EM-COT-extreme-long, no ES-asset-manager-COT-fast-bullish + staples-weak, no VIX-other-reportables-COT-fast-long-vol + CHF-COT-fast-bearish, no UST2yr-retail-COT-falling-fast + MSCI-EM-COT-falling-fast, no Utilities-retail-COT-falling-fast + transports-weak, no Sugar-COT-net-long + financials-weak, no Feeder-Cattle-COT-rising-fast + credit-de-risking, no VIX-Legacy-commercial-COT-fast-long-vol + Dollar-Index-COT-fast-bullish, no EURJPY-Legacy-noncommercial-COT-falling-fast + Bitcoin-rising-fast, no jobless-claims-falling-flat + EURJPY-Legacy-noncommercial-COT-falling-fast, no VVIX-vol-of-vol-falling-flat + defense-aerospace-vs-market-falling, no SPY-RSP-mega-cap-concentration-rising-fast + EURJPY-Legacy-noncommercial-COT-falling-fast, no TLT-SPY-flight-to-safety-rising-fast + AUD-Other-Reportables-COT-falling-fast, no XLE-SPY-energy-underperforming + CAD-leveraged-money-COT-falling-fast, no IWM-SPY-small-cap-breadth-weak + 3mo-T-bill-yield-falling-fast, no MTUM-SPY-momentum-running-hot + MXN-Other-Reportables-COT-falling-fast).'
     elif jd.get('v3_note'): msg += ' (' + jd['v3_note'] + '.)'
     elif jd.get('v4_note'): msg += ' (' + jd['v4_note'] + '.)'
     elif jd.get('v5_note'): msg += ' (' + jd['v5_note'] + '.)'
