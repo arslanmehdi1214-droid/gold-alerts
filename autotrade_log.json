@@ -1,12 +1,5 @@
 [
  {
-  "action": "OPEN BUY part",
-  "detail": "USDJPY|2026-11-11|8:00 am|BUY|Heikin-Ashi 7am size 600.0 at 158.866 stop 158.156 target 158.898 | trade risk 9.85 AED",
-  "market": "USDJPY",
-  "ok": true,
-  "t": "Wed 11 Nov 8:01 AM"
- },
- {
   "action": "part closed on demo",
   "detail": "USDJPY|2026-11-11|8:00 am|BUY|Heikin-Ashi 7am",
   "market": "USDJPY",
@@ -2798,5 +2791,12 @@
   "market": "GOLD",
   "ok": false,
   "t": "Fri 27 Nov 12:54 AM"
+ },
+ {
+  "action": "close rest",
+  "detail": "GOLD|2026-11-26|2:17 pm|SELL|G14 sq2husd (watchdog: past day-end 10:50 PM broker) {\"errorCode\":\"Rejected. GOLD is currently closed. Timetable in place: UTC; Mon - 21:59, 23:00 -; Tue - 21:59, 23:00 -; Wed - 21:59, 23:00 -; Thu - 19:30, 23:00 ",
+  "market": "GOLD",
+  "ok": false,
+  "t": "Fri 27 Nov 12:55 AM"
  }
 ]
