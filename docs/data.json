@@ -37,7 +37,7 @@
    "actions_day": "2026-11-27",
    "feed_error": true,
    "state": "buy",
-   "message": "Price data incomplete at 12:18 am Dubai (newest closed minute bar is 33 min old) - the page shows the last good update; it retries every minute.",
+   "message": "Price data incomplete at 12:19 am Dubai (newest closed minute bar is 34 min old) - the page shows the last good update; it retries every minute.",
    "price": 3654.22,
    "close_at": "12:50 am",
    "change": 86.93,
@@ -11231,7 +11231,7 @@
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.12 rules)",
    "state": "sell",
-   "message": "S&P paper update failed at 12:18 am Dubai (FeedError: price bars missing between 11:58 pm-12:15 am Dubai) \u2014 shows the last good update; retries every minute.",
+   "message": "S&P paper update failed at 12:19 am Dubai (FeedError: newest closed price bar (12:15 am Dubai) is 3 min old) \u2014 shows the last good update; retries every minute.",
    "price": 7297.6,
    "change": 66.5,
    "entries": [
@@ -15616,8 +15616,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:50 am Dubai close. At most 2 trades a day.",
-   "price": 26702.3,
-   "change": 486.5,
+   "price": 26702.4,
+   "change": 486.6,
    "entries": [
     {
      "time": "3:45 pm",
@@ -17436,7 +17436,7 @@
     ],
     [
      "12:15 am",
-     26702.3,
+     26702.4,
      26702.3,
      26702.4,
      26701.3
@@ -22695,7 +22695,7 @@
     "source": "MT4 BRENT_WED_HOL_v115.mq4, his run 27 Nov 2026 (per-upgrade $ = the new trades vs the v1.10 run, 2018-21 / 2022-26, from the Brent chat's r559.py). Passed his pre-set bar: net/DD >= 15% better than v1.10 (+78%), net positive in both eras, no upgrade line clearly negative. U8 removes trade days (2.58 -> 2.35 per week)."
    },
    "state": "sell",
-   "message": "Brent paper update failed at 12:18 am Dubai (FeedError: newest closed price bar (11:59 pm Dubai) is 19 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
+   "message": "Brent paper update failed at 12:19 am Dubai (FeedError: newest closed price bar (11:59 pm Dubai) is 20 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
    "price": 90.453,
    "change": -1.33,
    "entries": [
