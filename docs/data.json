@@ -35,9 +35,9 @@
     }
    ],
    "actions_day": "2026-11-27",
-   "feed_error": false,
+   "feed_error": true,
    "state": "buy",
-   "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
+   "message": "Price data incomplete at 11:47 pm Dubai (newest closed minute bar is 2 min old) - the page shows the last good update; it retries every minute.",
    "price": 3654.22,
    "close_at": "12:50 am",
    "change": 86.93,
@@ -3441,8 +3441,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 4:00 pm Dubai close.",
-   "price": 159.547,
-   "change_pips": 27.1,
+   "price": 159.55,
+   "change_pips": 27.4,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -5243,7 +5243,7 @@
     ],
     [
      "11:45 pm",
-     159.547,
+     159.55,
      159.545,
      159.55,
      159.543
@@ -15560,8 +15560,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:50 am Dubai close. At most 2 trades a day.",
-   "price": 26709.5,
-   "change": 493.7,
+   "price": 26709.6,
+   "change": 493.8,
    "entries": [
     {
      "time": "3:45 pm",
@@ -17338,9 +17338,9 @@
     ],
     [
      "11:45 pm",
+     26709.6,
      26709.5,
-     26709.5,
-     26709.5,
+     26709.6,
      26709.5
     ]
    ],
@@ -22556,8 +22556,8 @@
    },
    "state": "sell",
    "message": "Today's signals: SELL (B). Stop 1.0x the 20-day range (rule C: 2.0x), no target; closes 11:30 pm Dubai if not stopped first.",
-   "price": 90.513,
-   "change": -1.27,
+   "price": 90.468,
+   "change": -1.31,
    "entries": [
     {
      "time": "1:00 pm",
@@ -24165,7 +24165,7 @@
     ],
     [
      "11:45 pm",
-     90.51,
+     90.47,
      90.33,
      90.53,
      90.31
