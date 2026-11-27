@@ -37,7 +37,7 @@
    "actions_day": "2026-11-27",
    "feed_error": true,
    "state": "buy",
-   "message": "Price data incomplete at 1:30 am Dubai (newest closed minute bar is 105 min old) - the page shows the last good update; it retries every minute.",
+   "message": "Price data incomplete at 1:31 am Dubai (newest closed minute bar is 106 min old) - the page shows the last good update; it retries every minute.",
    "price": 3654.22,
    "close_at": "12:50 am",
    "change": 86.93,
@@ -3441,8 +3441,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 4:00 pm Dubai close.",
-   "price": 159.56,
-   "change_pips": 28.4,
+   "price": 159.557,
+   "change_pips": 28.1,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -5387,6 +5387,13 @@
      159.572,
      159.574,
      159.56
+    ],
+    [
+     "1:30 am",
+     159.557,
+     159.557,
+     159.559,
+     159.55
     ]
    ],
    "journal": {
@@ -19203,8 +19210,8 @@
    "regime": 0.556,
    "gap": null,
    "message": "PAPER BUY at 1.31205 (12:00 pm Dubai). Stop 1.30406, no target - it closes at 1:45 am Dubai. NEWS-FREE day: when price reaches 1.31365, move the stop to 1.31255 (entry + 5 pips). + HOLIDAY SELL (half size, day after a UK/US holiday) at 1.31205 (12:00 pm Dubai), stop 1.32403, no target, closes 1:45 am Dubai.",
-   "price": 1.30926,
-   "change": -0.00125,
+   "price": 1.30931,
+   "change": -0.0012,
    "entries": [
     {
      "time": "12:00 pm",
@@ -19230,7 +19237,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": -29.4,
+     "live": -28.9,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.30406 \u00b7 no target \u00b7 when price reaches 1.31365, MOVE THE STOP to 1.31255 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 1:45 am Dubai"
     },
@@ -19258,7 +19265,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": 26.4,
+     "live": 25.9,
      "spread": 1.5,
      "next": "Hold \u00b7 HALF-size holiday sell \u00b7 stop 1.32403 \u00b7 no target \u00b7 closes at 1:45 am Dubai"
     }
@@ -21230,6 +21237,13 @@
      1.3094,
      1.30942,
      1.30926
+    ],
+    [
+     "1:30 am",
+     1.30931,
+     1.30927,
+     1.30935,
+     1.30927
     ]
    ],
    "journal": {
@@ -21278,7 +21292,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": -29.4,
+       "live": -28.9,
        "spread": 1.5,
        "next": "Hold \u00b7 stop 1.30406 \u00b7 no target \u00b7 when price reaches 1.31365, MOVE THE STOP to 1.31255 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 1:45 am Dubai"
       },
@@ -21306,7 +21320,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": 26.4,
+       "live": 25.9,
        "spread": 1.5,
        "next": "Hold \u00b7 HALF-size holiday sell \u00b7 stop 1.32403 \u00b7 no target \u00b7 closes at 1:45 am Dubai"
       }
@@ -23005,7 +23019,7 @@
     "source": "MT4 BRENT_WED_HOL_v115.mq4, his run 27 Nov 2026 (per-upgrade $ = the new trades vs the v1.10 run, 2018-21 / 2022-26, from the Brent chat's r559.py). Passed his pre-set bar: net/DD >= 15% better than v1.10 (+78%), net positive in both eras, no upgrade line clearly negative. U8 removes trade days (2.58 -> 2.35 per week)."
    },
    "state": "sell",
-   "message": "Brent paper update failed at 1:30 am Dubai (FeedError: newest closed price bar (11:59 pm Dubai) is 91 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
+   "message": "Today's signals: SELL (B). Stop 1.0x the 20-day range (rule C: 2.0x), no target; closes 11:30 pm Dubai if not stopped first.",
    "price": 90.453,
    "change": -1.33,
    "entries": [
@@ -25090,7 +25104,7 @@
      "wed": false
     }
    ],
-   "feed_error": true,
+   "feed_error": false,
    "epic": "OIL_BRENT",
    "watch": {
     "version": "v1.13W",
