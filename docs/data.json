@@ -1,5 +1,5 @@
 {
- "updated": "Fri 27 Nov \u00b7 4:51 am",
+ "updated": "Fri 27 Nov \u00b7 4:52 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 3559.46,
+   "price": 3558.21,
    "close_at": "12:50 am",
-   "change": -7.83,
+   "change": -9.08,
    "size": 0.1,
    "datr": 109.79,
    "open_now": 0,
@@ -177,10 +177,10 @@
     ],
     [
      "4:50 am",
-     3559.46,
+     3558.21,
      3561.94,
      3562.56,
-     3559.12
+     3558.21
     ]
    ],
    "history": [
@@ -1789,8 +1789,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 4:00 pm Dubai close.",
-   "price": 159.361,
-   "change_pips": 8.5,
+   "price": 159.356,
+   "change_pips": 8.0,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -1818,7 +1818,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.0887,
+     "r_now": 0.064,
      "rwf": null,
      "spread": 1.0
     }
@@ -1973,9 +1973,9 @@
     ],
     [
      "4:50 am",
-     159.361,
+     159.356,
      159.35,
-     159.361,
+     159.373,
      159.35
     ]
    ],
@@ -2030,7 +2030,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.0887,
+       "r_now": 0.064,
        "rwf": null,
        "spread": 1.0
       }
@@ -4531,8 +4531,8 @@
    "net_label": "Net $ per barrel (v1.18)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 84.751,
-   "change": 0.4,
+   "price": 84.761,
+   "change": 0.41,
    "entries": [],
    "spark": [
     [
@@ -4691,7 +4691,7 @@
     ],
     [
      "4:50 am",
-     84.75,
+     84.76,
      84.78,
      84.81,
      84.74
@@ -6263,8 +6263,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (Night-trade check: Cboe data not available - HTTPError: 403 Client Error: Forbidden for url: https://cdn-api.cboe.com/api/global/delayed_quotes/quotes/_VIX..)",
-   "price": 7234.9,
-   "change": 3.8,
+   "price": 7235.4,
+   "change": 4.3,
    "entries": [],
    "spark": [
     [
@@ -6423,7 +6423,7 @@
     ],
     [
      "4:50 am",
-     7234.9,
+     7235.4,
      7236.0,
      7236.6,
      7234.9
@@ -9015,8 +9015,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 26221.5,
-   "change": 5.7,
+   "price": 26227.8,
+   "change": 12.0,
    "entries": [],
    "spark": [
     [
@@ -9175,10 +9175,10 @@
     ],
     [
      "4:50 am",
-     26221.5,
+     26227.8,
      26234.2,
-     26234.8,
-     26221.3
+     26236.2,
+     26221.2
     ]
    ],
    "journal": {
@@ -10941,7 +10941,7 @@
      1.30936,
      1.30942,
      1.30943,
-     1.30933
+     1.30931
     ]
    ],
    "journal": {
@@ -12571,7 +12571,7 @@
     "note": "DEMO / FORWARD TEST ONLY - no target, they close on time (21:30 broker); % = closed in profit, not hit target. Live v1.10 rules unchanged."
    },
    "state": "none",
-   "message": "Brent paper update failed at 4:51 am Dubai (FeedError: newest closed price bar (2:59 am Dubai) is 111 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
+   "message": "Brent paper update failed at 4:52 am Dubai (FeedError: newest closed price bar (2:59 am Dubai) is 112 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
    "price": 91.778,
    "change": 0.0,
    "entries": [],
