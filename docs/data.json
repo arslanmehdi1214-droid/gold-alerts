@@ -1,5 +1,5 @@
 {
- "updated": "Fri 27 Nov \u00b7 7:56 am",
+ "updated": "Fri 27 Nov \u00b7 7:58 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -20,9 +20,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 3629.62,
+   "price": 3629.07,
    "close_at": "12:50 am",
-   "change": 62.33,
+   "change": 61.78,
    "size": 0.1,
    "datr": 109.79,
    "open_now": 1,
@@ -466,10 +466,10 @@
     ],
     [
      "7:55 am",
-     3629.62,
+     3629.07,
      3630.09,
      3630.59,
-     3629.56
+     3628.4
     ]
    ],
    "history": [
@@ -2078,8 +2078,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 4:00 pm Dubai close.",
-   "price": 159.226,
-   "change_pips": -5.0,
+   "price": 159.236,
+   "change_pips": -4.0,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -2107,7 +2107,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.5764,
+     "r_now": -0.5271,
      "rwf": null,
      "spread": 1.0
     }
@@ -2521,7 +2521,7 @@
     ],
     [
      "7:55 am",
-     159.226,
+     159.236,
      159.24,
      159.24,
      159.221
@@ -2578,7 +2578,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.5764,
+       "r_now": -0.5271,
        "rwf": null,
        "spread": 1.0
       }
@@ -5523,7 +5523,7 @@
      "7:55 am",
      85.31,
      85.31,
-     85.32,
+     85.33,
      85.29
     ]
    ],
@@ -7116,8 +7116,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (Night-trade check: Cboe data not available - HTTPError: 403 Client Error: Forbidden for url: https://cdn-api.cboe.com/api/global/delayed_quotes/quotes/_VIX..)",
-   "price": 7300.6,
-   "change": 69.5,
+   "price": 7300.3,
+   "change": 69.2,
    "entries": [],
    "spark": [
     [
@@ -7535,10 +7535,10 @@
     ],
     [
      "7:55 am",
-     7300.6,
+     7300.3,
      7301.5,
      7302.5,
-     7299.6
+     7299.1
     ]
    ],
    "journal": {
@@ -10127,8 +10127,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 26673.9,
-   "change": 458.1,
+   "price": 26677.0,
+   "change": 461.2,
    "entries": [],
    "spark": [
     [
@@ -10546,7 +10546,7 @@
     ],
     [
      "7:55 am",
-     26673.9,
+     26677.0,
      26683.2,
      26683.8,
      26665.9
@@ -12072,8 +12072,8 @@
    "regime": 0.556,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker). NEWS-FREE day (no high-impact UK/US news on the calendar): calm rules - no target; stop moves to entry + 5 pips once +0.2 x stop in profit; at 10:00 the side can switch by the price vote (v1.13). Day after a UK/US holiday: an extra HALF-size SELL opens at 12:00 pm Dubai.",
-   "price": 1.31178,
-   "change": 0.00127,
+   "price": 1.31164,
+   "change": 0.00113,
    "entries": [],
    "spark": [
     [
@@ -12568,10 +12568,10 @@
     ],
     [
      "7:55 am",
-     1.31178,
+     1.31164,
      1.31178,
      1.31185,
-     1.31176
+     1.31164
     ]
    ],
    "journal": {
@@ -14202,7 +14202,7 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 91.763,
+   "price": 91.758,
    "change": -0.02,
    "entries": [],
    "spark": [
