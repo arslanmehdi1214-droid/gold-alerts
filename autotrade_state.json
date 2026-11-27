@@ -1,15 +1,15 @@
 {
- "balance": 1667.76,
+ "balance": 1673.03,
  "balance_ccy": "AED",
  "day": {
   "date": "2026-11-27",
-  "pl": 94.84,
+  "pl": 105.38,
   "start_balance": 1621.32,
   "start_equity": 1619.72,
   "stopped": false
  },
- "open_positions": 5,
- "open_risk_aed": 113.01,
+ "open_positions": 7,
+ "open_risk_aed": 164.35,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-23|5:46 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -213,6 +213,46 @@
    "side": "BUY",
    "state": "closed",
    "stop": 1.31082
+  },
+  "GBPUSD|2026-11-27|12:00 pm|BUY|Layer 2 \u00b7 small traders crowded": {
+   "desk_price": 1.31205,
+   "market": "GBPUSD",
+   "opened_at": "Fri 27 Nov 12:01 PM",
+   "overnight": false,
+   "part_x": 0.0,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-7703-dfac-0495-7fc60004511e",
+    "level": 1.31241,
+    "open": true,
+    "size": 1000.0,
+    "tp": null
+   },
+   "risk_aed": 29.34,
+   "risk_usd": 8.17,
+   "side": "BUY",
+   "state": "open",
+   "stop": 1.30406
+  },
+  "GBPUSD|2026-11-27|12:00 pm|SELL|Holiday sell \u00b7 day after a UK/US holiday": {
+   "desk_price": 1.31205,
+   "market": "GBPUSD",
+   "opened_at": "Fri 27 Nov 12:01 PM",
+   "overnight": false,
+   "part_x": 0.0,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-7703-dfb8-0495-7fc60004511e",
+    "level": 1.31227,
+    "open": true,
+    "size": 500.0,
+    "tp": null
+   },
+   "risk_aed": 22.0,
+   "risk_usd": 6.13,
+   "side": "SELL",
+   "state": "open",
+   "stop": 1.32403
   },
   "GOLD|2026-11-23|8:00 am|SELL|N2 near100": {
    "desk_price": 3608.6,
