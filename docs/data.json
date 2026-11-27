@@ -1,5 +1,5 @@
 {
- "updated": "Fri 27 Nov \u00b7 11:35 pm",
+ "updated": "Fri 27 Nov \u00b7 11:36 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -38,9 +38,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 3642.65,
+   "price": 3641.74,
    "close_at": "12:50 am",
-   "change": 75.36,
+   "change": 74.45,
    "size": 0.1,
    "datr": 109.79,
    "open_now": 0,
@@ -1819,6 +1819,13 @@
      3643.81,
      3643.83,
      3641.88
+    ],
+    [
+     "11:35 pm",
+     3641.74,
+     3642.64,
+     3642.64,
+     3641.01
     ]
    ],
    "history": [
@@ -3427,8 +3434,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 4:00 pm Dubai close.",
-   "price": 159.561,
-   "change_pips": 28.5,
+   "price": 159.558,
+   "change_pips": 28.2,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -5211,6 +5218,13 @@
      159.561,
      159.562,
      159.565,
+     159.556
+    ],
+    [
+     "11:35 pm",
+     159.558,
+     159.56,
+     159.57,
      159.556
     ]
    ],
@@ -7795,8 +7809,8 @@
    "net_label": "Net $ per barrel (v1.18)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 82.591,
-   "change": -1.77,
+   "price": 82.543,
+   "change": -1.81,
    "entries": [
     {
      "time": "7:02 am",
@@ -9550,6 +9564,13 @@
      82.64,
      82.75,
      82.59
+    ],
+    [
+     "11:35 pm",
+     82.54,
+     82.6,
+     82.61,
+     82.49
     ]
    ],
    "journal": {
@@ -11140,7 +11161,7 @@
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.12 rules)",
    "state": "sell",
-   "message": "S&P paper update failed at 11:35 pm Dubai (FeedError: newest closed price bar (11:30 pm Dubai) is 4 min old) \u2014 shows the last good update; retries every minute.",
+   "message": "S&P paper update failed at 11:36 pm Dubai (FeedError: newest closed price bar (11:30 pm Dubai) is 5 min old) \u2014 shows the last good update; retries every minute.",
    "price": 7297.0,
    "change": 65.9,
    "entries": [
@@ -15454,7 +15475,7 @@
    "cost_note": "Results are index points for the whole trade at its v1.02 size (sells \u2153, the 25% / 15% part included), after a fixed 1.8-point spread (as in the MT4 test; entry, stop and part levels use it too). Capital.com's live spread is shown for reference only.",
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
-   "message": "Nasdaq paper update failed at 11:35 pm Dubai (FeedError: newest closed price bar (11:30 pm Dubai) is 4 min old) \u2014 shows the last good update; retries every minute.",
+   "message": "Nasdaq paper update failed at 11:36 pm Dubai (FeedError: price bars missing between 11:25 pm-11:30 pm, 11:30 pm-11:35 pm Dubai) \u2014 shows the last good update; retries every minute.",
    "price": 26707.4,
    "change": 491.6,
    "entries": [
@@ -20626,6 +20647,13 @@
      1.30919,
      1.30931,
      1.30917
+    ],
+    [
+     "11:35 pm",
+     1.30923,
+     1.30924,
+     1.30926,
+     1.30921
     ]
    ],
    "journal": {
@@ -22402,7 +22430,7 @@
    },
    "state": "sell",
    "message": "Today's signals: SELL (B). Stop 1.0x the 20-day range (rule C: 2.0x), no target; closes 11:30 pm Dubai if not stopped first.",
-   "price": 90.371,
+   "price": 90.373,
    "change": -1.41,
    "entries": [
     {
@@ -23994,6 +24022,13 @@
      90.73,
      90.73,
      90.37
+    ],
+    [
+     "11:35 pm",
+     90.37,
+     90.37,
+     90.39,
+     90.28
     ]
    ],
    "journal": {
