@@ -1,4 +1,22 @@
-"""Brent Oil (BRENT) dashboard SIGNAL engine - BRENT v1.07a rules (A-F unchanged + new rule K+ added 9 Nov 2026 on
+"""v1.15 (27 Nov 2026, his explicit "push Brent v1.15"; source EA BRENT_WED_HOL_v115.mq4 md5 0149f41e75298717227385d9a9cf389c, handoff
+Trading/BRENT/BRENT_v115_desk_handoff.md): eight stacked upgrades on top of the live v1.10 rules below (every v1.10 rule, A-F/K+/AW/K2, is
+unchanged and every upgrade has its own on/off flag USE_*). MT4 (his run 27 Nov 2026, tester 2017-2026, trades 2018-26): net $143,597,
+equity DD $12,228 (1.16%), 1,832 trades, PF 1.65, 55.1% closed in profit; closed-trade net/DD 16.08 vs v1.10's 9.05 (+78%), both eras up.
+All times broker clock. A = 20-day average daily range. Every trade closes 21:30 broker unless stated. Each add-on is its OWN position with
+its own tag, appended after the conflict-close step like K+/AW/K2 (the EA's OpenM() has no conflict-close and Open() only looks at the main magic).
+  U1 A16   rule A fired today -> at 16:00, if (16:00 price - 10:00 price) has A's sign -> 2nd trade in A's direction, stop 1.0 A. Tag A16.
+  U2 B12   rule B opened (day after a US holiday) -> at 12:00, if price < B's entry (B's sell is in profit) -> 2nd SELL, stop 1.0 A. Tag B12.
+  U3 C14   rule C opened BEFORE 14:00 -> at 14:00, if price is beyond C's entry in C's direction -> 2nd trade, stop 1.0 A. Tag C14.
+  U4 A12K  Wednesday: m12 = price(12:00) - price(10:00), every day; SD = std of the last <=60 m12 (>=30 needed). If |m12| > 0.5 SD -> enter at
+           12:00 in m12's direction, stop 1.0 A; at 14:00 keep it only if rule A fires the SAME way, else close it at 14:00. Tag A12K.
+  U5       rule D UK-holiday BUY at 2x size (row size 2.0 -> autotrade.py's weight() doubles the risk).
+  U6       rule D UK-holiday BUY LIMIT entry: target = 11:00 price - 0.05 A; buy as soon as price reaches it before 11:30 (fill = the target price,
+           or the bar open if it gapped below), else buy at market at the 11:30 bar open.
+  U7       rule E sell at 2x size when the 09:59 close is at or above the 03:00 bar's close.
+  U8       mid-range skip: pos = (yesterday's 21:29 close - min of the last 250 daily closes) / (max - min) (window includes yesterday, needs >=120
+           closes). If 0.33 <= pos <= 0.67 -> skip rule A today and with it AW, A16 and A12K. (Unavailable closes = no skip, as the EA with <120 days.)
+The upgrades apply from broker day V115_FROM on (see below); run_day(v115=False) reproduces the v1.10 engine exactly.
+Brent Oil (BRENT) dashboard SIGNAL engine - BRENT v1.07a rules (A-F unchanged + new rule K+ added 9 Nov 2026 on
 top of the live v1.06 A-F build, his explicit request - "keep A-F exactly as they are"; rule G and the
 conflict-close rule's interaction with it were part of the EA bundle but dropped from this port - his 8 Nov
 decision: "drop rule G completely... no changes to autotrade.py"), source of truth EA BRENT_WED_HOL_v106.mq4 for
@@ -229,6 +247,17 @@ K2_LAST_SIGNAL_MIN = K_LAST_SIGNAL_MIN                  # K2's own last-entry cu
 K2_LOT_X = 0.5                                          # v1.10 rule K2 size = this x a normal trade (EA K2_Lot_x) - NOT a stop multiplier;
 # consumed by brent_run.row() (size=K2_LOT_X -> autotrade.py's weight()/plan() halves the USD risk and lot size)
 
+# ---- v1.15 upgrades (27 Nov 2026, EA BRENT_WED_HOL_v115.mq4 lines 65-82) ----
+V115_FROM = pd.Timestamp('2026-11-30')                  # first broker day the v1.15 upgrades trade (his push 27 Nov, afternoon: nothing applicable was left today)
+USE_A16, USE_B12, USE_C14, USE_A12K, USE_D_LOT, USE_D_LIMIT, USE_E_RALLY, USE_MID = (True,) * 8
+A16_ENTRY_MIN, A16_STOP_MULT = 16 * 60, 1.0             # U1: EA lines 65-67
+UPG_STOP_MULT = 1.0                                     # U2/U3/U4: EA line 82 (Upg_Stop_x_Range)
+B12_MIN, C14_MIN, A12_MIN = 12 * 60, 14 * 60, 12 * 60   # U2 / U3 / U4 checkpoint times
+A12_Z, A12_NMIN = 0.5, 30                               # U4: EA line 72; needs at least 30 past m12 values, uses the last 60 (SD_Days)
+D_BUY_LOT_X, D_LIMIT_X, D_LIMIT_WAIT = 2.0, 0.05, 30    # U5/U6: EA lines 73-76
+E_RALLY_LOT_X, E03_MIN = 2.0, 3 * 60                    # U7: EA line 77
+MID_LOW, MID_HIGH, MID_DAYS, MID_MIN_CLOSES = 0.33, 0.67, 250, 120   # U8: EA lines 79-81
+
 # ---- v1.12W WATCH rules (new 19 Nov 2026, demo forward test only - independent of every live rule) ----
 W_M4_DAYS = (
     "2018.01.26,2018.02.23,2018.03.26,2018.04.25,2018.05.28,2018.06.26,2018.07.26,2018.08.28,2018.09.25,2018.10.26,"
@@ -300,6 +329,8 @@ RULE_NAME = {'A': 'Rule A · Wednesday momentum', 'B': 'Rule B · day after US h
              'K': 'Rule K+ · overextension fade (new 9 Nov 2026 - thin before 2026)',
              'AW': 'Rule AW · Wednesday re-entry (new 9 Nov 2026 - 2022-heavy)',
              'K2': 'Rule K2 · K+ add-on fade, half size (new 9 Nov 2026 - 2022-heavy)',
+             'A16': 'Rule A16 · Wednesday add-on at 16:00 (v1.15)', 'B12': 'Rule B12 · day-after-US-holiday add-on at 12:00 (v1.15)',
+             'C14': 'Rule C14 · range-break add-on at 14:00 (v1.15)', 'A12K': 'Rule A12K · early Wednesday start at 12:00 (v1.15)',
              'WM4': 'W1 · month-end buy (DEMO forward test)', 'WM1': 'W2 · first-day-of-month sell (DEMO forward test)',
              'WEU': 'W3 · Europe-only holiday sell (DEMO forward test)', 'WN150': 'W4 · 150-day close break (DEMO forward test)',
              'WLTD4': 'W5 · day before Brent options expiry buy (DEMO forward test)'}
@@ -360,6 +391,30 @@ def wed_signal(move, sd):
     if not (np.isfinite(move) and np.isfinite(sd) and sd > 0): return 0
     return 1 if move > MOVE_Z * sd else -1 if move < -MOVE_Z * sd else 0
 
+def close_before(b, day, minute):
+    """Close of the last closed minute bar that STARTS before broker `minute` of `day` (= the EA's Close[1] at the first tick of `minute`), else NaN."""
+    t = pd.Timestamp(day).normalize() + pd.Timedelta(minutes=minute)
+    a = int(b.index.searchsorted(t)) - 1
+    if a < 0 or t - b.index[a] > pd.Timedelta(minutes=ENTRY_LATE): return np.nan
+    return float(b.c.values[a])
+
+def move_std12(m12, day, n=MOVE_WIN, nmin=A12_NMIN):
+    """U4: std dev (ddof=1) of the last <=n 10:00->12:00 moves BEFORE `day` (needs at least nmin) - the EA's s12."""
+    v = m12[m12.index < pd.Timestamp(day).normalize()].dropna()
+    if len(v) < nmin: return np.nan
+    return float(v.iloc[-n:].std(ddof=1))
+
+def mid_pos(dcl, day):
+    """U8: position of yesterday's 21:29 close inside the min/max of the last MID_DAYS daily closes (yesterday included), 0..1; None = fewer than
+    MID_MIN_CLOSES closes (or flat range) = no skip, exactly like the EA. dcl = Series of daily 21:29 closes indexed by broker day."""
+    if dcl is None: return None
+    v = dcl[dcl.index < pd.Timestamp(day).normalize()].dropna().sort_index().values
+    if len(v) < MID_MIN_CLOSES: return None
+    w = v[-MID_DAYS:]; mx, mn = float(w.max()), float(w.min())
+    return None if not mx > mn else float((v[-1] - mn) / (mx - mn))
+
+def is_mid(pos): return pos is not None and MID_LOW <= pos <= MID_HIGH
+
 # ---------------- trade construction ----------------
 def fixed_trade(b, day, entry_min, direction, A, rk, cost, mult=STOP_MULT):
     """A trade entered at a fixed broker-clock minute (first bar within ENTRY_LATE min), stop mult*A, exit EXIT_MIN
@@ -409,6 +464,56 @@ def range_break_trade(b, day, hi, lo, A, cost, mult=BREAK_STOP_MULT):
     elif e < len(b): out.update(status='exit', exit=float(b.o.values[e]), exit_t=b.index[e])
     if out['exit'] is not None: out['res'] = s * (out['exit'] - en) - cost
     return out
+
+def _run_from(b, day, a, s, en, A, mult, rk, cost, end_min=EXIT_MIN, end_status='exit'):
+    """Same mechanics as fixed_trade() but entered at bar index `a` at price `en` (v1.15 trades that need their own entry price or exit time)."""
+    st = en - s * mult * A
+    te = pd.Timestamp(day).normalize() + pd.Timedelta(minutes=end_min); e = int(b.index.searchsorted(te))
+    H, L = b.h.values[a:e], b.l.values[a:e]
+    out = dict(t=b.index[a], dir=s, rule=rk, name=RULE_NAME[rk], entry=en, stop=st, stop0=st, exit=None, exit_t=None, status='open', A=A, cost=cost)
+    hit = None
+    for j in range(len(H)):
+        if (L[j] <= st) if s > 0 else (H[j] >= st): hit = (st, j); break
+    if hit: out.update(status='stopped', exit=hit[0], exit_t=b.index[a + hit[1]])
+    elif e < len(b): out.update(status=end_status, exit=float(b.o.values[e]), exit_t=b.index[e])
+    if out['exit'] is not None: out['res'] = s * (out['exit'] - en) - cost
+    return out
+
+def d_buy_trade(b, day, A, cost):
+    """Rule D UK-holiday BUY with U5 (2x size) + U6 (limit entry): target = 11:00 bar open - D_LIMIT_X*A; the first bar before 11:30 whose LOW reaches it
+    fills at the target (or at the bar open if it opened below it); no fill by 11:30 -> market at the first bar from 11:30 on. Stop 1.0 A from the fill."""
+    if not (np.isfinite(A) and A > 0) or not len(b): return None
+    day = pd.Timestamp(day).normalize(); t0 = day + pd.Timedelta(minutes=ENTRY_BD_MIN); tw = t0 + pd.Timedelta(minutes=D_LIMIT_WAIT)
+    a0 = int(b.index.searchsorted(t0))
+    if a0 >= len(b) or b.index[a0] - t0 > pd.Timedelta(minutes=ENTRY_LATE): return None
+    lim = float(b.o.values[a0]) - D_LIMIT_X * A
+    a, en, how = None, None, 'limit'
+    for i in range(a0, len(b)):
+        if b.index[i] >= tw: break
+        if b.l.values[i] <= lim: a, en = i, min(float(b.o.values[i]), lim); break
+    if a is None:
+        a = int(b.index.searchsorted(tw)); how = 'market'
+        if a >= len(b): return None
+        en = float(b.o.values[a])
+    t = _run_from(b, day, a, 1, en, A, STOP_MULT, 'Dbuy', cost)
+    t['lot'] = D_BUY_LOT_X; t['fill'] = how
+    return t
+
+def a12k_trade(b, day, A, sd12, awdir, cost):
+    """U4 A12K (Wednesday only - the caller checks): see the module docstring. awdir = rule A's own direction today (0 = no A signal, or not known yet:
+    before the 14:00 bar exists the trade simply stays open)."""
+    if not (np.isfinite(A) and A > 0 and np.isfinite(sd12) and sd12 > 0) or not len(b): return None
+    day = pd.Timestamp(day).normalize()
+    o10, o12 = bar_open_at(b, day, SIG_START_MIN), bar_open_at(b, day, A12_MIN)
+    if not (np.isfinite(o10) and np.isfinite(o12)): return None
+    m12 = o12 - o10
+    if not abs(m12) > A12_Z * sd12: return None
+    s = 1 if m12 > 0 else -1; a = int(b.index.searchsorted(day + pd.Timedelta(minutes=A12_MIN)))
+    keep = (awdir == s)
+    t = _run_from(b, day, a, s, float(b.o.values[a]), A, UPG_STOP_MULT, 'A12K', cost,
+                  end_min=(EXIT_MIN if keep else ENTRY_A_MIN), end_status=('exit' if keep else 'closed (A12K cut)'))
+    t['tag'] = 'A12K'
+    return t
 
 # ---------------- rule K+ (v1.07a, new 9 Nov 2026 - independent of A-F/C, see module docstring) ----------------
 def kfade_trade(b, day, dt, A, c_entry_t, cost, mult=K_STOP_MULT, th_mult=K_TH_MULT):
@@ -607,15 +712,18 @@ def apply_conflict_close(trades):
     for k in kept: k.pop('_closed', None)
     return kept
 
-def run_day(b, day, dt, A, hi, lo, sd, cost=0.08, dcl=None, watch=True):
+def run_day(b, day, dt, A, hi, lo, sd, cost=0.08, dcl=None, watch=True, sd12=float('nan'), mid=False, v115=False):
     """b: today's closed minute bars. dt = day_type(...) for the day. A = ADR20; (hi,lo) = rule C's 20-day channel;
     sd = rule A's 60-day move std. Returns the list of trade dicts that fired today (0-N; A-F+C conflict-closed,
     K+ (v1.07a) and AW/K2 (v1.10) appended after - all three independent, never conflict-closed, see
-    kfade_trade()/aw_trade()/k2_trade())."""
+    kfade_trade()/aw_trade()/k2_trade()). v1.15 (v115=True, new 27 Nov 2026): sd12 = U4's 12:00 move std, mid = U8's mid-range flag (True = skip the rule-A
+    family today); the A16/B12/C14/A12K add-ons are appended after K2 (own positions, never conflict-closed); v115=False = the v1.10 engine, unchanged."""
     trades = []
     if dt['ruleD_buy']:
-        t = fixed_trade(b, day, ENTRY_BD_MIN, +1, A, 'Dbuy', cost)
-        if t: trades.append(t)
+        t = d_buy_trade(b, day, A, cost) if (v115 and USE_D_LIMIT) else fixed_trade(b, day, ENTRY_BD_MIN, +1, A, 'Dbuy', cost)
+        if t:
+            if v115 and USE_D_LOT and 'lot' not in t: t['lot'] = D_BUY_LOT_X
+            trades.append(t)
     if dt['ruleD_sell']:
         t = fixed_trade(b, day, ENTRY_BD_MIN, -1, A, 'Dsell', cost)
         if t: trades.append(t)
@@ -624,9 +732,14 @@ def run_day(b, day, dt, A, hi, lo, sd, cost=0.08, dcl=None, watch=True):
         if t: trades.append(t)
     if dt['ruleE']:
         t = fixed_trade(b, day, ENTRY_E_MIN, -1, A, 'E', cost)
-        if t: trades.append(t)
+        if t:
+            if v115 and USE_E_RALLY:                      # U7: 2x when the 09:59 close is at/above the 03:00 bar's close
+                c03, c1 = bar_close_at(b, day, E03_MIN), close_before(b, day, ENTRY_E_MIN)
+                if np.isfinite(c03) and np.isfinite(c1) and c1 >= c03: t['lot'] = E_RALLY_LOT_X
+            trades.append(t)
     awdir = 0                                              # v1.10 rule AW arms off rule A's OWN signal, below
-    if dt['wed']:
+    skipA = bool(v115 and USE_MID and mid)                  # U8: mid-range day -> the whole rule-A family sits out
+    if dt['wed'] and not skipA:
         awdir = wed_signal(today_move_10_14(b, day), sd)
         if awdir:
             t = fixed_trade(b, day, ENTRY_A_MIN, awdir, A, 'A', cost)
@@ -643,5 +756,26 @@ def run_day(b, day, dt, A, hi, lo, sd, cost=0.08, dcl=None, watch=True):
     if tAW: kept.append(tAW)
     tK2 = k2_trade(b, day, dt, A, tK, tC['t'] if tC else None, cost)   # v1.10, new 9 Nov 2026 - independent, see module docstring
     if tK2: kept.append(tK2)
+    if v115:                                                # v1.15 add-ons: own positions, never conflict-closed, appended like K+/AW/K2
+        dayn = pd.Timestamp(day).normalize()
+        if USE_A16 and awdir:                               # U1: rule A signalled (not mid-range) -> 16:00 add-on if the 10:00->16:00 move still has A's sign
+            o10, o16 = bar_open_at(b, dayn, SIG_START_MIN), bar_open_at(b, dayn, A16_ENTRY_MIN)
+            if np.isfinite(o10) and np.isfinite(o16) and (o16 - o10) * awdir > 0:
+                t = fixed_trade(b, dayn, A16_ENTRY_MIN, awdir, A, 'A16', cost, A16_STOP_MULT)
+                if t: t['tag'] = 'A16'; kept.append(t)
+        tB = next((x for x in kept if x['rule'] == 'B'), None)
+        if USE_B12 and tB is not None:                      # U2: B opened and its sell is in profit at 12:00
+            o12 = bar_open_at(b, dayn, B12_MIN)
+            if np.isfinite(o12) and o12 < tB['entry']:
+                t = fixed_trade(b, dayn, B12_MIN, -1, A, 'B12', cost, UPG_STOP_MULT)
+                if t: t['tag'] = 'B12'; kept.append(t)
+        if USE_C14 and tC is not None and tC in kept and tC['t'] < dayn + pd.Timedelta(minutes=C14_MIN):   # U3: C opened before 14:00 and is in profit at 14:00
+            o14 = bar_open_at(b, dayn, C14_MIN)
+            if np.isfinite(o14) and (o14 - tC['entry']) * tC['dir'] > 0:
+                t = fixed_trade(b, dayn, C14_MIN, tC['dir'], A, 'C14', cost, UPG_STOP_MULT)
+                if t: t['tag'] = 'C14'; kept.append(t)
+        if USE_A12K and dt['wed'] and not skipA:            # U4
+            t = a12k_trade(b, dayn, A, sd12, awdir, cost)
+            if t: kept.append(t)
     if watch: kept += watch_trades(b, day, dt, A, dcl, cost)   # v1.12W, new 19 Nov 2026 - demo forward test, independent, see module docstring
     return kept

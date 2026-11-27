@@ -1,4 +1,12 @@
-"""v1.12W (19 Nov 2026): + WATCH rules W1-W4, DEMO / FORWARD TEST ONLY, live v1.10 rules untouched (his instruction "Add Brent watch
+"""v1.15 (27 Nov 2026, his "push Brent v1.15"): the eight stacked upgrades U1-U8 from BRENT_WED_HOL_v115.mq4 (handoff Trading/BRENT/BRENT_v115_desk_handoff.md) are in
+brent_engine.py (see its docstring) and trade from broker day E.V115_FROM (Mon 30 Nov 2026) on; every earlier day keeps its v1.10 journal tag. What this file adds: (1) docs/brent_daily.json
+rows now carry a 5th column m1012 (10:00->12:00 move, U4's own 60-day spread); (2) docs/brent_close.json is fetched back CLOSE_FETCH_DAYS (400) calendar days so U8's
+250-close window is complete (W4 keeps its own CLOSE_BACK_DAYS window and 'ready' rule - nothing changes for W4); (3) U8's mid-range flag from those closes - if the closes are
+unavailable/stale or < 120, NO skip (the EA's own rule when it has < 120 days) and the card says so; (4) row(): D-buy / E-rally rows carry size 2.0 (autotrade.py's weight()
+doubles the risk). MT4 proof (his run 27 Nov 2026, 2018-26, 0.30 lot): net $143,597, equity DD $12,228, 1,832 trades, PF 1.65 vs v1.10 net/DD 9.05 -> 16.08 (closed-trade basis).
+Replay check of this port on his MT4 minute file (my Python, not MT4): v1.10 net/DD 8.96 (MT4 9.05), v1.15 17.74 (MT4 16.08); per upgrade n/$: A16 172/$12.6k (MT4 172/$11.9k), B12 49/$10.9k
+(47/$10.7k), C14 89/$4.7k (78/$4.1k), A12K 175/$16.0k (176/$15.2k), E x2 22 trades +$4.6k (+$4.7k); D x2+limit +$6.8k (MT4 +$12.0k: the replay fills only 22 of 40 limits by M1 low).
+v1.12W (19 Nov 2026): + WATCH rules W1-W4, DEMO / FORWARD TEST ONLY, live v1.10 rules untouched (his instruction "Add Brent watch
 rules W1-W4 ... Demo only, keep live v1.10 unchanged"; source BRENT_v112W_DASHBOARD_SPEC.txt + BRENT_WED_HOL_v112W.mq4, md5
 54564281efc512dbe26015fd353aa326). Watch trades live in their OWN journal (docs/journal_brent_watch.json, history entry 'Brent watch
 (demo)') so the live Brent journal/totals never mix with them; they ARE in markets.BRENT.entries so the page shows them and the demo
@@ -52,18 +60,39 @@ JOUR = os.path.join(HERE, 'docs', 'journal_brent.json'); PORTAL = os.path.join(H
 HIST = os.path.join(HERE, 'docs', 'brent_daily.json'); HIST_KEEP = 150     # days kept (rule A's 60-day spread + headroom)
 EPIC = os.environ.get('CAPITAL_EPIC_BRENT', 'OIL_BRENT')                  # NOT yet confirmed live - see brent_run.fail() note
 MIN_SPREAD = 0.02                     # the paper result never uses less than 2 cents a barrel
-RULES = 'v1.10'                       # LIVE rule version: tags the live journal days (watch rules do NOT change it)
-VERSION_LABEL = 'v1.10 + watch v1.13W'  # shown on the card
+RULES_OLD, RULES_NEW = 'v1.10', 'v1.15'
+RULES = RULES_OLD                     # LIVE rule version tag of the journal day being processed (set by main()/fail() via rules_for(); watch rules do NOT change it)
+def rules_for(day): return RULES_NEW if pd.Timestamp(day).normalize() >= E.V115_FROM else RULES_OLD    # v1.15 trades from E.V115_FROM, earlier days stay v1.10
+VERSION_LABEL = 'v1.15 + watch v1.13W'  # shown on the card
 WRULES = 'v1.13W'
 JOURW = os.path.join(HERE, 'docs', 'journal_brent_watch.json')       # watch trades only (DEMO forward test)
 CLOSEF = os.path.join(HERE, 'docs', 'brent_close.json')              # daily 21:29 broker closes for W4
-CLOSE_BACK_DAYS = 240; CLOSE_MAX_NONE = 12   # calendar days of closes kept/required; more empty weekdays than this = minute history unusable
+CLOSE_BACK_DAYS = 240; CLOSE_MAX_NONE = 12; CLOSE_FETCH_DAYS = 400   # W4's window / its tolerated empty days; fetch depth for U8's 250 closes   # calendar days of closes kept/required; more empty weekdays than this = minute history unusable
 PASS = dict(pf=1.10, months=3)
-BACKTEST = dict(direction='—', days='~35% of days (~1.7/week)', perday='1.3', win='55% closed in profit', pf='1.47',
+BACKTEST_V105 = dict(direction='—', days='~35% of days (~1.7/week)', perday='1.3', win='55% closed in profit', pf='1.47',
                 net='+$50,198 at 0.30 lot (max drawdown $7,979) - v1.05\'s A-F result (last MT4 number for A-F alone)',
                 source='MT4 BRENT_WED_HOL v1.05 (A-F only), his run 7 Nov 2026, 2018-01-02..2026-10-30, 911 trades, spread 8 ($0.08/bbl, RoboForex live spread); only losing year 2019 (-$2,598). '
                        'The v1.06 MT4 run (same window) tested the FULL bundle incl. dropped rule G: 949 trades, +$58,856, DD $9,529 - by subtraction (not a separate run) G alone was ~38 trades / '
                        '~$8,658 of that. This build\'s own v1.06 deltas (B/D entry 11:00, rule C from 09:00 with its own 2.0x stop, conflict-close) were only MT4-tested bundled with G, never alone.')
+# v1.15, 27 Nov 2026: the full-EA MT4 result of the new rule set (his run, BRENT M1 every tick, spread 8, 0.30 lot; tester 2017.01.01-2026.10.30, trades from 2018.01.01).
+BACKTEST = dict(direction='—', days='~47% of days (~2.35/week)', perday='0.80', win='55% closed in profit', pf='1.65',
+                net='+$143,597 at 0.30 lot (equity max drawdown $12,228 = 1.16%) - v1.15 full EA',
+                source='MT4 BRENT_WED_HOL v1.15 (BRENT_WED_HOL_v115.mq4 md5 0149f41e75298717227385d9a9cf389c), his run 27 Nov 2026, 2018-01-02..2026-10-30, spread 8 ($0.08/bbl), 0.30 lot: '
+                       '1,832 trades, net +$143,597, PF 1.65, max equity DD $12,228 (1.16%), 55.1% closed in profit. Closed-trade basis, same method for both: v1.10 net $78,669 / DD $8,696 = 9.05; '
+                       'v1.15 $143,597 / $8,933 = 16.08 (+78%); 2018-21 $16,239 -> $37,203, 2022-26 $62,430 -> $106,394. Trade days/week 2.58 (v1.10) -> 2.35 (v1.15: the mid-range skip removes some days).')
+V115_BACKTEST = dict(
+    full=dict(net=143597, maxdd_equity=12228, trades=1832, pf=1.65, win=55.1, v110_net=78669, v110_dd=8696, v115_dd=8933, ratio110=9.05, ratio115=16.08),
+    live_from='Mon 30 Nov 2026',
+    upgrades=[dict(code='U1', tag='A16', name='Wednesday add-on 16:00', n=172, y1=4206, y2=7671),
+              dict(code='U2', tag='B12', name='day-after-US-holiday add-on 12:00', n=47, y1=2630, y2=8062),
+              dict(code='U3', tag='C14', name='range-break add-on 14:00', n=78, y1=2280, y2=1770, note='weakest add-on (time-of-day edge)'),
+              dict(code='U4', tag='A12K', name='early Wednesday start 12:00', n=176, y1=5618, y2=9555, note='47% closed in profit'),
+              dict(code='U5+U6', tag='Dbuy', name='UK-holiday BUY at 2x + limit entry', n=None, y1=1217, y2=10822, note='39 limit fills in the MT4 run'),
+              dict(code='U7', tag='E', name='2nd-day-after-UK-holiday SELL at 2x on rallies', n=22, y1=162, y2=4521),
+              dict(code='U8', tag='A family', name='mid-range skip', n=194, y1=-1027, y2=153, note='skipped Wednesday trades; weakest in MT4, small saving')],
+    source='MT4 BRENT_WED_HOL_v115.mq4, his run 27 Nov 2026 (per-upgrade $ = the new trades vs the v1.10 run, 2018-21 / 2022-26, from the Brent chat\'s r559.py). '
+           'Passed his pre-set bar: net/DD >= 15% better than v1.10 (+78%), net positive in both eras, no upgrade line clearly negative. U8 removes trade days (2.58 -> 2.35 per week).')
+
 # v1.07a, new 9 Nov 2026: rule K+ (overextension fade) added on top of the live A-F build above (A-F unchanged).
 # Its own isolated MT4 proof - shown on the card as "new, thin before 2026" per his explicit instruction, since
 # almost all of the net comes from 2026 and six of the eight prior years are flat-to-negative.
@@ -151,24 +180,27 @@ def daily(feed, day):
     """Per-broker-day h/l + the 10:00->14:00 move (rule A), from the last ~95 days of HOUR bars (days before today)."""
     h = prices(feed, 'HOUR', day - pd.Timedelta(days=95), day, pd.Timedelta(hours=900))
     h = h[h.index < day]
-    if not len(h): return pd.DataFrame(columns=['h', 'l', 'm1014'])
+    if not len(h): return pd.DataFrame(columns=['h', 'l', 'm1014', 'm1012'])
     d = h.groupby(h.index.normalize()).agg(h=('h', 'max'), l=('l', 'min'))
     o10 = h[(h.index.hour == 10) & (h.index.minute == 0)].o; o10.index = o10.index.normalize()
     o14 = h[(h.index.hour == 14) & (h.index.minute == 0)].o; o14.index = o14.index.normalize()
-    d['m1014'] = (o14.reindex(d.index) - o10.reindex(d.index)); return d
+    o12 = h[(h.index.hour == 12) & (h.index.minute == 0)].o; o12.index = o12.index.normalize()      # v1.15 U4: 10:00->12:00 move (its own 60-day spread)
+    d['m1014'] = (o14.reindex(d.index) - o10.reindex(d.index)); d['m1012'] = (o12.reindex(d.index) - o10.reindex(d.index)); return d
 
 def hist_merge(fresh, day):
-    """docs/brent_daily.json rows + the freshly fetched days (fresh wins) -> DataFrame h, l, m1014 (days before today).
+    """docs/brent_daily.json rows + the freshly fetched days (fresh wins) -> DataFrame h, l, m1014, m1012 (days before today; v1.15 added m1012, older rows have None there).
     Saved back once a day so the file keeps growing (same pattern as gbp_daily.json)."""
     H = loadj(HIST, {}); rows = {r[0]: r for r in H.get('days', [])}
     if fresh is not None and len(fresh):
         for t, r in fresh.dropna(subset=['h', 'l']).iterrows():
             if pd.Timestamp(t) < day:
-                m = r.get('m1014'); rows[str(pd.Timestamp(t).date())] = [str(pd.Timestamp(t).date()), round(float(r.h), 3), round(float(r.l), 3), (None if pd.isna(m) else round(float(m), 3))]
+                m = r.get('m1014'); m2 = r.get('m1012')
+                rows[str(pd.Timestamp(t).date())] = [str(pd.Timestamp(t).date()), round(float(r.h), 3), round(float(r.l), 3), (None if pd.isna(m) else round(float(m), 3)),
+                                                      (None if (m2 is None or pd.isna(m2)) else round(float(m2), 3))]
     R = sorted(rows.values())[-HIST_KEEP:]
     if H.get('saved') != str(day.date()) and fresh is not None and len(fresh):
         H['days'] = R; H['saved'] = str(day.date()); dumpj(H, HIST)
-    d = pd.DataFrame([r[1:] for r in R], index=pd.to_datetime([r[0] for r in R]), columns=['h', 'l', 'm1014'], dtype=float)
+    d = pd.DataFrame([(list(r[1:]) + [None])[:4] if len(r) == 4 else list(r[1:5]) for r in R], index=pd.to_datetime([r[0] for r in R]), columns=['h', 'l', 'm1014', 'm1012'], dtype=float)
     return d[d.index < day]
 
 # ---------------- W4: daily 21:29 broker closes (v1.12W) ----------------
@@ -187,8 +219,9 @@ def daily_closes(feed, day, budget_s=30):
     then sit out rather than run on a wrong 150-day window)."""
     day = pd.Timestamp(day).normalize()
     S = loadj(CLOSEF, {}); days = S.get('days', {}) if isinstance(S.get('days'), dict) else {}
-    want = [str(d.date()) for d in pd.bdate_range(day - pd.Timedelta(days=CLOSE_BACK_DAYS), day - pd.Timedelta(days=1))]
-    miss = [d for d in want if d not in days][::-1]          # newest first
+    want = [str(d.date()) for d in pd.bdate_range(day - pd.Timedelta(days=CLOSE_BACK_DAYS), day - pd.Timedelta(days=1))]       # W4's window (unchanged)
+    want_all = [str(d.date()) for d in pd.bdate_range(day - pd.Timedelta(days=CLOSE_FETCH_DAYS), day - pd.Timedelta(days=1))]   # v1.15 U8 needs the last 250 closes
+    miss = [d for d in want_all if d not in days][::-1]      # newest first
     t_end = time.time() + budget_s; got = 0
     for d in miss:
         if time.time() > min(t_end, DEADLINE - 5): break
@@ -197,10 +230,11 @@ def daily_closes(feed, day, budget_s=30):
         except Exception as e: print('Brent W4 close fetch failed for', d, type(e).__name__, str(e)[:80]); continue    # tried again next run
         days[d] = c; got += 1
     if got:
-        S['days'] = {k: v for k, v in days.items() if k >= want[0]}; S['saved'] = str(day.date()); dumpj(S, CLOSEF)
+        S['days'] = {k: v for k, v in days.items() if k >= want_all[0]}; S['saved'] = str(day.date()); dumpj(S, CLOSEF)
     left = [d for d in want if d not in days]; none = sum(1 for d in want if d in days and days[d] is None)
-    ser = pd.Series({pd.Timestamp(k): v for k, v in days.items() if v is not None and k >= want[0]}, dtype=float).sort_index()
-    return dict(ready=(not left) and none <= CLOSE_MAX_NONE, have=len(ser), missing=len(left), none=none, series=ser)
+    ser = pd.Series({pd.Timestamp(k): v for k, v in days.items() if v is not None and k >= want_all[0]}, dtype=float).sort_index()
+    return dict(ready=(not left) and none <= CLOSE_MAX_NONE, have=len(ser), missing=len(left), none=none, series=ser,
+                fresh=bool(want and want[-1] in days))       # v1.15 U8: yesterday's weekday is fetched (None = a market holiday is fine)
 
 def feed_check(b, now):
     """None if today's closed bars look fresh, else the reason (01:00-23:30 broker only, same window as gbp_run)."""
@@ -219,10 +253,10 @@ def row(t):
     return dict(time=dubai(t['t']), side='BUY' if t['dir'] == 1 else 'SELL', name=t['name'], rule=t['rule'], tag=t.get('tag'),
                 price=round(t['entry'], 2), entry=round(t['entry'], 2), stop=round(t['stop'], 2), stop0=round(t.get('stop0', t['stop']), 2),
                 stop_usd=round(abs(t['entry'] - t.get('stop0', t['stop'])), 2), status=t['status'],
-                size=(E.K2_LOT_X if t.get('tag') == 'K2' else 'full'), part=1.0, half=False,
+                size=(t['lot'] if t.get('lot') else (E.K2_LOT_X if t.get('tag') == 'K2' else 'full')), part=1.0, half=False,   # v1.15: D buy / E rally lot 2.0 -> autotrade.py's weight() doubles the risk
                 exit=None if t['exit'] is None else round(t['exit'], 2), exit_time=None if t['exit_t'] is None else dubai(t['exit_t']),
-                res=None if t.get('res') is None else round(t['res'], 3), res_sized=None if t.get('res') is None else round(t['res'], 3),
-                **(dict(demo=True, nostop=bool(t.get('nostop'))) if t['rule'] in E.WATCH_RULES else {}))
+                res=None if t.get('res') is None else round(t['res'], 3), res_sized=None if t.get('res') is None else round(t['res'] * (t.get('lot') or 1.0), 3),
+                **(dict(demo=True, nostop=bool(t.get('nostop'))) if t['rule'] in E.WATCH_RULES else {}), **(dict(fill=t['fill']) if t.get('fill') else {}))
 
 def summary(J, day=None):
     D3 = [d for d in J.get('days', []) if d.get('rules') == RULES]
@@ -279,7 +313,13 @@ def base_card():
             'W1 BUY 15:00 on the 4th-last trading day of the month (no stop in the test; the demo order carries a far 2.0x safety stop) · '
             'W2 SELL 15:00 on the first trading day of the month (stop 2.0x) · W3 SELL 11:00 on a Germany/France-only holiday (stop 1.0x) · '
             'W4 follow the first daily 21:29 close beyond the last 150 closes, entry 03:20 broker (stop 1.0x) · '
-            'W5 BUY 10:00 the day before Brent options expiry (stop 1.0x)')
+            'W5 BUY 10:00 the day before Brent options expiry (stop 1.0x) · '
+            'v1.15 UPGRADES (his push 27 Nov 2026, trading from Mon 30 Nov 2026; MT4 net/DD 16.08 vs 9.05) - each add-on is its own position, never conflict-closed, stop 1.0x, exit 21:30 broker: '
+            'A16) rule A traded + the 10:00→16:00 move still has its sign → 2nd trade in A\'s direction at 16:00 · B12) rule B\'s sell is in profit at 12:00 → 2nd SELL · '
+            'C14) rule C opened before 14:00 and is in profit at 14:00 → 2nd trade in its direction · A12K) Wednesday: 10:00→12:00 move > 0.5x its own 60-day spread → trade it at 12:00, '
+            'kept only if rule A fires the same way at 14:00, else closed at 14:00 · D) UK-holiday BUY at 2x size, as a limit 0.05x the range under the 11:00 price (market at 11:30 if not filled) · '
+            'E) the 2nd-day-after-UK-holiday SELL at 2x size when the 09:59 price is at/above the 03:00 close · '
+            'MID-RANGE SKIP) yesterday\'s close in the middle third (33-67%) of its past-250-day range → rule A, AW, A16 and A12K sit out that Wednesday')
     return dict(code='BRENT', name='Brent Oil', symbol='BRENT · Capital.com Brent Oil Future', live=False, paper=True, status='Paper', version=VERSION_LABEL, live_rules=RULES,
                 unit='usd', dp=2, stats=BACKTEST, pass_bar=PASS, day_note=note,
                 what_note='Tracks whether live Brent signals do as well as the v1.05 MT4 test (this build\'s own v1.06 B/D/C/conflict-close deltas were '
@@ -292,10 +332,12 @@ def base_card():
                           '(e.g. A-F + K+ + K2, or A + C + AW) - autotrade.py\'s own per-trade keying already supports it, no autotrade.py change needed. '
                           'v1.12W (19 Nov 2026) adds four WATCH rules W1-W4 on top, DEMO forward test only, live v1.10 rules unchanged - own journal, see the watch panel; '
                           'v1.13W (21 Nov 2026) adds a fifth watch rule W5 (day before Brent options expiry, BUY), same demo-only treatment. '
+                          'v1.15 (27 Nov 2026, live from Mon 30 Nov) stacks eight upgrades on the live rules - A16, B12, C14, A12K add-ons, UK-holiday BUY at 2x with a limit entry, '
+                          'E at 2x on rallies and the mid-range skip - his MT4 run: net +$143,597 vs +$78,669 for v1.10, net/DD 16.08 vs 9.05, both eras up; it trades on slightly fewer days (2.35 vs 2.58 a week). '
                           'Decision after about 3 months.',
-                cost_note='Results are $ per barrel (0.30-lot backtest scale, K2 at half that - 0.15 lot), from the signal price after the live Capital.com spread (at least 2 cents).',
+                cost_note='Results are $ per barrel (0.30-lot backtest scale, K2 at half that - 0.15 lot; the v1.15 UK-holiday BUY and E-on-rallies run at 2x - the per-barrel figure is for one unit), from the signal price after the live Capital.com spread (at least 2 cents).',
                 net_label=f'Net $ per barrel ({RULES})',
-                kfade=dict(KPLUS_BACKTEST), awk2=dict(AWK2_BACKTEST), watch_backtest=dict(WATCH_BACKTEST))
+                kfade=dict(KPLUS_BACKTEST), awk2=dict(AWK2_BACKTEST), watch_backtest=dict(WATCH_BACKTEST), v115_backtest=dict(V115_BACKTEST))
 
 def watch_block(JW, now, cl):
     """The card's 'watch' panel: forward-test totals, next scheduled W1/W2/W3/W5 trades, and W4's close history state (cl = daily_closes() result or None)."""
@@ -303,8 +345,9 @@ def watch_block(JW, now, cl):
     return dict(version=WRULES, label='DEMO / FORWARD TEST', summary=watch_summary(JW), next=watch_next(now), w4=w4, close=dubai(now.normalize() + pd.Timedelta(minutes=E.EXIT_MIN)))
 
 def main(feed=None, get=None, getd=None, getc=None, now=None):
-    global DEADLINE; DEADLINE = time.time() + 75           # own 75s time budget per market
+    global DEADLINE, RULES; DEADLINE = time.time() + 75    # own 75s time budget per market
     now = now or F.broker_now(); day = now.normalize()
+    RULES = rules_for(day); v115 = bool(day >= E.V115_FROM)
     old = loadj(PORTAL, {}); mk = old.setdefault('markets', {})
     J = loadj(JOUR, dict(start=None, days=[])); JW = loadj(JOURW, dict(start=None, days=[]))
     dt = E.day_type(day)
@@ -323,6 +366,7 @@ def main(feed=None, get=None, getd=None, getc=None, now=None):
     dd = hist_merge(_DAILY['d'], day)
     A = E.adr(dd, day); hi, lo = E.channel(dd, day)
     sd = E.move_std(dd['m1014'], day) if 'm1014' in dd else float('nan')
+    sd12 = E.move_std12(dd['m1012'], day) if 'm1012' in dd else float('nan')      # v1.15 U4
     b = get(feed, day, now); b = b[(b.index >= day) & (b.index + pd.Timedelta(minutes=1) <= now)]
     bad = feed_check(b, now)
     if bad: raise FeedError(bad)
@@ -332,14 +376,16 @@ def main(feed=None, get=None, getd=None, getc=None, now=None):
     try: cl = (getc or daily_closes)(feed, day)
     except Exception as e: print('Brent W4 closes unavailable:', type(e).__name__, str(e)[:100])
     dcl = cl['series'] if (cl and cl['ready']) else None
-    trades_all = E.run_day(b, day, dt, A, hi, lo, sd, cost=cost, dcl=dcl) if (len(b) and np.isfinite(A)) else []
+    mid_p = E.mid_pos(cl['series'], day) if (cl and cl.get('fresh') and cl['have'] >= E.MID_MIN_CLOSES) else None     # v1.15 U8 (None = unavailable -> no skip)
+    mid = E.is_mid(mid_p)
+    trades_all = E.run_day(b, day, dt, A, hi, lo, sd, cost=cost, dcl=dcl, sd12=sd12, mid=mid, v115=v115) if (len(b) and np.isfinite(A)) else []
     trades = [t for t in trades_all if t['rule'] not in E.WATCH_RULES]; wtrades = [t for t in trades_all if t['rule'] in E.WATCH_RULES]
     rows = [row(t) for t in trades]; wrows = [row(t) for t in wtrades]
     if J.get('start') is None: J['start'] = str(day.date())
     J['days'] = sorted([d for d in J['days'] if d['date'] != str(day.date())] +
                        [dict(date=str(day.date()), rules=RULES, label=day.strftime('%a %d %b'), side=(rows[0]['side'] if rows else None), trades=rows,
                              range_usd=(None if not np.isfinite(A) else round(A, 2)), ruleB=dt['ruleB'], ruleD_buy=dt['ruleD_buy'], ruleD_sell=dt['ruleD_sell'],
-                             ruleE=dt['ruleE'], ruleF=dt['ruleF'], wed=dt['wed'])],
+                             ruleE=dt['ruleE'], ruleF=dt['ruleF'], wed=dt['wed'], mid_pos=(None if mid_p is None else round(mid_p, 3)), mid_skip=bool(v115 and mid))],
                        key=lambda d: d['date'])
     J['summary'] = summary(J, day); dumpj(J, JOUR, indent=1)
     if JW.get('start') is None: JW['start'] = str(day.date())
@@ -358,6 +404,8 @@ def main(feed=None, get=None, getd=None, getc=None, now=None):
         msg = f"Today's signals: {sides}. Stop 1.0x the 20-day range (rule C: 2.0x), no target; closes {exit_lbl} Dubai if not stopped first."
     elif dt['wed']: state, msg = 'waiting', "Wednesday - checking the 10:00→14:00 broker move against its 60-day spread (enters 14:00 broker if big enough)."
     else: state, msg = 'none', 'No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).'
+    if v115 and dt['wed'] and mid: msg += f" v1.15 mid-range skip: yesterday's close sits {round(100 * mid_p)}% of the way up its past-{min(E.MID_DAYS, cl['have'])}-close range (middle third) - rule A, AW, A16 and A12K sit out today."
+    elif v115 and dt['wed'] and mid_p is None: msg += ' (v1.15 mid-range check unavailable - not enough fresh daily closes yet, rule A runs unfiltered.)'
     if wrows: msg += ' Watch (DEMO forward test): ' + ', '.join(f"{r['side']} ({r['rule']})" for r in wrows) + f'; closes {exit_lbl} Dubai.'
     if dt.get('list_expiring'): msg += ' (A rule\'s holiday dates run out soon - the Brent chat needs to extend the EA\'s baked-in lists.)'
     spark = []
@@ -367,6 +415,7 @@ def main(feed=None, get=None, getd=None, getc=None, now=None):
     mk['BRENT'] = dict(base_card(), state=state, message=msg, price=last, change=(None if last is None or first is None else round(last - first, 2)),
                        entries=rows + wrows, spark=spark, journal=J['summary'], jdays=jdays(J), feed_error=False, epic=EPIC, watch=watch_block(JW, now, cl),
                        range_usd=(None if not np.isfinite(A) else round(A, 2)),
+                       v115=dict(live_from=str(E.V115_FROM.date()), active=v115, mid=dict(pos=(None if mid_p is None else round(mid_p, 3)), skip=bool(mid), closes=(int(cl['have']) if cl else 0), fresh=bool(cl and cl.get('fresh')), window=E.MID_DAYS, low=E.MID_LOW, high=E.MID_HIGH), sd12=(None if not np.isfinite(sd12) else round(sd12, 3))),
                        rule_today=dict(wed=dt['wed'], ruleB=dt['ruleB'], ruleD_buy=dt['ruleD_buy'], ruleD_sell=dt['ruleD_sell'], ruleE=dt['ruleE'], ruleF=dt['ruleF']))
     dumpj(old, PORTAL, indent=1)
     w4txt = None if cl is None else (cl['have'], 'ready' if cl['ready'] else 'warming, %s days to fetch' % cl['missing'])      # 21 Nov: plain string - the old nested f-string only compiles on Python 3.12+, the runner is 3.11
@@ -378,6 +427,7 @@ def fail(e):
     is the WTI-style naming guess (matches OIL_CRUDE's convention) - not yet confirmed against the live Capital.com
     account (no API access from the build session); a wrong epic shows up here as a 400/404 feed error, not silently
     wrong prices - check this message once live and fix the epic (one line) if it names the wrong instrument."""
+    global RULES; RULES = rules_for(F.broker_now().normalize())
     old = loadj(PORTAL, {}); mk = old.setdefault('markets', {}); c = mk.get('BRENT') or {}
     c.update(base_card()); c.setdefault('entries', []); c.setdefault('state', 'waiting'); c['feed_error'] = True
     c['message'] = f"Brent paper update failed at {F.broker_to_dubai(F.broker_now()).strftime('%-I:%M %p').lower()} Dubai ({type(e).__name__}: {str(e)[:120]}) — shows the last good update; retries every minute. (If this persists, the Capital.com epic '{EPIC}' may be wrong - tell the Trading Dashboard chat.)"
