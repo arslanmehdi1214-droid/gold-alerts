@@ -1,20 +1,6 @@
 [
  {
   "action": "close rest",
-  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (watchdog: past day-end 11:00 PM broker) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
-  "market": "US100",
-  "ok": false,
-  "t": "Fri 27 Nov 1:18 AM"
- },
- {
-  "action": "close part",
-  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
-  "market": "US100",
-  "ok": false,
-  "t": "Fri 27 Nov 1:19 AM"
- },
- {
-  "action": "close rest",
   "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
   "market": "US100",
   "ok": false,
@@ -2798,5 +2784,19 @@
   "market": "BRENT",
   "ok": true,
   "t": "Fri 27 Nov 1:01 PM"
+ },
+ {
+  "action": "OPEN BUY part",
+  "detail": "US100|2026-11-27|3:45 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am size 0.004 at 26596.1 stop 26188.8 target 26808.3 | trade risk 28.69 AED",
+  "market": "US100",
+  "ok": true,
+  "t": "Fri 27 Nov 3:46 PM"
+ },
+ {
+  "action": "OPEN BUY rest",
+  "detail": "US100|2026-11-27|3:45 pm|BUY|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am size 0.015 at 26595.6 stop 26188.8 | trade risk 28.69 AED",
+  "market": "US100",
+  "ok": true,
+  "t": "Fri 27 Nov 3:46 PM"
  }
 ]
