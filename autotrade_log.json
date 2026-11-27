@@ -1,19 +1,5 @@
 [
  {
-  "action": "close part",
-  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
-  "market": "US100",
-  "ok": false,
-  "t": "Fri 27 Nov 1:16 AM"
- },
- {
-  "action": "close rest",
-  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
-  "market": "US100",
-  "ok": false,
-  "t": "Fri 27 Nov 1:16 AM"
- },
- {
   "action": "close rest",
   "detail": "GOLD|2026-11-26|2:17 pm|SELL|G14 sq2husd (watchdog: past day-end 10:50 PM broker) {\"errorCode\":\"Rejected. GOLD is currently closed. Timetable in place: UTC; Mon - 21:59, 23:00 -; Tue - 21:59, 23:00 -; Wed - 21:59, 23:00 -; Thu - 19:30, 23:00 ",
   "market": "GOLD",
@@ -2798,5 +2784,19 @@
   "market": "US100",
   "ok": true,
   "t": "Fri 27 Nov 3:00 AM"
+ },
+ {
+  "action": "OPEN BUY part",
+  "detail": "USDJPY|2026-11-27|4:04 am|BUY|Inside-day break size 1900.0 at 159.312 stop 159.13 target 159.428 | trade risk 29.95 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Fri 27 Nov 4:05 AM"
+ },
+ {
+  "action": "OPEN BUY rest",
+  "detail": "USDJPY|2026-11-27|4:04 am|BUY|Inside-day break size 4500.0 at 159.311 stop 159.13 | trade risk 29.95 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Fri 27 Nov 4:05 AM"
  }
 ]

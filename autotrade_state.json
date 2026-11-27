@@ -8,8 +8,8 @@
   "start_equity": 1619.72,
   "stopped": false
  },
- "open_positions": 0,
- "open_risk_aed": 0,
+ "open_positions": 2,
+ "open_risk_aed": 29.95,
  "risk_usd": 8.168822328114365,
  "trades": {
   "BRENT|2026-11-23|5:46 pm|SELL|Rule C \u00b7 20-day range break": {
@@ -903,6 +903,33 @@
    "side": "BUY",
    "state": "closed",
    "stop": 158.512
+  },
+  "USDJPY|2026-11-27|4:04 am|BUY|Inside-day break": {
+   "desk_price": 159.333,
+   "market": "USDJPY",
+   "opened_at": "Fri 27 Nov 4:05 AM",
+   "overnight": false,
+   "part": {
+    "id": "00000000-7700-5c1f-0495-7fc60004511e",
+    "level": 159.312,
+    "open": true,
+    "size": 1900.0,
+    "tp": 159.428
+   },
+   "part_x": 0.3,
+   "px_adj": 0.0,
+   "rest": {
+    "id": "00000000-7700-5c2f-0495-7fc60004511e",
+    "level": 159.311,
+    "open": true,
+    "size": 4500.0,
+    "tp": null
+   },
+   "risk_aed": 29.95,
+   "risk_usd": 8.17,
+   "side": "BUY",
+   "state": "open",
+   "stop": 159.13
   }
  },
  "untracked_seen": {}
