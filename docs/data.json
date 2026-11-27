@@ -37,7 +37,7 @@
    "actions_day": "2026-11-27",
    "feed_error": true,
    "state": "buy",
-   "message": "Price data incomplete at 12:05 am Dubai (newest closed minute bar is 20 min old) - the page shows the last good update; it retries every minute.",
+   "message": "Price data incomplete at 12:06 am Dubai (newest closed minute bar is 21 min old) - the page shows the last good update; it retries every minute.",
    "price": 3654.22,
    "close_at": "12:50 am",
    "change": 86.93,
@@ -5268,6 +5268,13 @@
      159.557,
      159.558,
      159.539
+    ],
+    [
+     "12:05 am",
+     159.547,
+     159.546,
+     159.548,
+     159.544
     ]
    ],
    "journal": {
@@ -11210,7 +11217,7 @@
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.12 rules)",
    "state": "sell",
-   "message": "S&P paper update failed at 12:05 am Dubai (FeedError: newest closed price bar (11:58 pm Dubai) is 6 min old) \u2014 shows the last good update; retries every minute.",
+   "message": "S&P paper update failed at 12:06 am Dubai (FeedError: newest closed price bar (11:58 pm Dubai) is 7 min old) \u2014 shows the last good update; retries every minute.",
    "price": 7297.6,
    "change": 66.5,
    "entries": [
@@ -15595,8 +15602,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "buy",
    "message": "1 paper trade today (0 running). Each closes 25% (buys) / 15% (sells) at its part level, then the stop goes to the entry and trails 0.45 x range behind the best price; everything closes at the 12:50 am Dubai close. At most 2 trades a day.",
-   "price": 26702.5,
-   "change": 486.7,
+   "price": 26702.6,
+   "change": 486.8,
    "entries": [
     {
      "time": "3:45 pm",
@@ -17398,6 +17405,13 @@
      26704.2,
      26704.2,
      26702.5
+    ],
+    [
+     "12:05 am",
+     26702.6,
+     26702.6,
+     26702.6,
+     26702.5
     ]
    ],
    "journal": {
@@ -18949,8 +18963,8 @@
    "regime": 0.556,
    "gap": null,
    "message": "PAPER BUY at 1.31205 (12:00 pm Dubai). Stop 1.30406, no target - it closes at 1:45 am Dubai. NEWS-FREE day: when price reaches 1.31365, move the stop to 1.31255 (entry + 5 pips). + HOLIDAY SELL (half size, day after a UK/US holiday) at 1.31205 (12:00 pm Dubai), stop 1.32403, no target, closes 1:45 am Dubai.",
-   "price": 1.30945,
-   "change": -0.00106,
+   "price": 1.30947,
+   "change": -0.00104,
    "entries": [
     {
      "time": "12:00 pm",
@@ -18976,7 +18990,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": -27.5,
+     "live": -27.3,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.30406 \u00b7 no target \u00b7 when price reaches 1.31365, MOVE THE STOP to 1.31255 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 1:45 am Dubai"
     },
@@ -19004,7 +19018,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": 24.5,
+     "live": 24.3,
      "spread": 1.5,
      "next": "Hold \u00b7 HALF-size holiday sell \u00b7 stop 1.32403 \u00b7 no target \u00b7 closes at 1:45 am Dubai"
     }
@@ -20857,6 +20871,13 @@
      1.30957,
      1.30959,
      1.3093
+    ],
+    [
+     "12:05 am",
+     1.30947,
+     1.30944,
+     1.30947,
+     1.30943
     ]
    ],
    "journal": {
@@ -20905,7 +20926,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": -27.5,
+       "live": -27.3,
        "spread": 1.5,
        "next": "Hold \u00b7 stop 1.30406 \u00b7 no target \u00b7 when price reaches 1.31365, MOVE THE STOP to 1.31255 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 1:45 am Dubai"
       },
@@ -20933,7 +20954,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": 24.5,
+       "live": 24.3,
        "spread": 1.5,
        "next": "Hold \u00b7 HALF-size holiday sell \u00b7 stop 1.32403 \u00b7 no target \u00b7 closes at 1:45 am Dubai"
       }
@@ -22632,7 +22653,7 @@
     "source": "MT4 BRENT_WED_HOL_v115.mq4, his run 27 Nov 2026 (per-upgrade $ = the new trades vs the v1.10 run, 2018-21 / 2022-26, from the Brent chat's r559.py). Passed his pre-set bar: net/DD >= 15% better than v1.10 (+78%), net positive in both eras, no upgrade line clearly negative. U8 removes trade days (2.58 -> 2.35 per week)."
    },
    "state": "sell",
-   "message": "Brent paper update failed at 12:05 am Dubai (FeedError: newest closed price bar (11:59 pm Dubai) is 6 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
+   "message": "Brent paper update failed at 12:06 am Dubai (FeedError: newest closed price bar (11:59 pm Dubai) is 7 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
    "price": 90.453,
    "change": -1.33,
    "entries": [
