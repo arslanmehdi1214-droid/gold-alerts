@@ -1,5 +1,5 @@
 {
- "updated": "Fri 27 Nov \u00b7 4:33 am",
+ "updated": "Fri 27 Nov \u00b7 4:34 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 3566.19,
+   "price": 3568.98,
    "close_at": "12:50 am",
-   "change": -1.1,
+   "change": 1.69,
    "size": 0.1,
    "datr": 109.79,
    "open_now": 0,
@@ -149,9 +149,9 @@
     ],
     [
      "4:30 am",
-     3566.19,
+     3568.98,
      3566.64,
-     3567.19,
+     3569.39,
      3565.7
     ]
    ],
@@ -1761,8 +1761,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 4:00 pm Dubai close.",
-   "price": 159.33,
-   "change_pips": 5.4,
+   "price": 159.357,
+   "change_pips": 8.1,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -1790,7 +1790,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.064,
+     "r_now": 0.069,
      "rwf": null,
      "spread": 1.0
     }
@@ -1917,9 +1917,9 @@
     ],
     [
      "4:30 am",
+     159.357,
      159.33,
-     159.33,
-     159.338,
+     159.357,
      159.315
     ]
    ],
@@ -1974,7 +1974,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.064,
+       "r_now": 0.069,
        "rwf": null,
        "spread": 1.0
       }
@@ -4475,8 +4475,8 @@
    "net_label": "Net $ per barrel (v1.18)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 84.706,
-   "change": 0.35,
+   "price": 84.691,
+   "change": 0.34,
    "entries": [],
    "spark": [
     [
@@ -4607,7 +4607,7 @@
     ],
     [
      "4:30 am",
-     84.71,
+     84.69,
      84.7,
      84.71,
      84.68
@@ -6146,7 +6146,7 @@
    ],
    "feed_error": false,
    "epic": "OIL_CRUDE",
-   "live_spread": 0.035,
+   "live_spread": 0.04,
    "history_note": "history to 2026-11-26 (60 days)"
   },
   "US500": {
@@ -6179,8 +6179,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (Night-trade check: Cboe data not available - HTTPError: 403 Client Error: Forbidden for url: https://cdn-api.cboe.com/api/global/delayed_quotes/quotes/_VIX..)",
-   "price": 7233.5,
-   "change": 2.4,
+   "price": 7235.1,
+   "change": 4.0,
    "entries": [],
    "spark": [
     [
@@ -6311,9 +6311,9 @@
     ],
     [
      "4:30 am",
-     7233.5,
+     7235.1,
      7231.6,
-     7234.9,
+     7236.8,
      7231.5
     ]
    ],
@@ -8903,8 +8903,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 26218.0,
-   "change": 2.2,
+   "price": 26230.9,
+   "change": 15.1,
    "entries": [],
    "spark": [
     [
@@ -9035,9 +9035,9 @@
     ],
     [
      "4:30 am",
-     26218.0,
+     26230.9,
      26202.4,
-     26225.2,
+     26240.7,
      26202.4
     ]
    ],
@@ -10772,7 +10772,7 @@
      "4:30 am",
      1.30994,
      1.30985,
-     1.30996,
+     1.31002,
      1.30984
     ]
    ],
@@ -12403,7 +12403,7 @@
     "note": "DEMO / FORWARD TEST ONLY - no target, they close on time (21:30 broker); % = closed in profit, not hit target. Live v1.10 rules unchanged."
    },
    "state": "none",
-   "message": "Brent paper update failed at 4:33 am Dubai (FeedError: newest closed price bar (2:59 am Dubai) is 93 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
+   "message": "Brent paper update failed at 4:34 am Dubai (FeedError: newest closed price bar (2:59 am Dubai) is 94 min old) \u2014 shows the last good update; retries every minute. (If this persists, the Capital.com epic 'OIL_BRENT' may be wrong - tell the Trading Dashboard chat.)",
    "price": 91.778,
    "change": 0.0,
    "entries": [],
