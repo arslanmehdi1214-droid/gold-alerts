@@ -2529,21 +2529,57 @@
    "picks_seen": {
     "2026-11-27 13:45:00|1": "2026-11-27 13:46:11.708250"
    },
-   "legs_frozen": [],
+   "legs_frozen": [
+    {
+     "t": "2026-11-27 16:40:00",
+     "dir": -1,
+     "src": 1,
+     "name": "S&P 9:40 am New York opening move",
+     "leg": 1,
+     "entry": 7233.2,
+     "sd": 136.26964285714286
+    }
+   ],
    "date": "2026-11-27",
    "rules": "v1.27",
    "label": "Fri 27 Nov",
-   "side": null,
-   "trades": [],
+   "side": "SELL",
+   "trades": [
+    {
+     "time": "6:40 pm",
+     "side": "SELL",
+     "name": "S&P 9:40 am New York opening move",
+     "src": "S&P",
+     "leg": 1,
+     "night": false,
+     "price": 7233.2,
+     "entry": 7233.2,
+     "stop": 7369.5,
+     "stop0": 7369.5,
+     "stop_pts": 136.3,
+     "half_px": null,
+     "half": false,
+     "size": "full",
+     "status": "open",
+     "exit": null,
+     "exit_time": null,
+     "res": null,
+     "res_sized": null,
+     "r": null,
+     "r_sized": null,
+     "live": -2.3,
+     "spread": 0.8
+    }
+   ],
    "final": false
   }
  ],
  "summary": {
   "since": "26 Nov 2026",
   "weekdays": 2,
-  "trades": 0,
-  "days": 0.0,
-  "perday": 0.0,
+  "trades": 1,
+  "days": 50.0,
+  "perday": 0.5,
   "closed": 0,
   "win": null,
   "pf": null,
