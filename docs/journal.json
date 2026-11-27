@@ -1565,19 +1565,42 @@
   {
    "date": "2026-11-27",
    "label": "Fri 27 Nov",
-   "side": null,
-   "trades": [],
+   "side": "BUY",
+   "trades": [
+    {
+     "time": "6:05 am",
+     "side": "BUY",
+     "tag": "S24 sq24",
+     "price": 3607.38,
+     "stop": 3551.99,
+     "stop0": 3551.99,
+     "half_px": null,
+     "half": false,
+     "half_time": null,
+     "size": 0.1,
+     "status": "open",
+     "first": true,
+     "exit": null,
+     "exit_time": null,
+     "pnl": null,
+     "pnl_oz": null,
+     "size_x": 1.5,
+     "rwf": null,
+     "next": "Hold to the stop 3551.99 or the day-end close \u00b7 no half-close \u00b7 size x1.5",
+     "late": false
+    }
+   ],
    "skipped": 0,
    "final": false
   }
  ],
  "summary": {
   "since": "03 Oct 2026",
-  "trades": 62,
+  "trades": 63,
   "direction": 37.5,
   "decided": 16,
-  "days": 95.0,
-  "perday": 1.55,
+  "days": 97.5,
+  "perday": 1.57,
   "avg_pnl": 1.09,
   "closed": 62,
   "total_pnl_01": 6.75
