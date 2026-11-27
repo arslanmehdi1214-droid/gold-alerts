@@ -1,5 +1,5 @@
 {
- "updated": "Fri 27 Nov \u00b7 5:20 am",
+ "updated": "Fri 27 Nov \u00b7 5:21 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -13,9 +13,9 @@
    "feed_error": false,
    "state": "waiting",
    "message": "Waiting for the first signal (signals can come until 9:00 pm Dubai).",
-   "price": 3569.53,
+   "price": 3572.2,
    "close_at": "12:50 am",
-   "change": 2.24,
+   "change": 4.91,
    "size": 0.1,
    "datr": 109.79,
    "open_now": 0,
@@ -212,10 +212,17 @@
     ],
     [
      "5:15 am",
-     3569.53,
+     3569.94,
      3569.72,
      3573.18,
      3564.87
+    ],
+    [
+     "5:20 am",
+     3572.2,
+     3569.97,
+     3572.52,
+     3569.75
     ]
    ],
    "history": [
@@ -1824,8 +1831,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 4:00 pm Dubai close.",
-   "price": 159.281,
-   "change_pips": 0.5,
+   "price": 159.283,
+   "change_pips": 0.7,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -1853,7 +1860,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.3054,
+     "r_now": -0.2956,
      "rwf": null,
      "spread": 1.0
     }
@@ -2043,10 +2050,17 @@
     ],
     [
      "5:15 am",
-     159.281,
+     159.276,
      159.287,
      159.296,
      159.26
+    ],
+    [
+     "5:20 am",
+     159.283,
+     159.277,
+     159.287,
+     159.277
     ]
    ],
    "journal": {
@@ -2100,7 +2114,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.3054,
+       "r_now": -0.2956,
        "rwf": null,
        "spread": 1.0
       }
@@ -4601,8 +4615,8 @@
    "net_label": "Net $ per barrel (v1.18)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 84.791,
-   "change": 0.44,
+   "price": 84.841,
+   "change": 0.48,
    "entries": [],
    "spark": [
     [
@@ -4799,6 +4813,13 @@
      84.79,
      84.97,
      85.02,
+     84.77
+    ],
+    [
+     "5:20 am",
+     84.84,
+     84.79,
+     84.84,
      84.77
     ]
    ],
@@ -6368,8 +6389,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (Night-trade check: Cboe data not available - HTTPError: 403 Client Error: Forbidden for url: https://cdn-api.cboe.com/api/global/delayed_quotes/quotes/_VIX..)",
-   "price": 7247.0,
-   "change": 15.9,
+   "price": 7247.9,
+   "change": 16.8,
    "entries": [],
    "spark": [
     [
@@ -6567,6 +6588,13 @@
      7246.8,
      7249.4,
      7244.4
+    ],
+    [
+     "5:20 am",
+     7247.9,
+     7246.9,
+     7249.1,
+     7246.9
     ]
    ],
    "journal": {
@@ -9155,8 +9183,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 26316.0,
-   "change": 100.2,
+   "price": 26319.9,
+   "change": 104.1,
    "entries": [],
    "spark": [
     [
@@ -9354,6 +9382,13 @@
      26322.5,
      26341.8,
      26303.2
+    ],
+    [
+     "5:20 am",
+     26319.9,
+     26315.2,
+     26326.8,
+     26314.4
     ]
    ],
    "journal": {
@@ -10876,8 +10911,8 @@
    "regime": 0.556,
    "gap": null,
    "message": "Today is a BUY day (small traders crowded). The trade opens at 12:00 pm Dubai (10:00 broker). NEWS-FREE day (no high-impact UK/US news on the calendar): calm rules - no target; stop moves to entry + 5 pips once +0.2 x stop in profit; at 10:00 the side can switch by the price vote (v1.13). Day after a UK/US holiday: an extra HALF-size SELL opens at 12:00 pm Dubai.",
-   "price": 1.31016,
-   "change": -0.00035,
+   "price": 1.31014,
+   "change": -0.00037,
    "entries": [],
    "spark": [
     [
@@ -11152,6 +11187,13 @@
      1.31019,
      1.31025,
      1.31003
+    ],
+    [
+     "5:20 am",
+     1.31014,
+     1.31017,
+     1.31017,
+     1.31011
     ]
    ],
    "journal": {
@@ -12782,8 +12824,8 @@
    },
    "state": "none",
    "message": "No Brent signal today (not a Wednesday, US-holiday day-after, UK bank holiday, pre-holiday day, or 20-day range break).",
-   "price": 91.298,
-   "change": -0.48,
+   "price": 91.343,
+   "change": -0.44,
    "entries": [],
    "spark": [
     [
@@ -12820,6 +12862,13 @@
      91.66,
      91.69,
      91.26
+    ],
+    [
+     "5:20 am",
+     91.34,
+     91.31,
+     91.34,
+     91.25
     ]
    ],
    "journal": {
