@@ -1,20 +1,6 @@
 [
  {
   "action": "close rest",
-  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (watchdog: past day-end 11:00 PM broker) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
-  "market": "US100",
-  "ok": false,
-  "t": "Fri 27 Nov 1:16 AM"
- },
- {
-  "action": "close part",
-  "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
-  "market": "US100",
-  "ok": false,
-  "t": "Fri 27 Nov 1:17 AM"
- },
- {
-  "action": "close rest",
   "detail": "US100|2026-11-26|4:03 pm|SELL|REV US+10 H2 round $200 break, close beyond, then retest -> follow, from 4am (desk: eod) {\"errorCode\":\"Rejected. US100 is currently closed. Timetable in place: UTC; Mon - 22:00, 22:05 -; Tue - 22:00, 22:05 -; Wed - 22:00, 22:05 -; Thu - 21:00, 23:00",
   "market": "US100",
   "ok": false,
@@ -2798,5 +2784,19 @@
   "market": "OIL",
   "ok": true,
   "t": "Fri 27 Nov 7:03 AM"
+ },
+ {
+  "action": "OPEN BUY part",
+  "detail": "USDJPY|2026-11-27|9:00 am|BUY|HAM (Heikin-Ashi, 2nd hour) size 700.0 at 159.297 stop 158.667 target 159.596 | trade risk 9.83 AED",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Fri 27 Nov 9:01 AM"
+ },
+ {
+  "action": "target moved to fill + desk distance",
+  "detail": "USDJPY|2026-11-27|9:00 am|BUY|HAM (Heikin-Ashi, 2nd hour) 159.596 -> 159.617 ",
+  "market": "USDJPY",
+  "ok": true,
+  "t": "Fri 27 Nov 9:01 AM"
  }
 ]
