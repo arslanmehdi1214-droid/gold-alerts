@@ -1,5 +1,5 @@
 {
- "updated": "Fri 27 Nov \u00b7 11:01 pm",
+ "updated": "Fri 27 Nov \u00b7 11:02 pm",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -38,9 +38,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 3639.64,
+   "price": 3639.28,
    "close_at": "12:50 am",
-   "change": 72.35,
+   "change": 71.99,
    "size": 0.1,
    "datr": 109.79,
    "open_now": 0,
@@ -1773,10 +1773,10 @@
     ],
     [
      "11:00 pm",
-     3639.64,
+     3639.28,
      3641.25,
      3641.4,
-     3639.59
+     3639.08
     ]
    ],
    "history": [
@@ -3385,8 +3385,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 4:00 pm Dubai close.",
-   "price": 159.544,
-   "change_pips": 26.8,
+   "price": 159.546,
+   "change_pips": 27.0,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -5124,9 +5124,9 @@
     ],
     [
      "11:00 pm",
-     159.544,
+     159.546,
      159.534,
-     159.545,
+     159.546,
      159.534
     ]
    ],
@@ -7711,8 +7711,8 @@
    "net_label": "Net $ per barrel (v1.18)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 82.503,
-   "change": -1.85,
+   "price": 82.536,
+   "change": -1.82,
    "entries": [
     {
      "time": "7:02 am",
@@ -9420,7 +9420,7 @@
     ],
     [
      "11:00 pm",
-     82.5,
+     82.54,
      82.57,
      82.58,
      82.5
@@ -11014,7 +11014,7 @@
    "cost_note": "Results are index points per trade after 0.8 points of cost (Capital.com spread + slippage).",
    "net_label": "Net points (v1.12 rules)",
    "state": "sell",
-   "message": "S&P paper update failed at 11:01 pm Dubai (FeedError: price bars missing between 10:54 pm-11:00 pm Dubai) \u2014 shows the last good update; retries every minute.",
+   "message": "S&P paper update failed at 11:02 pm Dubai (FeedError: price bars missing between 10:54 pm-11:00 pm Dubai) \u2014 shows the last good update; retries every minute.",
    "price": 7297.0,
    "change": 65.9,
    "entries": [
@@ -18599,8 +18599,8 @@
    "regime": 0.556,
    "gap": null,
    "message": "PAPER BUY at 1.31205 (12:00 pm Dubai). Stop 1.30406, no target - it closes at 1:45 am Dubai. NEWS-FREE day: when price reaches 1.31365, move the stop to 1.31255 (entry + 5 pips). + HOLIDAY SELL (half size, day after a UK/US holiday) at 1.31205 (12:00 pm Dubai), stop 1.32403, no target, closes 1:45 am Dubai.",
-   "price": 1.3092,
-   "change": -0.00131,
+   "price": 1.30921,
+   "change": -0.0013,
    "entries": [
     {
      "time": "12:00 pm",
@@ -18626,7 +18626,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": -30.0,
+     "live": -29.9,
      "spread": 1.5,
      "next": "Hold \u00b7 stop 1.30406 \u00b7 no target \u00b7 when price reaches 1.31365, MOVE THE STOP to 1.31255 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 1:45 am Dubai"
     },
@@ -18654,7 +18654,7 @@
      "res": null,
      "res_sized": null,
      "r": null,
-     "live": 27.0,
+     "live": 26.9,
      "spread": 1.5,
      "next": "Hold \u00b7 HALF-size holiday sell \u00b7 stop 1.32403 \u00b7 no target \u00b7 closes at 1:45 am Dubai"
     }
@@ -20419,10 +20419,10 @@
     ],
     [
      "11:00 pm",
-     1.3092,
+     1.30921,
      1.30926,
      1.30926,
-     1.3092
+     1.30916
     ]
    ],
    "journal": {
@@ -20471,7 +20471,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": -30.0,
+       "live": -29.9,
        "spread": 1.5,
        "next": "Hold \u00b7 stop 1.30406 \u00b7 no target \u00b7 when price reaches 1.31365, MOVE THE STOP to 1.31255 (entry + 5 pips) \u00b7 no half-close \u00b7 closes at 1:45 am Dubai"
       },
@@ -20499,7 +20499,7 @@
        "res": null,
        "res_sized": null,
        "r": null,
-       "live": 27.0,
+       "live": 26.9,
        "spread": 1.5,
        "next": "Hold \u00b7 HALF-size holiday sell \u00b7 stop 1.32403 \u00b7 no target \u00b7 closes at 1:45 am Dubai"
       }
@@ -21932,26 +21932,26 @@
    "live": false,
    "paper": true,
    "status": "Paper",
-   "version": "v1.10 + watch v1.13W",
+   "version": "v1.15 + watch v1.13W",
    "live_rules": "v1.10",
    "unit": "usd",
    "dp": 2,
    "stats": {
     "direction": "\u2014",
-    "days": "~35% of days (~1.7/week)",
-    "perday": "1.3",
+    "days": "~47% of days (~2.35/week)",
+    "perday": "0.80",
     "win": "55% closed in profit",
-    "pf": "1.47",
-    "net": "+$50,198 at 0.30 lot (max drawdown $7,979) - v1.05's A-F result (last MT4 number for A-F alone)",
-    "source": "MT4 BRENT_WED_HOL v1.05 (A-F only), his run 7 Nov 2026, 2018-01-02..2026-10-30, 911 trades, spread 8 ($0.08/bbl, RoboForex live spread); only losing year 2019 (-$2,598). The v1.06 MT4 run (same window) tested the FULL bundle incl. dropped rule G: 949 trades, +$58,856, DD $9,529 - by subtraction (not a separate run) G alone was ~38 trades / ~$8,658 of that. This build's own v1.06 deltas (B/D entry 11:00, rule C from 09:00 with its own 2.0x stop, conflict-close) were only MT4-tested bundled with G, never alone."
+    "pf": "1.65",
+    "net": "+$143,597 at 0.30 lot (equity max drawdown $12,228 = 1.16%) - v1.15 full EA",
+    "source": "MT4 BRENT_WED_HOL v1.15 (BRENT_WED_HOL_v115.mq4 md5 0149f41e75298717227385d9a9cf389c), his run 27 Nov 2026, 2018-01-02..2026-10-30, spread 8 ($0.08/bbl), 0.30 lot: 1,832 trades, net +$143,597, PF 1.65, max equity DD $12,228 (1.16%), 55.1% closed in profit. Closed-trade basis, same method for both: v1.10 net $78,669 / DD $8,696 = 9.05; v1.15 $143,597 / $8,933 = 16.08 (+78%); 2018-21 $16,239 -> $37,203, 2022-26 $62,430 -> $106,394. Trade days/week 2.58 (v1.10) -> 2.35 (v1.15: the mid-range skip removes some days)."
    },
    "pass_bar": {
     "pf": 1.1,
     "months": 3
    },
-   "day_note": "STOP 1.0 x 20-day average daily range, no target (rule C: 2.0x) \u00b7 exit 21:30 broker (Dubai: see the trade times) if not stopped first \u00b7 rules can fire together the same day (separate trades, same stop/exit) - an opposite signal closes an already-open trade and is itself skipped: A) Wednesday - 10:00\u219214:00 move > 0.5x its own 60-day spread, trade that direction at 14:00 \u00b7 B) SELL 11:00 the first trading day after a US federal holiday \u00b7 C) 20-day range break - price inside the range at 09:00, first 1-min close beyond it 09:00-19:00, follow (stop 2.0x) \u00b7 D) BUY 11:00 on a UK bank holiday the market trades, SELL 11:00 the next trading day \u00b7 E) SELL 10:00 the 2nd trading day after a UK bank holiday \u00b7 F) BUY 19:00 the trading day before a US federal or UK bank holiday \u00b7 K+) NEW 9 Nov 2026, thin before 2026 - overextension fade: price 0.8x the 20-day range away from its own 09:00 or 10:00 broker price (first touch, before 18:00) -> fade back, stop 2.0x the range, exit 19:00 broker. Independent of A-F - its own position, never conflict-closed, skipped on Wednesday/calendar days or if rule C already opened today \u00b7 AW) NEW 9 Nov 2026, 2022-heavy - Wednesday re-entry: only on rule A's own signal days; if price closes back through the 14:00 price within 30 min AGAINST rule A's direction -> a 2nd trade IN rule A's direction, stop 2.0x the range, exit 21:30 broker \u00b7 K2) NEW 9 Nov 2026, 2022-heavy - K+ add-on at HALF size: only after a K+ trade; if price runs a further 0.5x the range beyond K+'s own trigger price in the same direction as the original stretch -> a 2nd fade, same direction as K+, HALF the normal size, stop 2.0x the range, exit 21:30 broker (not K+'s own 19:00). AW and K2 are each independent of A-F/K+/each other - own position, never conflict-closed, skipped on calendar days (K2 also skips on Wednesday or if rule C already traded today) \u00b7 WATCH W1-W5) NEW 19 Nov 2026 (W5 added 21 Nov), DEMO / FORWARD TEST ONLY, own positions, never conflict-closed, no target (close 21:30 broker): W1 BUY 15:00 on the 4th-last trading day of the month (no stop in the test; the demo order carries a far 2.0x safety stop) \u00b7 W2 SELL 15:00 on the first trading day of the month (stop 2.0x) \u00b7 W3 SELL 11:00 on a Germany/France-only holiday (stop 1.0x) \u00b7 W4 follow the first daily 21:29 close beyond the last 150 closes, entry 03:20 broker (stop 1.0x) \u00b7 W5 BUY 10:00 the day before Brent options expiry (stop 1.0x)",
-   "what_note": "Tracks whether live Brent signals do as well as the v1.05 MT4 test (this build's own v1.06 B/D/C/conflict-close deltas were only MT4-tested bundled with the dropped rule G, never alone - see the backtest note). v1.07a (9 Nov 2026) added rule K+ on top, unchanged A-F; K+ has its own isolated MT4 proof - new and thin before 2026, see the K+ panel. v1.10 (9 Nov 2026) adds rules AW + K2 on top of THAT, A-F and K+ themselves unchanged - their own isolated MT4 proof is new and 2022-heavy, see the AW+K2 panel (v1.10 technically misses the strict $10,000 max-drawdown cap by $241 but wins on the equal-drawdown rule - his go-ahead 9 Nov 2026). Copied to the Capital.com DEMO account by the auto-trader, same as Gold/USDJPY/Oil/Nasdaq/S&P500/GBPUSD (his 6 Nov go-ahead, reversing his earlier same-day \"signals only\" instruction); up to 3 Brent positions can be open at once (e.g. A-F + K+ + K2, or A + C + AW) - autotrade.py's own per-trade keying already supports it, no autotrade.py change needed. v1.12W (19 Nov 2026) adds four WATCH rules W1-W4 on top, DEMO forward test only, live v1.10 rules unchanged - own journal, see the watch panel; v1.13W (21 Nov 2026) adds a fifth watch rule W5 (day before Brent options expiry, BUY), same demo-only treatment. Decision after about 3 months.",
-   "cost_note": "Results are $ per barrel (0.30-lot backtest scale, K2 at half that - 0.15 lot), from the signal price after the live Capital.com spread (at least 2 cents).",
+   "day_note": "STOP 1.0 x 20-day average daily range, no target (rule C: 2.0x) \u00b7 exit 21:30 broker (Dubai: see the trade times) if not stopped first \u00b7 rules can fire together the same day (separate trades, same stop/exit) - an opposite signal closes an already-open trade and is itself skipped: A) Wednesday - 10:00\u219214:00 move > 0.5x its own 60-day spread, trade that direction at 14:00 \u00b7 B) SELL 11:00 the first trading day after a US federal holiday \u00b7 C) 20-day range break - price inside the range at 09:00, first 1-min close beyond it 09:00-19:00, follow (stop 2.0x) \u00b7 D) BUY 11:00 on a UK bank holiday the market trades, SELL 11:00 the next trading day \u00b7 E) SELL 10:00 the 2nd trading day after a UK bank holiday \u00b7 F) BUY 19:00 the trading day before a US federal or UK bank holiday \u00b7 K+) NEW 9 Nov 2026, thin before 2026 - overextension fade: price 0.8x the 20-day range away from its own 09:00 or 10:00 broker price (first touch, before 18:00) -> fade back, stop 2.0x the range, exit 19:00 broker. Independent of A-F - its own position, never conflict-closed, skipped on Wednesday/calendar days or if rule C already opened today \u00b7 AW) NEW 9 Nov 2026, 2022-heavy - Wednesday re-entry: only on rule A's own signal days; if price closes back through the 14:00 price within 30 min AGAINST rule A's direction -> a 2nd trade IN rule A's direction, stop 2.0x the range, exit 21:30 broker \u00b7 K2) NEW 9 Nov 2026, 2022-heavy - K+ add-on at HALF size: only after a K+ trade; if price runs a further 0.5x the range beyond K+'s own trigger price in the same direction as the original stretch -> a 2nd fade, same direction as K+, HALF the normal size, stop 2.0x the range, exit 21:30 broker (not K+'s own 19:00). AW and K2 are each independent of A-F/K+/each other - own position, never conflict-closed, skipped on calendar days (K2 also skips on Wednesday or if rule C already traded today) \u00b7 WATCH W1-W5) NEW 19 Nov 2026 (W5 added 21 Nov), DEMO / FORWARD TEST ONLY, own positions, never conflict-closed, no target (close 21:30 broker): W1 BUY 15:00 on the 4th-last trading day of the month (no stop in the test; the demo order carries a far 2.0x safety stop) \u00b7 W2 SELL 15:00 on the first trading day of the month (stop 2.0x) \u00b7 W3 SELL 11:00 on a Germany/France-only holiday (stop 1.0x) \u00b7 W4 follow the first daily 21:29 close beyond the last 150 closes, entry 03:20 broker (stop 1.0x) \u00b7 W5 BUY 10:00 the day before Brent options expiry (stop 1.0x) \u00b7 v1.15 UPGRADES (his push 27 Nov 2026, trading from Mon 30 Nov 2026; MT4 net/DD 16.08 vs 9.05) - each add-on is its own position, never conflict-closed, stop 1.0x, exit 21:30 broker: A16) rule A traded + the 10:00\u219216:00 move still has its sign \u2192 2nd trade in A's direction at 16:00 \u00b7 B12) rule B's sell is in profit at 12:00 \u2192 2nd SELL \u00b7 C14) rule C opened before 14:00 and is in profit at 14:00 \u2192 2nd trade in its direction \u00b7 A12K) Wednesday: 10:00\u219212:00 move > 0.5x its own 60-day spread \u2192 trade it at 12:00, kept only if rule A fires the same way at 14:00, else closed at 14:00 \u00b7 D) UK-holiday BUY at 2x size, as a limit 0.05x the range under the 11:00 price (market at 11:30 if not filled) \u00b7 E) the 2nd-day-after-UK-holiday SELL at 2x size when the 09:59 price is at/above the 03:00 close \u00b7 MID-RANGE SKIP) yesterday's close in the middle third (33-67%) of its past-250-day range \u2192 rule A, AW, A16 and A12K sit out that Wednesday",
+   "what_note": "Tracks whether live Brent signals do as well as the v1.05 MT4 test (this build's own v1.06 B/D/C/conflict-close deltas were only MT4-tested bundled with the dropped rule G, never alone - see the backtest note). v1.07a (9 Nov 2026) added rule K+ on top, unchanged A-F; K+ has its own isolated MT4 proof - new and thin before 2026, see the K+ panel. v1.10 (9 Nov 2026) adds rules AW + K2 on top of THAT, A-F and K+ themselves unchanged - their own isolated MT4 proof is new and 2022-heavy, see the AW+K2 panel (v1.10 technically misses the strict $10,000 max-drawdown cap by $241 but wins on the equal-drawdown rule - his go-ahead 9 Nov 2026). Copied to the Capital.com DEMO account by the auto-trader, same as Gold/USDJPY/Oil/Nasdaq/S&P500/GBPUSD (his 6 Nov go-ahead, reversing his earlier same-day \"signals only\" instruction); up to 3 Brent positions can be open at once (e.g. A-F + K+ + K2, or A + C + AW) - autotrade.py's own per-trade keying already supports it, no autotrade.py change needed. v1.12W (19 Nov 2026) adds four WATCH rules W1-W4 on top, DEMO forward test only, live v1.10 rules unchanged - own journal, see the watch panel; v1.13W (21 Nov 2026) adds a fifth watch rule W5 (day before Brent options expiry, BUY), same demo-only treatment. v1.15 (27 Nov 2026, live from Mon 30 Nov) stacks eight upgrades on the live rules - A16, B12, C14, A12K add-ons, UK-holiday BUY at 2x with a limit entry, E at 2x on rallies and the mid-range skip - his MT4 run: net +$143,597 vs +$78,669 for v1.10, net/DD 16.08 vs 9.05, both eras up; it trades on slightly fewer days (2.35 vs 2.58 a week). Decision after about 3 months.",
+   "cost_note": "Results are $ per barrel (0.30-lot backtest scale, K2 at half that - 0.15 lot; the v1.15 UK-holiday BUY and E-on-rallies run at 2x - the per-barrel figure is for one unit), from the signal price after the live Capital.com spread (at least 2 cents).",
    "net_label": "Net $ per barrel (v1.10)",
    "kfade": {
     "trades": 285,
@@ -22119,10 +22119,88 @@
     "source": "MT4 BRENT_WED_HOL_v112W.mq4 (md5 54564281efc512dbe26015fd353aa326), his run 19 Nov 2026, BRENT M1 every tick, spread 8, 0.30 lot, 2018.01.02-2026.10.30: v1.12W full EA +$94,121, PF 1.41, max DD $9,527, 1,811 trades, 54.45% closed in profit; v1.10 part unchanged 1,491 trades +$80,891. y1 = 2018-21, y2 = 2022-26. W5 (v1.13W, BRENT_WED_HOL_v113W.mq4 md5 775dc705c5db4d1440cab29d19454155): his MT4 run 21 Nov 2026, 106 trades +$4,322, positive in both 2018-21 and 2022-26, rest of the engine unchanged (the full-EA totals above are the v1.12W run - no v1.13W full total was given). W5 Python check on his broker M1 file (my replay, not MT4): 53% closed in profit.",
     "note": "DEMO / FORWARD TEST ONLY - no target, they close on time (21:30 broker); % = closed in profit, not hit target. Live v1.10 rules unchanged."
    },
+   "v115_backtest": {
+    "full": {
+     "net": 143597,
+     "maxdd_equity": 12228,
+     "trades": 1832,
+     "pf": 1.65,
+     "win": 55.1,
+     "v110_net": 78669,
+     "v110_dd": 8696,
+     "v115_dd": 8933,
+     "ratio110": 9.05,
+     "ratio115": 16.08
+    },
+    "live_from": "Mon 30 Nov 2026",
+    "upgrades": [
+     {
+      "code": "U1",
+      "tag": "A16",
+      "name": "Wednesday add-on 16:00",
+      "n": 172,
+      "y1": 4206,
+      "y2": 7671
+     },
+     {
+      "code": "U2",
+      "tag": "B12",
+      "name": "day-after-US-holiday add-on 12:00",
+      "n": 47,
+      "y1": 2630,
+      "y2": 8062
+     },
+     {
+      "code": "U3",
+      "tag": "C14",
+      "name": "range-break add-on 14:00",
+      "n": 78,
+      "y1": 2280,
+      "y2": 1770,
+      "note": "weakest add-on (time-of-day edge)"
+     },
+     {
+      "code": "U4",
+      "tag": "A12K",
+      "name": "early Wednesday start 12:00",
+      "n": 176,
+      "y1": 5618,
+      "y2": 9555,
+      "note": "47% closed in profit"
+     },
+     {
+      "code": "U5+U6",
+      "tag": "Dbuy",
+      "name": "UK-holiday BUY at 2x + limit entry",
+      "n": null,
+      "y1": 1217,
+      "y2": 10822,
+      "note": "39 limit fills in the MT4 run"
+     },
+     {
+      "code": "U7",
+      "tag": "E",
+      "name": "2nd-day-after-UK-holiday SELL at 2x on rallies",
+      "n": 22,
+      "y1": 162,
+      "y2": 4521
+     },
+     {
+      "code": "U8",
+      "tag": "A family",
+      "name": "mid-range skip",
+      "n": 194,
+      "y1": -1027,
+      "y2": 153,
+      "note": "skipped Wednesday trades; weakest in MT4, small saving"
+     }
+    ],
+    "source": "MT4 BRENT_WED_HOL_v115.mq4, his run 27 Nov 2026 (per-upgrade $ = the new trades vs the v1.10 run, 2018-21 / 2022-26, from the Brent chat's r559.py). Passed his pre-set bar: net/DD >= 15% better than v1.10 (+78%), net positive in both eras, no upgrade line clearly negative. U8 removes trade days (2.58 -> 2.35 per week)."
+   },
    "state": "sell",
    "message": "Today's signals: SELL (B). Stop 1.0x the 20-day range (rule C: 2.0x), no target; closes 11:30 pm Dubai if not stopped first.",
-   "price": 89.698,
-   "change": -2.08,
+   "price": 89.678,
+   "change": -2.1,
    "entries": [
     {
      "time": "1:00 pm",
@@ -23667,10 +23745,10 @@
     ],
     [
      "11:00 pm",
-     89.7,
+     89.68,
      89.82,
      89.84,
-     89.7
+     89.63
     ]
    ],
    "journal": {
@@ -23721,7 +23799,9 @@
      "ruleD_sell": false,
      "ruleE": false,
      "ruleF": false,
-     "wed": false
+     "wed": false,
+     "mid_pos": 0.509,
+     "mid_skip": false
     },
     {
      "date": "2026-11-26",
@@ -24197,7 +24277,7 @@
     ],
     "w4": {
      "ready": true,
-     "have": 171,
+     "have": 193,
      "need": 152,
      "missing": 0,
      "empty": 1
@@ -24205,6 +24285,20 @@
     "close": "11:30 pm"
    },
    "range_usd": 4.77,
+   "v115": {
+    "live_from": "2026-11-30",
+    "active": false,
+    "mid": {
+     "pos": 0.509,
+     "skip": true,
+     "closes": 193,
+     "fresh": true,
+     "window": 250,
+     "low": 0.33,
+     "high": 0.67
+    },
+    "sd12": 1.074
+   },
    "rule_today": {
     "wed": false,
     "ruleB": true,
