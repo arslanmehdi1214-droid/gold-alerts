@@ -1,5 +1,5 @@
 {
- "updated": "Fri 27 Nov \u00b7 11:55 am",
+ "updated": "Fri 27 Nov \u00b7 11:56 am",
  "source": "Capital.com",
  "markets": {
   "GOLD": {
@@ -26,9 +26,9 @@
    "feed_error": false,
    "state": "buy",
    "message": "BUY day \u2014 up to 2 BUY trades (a 3rd only when every open trade is up 1.25x its stop). Each runs to its stop or the day-end close at 12:50 am Dubai. Day lock: once today reaches +2R, close all if it falls back to +0.5R.",
-   "price": 3664.83,
+   "price": 3664.98,
    "close_at": "12:50 am",
-   "change": 97.54,
+   "change": 97.69,
    "size": 0.1,
    "datr": 109.79,
    "open_now": 2,
@@ -823,10 +823,17 @@
     ],
     [
      "11:50 am",
-     3664.83,
+     3664.38,
      3659.74,
      3665.43,
      3659.7
+    ],
+    [
+     "11:55 am",
+     3664.98,
+     3664.36,
+     3665.1,
+     3664.22
     ]
    ],
    "history": [
@@ -2435,8 +2442,8 @@
    "net_label": "Net R / $ at $100 risk (v1.07 sizes)",
    "state": "buy",
    "message": "PAPER BUY day now. The 7am Heikin-Ashi trade closes whole at its tiny target; other trades close half at the \u00bd level, then the rest's stop moves to the entry. A quiet breakout the other way closes open trades and switches the side (once a day). Everything closes at the 4:00 pm Dubai close.",
-   "price": 159.336,
-   "change_pips": 6.0,
+   "price": 159.328,
+   "change_pips": 5.2,
    "atr_pips": 81.2,
    "entries": [
     {
@@ -2464,7 +2471,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": -0.0345,
+     "r_now": -0.0739,
      "rwf": null,
      "spread": 1.0
     },
@@ -2493,7 +2500,7 @@
      "r": null,
      "r_sized": null,
      "usd_risk": null,
-     "r_now": 0.0821,
+     "r_now": 0.069,
      "rwf": null,
      "spread": 1.0
     }
@@ -3240,6 +3247,13 @@
      159.316,
      159.339,
      159.31
+    ],
+    [
+     "11:55 am",
+     159.328,
+     159.334,
+     159.334,
+     159.324
     ]
    ],
    "journal": {
@@ -3293,7 +3307,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": -0.0345,
+       "r_now": -0.0739,
        "rwf": null,
        "spread": 1.0
       },
@@ -3322,7 +3336,7 @@
        "r": null,
        "r_sized": null,
        "usd_risk": null,
-       "r_now": 0.0821,
+       "r_now": 0.069,
        "rwf": null,
        "spread": 1.0
       }
@@ -5790,7 +5804,7 @@
     }
    ],
    "feed_error": false,
-   "live_spread_pips": 1.2,
+   "live_spread_pips": 1.0,
    "history_note": "history to 2026-11-26 (300 days)"
   },
   "OIL": {
@@ -5823,8 +5837,8 @@
    "net_label": "Net $ per barrel (v1.18)",
    "state": "buy",
    "message": "PAPER BUY day \u2014 v1.07: no more trades today (a buy only as the day's first trade). Close 25% at the part level, then move the stop to entry; everything closes at 11:00 pm Dubai. No new trades after 5:30 pm (one late first trade allowed).",
-   "price": 85.806,
-   "change": 1.45,
+   "price": 85.791,
+   "change": 1.44,
    "entries": [
     {
      "time": "7:02 am",
@@ -6598,6 +6612,13 @@
      85.89,
      85.91,
      85.74
+    ],
+    [
+     "11:55 am",
+     85.79,
+     85.8,
+     85.85,
+     85.78
     ]
    ],
    "journal": {
@@ -8189,8 +8210,8 @@
    "net_label": "Net points (v1.12 rules)",
    "state": "waiting",
    "message": "Waiting for the first day signal (from 6:40 pm Dubai: 9:40 am New York move, Nasdaq signals; earlier: yesterday high/low sweep). (Night-trade check: Cboe data not available - HTTPError: 403 Client Error: Forbidden for url: https://cdn-api.cboe.com/api/global/delayed_quotes/quotes/_VIX..)",
-   "price": 7305.6,
-   "change": 74.5,
+   "price": 7306.4,
+   "change": 75.3,
    "entries": [],
    "spark": [
     [
@@ -8941,6 +8962,13 @@
      7300.1,
      7306.1,
      7300.0
+    ],
+    [
+     "11:55 am",
+     7306.4,
+     7305.8,
+     7306.9,
+     7305.8
     ]
    ],
    "journal": {
@@ -11529,8 +11557,8 @@
    "net_label": "Net points (v1.02 rules)",
    "state": "waiting",
    "message": "Waiting for the first signal.",
-   "price": 26659.2,
-   "change": 443.4,
+   "price": 26654.8,
+   "change": 439.0,
    "entries": [],
    "spark": [
     [
@@ -12281,6 +12309,13 @@
      26617.3,
      26664.4,
      26614.5
+    ],
+    [
+     "11:55 am",
+     26654.8,
+     26658.9,
+     26661.7,
+     26654.8
     ]
    ],
    "journal": {
@@ -14632,6 +14667,13 @@
      1.31236,
      1.31245,
      1.31209
+    ],
+    [
+     "11:55 am",
+     1.31235,
+     1.31234,
+     1.31242,
+     1.31232
     ]
    ],
    "journal": {
@@ -16853,6 +16895,13 @@
      93.03,
      93.04,
      92.83
+    ],
+    [
+     "11:55 am",
+     92.88,
+     92.89,
+     92.94,
+     92.87
     ]
    ],
    "journal": {
